@@ -1,66 +1,149 @@
 import FWCore.ParameterSet.Config as cms
 
 from FWCore.ParameterSet.VarParsing import VarParsing
-import copy
 
 options = VarParsing('python')
 
-options.register('infile',
-    'root://eoscms//eos/cms/store/group/phys_btag/performance/CMSSW_5_3_9/MC/QCD_Pt-1800_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/JetTree_mc_subjets_10_1_mDl.root', 
+options.register('outFilename', 'bTagValPlots.root',
     VarParsing.multiplicity.singleton,
     VarParsing.varType.string,
-    "Input file name")
-
-options.register('maxEventsToProcess',
-    100,
+    "Output file name"
+)
+options.register('reportEvery', 1000,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
-    "Maximum events to process") 
-
-options.register('isData',
-    False,
+    "Report every N events (default is N=1000)"
+)
+options.register('useJetProbaTree', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
-    "Is Data") 
+    "Use jet probability tree"
+)
 
-options.register('runSubJets',
-    True,
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.bool,
-    "Run SubJets") 
-
-options.register('outfilename',
-    'commonPlots.root',
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.string,
-    "Output file name")
+## 'maxEvents' is already registered by the Framework, changing default value
+options.setDefault('maxEvents', 1000)
 
 options.parseArguments()
 
-print options 
+#print options
 
 process = cms.Process("BTagVal")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger = cms.Service("MessageLogger",
-   destinations = cms.untracked.vstring( 
-     'detailedInfo',
-     ),
-   detailedInfo = cms.untracked.PSet(
-     threshold = cms.untracked.string('INFO'), 
-     ), 
-   )
+process.MessageLogger.cout = cms.untracked.PSet(
+    threshold = cms.untracked.string('INFO')
+)
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) ) # Keep as such 
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) ) # Keep as such
 
 process.source = cms.Source("EmptySource")
 
+## Output file
+process.TFileService = cms.Service("TFileService",
+    fileName = cms.string(options.outFilename)
+)
+
 process.btagval = cms.EDAnalyzer('BTagValidation',
-    inputfile = cms.untracked.string(options.infile),
-    outfilename = cms.untracked.string(options.outfilename),
-    maxEvents = cms.untracked.int32(options.maxEventsToProcess), 
-    isData = cms.untracked.bool(options.isData),
-    runSubJets = cms.untracked.bool(options.runSubJets), 
+    MaxEvents        = cms.int32(options.maxEvents),
+    ReportEvery      = cms.int32(options.reportEvery),
+    UseJetProbaTree  = cms.bool(options.useJetProbaTree),
+    InputTTree       = cms.string('btaganaSubJets/ttree'),
+    InputFiles       = cms.vstring('JetTree_mc_subjets_69_1_v6P.root','JetTree_mc_subjets_87_1_Aor.root'),
+    JetPtMin         = cms.double(300.),
+    JetPtMax         = cms.double(1.e6),
+    JetAbsEtaMax     = cms.double(2.4),
+    TriggerSelection = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
+        "HLT_Jet300_v*"
+     ),
+    TriggerPathNames = cms.vstring(
+        "HLT_Jet15U*",
+        "HLT_Jet30_v*",
+        "HLT_PFJet40_v*",
+        "HLT_Jet30U*",
+        "HLT_Jet60_v*",
+        "HLT_Jet50U*",
+        "HLT_Jet80_v*",
+        "HLT_PFJet80_v*",
+        "HLT_Jet70U*",
+        "HLT_Jet110_v*",
+        "HLT_Jet100U*",
+        "HLT_Jet150_v*",
+        "HLT_PFJet140_v*",
+        "HLT_Jet140U*",
+        "HLT_Jet190_v*",
+        "HLT_PFJet200_v*",
+        "HLT_Jet240_v*",
+        "HLT_PFJet260_v*",
+        "HLT_Jet300_v*",
+        "HLT_PFJet320_v*",
+        "HLT_DiPFJetAve320_v*",
+        "HLT_PFJet400_v*",
+        "HLT_DiJetAve15U*",
+        "HLT_DiJetAve30_v*",
+        "HLT_DiPFJetAve40_v*",
+        "HLT_DiJetAve30U*",
+        "HLT_DiJetAve60_v*",
+        "HLT_DiPFJetAve80_v*",
+        "HLT_DiJetAve50U*",
+        "HLT_DiJetAve80_v*",
+        "HLT_DiPFJetAve140_v*",
+        "HLT_BTagMu_Jet10U*",
+        "HLT_BTagMu_Jet20U*",
+        "HLT_BTagMu_DiJet20U*",
+        "HLT_BTagMu_DiJet20U_Mu5*",
+        "HLT_BTagMu_DiJet20_Mu5*",
+        "HLT_BTagMu_DiJet20_L1FastJet_Mu5_v*",
+        "HLT_BTagMu_DiJet30U",
+        "HLT_BTagMu_DiJet30U_v*",
+        "HLT_BTagMu_DiJet30U_Mu5*",
+        "HLT_BTagMu_DiJet60_Mu7*",
+        "HLT_BTagMu_DiJet40_Mu5*",
+        "HLT_BTagMu_DiJet20_L1FastJet_Mu5*",
+        "HLT_BTagMu_DiJet80_Mu9*",
+        "HLT_BTagMu_DiJet70_Mu5*",
+        "HLT_BTagMu_DiJet70_L1FastJet_Mu5*",
+        "HLT_BTagMu_DiJet100_Mu9_v*",
+        "HLT_BTagMu_DiJet110_Mu5*",
+        "HLT_BTagMu_DiJet110_L1FastJet_Mu5*",
+        "HLT_BTagMu_Jet300_L1FastJet_Mu5*",
+        "HLT_BTagMu_Jet300_Mu5*",
+        "HLT_HT200",
+        "HLT_HT240",
+        "HLT_HT100U",
+        "HLT_HT120U",
+        "HLT_HT140U",
+        "HLT_HT50U_v*",
+        "HLT_HT100U_v*",
+        "HLT_HT130U_v*",
+        "HLT_HT140U_Eta3_v*",
+        "HLT_HT140U_J30U_Eta3_v*",
+        "HLT_HT150U_Eta3_v*",
+        "HLT_HT150U_v*",
+        "HLT_HT160U_Eta3_v*",
+        "HLT_HT160U_v*",
+        "HLT_HT200U_v*",
+        "HLT_HT150_v*",
+        "HLT_HT160_v*",
+        "HLT_HT200_v*",
+        "HLT_HT240_v*",
+        "HLT_HT250_v*",
+        "HLT_HT260_v*",
+        "HLT_HT300_v*",
+        "HLT_HT350_v*",
+        "HLT_HT360_v*",
+        "HLT_HT400_v*",
+        "HLT_HT440_v*",
+        "HLT_HT450_v*",
+        "HLT_HT500_v*",
+        "HLT_HT520_v*",
+        "HLT_HT550_v*",
+        "HLT_HT600_v*",
+        "HLT_HT650_v*",
+        "HLT_HT700_v*",
+        "HLT_HT750_L1FastJet_v*",
+        "HLT_HT750_v*",
+        "HLT_HT2000_v*"
     )
+)
 
 process.p = cms.Path(process.btagval)
