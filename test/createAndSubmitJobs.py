@@ -86,9 +86,10 @@ exit $exitcode
 
 
 # usage description
-usage = """Usage: createCrabJobs.py [options]\n
+usage = """Usage: ./createAndSubmitJobs.py [options]\n
 Example: ./createAndSubmitJobs.py -w LXBatch_Jobs -d datasetList.txt -c btagvalidation_cfg.py\n
-For more help: ./createAndSubmitJobs.py --help"""
+For more help: ./createAndSubmitJobs.py --help
+"""
 
 def main():
   # input parameters
@@ -107,7 +108,6 @@ def main():
   # make sure all necessary input parameters are provided
   if not (options.main_workdir and options.dataset_list and options.cmssw_cfg):
     print usage
-    #parser.print_help()
     sys.exit()
 
   main_workdir = options.main_workdir
