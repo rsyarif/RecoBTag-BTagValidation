@@ -144,7 +144,12 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
         "HLT_HT750_L1FastJet_v*",
         "HLT_HT750_v*",
         "HLT_HT2000_v*"
-    )
+    ),
+    File_PUDistMC = cms.string(""), 
+    File_PUDistData = cms.string(""),
+    Hist_PUDistMC = cms.string(""),
+    Hist_PUDistData = cms.string(""),
+    DoPUReweighting = cms.bool(False) 
 )
 
 process.p = cms.Path(process.btagval)
