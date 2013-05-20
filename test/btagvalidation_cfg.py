@@ -9,7 +9,7 @@ options.register('outFilename', 'bTagValPlots.root',
     VarParsing.varType.string,
     "Output file name"
 )
-options.register('reportEvery', 1000,
+options.register('reportEvery', 100,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
     "Report every N events (default is N=1000)"
@@ -43,12 +43,13 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string(options.outFilename)
 )
 
+from inputFiles_cfi import *
 process.btagval = cms.EDAnalyzer('BTagValidation',
     MaxEvents        = cms.int32(options.maxEvents),
     ReportEvery      = cms.int32(options.reportEvery),
     UseJetProbaTree  = cms.bool(options.useJetProbaTree),
     InputTTree       = cms.string('btaganaSubJets/ttree'),
-    InputFiles       = cms.vstring('JetTree_mc_subjets_69_1_v6P.root','JetTree_mc_subjets_87_1_Aor.root'),
+    InputFiles       = cms.vstring(FileNames),
     JetPtMin         = cms.double(300.),
     JetPtMax         = cms.double(1.e6),
     JetAbsEtaMax     = cms.double(2.4),
