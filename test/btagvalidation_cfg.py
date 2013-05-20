@@ -54,7 +54,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     JetPtMax         = cms.double(1.e6),
     JetAbsEtaMax     = cms.double(2.4),
     TriggerSelection = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
-        "HLT_Jet300_v*"
+        "HLT_PFJet320_v*"
      ),
     TriggerPathNames = cms.vstring(
         "HLT_Jet15U*",
