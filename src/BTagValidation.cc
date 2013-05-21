@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.3 2013/05/20 04:55:14 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.4 2013/05/20 14:28:02 devdatta Exp $
 //
 //
 
@@ -99,6 +99,7 @@ class BTagValidation : public edm::EDAnalyzer {
 
     TH1D *h1_CutFlow;
     TH1D *h1_nPUtrue_mc;
+    TH1D *h1_nPUtrue_mc_unw;
     TH1D *h1_nPV_data;
     TH1D *h1_nPV_mc;
     TH1D *h1_nPV_mc_unw;
@@ -107,7 +108,7 @@ class BTagValidation : public edm::EDAnalyzer {
     TH1D *h1_nJet_data;
     TH1D *h1_nJet_mc;
 
-    //// Lumi reweighting object 
+    //// Lumi reweighting object
     edm::LumiReWeighting LumiWeights_;
 
     //// Configurables
@@ -121,11 +122,11 @@ class BTagValidation : public edm::EDAnalyzer {
     const double                    jetAbsEtaMax_;
     const std::vector<std::string>  triggerSelection_;
     const std::vector<std::string>  triggerPathNames_;
-    const std::string               file_PUDistMC_ ; 
-    const std::string               file_PUDistData_ ; 
-    const std::string               hist_PUDistMC_ ; 
-    const std::string               hist_PUDistData_ ; 
-    const int                       doPUReweighting_ ; 
+    const std::string               file_PUDistMC_ ;
+    const std::string               file_PUDistData_ ;
+    const std::string               hist_PUDistMC_ ;
+    const std::string               hist_PUDistData_ ;
+    const int                       doPUReweighting_ ;
 };
 
 //
@@ -150,16 +151,16 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   jetPtMax_(iConfig.getParameter<double>("JetPtMax")),
   jetAbsEtaMax_(iConfig.getParameter<double>("JetAbsEtaMax")),
   triggerSelection_(iConfig.getParameter<std::vector<std::string> >("TriggerSelection")),
-  triggerPathNames_(iConfig.getParameter<std::vector<std::string> >("TriggerPathNames")),  
-  file_PUDistMC_(iConfig.getParameter<std::string>("File_PUDistMC")), 
-  file_PUDistData_(iConfig.getParameter<std::string>("File_PUDistData")), 
-  hist_PUDistMC_(iConfig.getParameter<std::string>("Hist_PUDistMC")), 
-  hist_PUDistData_(iConfig.getParameter<std::string>("Hist_PUDistData")), 
-  doPUReweighting_(iConfig.getParameter<bool>("DoPUReweighting")) 
+  triggerPathNames_(iConfig.getParameter<std::vector<std::string> >("TriggerPathNames")),
+  file_PUDistMC_(iConfig.getParameter<std::string>("File_PUDistMC")),
+  file_PUDistData_(iConfig.getParameter<std::string>("File_PUDistData")),
+  hist_PUDistMC_(iConfig.getParameter<std::string>("Hist_PUDistMC")),
+  hist_PUDistData_(iConfig.getParameter<std::string>("Hist_PUDistData")),
+  doPUReweighting_(iConfig.getParameter<bool>("DoPUReweighting"))
 {
   //now do what ever initialization is needed
   isData = true;
-  if (doPUReweighting_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ; 
+  if (doPUReweighting_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ;
 }
 
 
@@ -203,15 +204,16 @@ void BTagValidation::beginJob() {
   double PtMax = 1000.;
   double pi=TMath::Pi();
 
-  h1_CutFlow      = fs->make<TH1D>("h1_CutFlow",      "h1_CutFlow",                 2, -0.5, 1.5);
-  h1_nPUtrue_mc   = fs->make<TH1D>("h1_nPUtrue_mc",   "h1_nPUtrue_mc",             60,-0.5,59.5);
-  h1_nPV_data     = fs->make<TH1D>("h1_nPV_data",     "h1_nPV_data",               60,-0.5,59.5);
-  h1_nPV_mc       = fs->make<TH1D>("h1_nPV_mc",       "h1_nPV_mc",                 60,-0.5,59.5);
-  h1_nPV_mc_unw   = fs->make<TH1D>("h1_nPV_mc_unw",   "h1_nPV_mc_unw",             60,-0.5,59.5);
-  h1_pt_hat       = fs->make<TH1D>("h1_pt_hat",       "h1_pt_hat",                400,0,2000);
-  h1_fatjet_pt_mc = fs->make<TH1D>("h1_fatjet_pt_mc", "h1_fatjet_pt_mc",          PtMax/10,0,PtMax);
-  h1_nJet_data    = fs->make<TH1D>("h1_nJet_data",    "h1_nJet_data",             100,0,100);
-  h1_nJet_mc      = fs->make<TH1D>("h1_nJet_mc",      "h1_nJet_mc",               100,0,100);
+  h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",                 2, -0.5, 1.5);
+  h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    "h1_nPUtrue_mc",             60,0.,60.);
+  h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw","h1_nPUtrue_mc",             60,0.,60.);
+  h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      "h1_nPV_data",               60,0.,60.);
+  h1_nPV_mc         = fs->make<TH1D>("h1_nPV_mc",        "h1_nPV_mc",                 60,0.,60.);
+  h1_nPV_mc_unw     = fs->make<TH1D>("h1_nPV_mc_unw",    "h1_nPV_mc_unw",             60,0.,60.);
+  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        "h1_pt_hat",                400,0,2000);
+  h1_fatjet_pt_mc   = fs->make<TH1D>("h1_fatjet_pt_mc",  "h1_fatjet_pt_mc",          PtMax/10,0,PtMax);
+  h1_nJet_data      = fs->make<TH1D>("h1_nJet_data",     "h1_nJet_data",             100,0,100);
+  h1_nJet_mc        = fs->make<TH1D>("h1_nJet_mc",       "h1_nJet_mc",               100,0,100);
 
 
   AddHisto("FatJet_pt_all" ,"p_{T} of all fat jets"             ,PtMax/10  ,0      ,PtMax );
@@ -354,9 +356,20 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     if(EvtInfo.Run < 0) isData = false;
 
-    double wtPU(1) ; 
+    double wtPU(1) ;
     if ( doPUReweighting_ && !isData ) {
-      wtPU = LumiWeights_.weight(EvtInfo.nPUtrue) ;  
+      wtPU = LumiWeights_.weight(EvtInfo.nPUtrue) ;
+    }
+
+    //// pileup distributions
+    if( isData )
+      h1_nPV_data->Fill(EvtInfo.nPV);
+    else
+    {
+      h1_nPUtrue_mc    ->Fill(EvtInfo.nPUtrue,wtPU);
+      h1_nPUtrue_mc_unw->Fill(EvtInfo.nPUtrue);
+      h1_nPV_mc        ->Fill(EvtInfo.nPV,wtPU);
+      h1_nPV_mc_unw    ->Fill(EvtInfo.nPV);
     }
 
     h1_CutFlow->Fill(0.,wtPU); //// count all events
@@ -367,15 +380,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     h1_CutFlow->Fill(1.,wtPU); //// count events passing trigger selection
 
     if(FatJetInfo.nJet <= 0) continue; //// require at least 1 jet in the event
-
-    if( isData )
-      h1_nPV_data->Fill(EvtInfo.nPV);
-    else
-    {
-      h1_nPUtrue_mc->Fill(EvtInfo.nPUtrue,wtPU);
-      h1_nPV_mc    ->Fill(EvtInfo.nPV,wtPU);
-      h1_nPV_mc_unw->Fill(EvtInfo.nPV);
-    }
 
     int njet_mc   = 0;
     int njet_data = 0;
@@ -435,14 +439,14 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         bhad_p4.SetPtEtaPhiM(EvtInfo.BHadron_pT[iB], EvtInfo.BHadron_eta[iB], EvtInfo.BHadron_phi[iB], EvtInfo.BHadron_mass[iB]);
         if ( jet_p4.DeltaR(bhad_p4) < jetCone ) ++nMatchedBHadrons;
       }
-      if ( nMatchedBHadrons > 1 ) isGluonSplit = true ; 
+      if ( nMatchedBHadrons > 1 ) isGluonSplit = true ;
 
-      FillHisto("FatJet_pt_all", flav, isGluonSplit , ptjet , wtPU) ; 
-      if (FatJetInfo.Jet_SV_multi[iJet] > 0) FillHisto("FatJet_pt_sv", flav, isGluonSplit , ptjet , wtPU) ; 
+      FillHisto("FatJet_pt_all", flav, isGluonSplit , ptjet , wtPU) ;
+      if (FatJetInfo.Jet_SV_multi[iJet] > 0) FillHisto("FatJet_pt_sv", flav, isGluonSplit , ptjet , wtPU) ;
 
-      FillHisto("FatJet_eta"         ,flav ,isGluonSplit ,etajet  ,wtPU) ; 
-      FillHisto("FatJet_phi"         ,flav ,isGluonSplit ,phijet  ,wtPU) ; 
-      FillHisto("FatJet_track_multi" ,flav ,isGluonSplit ,ntrkjet ,wtPU) ; 
+      FillHisto("FatJet_eta"         ,flav ,isGluonSplit ,etajet  ,wtPU) ;
+      FillHisto("FatJet_phi"         ,flav ,isGluonSplit ,phijet  ,wtPU) ;
+      FillHisto("FatJet_track_multi" ,flav ,isGluonSplit ,ntrkjet ,wtPU) ;
 
       float mass_sv        = 0.;
       int   n_sv           = 0 ;
@@ -674,11 +678,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             FillHisto("FatJet_sv_flightSig2D_3trk",  flav, isGluonSplit ,flight2DSig_sv,        wtPU);
           }
 
-          FillHisto2D("sv_mass_vs_flightDist3D"     ,flav,isGluonSplit ,sv_flight3D,mass_sv,wtPU);
+          FillHisto2D("FatJet_sv_mass_vs_flightDist3D"     ,flav,isGluonSplit ,sv_flight3D,mass_sv,wtPU);
           FillHisto2D("FatJet_avg_sv_mass_vs_jetpt"        ,flav,isGluonSplit ,ptjet,mass_sv,wtPU);
-          FillHisto2D("sv_deltar_jet_vs_jetpt"      ,flav,isGluonSplit ,ptjet,sv_dR_jet,wtPU);
-          FillHisto2D("sv_deltar_sum_jet_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_dir_sum,wtPU);
-          FillHisto2D("sv_deltar_sum_dir_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_jet_sum,wtPU);
+          FillHisto2D("FatJet_sv_deltar_jet_vs_jetpt"      ,flav,isGluonSplit ,ptjet,sv_dR_jet,wtPU);
+          FillHisto2D("FatJet_sv_deltar_sum_jet_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_dir_sum,wtPU);
+          FillHisto2D("FatJet_sv_deltar_sum_dir_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_jet_sum,wtPU);
         }
       } // end useJetProbaTree
 
