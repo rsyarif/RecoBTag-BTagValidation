@@ -146,7 +146,7 @@ def main():
         if( line_elements[par].split('=')[0]=='outFilename' ): output_filename = line_elements[par].split('=')[1].replace('.root','')
 
     dataset = line_elements[0].lstrip('/').replace('/','__')
-    print 'Processing ' + dataset
+    print 'Processing ' + line_elements[0]
 
     dataset_workdir = os.path.join(main_workdir,dataset)
 
