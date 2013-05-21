@@ -12,12 +12,22 @@ options.register('outFilename', 'bTagValPlots.root',
 options.register('reportEvery', 100,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
-    "Report every N events (default is N=1000)"
+    "Report every N events (default is N=100)"
+)
+options.register('triggerSelection', '',
+    VarParsing.multiplicity.list,
+    VarParsing.varType.string,
+    "Trigger selection"
 )
 options.register('useJetProbaTree', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
     "Use jet probability tree"
+)
+options.register('doPUReweighting', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Do pileup reweighting"
 )
 
 ## 'maxEvents' is already registered by the Framework, changing default value
@@ -53,9 +63,14 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     JetPtMin         = cms.double(300.),
     JetPtMax         = cms.double(1.e6),
     JetAbsEtaMax     = cms.double(2.4),
+    DoPUReweighting  = cms.bool(options.doPUReweighting),
+    File_PUDistMC    = cms.string('PUDistMC_Summer12_PU_S10.root'),
+    File_PUDistData  = cms.string('PUDistData_Run2012ABCD.root'),
+    Hist_PUDistMC    = cms.string('PUWeights_Summer12_S10PUWeights_Summer12_S10'),
+    Hist_PUDistData  = cms.string('pileup'),
     TriggerSelection = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
-        "HLT_PFJet320_v*"
-     ),
+        options.triggerSelection
+    ),
     TriggerPathNames = cms.vstring(
         "HLT_Jet15U*",
         "HLT_Jet30_v*",
@@ -144,12 +159,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
         "HLT_HT750_L1FastJet_v*",
         "HLT_HT750_v*",
         "HLT_HT2000_v*"
-    ),
-    File_PUDistMC = cms.string(""), 
-    File_PUDistData = cms.string(""),
-    Hist_PUDistMC = cms.string(""),
-    Hist_PUDistData = cms.string(""),
-    DoPUReweighting = cms.bool(False) 
+    )
 )
 
 process.p = cms.Path(process.btagval)
