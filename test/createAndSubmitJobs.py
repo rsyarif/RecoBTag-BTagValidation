@@ -71,6 +71,7 @@ cd MAIN_WORKDIR
 eval `scram runtime -sh`
 
 cp -v MAIN_WORKDIR/CMSSW_cfg.py $BATCHDIR/CMSSW_cfg.py
+cp -v MAIN_WORKDIR/PUDist*.root $BATCHDIR/
 cp -v DATASET_WORKDIR/input/inputFiles_JOB_NUMBER_cfi.py $BATCHDIR/inputFiles_cfi.py
 
 cd $BATCHDIR
@@ -126,6 +127,16 @@ def main():
 
   # copy the CMSSW cfg file to the cfg_files_dir
   shutil.copyfile(cmssw_cfg,os.path.join(main_workdir,'CMSSW_cfg.py'))
+
+  # look for pileup distribution files and copy them into main_workdir
+  cfg_dirname = os.path.dirname(cmssw_cfg)
+  if cfg_dirname=='':
+    cfg_dirname = os.getcwd()
+  for filename in os.listdir(cfg_dirname):
+    if not os.path.isfile(os.path.join(cfg_dirname,filename)):
+      continue
+    if re.search("^PUDist.*\.root$", filename):
+      shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
 
   # open and read the dataset_list file
   dataset_list_file = open(dataset_list,"r")
