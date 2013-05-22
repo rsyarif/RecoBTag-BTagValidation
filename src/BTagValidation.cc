@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.4 2013/05/20 14:28:02 devdatta Exp $
+// $Id: BTagValidation.cc,v 1.5 2013/05/21 20:27:35 ferencek Exp $
 //
 //
 
@@ -395,8 +395,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float ntrkjet  = FatJetInfo.Jet_ntracks[iJet];
       int   flav     = FatJetInfo.Jet_flavour[iJet];
 
-      if ( ptjet < jetPtMin_ || ptjet > jetPtMax_   ) continue;
-      if ( fabs(etajet) > jetAbsEtaMax_ )             continue;
+      if ( ptjet < jetPtMin_ || ptjet > jetPtMax_   ) continue; //// apply jet pT cut
+      if ( fabs(etajet) > jetAbsEtaMax_ )             continue; //// apply jet eta cut
+      if ( FatJetInfo.Jet_looseID[iJet]==0 )          continue; //// apply loose jet ID
 
       int idxFirstMuon = -1;
       int nselmuon = 0;
