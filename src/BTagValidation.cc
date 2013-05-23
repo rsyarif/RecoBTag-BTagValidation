@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.5 2013/05/21 20:27:35 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.6 2013/05/22 21:26:24 ferencek Exp $
 //
 //
 
@@ -70,7 +70,7 @@ class BTagValidation : public edm::EDAnalyzer {
     virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
     virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
-    bool passTrigger();
+    bool passTrigger() ; 
     bool passMuonSelection(int muIdx, int iJet, const JetInfoBranches& JetInfo);
 
     //// Manage histograms
@@ -141,7 +141,6 @@ class BTagValidation : public edm::EDAnalyzer {
 // constructors and destructor
 //
 BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
-
   maxEvents_(iConfig.getParameter<int>("MaxEvents")),
   reportEvery_(iConfig.getParameter<int>("ReportEvery")),
   useJetProbaTree_(iConfig.getParameter<bool>("UseJetProbaTree")),
@@ -201,108 +200,107 @@ void BTagValidation::beginJob() {
     SubJetInfo.ReadJPTree(JetTree,"JetInfo");
   }
 
-  double PtMax = 1000.;
+  double PtMax = 3000.;
   double pi=TMath::Pi();
 
-  h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",                 2, -0.5, 1.5);
-  h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    "h1_nPUtrue_mc",             60,0.,60.);
-  h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw","h1_nPUtrue_mc",             60,0.,60.);
-  h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      "h1_nPV_data",               60,0.,60.);
-  h1_nPV_mc         = fs->make<TH1D>("h1_nPV_mc",        "h1_nPV_mc",                 60,0.,60.);
-  h1_nPV_mc_unw     = fs->make<TH1D>("h1_nPV_mc_unw",    "h1_nPV_mc_unw",             60,0.,60.);
-  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        "h1_pt_hat",                400,0,2000);
-  h1_fatjet_pt_mc   = fs->make<TH1D>("h1_fatjet_pt_mc",  "h1_fatjet_pt_mc",          PtMax/10,0,PtMax);
-  h1_nJet_data      = fs->make<TH1D>("h1_nJet_data",     "h1_nJet_data",             100,0,100);
-  h1_nJet_mc        = fs->make<TH1D>("h1_nJet_mc",       "h1_nJet_mc",               100,0,100);
-
+  h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",     2, -0.5, 1.5);
+  h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    "h1_nPUtrue_mc",  60,0.,60.);
+  h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw","h1_nPUtrue_mc",  60,0.,60.);
+  h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      "h1_nPV_data",    60,0.,60.);
+  h1_nPV_mc         = fs->make<TH1D>("h1_nPV_mc",        "h1_nPV_mc",      60,0.,60.);
+  h1_nPV_mc_unw     = fs->make<TH1D>("h1_nPV_mc_unw",    "h1_nPV_mc_unw",  60,0.,60.);
+  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        "h1_pt_hat",      600,0,3000);
+  h1_fatjet_pt_mc   = fs->make<TH1D>("h1_fatjet_pt_mc",  "h1_fatjet_pt_mc",PtMax/10,0,PtMax);
+  h1_nJet_data      = fs->make<TH1D>("h1_nJet_data",     "h1_nJet_data",   100,0,100);
+  h1_nJet_mc        = fs->make<TH1D>("h1_nJet_mc",       "h1_nJet_mc",     100,0,100);
 
   AddHisto("FatJet_pt_all" ,"p_{T} of all fat jets"             ,PtMax/10  ,0      ,PtMax );
   AddHisto("FatJet_pt_sv"  ,"p_{T} of fat jets containing a SV" ,PtMax/10  ,0      ,PtMax);
   AddHisto("FatJet_eta"    ,"#eta of all fat jets"              ,50        ,-2.5   ,2.5);
   AddHisto("FatJet_phi"    ,"#phi of all fat jets"              ,40        ,-1.*pi ,pi);
 
-  AddHisto("FatJet_muon_multi"   ,   "number of muons",           7, -0.5,6.5    );
-  AddHisto("FatJet_muon_multi_sel",  "number of selected muons",  7, -0.5,6.5   );
-  AddHisto("FatJet_mu_ptrel"  ,      "p_{T,rel} of the muon",    50,  0,5        );
-  AddHisto("FatJet_mu_chi2"   ,      "norm. chi2 of the muon",   50,  0,10       );
-  AddHisto("FatJet_muon_Pt",         "Muon p_{T}",               50,  0, 100  );
+  AddHisto("FatJet_muon_multi"   ,   "number of muons",           7, -0.5,6.5  );
+  AddHisto("FatJet_muon_multi_sel",  "number of selected muons",  7, -0.5,6.5  );
+  AddHisto("FatJet_mu_ptrel"  ,      "p_{T,rel} of the muon",    50,  0,5      );
+  AddHisto("FatJet_mu_chi2"   ,      "norm. chi2 of the muon",   50,  0,10     );
+  AddHisto("FatJet_muon_Pt",         "Muon p_{T}",               250, 0, 500   );
   AddHisto("FatJet_muon_eta",        "Muon #eta",                50, -2.5, 2.5 );
-  AddHisto("FatJet_muon_phi",        "Muon #phi",                40, -1.*pi,pi);
-  AddHisto("FatJet_muon_Ip3d",       "Muon 3D IP",               50, -0.1, 0.1 );
-  AddHisto("FatJet_muon_Ip2d",       "Muon 2D IP",               50, -0.1, 0.1 );
-  AddHisto("FatJet_muon_Sip3d",      "Muon 3D IP significance",  50, -35, 35   );
-  AddHisto("FatJet_muon_Sip2d",      "Muon 2D IP significance",  50, -35, 35   );
-  AddHisto("FatJet_muon_DeltaR",     "Muon1 #DeltaR",            50,0,0.5); //90
+  AddHisto("FatJet_muon_phi",        "Muon #phi",                40, -1.*pi,pi );
+  AddHisto("FatJet_muon_Ip3d",       "Muon 3D IP",              100, -0.2, 0.2 );
+  AddHisto("FatJet_muon_Ip2d",       "Muon 2D IP",              100, -0.2, 0.2 );
+  AddHisto("FatJet_muon_Sip3d",      "Muon 3D IP significance", 100, -50, 50   );
+  AddHisto("FatJet_muon_Sip2d",      "Muon 2D IP significance", 100, -50, 50   );
+  AddHisto("FatJet_muon_DeltaR",     "Muon1 #DeltaR",            50, 0,   0.5  ); //90 
 
   AddHisto("FatJet_sv_deltaR_jet",      "sv_deltaR_jet",                                       50,0.,0.5    );
   AddHisto("FatJet_sv_deltaR_sumJet",   "SVvtxSumJetDeltaR",                                   50,0.,0.5    );
   AddHisto("FatJet_sv_deltaR_sumDir",   "SVvtxSumVtxDirDeltaR",                                50,0.,0.5    );
-  AddHisto("FatJet_sv_en_ratio",        "Fractional energy",                                   50,0.,1.     );
-  AddHisto("FatJet_sv_aboveC",          "IP significance 2D charm",                            50,-35.,35.  );
-  AddHisto("FatJet_sv_pt",              "Vtx p_{T}",                                           50,0.,100.   );
+  AddHisto("FatJet_sv_en_ratio",        "Fractional energy",                                   60,0.,1.2    );
+  AddHisto("FatJet_sv_aboveC",          "IP significance 2D charm",                           100,-50.,50.  );
+  AddHisto("FatJet_sv_pt",              "Vtx p_{T}",                                          250,0.,500.   );
   AddHisto("FatJet_sv_eta",             "Vtx #eta",                                            50, -2.5, 2.5);
   AddHisto("FatJet_sv_phi",             "Vtx #phi",                                            40, -1.*pi,pi);
-  AddHisto("FatJet_sv_flightSig2D",     "Flight distance significance 2D",                     50,0.,80.    );
-  AddHisto("FatJet_sv_flight2D",        "Flight distance 2D",                                  50,0.,2.5    );
-  AddHisto("FatJet_sv_flightSig2D_3trk","Flight distance 2D with #geq3 tracks",                50,0.,2.5    );
+  AddHisto("FatJet_sv_flightSig2D",     "Flight distance significance 2D",                    150,0.,150.   );
+  AddHisto("FatJet_sv_flight2D",        "Flight distance 2D",                                 100,0.,5.     );
+  AddHisto("FatJet_sv_flightSig2D_3trk","Flight distance 2D with #geq3 tracks",               100,0.,5.     );
   AddHisto("FatJet_sv_flight3D",        "Flight distance 3D",                                  50,0.,15.    );
-  AddHisto("FatJet_sv_flight3DSig" ,    "flight distance significance 3D",                     50,0.,80.    );
+  AddHisto("FatJet_sv_flight3DSig" ,    "flight distance significance 3D",                    150,0.,150.   );
   AddHisto("FatJet_sv_multi_0"       ,  "number of secondary vertex",                          6,-0.5,5.5   );
   AddHisto("FatJet_sv_multi"         ,  "number of secondary vertex",                          6,-0.5,5.5   );
-  AddHisto("FatJet_sv_mass"   ,         "invariant mass of the secondary vertex",              50,0.,8.     );
-  AddHisto("FatJet_sv_chi2norm"  ,      "normalized chi2 of the secondary vertex",             50,0.,10.    );
+  AddHisto("FatJet_sv_mass"   ,         "invariant mass of the secondary vertex",             150,0.,15.    );
+  AddHisto("FatJet_sv_chi2norm"  ,      "normalized chi2 of the secondary vertex",            100,0.,20.    );
   AddHisto("FatJet_sv_tot_charge",      "Total charge",                                        21,-10.5,10.5);
-  AddHisto("FatJet_svnTrk",             "Track multiplicity : SVnVertexTracks (centered)",     13,-0.5,12.5 );
-  AddHisto("FatJet_svnTrk_firstVxt",    "Track multiplicity : SVnFirstVertexTracks (centered)",11,-0.5,10.5 );
-  AddHisto("FatJet_sv_flight3Derr",     "Flight distance error 3D",                            50,0.,0.5);
-  AddHisto("FatJet_sv_flight2Derr",     "Flight distance error 2D",                            50,0.,0.2);
-  AddHisto("FatJet_sv_mass_3trk"   ,    "invariant mass of the secondary vertex with at least 3 SV tracks",  50,0.,8.);
+  AddHisto("FatJet_svnTrk",             "Track multiplicity : SVnVertexTracks (centered)",     15,-0.5,14.5 );
+  AddHisto("FatJet_svnTrk_firstVxt",    "Track multiplicity : SVnFirstVertexTracks (centered)",15,-0.5,14.5 );
+  AddHisto("FatJet_sv_flight3Derr",     "Flight distance error 3D",                           100,0.,1.0);
+  AddHisto("FatJet_sv_flight2Derr",     "Flight distance error 2D",                           100,0.,1.0);
+  AddHisto("FatJet_sv_mass_3trk"   ,    "invariant mass of the secondary vertex with at least 3 SV tracks", 150,0.,15.);
 
   AddHisto("FatJet_track_multi"  ,      "number of tracks in the jets",                80,-0.5,79.5  );
-  AddHisto("FatJet_trk_multi_sel"  ,    "number of selected tracks in the jets",       40,-0.5,39.5  );
-  AddHisto("FatJet_track_chi2"   ,      "normalized chi2 of the tracks",               100,0.,5.    );
+  AddHisto("FatJet_trk_multi_sel"  ,    "number of selected tracks in the jets",       80,-0.5,79.5  );
+  AddHisto("FatJet_track_chi2"   ,      "normalized chi2 of the tracks",               200,0.,10.   );
   AddHisto("FatJet_track_nHit" ,        "number of hits ",                             35,-0.5, 34.5 );
   AddHisto("FatJet_track_HPix"   ,      "number of hits in the Pixel",                 10,-0.5, 9.5  );
 
-  AddHisto("FatJet_track_IPs"    ,      "3D IP significance of all tracks",            100,-35.,35.  );
-  AddHisto("FatJet_track_IPs1tr" ,      "3D IP significance of the first track",       100,-35.,35.  );
-  AddHisto("FatJet_track_IPs2tr" ,      "3D IP significance of the second track",      100,-35.,35.  );
-  AddHisto("FatJet_track_IP"     ,      "3D IP of all tracks",                         100,-0.1,0.1);
-  AddHisto("FatJet_track_IP1tr"  ,      "3D IP of the first track",                    100,-0.1,0.1);
-  AddHisto("FatJet_track_IP2tr"  ,      "3D IP of the second track",                   100,-0.1,0.1);
-  AddHisto("FatJet_track_IP2Ds"    ,    "2D IP significance of all tracks",            100,-35.,35.  );
-  AddHisto("FatJet_track_IP2Ds1tr" ,    "2D IP significance of the first track",       100,-35.,35.  );
-  AddHisto("FatJet_track_IP2Ds2tr" ,    "2D IP significance of the second track",      100,-35.,35.  );
-  AddHisto("FatJet_track_IP2D"    ,     "2D IP of all tracks",                         100,-0.1,0.1);
-  AddHisto("FatJet_track_IP2D1tr" ,     "2D IP of the first track",                    100,-0.1,0.1);
-  AddHisto("FatJet_track_IP2D2tr" ,     "2D IP of the second track",                   100,-0.1,0.1);
+  AddHisto("FatJet_track_IPs"    ,      "3D IP significance of all tracks",            200,-50.,50.  );
+  AddHisto("FatJet_track_IPs1tr" ,      "3D IP significance of the first track",       200,-50.,50.  );
+  AddHisto("FatJet_track_IPs2tr" ,      "3D IP significance of the second track",      200,-50.,50.  );
+  AddHisto("FatJet_track_IP"     ,      "3D IP of all tracks",                         200,-0.2,0.2);
+  AddHisto("FatJet_track_IP1tr"  ,      "3D IP of the first track",                    200,-0.2,0.2);
+  AddHisto("FatJet_track_IP2tr"  ,      "3D IP of the second track",                   200,-0.2,0.2);
+  AddHisto("FatJet_track_IP2Ds"    ,    "2D IP significance of all tracks",            200,-50.,50.  );
+  AddHisto("FatJet_track_IP2Ds1tr" ,    "2D IP significance of the first track",       200,-50.,50.  );
+  AddHisto("FatJet_track_IP2Ds2tr" ,    "2D IP significance of the second track",      200,-50.,50.  );
+  AddHisto("FatJet_track_IP2D"    ,     "2D IP of all tracks",                         200,-0.2,0.2);
+  AddHisto("FatJet_track_IP2D1tr" ,     "2D IP of the first track",                    200,-0.2,0.2);
+  AddHisto("FatJet_track_IP2D2tr" ,     "2D IP of the second track",                   200,-0.2,0.2);
   AddHisto("FatJet_track_IP2Derr1tr" ,  "2D IP error of the first track",              100,0,0.1);
   AddHisto("FatJet_track_IPerr1tr"   ,  "3D IP error of the first track",              100,0,0.1);
   AddHisto("FatJet_track_IP2Derr2tr" ,  "2D IP error of the second track",             100,0,0.1);
   AddHisto("FatJet_track_IPerr2tr"   ,  "3D IP error of the second track",             100,0,0.1);
   AddHisto("FatJet_track_IP2Derr" ,     "2D IP error",                                 100,0,0.1);
   AddHisto("FatJet_track_IPerr"   ,     "3D IP error",                                 100,0,0.1);
-  AddHisto("FatJet_track_IPs3tr" ,      "3D IP significance of the third track",       100,-35.,35.  );
-  AddHisto("FatJet_track_IP3tr"  ,      "3D IP of the third track",                    100,-0.1,0.1);
+  AddHisto("FatJet_track_IPs3tr" ,      "3D IP significance of the third track",       200,-50.,50.  );
+  AddHisto("FatJet_track_IP3tr"  ,      "3D IP of the third track",                    200,-0.2,0.2);
   AddHisto("FatJet_track_IPerr3tr"   ,  "3D IP error of the third track",              100,0,0.1);
   AddHisto("FatJet_track_IP2Ds3tr" ,    "2D IP significance of the second track",      100,-35.,35.  );
-  AddHisto("FatJet_track_IP2D3tr" ,     "2D IP of the third track",                    100,-0.1,0.1);
+  AddHisto("FatJet_track_IP2D3tr" ,     "2D IP of the third track",                    200,-0.2,0.2);
   AddHisto("FatJet_track_IP2Derr3tr" ,  "2D IP error of the third track",              100,0,0.1);
 
   AddHisto("FatJet_track_len"     ,     "decay length",                    100,0,5.     );
   AddHisto("FatJet_track_dist"    ,     "distance to the jet axis",        100,0.,0.08    );
   AddHisto("FatJet_track_dz"     ,      "transverse IP",                   100,-3,3  );
   AddHisto("FatJet_track_isfromSV",     "Track is from SV",                  2,-0.5, 1.5   );
-  AddHisto("FatJet_track_pt"         ,  "pT of all the tracks",             80,0.,200.    );
-  AddHisto("FatJet_track_pt15"   ,      "pT of all the tracks",            150,0.,15.    );
+  AddHisto("FatJet_track_pt"         ,  "pT of all the tracks",            200,0.,1000.   );
+  AddHisto("FatJet_track_pt15"   ,      "pT of all the tracks",            500,0.,50.    );
   AddHisto("FatJet_track_chi2_cut"     ,"normalized chi2 ",                100,0.,30.    );
   AddHisto("FatJet_track_nHit_cut"   ,  "number of hits  ",                 35,-0.5, 34.5 );
   AddHisto("FatJet_track_HPix_cut"     ,"number of hits in the Pixel ",     10,-0.5, 9.5  );
   AddHisto("FatJet_track_len_cut"      ,"decay length ",                   100,0,25.     );
   AddHisto("FatJet_track_dist_cut"     ,"distance to the jet axis ",       100,0.,0.3    );
   AddHisto("FatJet_track_dz_cut"       ,"transverse IP ",                  100,-20., 20.  );
-  AddHisto("FatJet_track_pt_cut"       ,"pT ",                              80,0.,200.);
-  AddHisto("FatJet_track_pt15_cut"    , "pT of all the tracks",            150,0.,15.    );
+  AddHisto("FatJet_track_pt_cut"       ,"pT ",                             200,0.,1000.);
+  AddHisto("FatJet_track_pt15_cut"    , "pT of all the tracks",            300,0.,30.);
   AddHisto("FatJet_track_IP2D_cut"     ,"IP2D ",                           100,-1.,1.);
 
   AddHisto("FatJet_TCHE"      ,         "TCHE",                             50,0.,30. );
@@ -684,7 +682,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           FillHisto2D("FatJet_sv_deltar_jet_vs_jetpt"      ,flav,isGluonSplit ,ptjet,sv_dR_jet,wtPU);
           FillHisto2D("FatJet_sv_deltar_sum_jet_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_dir_sum,wtPU);
           FillHisto2D("FatJet_sv_deltar_sum_dir_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_jet_sum,wtPU);
-        }
+        } // if n_sv > 0 
       } // end useJetProbaTree
 
       // ------------------------------------------------
