@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.6 2013/05/22 21:26:24 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.7 2013/05/23 15:05:45 devdatta Exp $
 //
 //
 
@@ -70,7 +70,7 @@ class BTagValidation : public edm::EDAnalyzer {
     virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
     virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
-    bool passTrigger() ; 
+    bool passTrigger() ;
     bool passMuonSelection(int muIdx, int iJet, const JetInfoBranches& JetInfo);
 
     //// Manage histograms
@@ -98,6 +98,7 @@ class BTagValidation : public edm::EDAnalyzer {
     edm::Service<TFileService> fs;
 
     TH1D *h1_CutFlow;
+    TH1D *h1_CutFlow_unw;
     TH1D *h1_nPUtrue_mc;
     TH1D *h1_nPUtrue_mc_unw;
     TH1D *h1_nPV_data;
@@ -117,6 +118,7 @@ class BTagValidation : public edm::EDAnalyzer {
     const bool                      useJetProbaTree_;
     const std::string               inputTTree_;
     const std::vector<std::string>  inputFiles_;
+    const double                    applyMuonTagging_;
     const double                    jetPtMin_;
     const double                    jetPtMax_;
     const double                    jetAbsEtaMax_;
@@ -146,6 +148,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   useJetProbaTree_(iConfig.getParameter<bool>("UseJetProbaTree")),
   inputTTree_(iConfig.getParameter<std::string>("InputTTree")),
   inputFiles_(iConfig.getParameter<std::vector<std::string> >("InputFiles")),
+  applyMuonTagging_(iConfig.getParameter<bool>("ApplyMuonTagging")),
   jetPtMin_(iConfig.getParameter<double>("JetPtMin")),
   jetPtMax_(iConfig.getParameter<double>("JetPtMax")),
   jetAbsEtaMax_(iConfig.getParameter<double>("JetAbsEtaMax")),
@@ -204,6 +207,7 @@ void BTagValidation::beginJob() {
   double pi=TMath::Pi();
 
   h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",     2, -0.5, 1.5);
+  h1_CutFlow_unw    = fs->make<TH1D>("h1_CutFlow_unw",   "h1_CutFlow_unw", 2, -0.5, 1.5);
   h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    "h1_nPUtrue_mc",  60,0.,60.);
   h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw","h1_nPUtrue_mc",  60,0.,60.);
   h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      "h1_nPV_data",    60,0.,60.);
@@ -230,7 +234,7 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_muon_Ip2d",       "Muon 2D IP",              100, -0.2, 0.2 );
   AddHisto("FatJet_muon_Sip3d",      "Muon 3D IP significance", 100, -50, 50   );
   AddHisto("FatJet_muon_Sip2d",      "Muon 2D IP significance", 100, -50, 50   );
-  AddHisto("FatJet_muon_DeltaR",     "Muon1 #DeltaR",            50, 0,   0.5  ); //90 
+  AddHisto("FatJet_muon_DeltaR",     "Muon1 #DeltaR",            50, 0,   0.5  ); //90
 
   AddHisto("FatJet_sv_deltaR_jet",      "sv_deltaR_jet",                                       50,0.,0.5    );
   AddHisto("FatJet_sv_deltaR_sumJet",   "SVvtxSumJetDeltaR",                                   50,0.,0.5    );
@@ -359,6 +363,16 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       wtPU = LumiWeights_.weight(EvtInfo.nPUtrue) ;
     }
 
+    h1_CutFlow->Fill(0.,wtPU); //// count all events
+    h1_CutFlow_unw->Fill(0.);
+
+    if( !isData ) h1_pt_hat->Fill(EvtInfo.pthat,wtPU);
+
+    if( !passTrigger() ) continue; //// apply trigger selection
+
+    h1_CutFlow->Fill(1.,wtPU); //// count events passing trigger selection
+    h1_CutFlow_unw->Fill(1.);
+
     //// pileup distributions
     if( isData )
       h1_nPV_data->Fill(EvtInfo.nPV);
@@ -369,13 +383,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       h1_nPV_mc        ->Fill(EvtInfo.nPV,wtPU);
       h1_nPV_mc_unw    ->Fill(EvtInfo.nPV);
     }
-
-    h1_CutFlow->Fill(0.,wtPU); //// count all events
-    if( !isData ) h1_pt_hat->Fill(EvtInfo.pthat,wtPU);
-
-    if( !passTrigger() ) continue; //// apply trigger selection
-
-    h1_CutFlow->Fill(1.,wtPU); //// count events passing trigger selection
 
     if(FatJetInfo.nJet <= 0) continue; //// require at least 1 jet in the event
 
@@ -400,6 +407,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       int idxFirstMuon = -1;
       int nselmuon = 0;
       int nmu = 0;
+
       if (FatJetInfo.nMuon>0)
       {
         for (int iMu=0; iMu<FatJetInfo.nMuon; ++iMu)
@@ -409,13 +417,14 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             ++nmu;
             if (passMuonSelection(iMu, iJet, FatJetInfo))
             {
-              if(nselmuon == 0)
-                idxFirstMuon = iMu;
+              if(nselmuon == 0)  idxFirstMuon = iMu;
               ++nselmuon;
             }
           }
         }
       }
+
+      if(applyMuonTagging_ && nselmuon==0) continue;  //// if enabled, select muon-tagged jets
 
       //// jet multiplicity
       if( !isData )
@@ -682,7 +691,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           FillHisto2D("FatJet_sv_deltar_jet_vs_jetpt"      ,flav,isGluonSplit ,ptjet,sv_dR_jet,wtPU);
           FillHisto2D("FatJet_sv_deltar_sum_jet_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_dir_sum,wtPU);
           FillHisto2D("FatJet_sv_deltar_sum_dir_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_jet_sum,wtPU);
-        } // if n_sv > 0 
+        } // if n_sv > 0
       } // end useJetProbaTree
 
       // ------------------------------------------------
