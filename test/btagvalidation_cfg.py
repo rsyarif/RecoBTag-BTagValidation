@@ -24,6 +24,21 @@ options.register('useJetProbaTree', False,
     VarParsing.varType.bool,
     "Use jet probability tree"
 )
+options.register('applyMuonTagging', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Apply muon tagging"
+)
+options.register('jetPtMin', 300.,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Minimum jet Pt"
+)
+options.register('jetPtMax', 1.E6,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Minimum jet Pt"
+)
 options.register('doPUReweighting', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
@@ -60,8 +75,9 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     UseJetProbaTree  = cms.bool(options.useJetProbaTree),
     InputTTree       = cms.string('btaganaSubJets/ttree'),
     InputFiles       = cms.vstring(FileNames),
-    JetPtMin         = cms.double(300.),
-    JetPtMax         = cms.double(1.e6),
+    ApplyMuonTagging = cms.bool(options.applyMuonTagging),
+    JetPtMin         = cms.double(options.jetPtMin),
+    JetPtMax         = cms.double(options.jetPtMax),
     JetAbsEtaMax     = cms.double(2.4),
     DoPUReweighting  = cms.bool(options.doPUReweighting),
     File_PUDistMC    = cms.string('PUDistMC_Summer12_PU_S10.root'),
