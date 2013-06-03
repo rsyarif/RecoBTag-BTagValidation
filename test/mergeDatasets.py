@@ -105,7 +105,9 @@ def main():
       scale = 1.
       if group_xs[group] > 0.:
         scale = dataset_xs[dataset]/(group_xs[group]*nEvents)
-      print dataset + ' scale: ' + str(scale)
+        print dataset + '-- relative xs: ' + str(dataset_xs[dataset]/group_xs[group]) + ', scale: ' + str(scale)
+      else:
+        print dataset + ' -- scale: ' + str(scale)
 
       # get the number of histograms
       nHistos = root_file.Get(options.analyzer_module).GetListOfKeys().GetEntries()
