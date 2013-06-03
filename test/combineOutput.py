@@ -56,7 +56,7 @@ def main():
     workdir = line_elements[0].lstrip('/').replace('/','__')
 
     print '------------------------------------------------------------------------------------'
-    print workdir
+    print line_elements[0]
 
     # final output
     output_root_file = os.path.join(output_dir,workdir + '.root')
