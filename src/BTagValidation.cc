@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.8 2013/05/29 21:43:06 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.9 2013/06/04 10:16:56 devdatta Exp $
 //
 //
 
@@ -466,7 +466,7 @@ void BTagValidation::runJets (const JetInfoBranches &Jets, const TString& histoT
     if( histoTag == "FatJet" ) { 
       h1_fatjet_pt->Fill(ptjet,wtPU);
     }
-    else if( histoTag == "SubJet" ) { 
+    else if( histoTag == "Jet" ) { 
       h1_subjet_pt->Fill(ptjet,wtPU);
     }
 
@@ -983,7 +983,7 @@ void BTagValidation::runJets (const JetInfoBranches &Jets, const TString& histoT
 
   // fill jet multiplicity
   if( histoTag == "FatJet" ) h1_nFatJet->Fill(njet, wtPU) ;  
-  else if( histoTag == "SubJet" ) h1_nSubJet->Fill(njet, wtPU) ; 
+  else if( histoTag == "Jet" ) h1_nSubJet->Fill(njet, wtPU) ; 
 
 } //// runJets 
 
