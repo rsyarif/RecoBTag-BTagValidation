@@ -26,7 +26,7 @@
 
 using namespace std;
 
-TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs/Final_histograms.root";
+TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/LXBatch_Jobs_JetHT_QCD/Final_histograms.root" ; 
 TString dir4plots="Commissioning_plots";
 TString title= "CMS 2013 preliminary, #sqrt{s} = 8 TeV,  D:7.27 fb^{-1}";
 TString datacaption = "HLT_PFJet40, jet pT>60 ";
@@ -226,6 +226,12 @@ void Draw(TString name, TString histotitle, bool log, bool doData) {
     hist_l       ->Scale(scale_f);
     histo_tot    ->Scale(scale_f);
   }
+
+  beautify(hist_c     , 8     , 1, 1) ;  
+  beautify(hist_b     , 2     , 1, 1) ;  
+  beautify(hist_gsplit, 7     , 1, 1) ;  
+  beautify(hist_l     , 4     , 1, 1) ;  
+  beautify(histo_tot  , 2     , 1, 1) ; 
 
   THStack *stack = new THStack("stack","stack");
 

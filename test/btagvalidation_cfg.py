@@ -9,10 +9,10 @@ options.register('outFilename', 'bTagValPlots.root',
     VarParsing.varType.string,
     "Output file name"
 )
-options.register('reportEvery', 100,
+options.register('reportEvery', 1000,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
-    "Report every N events (default is N=100)"
+    "Report every N events (default is N=1000)"
 )
 options.register('triggerSelection', '',
     VarParsing.multiplicity.list,
