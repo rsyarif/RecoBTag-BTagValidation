@@ -20,8 +20,8 @@ def main():
                     metavar="MAIN_WORKDIR")
 
   parser.add_option("-q", "--queue", dest="queue",
-                    action='store', default='8nm',
-                    help="LXBatch queue (choose among cmst3 8nm 1nh 8nh 1nd 1nw). Default value is '8nm' (This parameter is optional)",
+                    action='store', default='1nh',
+                    help="LXBatch queue (choose among cmst3 8nm 1nh 8nh 1nd 1nw). Default is '1nh' (This parameter is optional)",
                     metavar="QUEUE")
 
   parser.add_option("-r", "--resubmit", dest="resubmit",
