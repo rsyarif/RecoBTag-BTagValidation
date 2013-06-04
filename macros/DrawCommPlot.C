@@ -26,6 +26,7 @@
 
 using namespace std;
 
+double QCDCrossSection = 1; 
 TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/LXBatch_Jobs_JetHT_QCD/Final_histograms.root" ; 
 TString dir4plots="Commissioning_plots";
 TString title= "CMS 2013 preliminary, #sqrt{s} = 8 TeV,  D:7.27 fb^{-1}";
@@ -34,6 +35,7 @@ TString format=".png";
 bool bOverflow=true;
 bool web = true;
 
+void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoType); 
 void Draw(TString name, TString histotitle, bool log, bool doData);
 void DrawMC(TString name, TString histotitle, bool log);
 void DrawTagRate(TString name, TString histotitle, bool log, bool doData);
@@ -48,140 +50,155 @@ void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bo
   TString action = "mkdir -p "+dir4plots;
   system(action);
 
-  //Draw("FatJet_multi"    ,"number of jets",1);
-  Draw("FatJet_pt_all" ,"pT of all jets"            ,1 ,1) ;
-  Draw("FatJet_pt_sv"  ,"pT of jets containing a SV",1 ,1) ;
-  Draw("FatJet_eta"    ,"eta of all jets"           ,0 ,1) ;
-  Draw("FatJet_phi"    ,"phi of all jets"           ,0 ,1) ;
+  TString histoType = "FatJet" ; 
+  DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoType) ; 
+  histoType = "Jet" ; 
+  DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoType) ;  
+  histoType = "FatJetMuTagged" ; 
+  DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoType) ; 
+  histoType = "JetMuTagged" ; 
+  DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoType) ;  
+
+  return ; 
+
+}
+
+void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoType) {  
+
+  //Draw(histoType+"_multi"    ,"number of jets",1);
+  Draw(histoType+"_pt_all" ,"pT of all jets"            ,1 ,1) ;
+  Draw(histoType+"_pt_sv"  ,"pT of jets containing a SV",1 ,1) ;
+  Draw(histoType+"_eta"    ,"eta of all jets"           ,0 ,1) ;
+  Draw(histoType+"_phi"    ,"phi of all jets"           ,0 ,1) ;
   //DrawMC("h1_nPV"      ,"# of PV",0);
 
   if (Draw_track_plots){
-    Draw("FatJet_track_multi"   ,    "number of tracks in the jets",0,0);
-    Draw("FatJet_trk_multi_sel" ,    "number of selected tracks in the jets",0,0);
-    Draw("FatJet_track_chi2"    ,    "normalized #chi^{2} of the tracks"	,1,0);
-    Draw("FatJet_track_nHit"    ,    "number of hits",0,0);
-    Draw("FatJet_track_HPix"    ,    "number of hits in the Pixel",0,0);
-    Draw("FatJet_track_len"     ,    "Track decay length",1,0);
-    Draw("FatJet_track_dist"    ,    "Track distance to the jet axis"	,1,0);
-    Draw("FatJet_track_dz"      ,    "Track transverse IP",1,0);
-    Draw("FatJet_track_pt"      ,    "pT of all the tracks",1,0);
-    Draw("FatJet_track_isfromSV",    "Track is from SV",1,0);
+    Draw(histoType+"_track_multi"   ,    "number of tracks in the jets",0,0);
+    Draw(histoType+"_trk_multi_sel" ,    "number of selected tracks in the jets",0,0);
+    Draw(histoType+"_track_chi2"    ,    "normalized #chi^{2} of the tracks"	,1,0);
+    Draw(histoType+"_track_nHit"    ,    "number of hits",0,0);
+    Draw(histoType+"_track_HPix"    ,    "number of hits in the Pixel",0,0);
+    Draw(histoType+"_track_len"     ,    "Track decay length",1,0);
+    Draw(histoType+"_track_dist"    ,    "Track distance to the jet axis"	,1,0);
+    Draw(histoType+"_track_dz"      ,    "Track transverse IP",1,0);
+    Draw(histoType+"_track_pt"      ,    "pT of all the tracks",1,0);
+    Draw(histoType+"_track_isfromSV",    "Track is from SV",1,0);
 
-    Draw("FatJet_track_IPs"    ,      "3D IP significance of all tracks",1,0);
-    Draw("FatJet_track_IPs1tr" ,      "3D IP significance of the first track",1,0);
-    Draw("FatJet_track_IPs2tr" ,      "3D IP significance of the second track",1,0);
-    Draw("FatJet_track_IPs3tr" ,      "3D IP significance of the third track",1,0);
-    Draw("FatJet_track_IP"     ,      "3D IP of all tracks",1,0);
-    Draw("FatJet_track_IP1tr"  ,      "3D IP of the first track"	,1,0);
-    Draw("FatJet_track_IP2tr"  ,      "3D IP of the second track",1,0);
-    Draw("FatJet_track_IP3tr"  ,      "3D IP of the third track"	,1,0);
-    Draw("FatJet_track_IP2Ds"	,    "2D IP significance of all tracks"	,1,0);
-    Draw("FatJet_track_IP2Ds1tr" ,    "2D IP significance of the first track",1,0);
-    Draw("FatJet_track_IP2Ds2tr" ,    "2D IP significance of the second track" ,1,0);
-    Draw("FatJet_track_IP2Ds3tr" ,    "2D IP significance of the second track" ,1,0);
-    Draw("FatJet_track_IP2D"    ,     "2D IP of all tracks",1,0);
-    Draw("FatJet_track_IP2D1tr" ,     "2D IP of the first track"	,1,0);
-    Draw("FatJet_track_IP2D2tr" ,     "2D IP of the second track",1,0);
-    Draw("FatJet_track_IP2D3tr" ,     "2D IP of the third track"	,1,0);
-    Draw("FatJet_track_IP2Derr" ,     "2D IP error of all tracks",1,0);
-    Draw("FatJet_track_IP2Derr1tr" ,  "2D IP error of the first track",1,0);
-    Draw("FatJet_track_IP2Derr2tr" ,  "2D IP error of the second track" ,1,0);
-    Draw("FatJet_track_IP2Derr3tr" ,  "2D IP error of the third track",1,0);
-    Draw("FatJet_track_IPerr"   ,     "3D IP error of all tracks",1,0);
-    Draw("FatJet_track_IPerr1tr"   ,  "3D IP error of the first track" ,1,0);
-    Draw("FatJet_track_IPerr2tr"   ,  "3D IP error of the second track" ,1,0);
-    Draw("FatJet_track_IPerr3tr"   ,  "3D IP error of the third track" ,1,0);
+    Draw(histoType+"_track_IPs"    ,      "3D IP significance of all tracks",1,0);
+    Draw(histoType+"_track_IPs1tr" ,      "3D IP significance of the first track",1,0);
+    Draw(histoType+"_track_IPs2tr" ,      "3D IP significance of the second track",1,0);
+    Draw(histoType+"_track_IPs3tr" ,      "3D IP significance of the third track",1,0);
+    Draw(histoType+"_track_IP"     ,      "3D IP of all tracks",1,0);
+    Draw(histoType+"_track_IP1tr"  ,      "3D IP of the first track"	,1,0);
+    Draw(histoType+"_track_IP2tr"  ,      "3D IP of the second track",1,0);
+    Draw(histoType+"_track_IP3tr"  ,      "3D IP of the third track"	,1,0);
+    Draw(histoType+"_track_IP2Ds"	,    "2D IP significance of all tracks"	,1,0);
+    Draw(histoType+"_track_IP2Ds1tr" ,    "2D IP significance of the first track",1,0);
+    Draw(histoType+"_track_IP2Ds2tr" ,    "2D IP significance of the second track" ,1,0);
+    Draw(histoType+"_track_IP2Ds3tr" ,    "2D IP significance of the second track" ,1,0);
+    Draw(histoType+"_track_IP2D"    ,     "2D IP of all tracks",1,0);
+    Draw(histoType+"_track_IP2D1tr" ,     "2D IP of the first track"	,1,0);
+    Draw(histoType+"_track_IP2D2tr" ,     "2D IP of the second track",1,0);
+    Draw(histoType+"_track_IP2D3tr" ,     "2D IP of the third track"	,1,0);
+    Draw(histoType+"_track_IP2Derr" ,     "2D IP error of all tracks",1,0);
+    Draw(histoType+"_track_IP2Derr1tr" ,  "2D IP error of the first track",1,0);
+    Draw(histoType+"_track_IP2Derr2tr" ,  "2D IP error of the second track" ,1,0);
+    Draw(histoType+"_track_IP2Derr3tr" ,  "2D IP error of the third track",1,0);
+    Draw(histoType+"_track_IPerr"   ,     "3D IP error of all tracks",1,0);
+    Draw(histoType+"_track_IPerr1tr"   ,  "3D IP error of the first track" ,1,0);
+    Draw(histoType+"_track_IPerr2tr"   ,  "3D IP error of the second track" ,1,0);
+    Draw(histoType+"_track_IPerr3tr"   ,  "3D IP error of the third track" ,1,0);
   }
   if (Draw_Nminus1_plots){
-    Draw("FatJet_track_chi2_cut"    ,"Normalized #chi^{2} @N-1 step",1,0);
-    Draw("FatJet_track_nHit_cut"  ," Number of hits @N-1 step",0,0);
-    Draw("FatJet_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",0,0);
-    Draw("FatJet_track_len_cut"     ,"Decay length @N-1 step",1,0);
-    Draw("FatJet_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,0);
-    Draw("FatJet_track_dz_cut"     , "Transverse IP @N-1 step",1,0);
-    Draw("FatJet_track_pt_cut"	   ,"Track pT @N-1 step",1,0);
+    Draw(histoType+"_track_chi2_cut"    ,"Normalized #chi^{2} @N-1 step",1,0);
+    Draw(histoType+"_track_nHit_cut"  ," Number of hits @N-1 step",0,0);
+    Draw(histoType+"_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",0,0);
+    Draw(histoType+"_track_len_cut"     ,"Decay length @N-1 step",1,0);
+    Draw(histoType+"_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,0);
+    Draw(histoType+"_track_dz_cut"     , "Transverse IP @N-1 step",1,0);
+    Draw(histoType+"_track_pt_cut"	   ,"Track pT @N-1 step",1,0);
   }
   if (Draw_sv_plots){
-    Draw("FatJet_sv_multi_0","nr. of SV including bin 0",1,0);
-    Draw("FatJet_sv_multi","nr. of SV",1,0);
-    Draw("FatJet_sv_mass","SV mass",0,0);
-    Draw("FatJet_sv_mass_3trk","SV mass if #tracks@SV >=3",0,0);
-    Draw("FatJet_sv_chi2norm","SV norm. #chi^{2}",1,0);
-    Draw("FatJet_sv_deltaR_jet","Delta R between the jet and the SV direction.",0,0);
-    Draw("FatJet_sv_deltaR_sumJet","#Delta R between the jet and the SV",0,0);
-    Draw("FatJet_sv_deltaR_sumDir","#Delta R between the jet direction and the SV",0,0);
-    Draw("FatJet_sv_en_ratio","SV energy ratio",0,0);
-    Draw("FatJet_sv_aboveC","IP2D of the first track above the charm threshold",1,0);
-    Draw("FatJet_sv_pt","SV p_{T}",1,0);
-    Draw("FatJet_sv_eta","SV #eta",0,0);
-    Draw("FatJet_sv_phi","SV #phi",0,0);
-    Draw("FatJet_sv_flight3D","SV 3D flight distance",1,0);
-    Draw("FatJet_sv_flight2D","SV 2D flight distance",1,0);
-    Draw("FatJet_sv_flight3DSig","SV 3D flight distance significance",1,0);
-    Draw("FatJet_sv_flightSig2D","SV 2D flight distance significance",1,0);
-    Draw("FatJet_sv_flight3Derr","SV 3D flight distance error",1,0);
-    Draw("FatJet_sv_flight2Derr","SV 2D flight distance error",1,0);
-    Draw("FatJet_svnTrk","nr. of tracks from a SV",1,0);
-    Draw("FatJet_svnTrk_firstVxt","nr. of tracks from the first SV",1,0);
+    Draw(histoType+"_sv_multi_0","nr. of SV including bin 0",1,0);
+    Draw(histoType+"_sv_multi","nr. of SV",1,0);
+    Draw(histoType+"_sv_mass","SV mass",0,0);
+    Draw(histoType+"_sv_mass_3trk","SV mass if #tracks@SV >=3",0,0);
+    Draw(histoType+"_sv_chi2norm","SV norm. #chi^{2}",1,0);
+    Draw(histoType+"_sv_deltaR_jet","Delta R between the jet and the SV direction.",0,0);
+    Draw(histoType+"_sv_deltaR_sumJet","#Delta R between the jet and the SV",0,0);
+    Draw(histoType+"_sv_deltaR_sumDir","#Delta R between the jet direction and the SV",0,0);
+    Draw(histoType+"_sv_en_ratio","SV energy ratio",0,0);
+    Draw(histoType+"_sv_aboveC","IP2D of the first track above the charm threshold",1,0);
+    Draw(histoType+"_sv_pt","SV p_{T}",1,0);
+    Draw(histoType+"_sv_eta","SV #eta",0,0);
+    Draw(histoType+"_sv_phi","SV #phi",0,0);
+    Draw(histoType+"_sv_flight3D","SV 3D flight distance",1,0);
+    Draw(histoType+"_sv_flight2D","SV 2D flight distance",1,0);
+    Draw(histoType+"_sv_flight3DSig","SV 3D flight distance significance",1,0);
+    Draw(histoType+"_sv_flightSig2D","SV 2D flight distance significance",1,0);
+    Draw(histoType+"_sv_flight3Derr","SV 3D flight distance error",1,0);
+    Draw(histoType+"_sv_flight2Derr","SV 2D flight distance error",1,0);
+    Draw(histoType+"_svnTrk","nr. of tracks from a SV",1,0);
+    Draw(histoType+"_svnTrk_firstVxt","nr. of tracks from the first SV",1,0);
   }
   if (Draw_muons_plots){
-    Draw("FatJet_muon_multi"   ,      "number of muons", 1,0);
-    Draw("FatJet_muon_multi_sel"   ,  "number of selected muons",1,0);
-    Draw("FatJet_mu_ptrel"     ,      "p_{T} rel. of the muon",0,0);
-    Draw("FatJet_mu_chi2"      ,      "norm. #chi^{2} of the muon", 1,0);
-    Draw("FatJet_muon_Pt",	     "Muon p_{T}",1,0);
-    Draw("FatJet_muon_eta",	     "Muon #eta",0,0);
-    Draw("FatJet_muon_phi",	     "Muon #phi",0,0);
-    Draw("FatJet_muon_Ip3d",	     "Muon 3D IP",1,0);
-    Draw("FatJet_muon_Ip2d",	     "Muon 2D IP",1,0);
-    Draw("FatJet_muon_Sip3d",	     "Muon 3D IP significance",1,0);
-    Draw("FatJet_muon_Sip2d",	     "Muon 2D IP significance",1,0);
-    Draw("FatJet_muon_DeltaR",	     "Muon1 #Delta R",0,0);
+    Draw(histoType+"_muon_multi"   ,      "number of muons", 1,0);
+    Draw(histoType+"_muon_multi_sel"   ,  "number of selected muons",1,0);
+    Draw(histoType+"_mu_ptrel"     ,      "p_{T} rel. of the muon",0,0);
+    Draw(histoType+"_mu_chi2"      ,      "norm. #chi^{2} of the muon", 1,0);
+    Draw(histoType+"_muon_Pt",	     "Muon p_{T}",1,0);
+    Draw(histoType+"_muon_eta",	     "Muon #eta",0,0);
+    Draw(histoType+"_muon_phi",	     "Muon #phi",0,0);
+    Draw(histoType+"_muon_Ip3d",	     "Muon 3D IP",1,0);
+    Draw(histoType+"_muon_Ip2d",	     "Muon 2D IP",1,0);
+    Draw(histoType+"_muon_Sip3d",	     "Muon 3D IP significance",1,0);
+    Draw(histoType+"_muon_Sip2d",	     "Muon 2D IP significance",1,0);
+    Draw(histoType+"_muon_DeltaR",	     "Muon1 #Delta R",0,0);
 
   }
   if (Draw_discriminator_plots){
-    Draw("FatJet_TCHE_extended1"       ,"TCHE (extended)",1,0);
-    Draw("FatJet_TCHP_extended1"       ,"TCHP (extended)",1,0);
-    Draw("FatJet_discri_ssche0",      "SSVHE Discriminator", 1,0);
-    Draw("FatJet_discri_sschp0",      "SSVHP Discriminator", 1,0);
+    Draw(histoType+"_TCHE_extended1"       ,"TCHE (extended)",1,0);
+    Draw(histoType+"_TCHP_extended1"       ,"TCHP (extended)",1,0);
+    Draw(histoType+"_discri_ssche0",      "SSVHE Discriminator", 1,0);
+    Draw(histoType+"_discri_sschp0",      "SSVHP Discriminator", 1,0);
 
-    Draw("FatJet_TCHE"	      ,"TCHE Discriminator", 1,0);
-    Draw("FatJet_TCHP"	      ,"TCHP Discriminator",1,0);
-    Draw("FatJet_JP"	      ,"JP Discriminator",1,0);
-    Draw("FatJet_JBP"	      ,"JBP Discriminator",1,0);
-    Draw("FatJet_SSV"	      ,"SSVHE Discriminator",1,0);
-    Draw("FatJet_SSVHP"        ,"SSVHP Discriminator",1,0);
-    Draw("FatJet_CSV"	      ,"CSV Discriminator",1,0);
+    Draw(histoType+"_TCHE"	      ,"TCHE Discriminator", 1,0);
+    Draw(histoType+"_TCHP"	      ,"TCHP Discriminator",1,0);
+    Draw(histoType+"_JP"	      ,"JP Discriminator",1,0);
+    Draw(histoType+"_JBP"	      ,"JBP Discriminator",1,0);
+    Draw(histoType+"_SSV"	      ,"SSVHE Discriminator",1,0);
+    Draw(histoType+"_SSVHP"        ,"SSVHP Discriminator",1,0);
+    Draw(histoType+"_CSV"	      ,"CSV Discriminator",1,0);
   }
 
   if (Draw_tagRate_plots){
-    DrawTagRate("FatJet_TCHE_extended1","TCHE (extended)", 1, 0);
-    DrawTagRate("FatJet_TCHP_extended1"," TCHP (extended)",1, 0);
-    DrawTagRate("FatJet_discri_ssche0","SSVHE (extended)", 1, 0);
-    DrawTagRate("FatJet_discri_sschp0","SSVHP (extended)", 1, 0);
+    DrawTagRate(histoType+"_TCHE_extended1","TCHE (extended)", 1, 0);
+    DrawTagRate(histoType+"_TCHP_extended1"," TCHP (extended)",1, 0);
+    DrawTagRate(histoType+"_discri_ssche0","SSVHE (extended)", 1, 0);
+    DrawTagRate(histoType+"_discri_sschp0","SSVHP (extended)", 1, 0);
 
-    DrawTagRate("FatJet_TCHE"	      ,"TCHE Discriminator"     ,1 ,0) ;
-    DrawTagRate("FatJet_TCHP"	      ,"TCHP Discriminator"     ,1 ,0) ;
-    DrawTagRate("FatJet_JP"	      ,"JP Discriminator"         ,1 ,0) ;
-    DrawTagRate("FatJet_JBP"	      ,"JBP Discriminator"      ,1 ,0) ;
-    DrawTagRate("FatJet_SSV"	      ,"SSVHE Discriminator"    ,1 ,0) ;
-    DrawTagRate("FatJet_SSVHP"         ,"SSVHP Discriminator" ,1 ,0) ;
-    DrawTagRate("FatJet_CSV"	      ,"CSV Discriminator"      ,1 ,0) ;
+    DrawTagRate(histoType+"_TCHE"	      ,"TCHE Discriminator"     ,1 ,0) ;
+    DrawTagRate(histoType+"_TCHP"	      ,"TCHP Discriminator"     ,1 ,0) ;
+    DrawTagRate(histoType+"_JP"	      ,"JP Discriminator"         ,1 ,0) ;
+    DrawTagRate(histoType+"_JBP"	      ,"JBP Discriminator"      ,1 ,0) ;
+    DrawTagRate(histoType+"_SSV"	      ,"SSVHE Discriminator"    ,1 ,0) ;
+    DrawTagRate(histoType+"_SSVHP"         ,"SSVHP Discriminator" ,1 ,0) ;
+    DrawTagRate(histoType+"_CSV"	      ,"CSV Discriminator"      ,1 ,0) ;
 
   }
 
   /*
-  if (Draw_2D_plots){
-    Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0);
-    Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",  0);
-    Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass", 0);
-    Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet", 0);
-    Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum", 0);
-    Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction", 0);
-    Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",	 0);
-    Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",  0);
-  }
-  */
+     if (Draw_2D_plots){
+     Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0);
+     Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",  0);
+     Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass", 0);
+     Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet", 0);
+     Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum", 0);
+     Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction", 0);
+     Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",	 0);
+     Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",  0);
+     }
+     */
 
 }
 
@@ -457,14 +474,14 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
 
   TH1F* histo_ratio;
   if (doData) {
-  histo_ratio = (TH1F*) TagRate_Data->Clone();
-  histo_ratio->SetName("histo0_ratio");
-  histo_ratio->SetTitle("");
-  histo_ratio->Divide(TagRate_MC);
+    histo_ratio = (TH1F*) TagRate_Data->Clone();
+    histo_ratio->SetName("histo0_ratio");
+    histo_ratio->SetTitle("");
+    histo_ratio->Divide(TagRate_MC);
 
-  TagRate_Data->SetMarkerStyle(20);
-  TagRate_Data->SetMarkerSize(0.75);
-  TagRate_Data->GetXaxis()->SetTitle();
+    TagRate_Data->SetMarkerStyle(20);
+    TagRate_Data->SetMarkerSize(0.75);
+    TagRate_Data->GetXaxis()->SetTitle();
   }
 
   // SET COLORS
@@ -530,27 +547,27 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   c1->cd();
 
   if (doData) {
-  TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
-  pad1->Draw();
-  pad1->cd();
+    TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
+    pad1->Draw();
+    pad1->cd();
 
-  gPad->SetBottomMargin(0.375);
-  gPad->SetGridy();
+    gPad->SetBottomMargin(0.375);
+    gPad->SetGridy();
 
-  histo_ratio->SetMarkerStyle(20);
-  histo_ratio->SetMarkerSize(0.75);
-  histo_ratio->SetLineWidth(2);
+    histo_ratio->SetMarkerStyle(20);
+    histo_ratio->SetMarkerSize(0.75);
+    histo_ratio->SetLineWidth(2);
 
-  histo_ratio->GetYaxis()->SetTitle("Data/MC");
-  histo_ratio->GetXaxis()->SetTitle(histotitle);
-  histo_ratio->GetYaxis()->SetNdivisions( 505 );
+    histo_ratio->GetYaxis()->SetTitle("Data/MC");
+    histo_ratio->GetXaxis()->SetTitle(histotitle);
+    histo_ratio->GetYaxis()->SetNdivisions( 505 );
 
-  histo_ratio->GetXaxis()->SetLabelSize( labelsizex);
-  histo_ratio->GetXaxis()->SetTitleSize( titlesizex );
+    histo_ratio->GetXaxis()->SetLabelSize( labelsizex);
+    histo_ratio->GetXaxis()->SetTitleSize( titlesizex );
 
-  histo_ratio->SetMinimum(0.4);
-  histo_ratio->SetMaximum(1.6);
-  histo_ratio->Draw("E1X0");
+    histo_ratio->SetMinimum(0.4);
+    histo_ratio->SetMaximum(1.6);
+    histo_ratio->Draw("E1X0");
   }
 
   c1->cd();
@@ -621,7 +638,6 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 
   pro_mc_gspl->GetXaxis()->SetTitle(titleX);
   pro_mc_gspl->GetYaxis()->SetTitle(titleY);
-
 
   // SET COSMETICS
   pro_data->SetMarkerStyle(20);
@@ -710,12 +726,12 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   TLegend* qw = 0;
   qw =  new TLegend(0.6,0.73,0.95,1.);
   qw->SetHeader(histotitle) ;
-  qw->AddEntry(pro_data,        datacaption                   ,"p");
-  qw->AddEntry(pro_mc,          "total "                 ,"l");
-  qw->AddEntry(pro_mc_b,        "b quark"                ,"l");
-  qw->AddEntry(pro_mc_gspl,     "b from gluon splitting" ,"l");
-  qw->AddEntry(pro_mc_c,        "c quark"                ,"l");
-  qw->AddEntry(pro_mc_udsg,     "uds quark or gluon"     ,"l");
+  qw->AddEntry(pro_data,        datacaption              ,"p") ;
+  qw->AddEntry(pro_mc,          "total "                 ,"l") ;
+  qw->AddEntry(pro_mc_b,        "b quark"                ,"l") ;
+  qw->AddEntry(pro_mc_gspl,     "b from gluon splitting" ,"l") ;
+  qw->AddEntry(pro_mc_c,        "c quark"                ,"l") ;
+  qw->AddEntry(pro_mc_udsg,     "uds quark or gluon"     ,"l") ;
 
   qw->SetFillColor(0);
   qw->Draw();
