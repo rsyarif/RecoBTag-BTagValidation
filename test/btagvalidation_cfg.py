@@ -24,10 +24,20 @@ options.register('useJetProbaTree', False,
     VarParsing.varType.bool,
     "Use jet probability tree"
 )
-options.register('applyMuonTagging', False,
+options.register('applyFatJetMuonTagging', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
-    "Apply muon tagging"
+    "Apply muon tagging to fat jets"
+)
+options.register('processSubJets', True,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Process subjets"
+)
+options.register('applySubJetMuonTagging', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Apply muon tagging to subjets"
 )
 options.register('jetPtMin', 300.,
     VarParsing.multiplicity.singleton,
@@ -70,24 +80,26 @@ process.TFileService = cms.Service("TFileService",
 
 from inputFiles_cfi import *
 process.btagval = cms.EDAnalyzer('BTagValidation',
-    MaxEvents        = cms.int32(options.maxEvents),
-    ReportEvery      = cms.int32(options.reportEvery),
-    UseJetProbaTree  = cms.bool(options.useJetProbaTree),
-    InputTTree       = cms.string('btaganaSubJets/ttree'),
-    InputFiles       = cms.vstring(FileNames),
-    ApplyMuonTagging = cms.bool(options.applyMuonTagging),
-    JetPtMin         = cms.double(options.jetPtMin),
-    JetPtMax         = cms.double(options.jetPtMax),
-    JetAbsEtaMax     = cms.double(2.4),
-    DoPUReweighting  = cms.bool(options.doPUReweighting),
-    File_PUDistMC    = cms.string('PUDistMC_Summer12_PU_S10.root'),
-    File_PUDistData  = cms.string('PUDistData_Run2012ABCD.root'),
-    Hist_PUDistMC    = cms.string('PUWeights_Summer12_S10PUWeights_Summer12_S10'),
-    Hist_PUDistData  = cms.string('pileup'),
-    TriggerSelection = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
+    MaxEvents              = cms.int32(options.maxEvents),
+    ReportEvery            = cms.int32(options.reportEvery),
+    UseJetProbaTree        = cms.bool(options.useJetProbaTree),
+    InputTTree             = cms.string('btaganaSubJets/ttree'),
+    InputFiles             = cms.vstring(FileNames),
+    ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
+    ProcessSubJets         = cms.bool(options.processSubJets),
+    ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
+    JetPtMin               = cms.double(options.jetPtMin),
+    JetPtMax               = cms.double(options.jetPtMax),
+    JetAbsEtaMax           = cms.double(2.4),
+    DoPUReweighting        = cms.bool(options.doPUReweighting),
+    File_PUDistMC          = cms.string('PUDistMC_Summer12_PU_S10.root'),
+    File_PUDistData        = cms.string('PUDistData_Run2012ABCD.root'),
+    Hist_PUDistMC          = cms.string('PUWeights_Summer12_S10PUWeights_Summer12_S10'),
+    Hist_PUDistData        = cms.string('pileup'),
+    TriggerSelection       = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
         options.triggerSelection
     ),
-    TriggerPathNames = cms.vstring(
+    TriggerPathNames       = cms.vstring(
         "HLT_Jet15U*",
         "HLT_Jet30_v*",
         "HLT_PFJet40_v*",
