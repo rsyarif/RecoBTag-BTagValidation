@@ -1,5 +1,5 @@
-#include "CMSstyle.C" 
-#include "help.C" 
+#include "CMSstyle.C"
+#include "help.C"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -26,15 +26,15 @@
 
 using namespace std;
 
-TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/LXBatch_Jobs/QCD_Pt-1800_TuneZ2star_8TeV_pythia6__Summer12_DR53X-PU_S10_START53_V7A-v1__AODSIM/output/bTagValPlots_QCD_Pt-1800.root" ; 
+TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs/Final_histograms.root";
 TString dir4plots="Commissioning_plots";
 TString title= "CMS 2013 preliminary, #sqrt{s} = 8 TeV,  D:7.27 fb^{-1}";
 TString datacaption = "HLT_PFJet40, jet pT>60 ";
-TString format=".png"; 
+TString format=".png";
 bool bOverflow=true;
 bool web = true;
 
-void Draw(TString name, TString histotitle, bool log, bool doData); 
+void Draw(TString name, TString histotitle, bool log, bool doData);
 void DrawMC(TString name, TString histotitle, bool log);
 void DrawTagRate(TString name, TString histotitle, bool log, bool doData);
 void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY, bool log);
@@ -43,64 +43,66 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 
 void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bool Draw_sv_plots=false, bool Draw_muons_plots=false, bool Draw_discriminator_plots=false, bool Draw_tagRate_plots=false, bool Draw_2D_plots=false){
 
-  TString action = "mkdir "+dir4plots;
-  //system(action);
+  gROOT->SetBatch(kTRUE);
 
-  //Draw("FatJet_multi"    ,"number of jets",1);	    
-  Draw("FatJet_pt_all" ,"pT of all jets"            ,0 ,0) ;     
-  Draw("FatJet_pt_sv"  ,"pT of jets containing a SV",0 ,0) ;  
-  Draw("FatJet_eta"    ,"eta of all jets"           ,0 ,0) ;     
-  Draw("FatJet_phi"    ,"phi of all jets"           ,0 ,0) ; 
+  TString action = "mkdir -p "+dir4plots;
+  system(action);
+
+  //Draw("FatJet_multi"    ,"number of jets",1);
+  Draw("FatJet_pt_all" ,"pT of all jets"            ,1 ,1) ;
+  Draw("FatJet_pt_sv"  ,"pT of jets containing a SV",1 ,1) ;
+  Draw("FatJet_eta"    ,"eta of all jets"           ,0 ,1) ;
+  Draw("FatJet_phi"    ,"phi of all jets"           ,0 ,1) ;
   //DrawMC("h1_nPV"      ,"# of PV",0);
 
-  if (Draw_track_plots){	      
-    Draw("FatJet_track_multi"   ,    "number of tracks in the jets",0,0);		   
-    Draw("FatJet_trk_multi_sel" ,    "number of selected tracks in the jets",0,0);	   
-    Draw("FatJet_track_chi2"    ,    "normalized #chi^{2} of the tracks"	,1,0);	   
-    Draw("FatJet_track_nHit"    ,    "number of hits",0,0);		   
-    Draw("FatJet_track_HPix"    ,    "number of hits in the Pixel",0,0);		   
-    Draw("FatJet_track_len"     ,    "Track decay length",1,0);				   
-    Draw("FatJet_track_dist"    ,    "Track distance to the jet axis"	,1,0);	   
-    Draw("FatJet_track_dz"      ,    "Track transverse IP",1,0);				   
-    Draw("FatJet_track_pt"      ,    "pT of all the tracks",1,0);			   
-    Draw("FatJet_track_isfromSV",    "Track is from SV",1,0);			   
+  if (Draw_track_plots){
+    Draw("FatJet_track_multi"   ,    "number of tracks in the jets",0,0);
+    Draw("FatJet_trk_multi_sel" ,    "number of selected tracks in the jets",0,0);
+    Draw("FatJet_track_chi2"    ,    "normalized #chi^{2} of the tracks"	,1,0);
+    Draw("FatJet_track_nHit"    ,    "number of hits",0,0);
+    Draw("FatJet_track_HPix"    ,    "number of hits in the Pixel",0,0);
+    Draw("FatJet_track_len"     ,    "Track decay length",1,0);
+    Draw("FatJet_track_dist"    ,    "Track distance to the jet axis"	,1,0);
+    Draw("FatJet_track_dz"      ,    "Track transverse IP",1,0);
+    Draw("FatJet_track_pt"      ,    "pT of all the tracks",1,0);
+    Draw("FatJet_track_isfromSV",    "Track is from SV",1,0);
 
-    Draw("FatJet_track_IPs"    ,      "3D IP significance of all tracks",1,0);	   
-    Draw("FatJet_track_IPs1tr" ,      "3D IP significance of the first track",1,0);	   
-    Draw("FatJet_track_IPs2tr" ,      "3D IP significance of the second track",1,0);     
-    Draw("FatJet_track_IPs3tr" ,      "3D IP significance of the third track",1,0);	
-    Draw("FatJet_track_IP"     ,      "3D IP of all tracks",1,0);			   
-    Draw("FatJet_track_IP1tr"  ,      "3D IP of the first track"	,1,0);	   
-    Draw("FatJet_track_IP2tr"  ,      "3D IP of the second track",1,0);		   
-    Draw("FatJet_track_IP3tr"  ,      "3D IP of the third track"	,1,0);	
-    Draw("FatJet_track_IP2Ds"	,    "2D IP significance of all tracks"	,1,0);   
-    Draw("FatJet_track_IP2Ds1tr" ,    "2D IP significance of the first track",1,0);	   
-    Draw("FatJet_track_IP2Ds2tr" ,    "2D IP significance of the second track" ,1,0);    
+    Draw("FatJet_track_IPs"    ,      "3D IP significance of all tracks",1,0);
+    Draw("FatJet_track_IPs1tr" ,      "3D IP significance of the first track",1,0);
+    Draw("FatJet_track_IPs2tr" ,      "3D IP significance of the second track",1,0);
+    Draw("FatJet_track_IPs3tr" ,      "3D IP significance of the third track",1,0);
+    Draw("FatJet_track_IP"     ,      "3D IP of all tracks",1,0);
+    Draw("FatJet_track_IP1tr"  ,      "3D IP of the first track"	,1,0);
+    Draw("FatJet_track_IP2tr"  ,      "3D IP of the second track",1,0);
+    Draw("FatJet_track_IP3tr"  ,      "3D IP of the third track"	,1,0);
+    Draw("FatJet_track_IP2Ds"	,    "2D IP significance of all tracks"	,1,0);
+    Draw("FatJet_track_IP2Ds1tr" ,    "2D IP significance of the first track",1,0);
+    Draw("FatJet_track_IP2Ds2tr" ,    "2D IP significance of the second track" ,1,0);
     Draw("FatJet_track_IP2Ds3tr" ,    "2D IP significance of the second track" ,1,0);
-    Draw("FatJet_track_IP2D"    ,     "2D IP of all tracks",1,0);			   
-    Draw("FatJet_track_IP2D1tr" ,     "2D IP of the first track"	,1,0);	   
-    Draw("FatJet_track_IP2D2tr" ,     "2D IP of the second track",1,0);		   
-    Draw("FatJet_track_IP2D3tr" ,     "2D IP of the third track"	,1,0);	
-    Draw("FatJet_track_IP2Derr" ,     "2D IP error of all tracks",1,0);				   
-    Draw("FatJet_track_IP2Derr1tr" ,  "2D IP error of the first track",1,0);  	   
-    Draw("FatJet_track_IP2Derr2tr" ,  "2D IP error of the second track" ,1,0);	   
-    Draw("FatJet_track_IP2Derr3tr" ,  "2D IP error of the third track",1,0);  	
-    Draw("FatJet_track_IPerr"   ,     "3D IP error of all tracks",1,0);				   
-    Draw("FatJet_track_IPerr1tr"   ,  "3D IP error of the first track" ,1,0); 	   
-    Draw("FatJet_track_IPerr2tr"   ,  "3D IP error of the second track" ,1,0);	   
-    Draw("FatJet_track_IPerr3tr"   ,  "3D IP error of the third track" ,1,0); 	
-  }  
-  if (Draw_Nminus1_plots){  
-    Draw("FatJet_track_chi2_cut"    ,"Normalized #chi^{2} @N-1 step",1,0);	    
+    Draw("FatJet_track_IP2D"    ,     "2D IP of all tracks",1,0);
+    Draw("FatJet_track_IP2D1tr" ,     "2D IP of the first track"	,1,0);
+    Draw("FatJet_track_IP2D2tr" ,     "2D IP of the second track",1,0);
+    Draw("FatJet_track_IP2D3tr" ,     "2D IP of the third track"	,1,0);
+    Draw("FatJet_track_IP2Derr" ,     "2D IP error of all tracks",1,0);
+    Draw("FatJet_track_IP2Derr1tr" ,  "2D IP error of the first track",1,0);
+    Draw("FatJet_track_IP2Derr2tr" ,  "2D IP error of the second track" ,1,0);
+    Draw("FatJet_track_IP2Derr3tr" ,  "2D IP error of the third track",1,0);
+    Draw("FatJet_track_IPerr"   ,     "3D IP error of all tracks",1,0);
+    Draw("FatJet_track_IPerr1tr"   ,  "3D IP error of the first track" ,1,0);
+    Draw("FatJet_track_IPerr2tr"   ,  "3D IP error of the second track" ,1,0);
+    Draw("FatJet_track_IPerr3tr"   ,  "3D IP error of the third track" ,1,0);
+  }
+  if (Draw_Nminus1_plots){
+    Draw("FatJet_track_chi2_cut"    ,"Normalized #chi^{2} @N-1 step",1,0);
     Draw("FatJet_track_nHit_cut"  ," Number of hits @N-1 step",0,0);
-    Draw("FatJet_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",0,0);  
-    Draw("FatJet_track_len_cut"     ,"Decay length @N-1 step",1,0);		    
-    Draw("FatJet_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,0);  
-    Draw("FatJet_track_dz_cut"     , "Transverse IP @N-1 step",1,0);		    
+    Draw("FatJet_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",0,0);
+    Draw("FatJet_track_len_cut"     ,"Decay length @N-1 step",1,0);
+    Draw("FatJet_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,0);
+    Draw("FatJet_track_dz_cut"     , "Transverse IP @N-1 step",1,0);
     Draw("FatJet_track_pt_cut"	   ,"Track pT @N-1 step",1,0);
   }
   if (Draw_sv_plots){
-    Draw("FatJet_sv_multi_0","nr. of SV including bin 0",1,0); 
+    Draw("FatJet_sv_multi_0","nr. of SV including bin 0",1,0);
     Draw("FatJet_sv_multi","nr. of SV",1,0);
     Draw("FatJet_sv_mass","SV mass",0,0);
     Draw("FatJet_sv_mass_3trk","SV mass if #tracks@SV >=3",0,0);
@@ -108,51 +110,51 @@ void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bo
     Draw("FatJet_sv_deltaR_jet","Delta R between the jet and the SV direction.",0,0);
     Draw("FatJet_sv_deltaR_sumJet","#Delta R between the jet and the SV",0,0);
     Draw("FatJet_sv_deltaR_sumDir","#Delta R between the jet direction and the SV",0,0);
-    Draw("FatJet_sv_en_ratio","SV energy ratio",0,0);	
-    Draw("FatJet_sv_aboveC","IP2D of the first track above the charm threshold",1,0);	
-    Draw("FatJet_sv_pt","SV p_{T}",1,0); 	
-    Draw("FatJet_sv_eta","SV #eta",0,0);	
-    Draw("FatJet_sv_phi","SV #phi",0,0);	
-    Draw("FatJet_sv_flight3D","SV 3D flight distance",1,0);	
-    Draw("FatJet_sv_flight2D","SV 2D flight distance",1,0);	
+    Draw("FatJet_sv_en_ratio","SV energy ratio",0,0);
+    Draw("FatJet_sv_aboveC","IP2D of the first track above the charm threshold",1,0);
+    Draw("FatJet_sv_pt","SV p_{T}",1,0);
+    Draw("FatJet_sv_eta","SV #eta",0,0);
+    Draw("FatJet_sv_phi","SV #phi",0,0);
+    Draw("FatJet_sv_flight3D","SV 3D flight distance",1,0);
+    Draw("FatJet_sv_flight2D","SV 2D flight distance",1,0);
     Draw("FatJet_sv_flight3DSig","SV 3D flight distance significance",1,0);
     Draw("FatJet_sv_flightSig2D","SV 2D flight distance significance",1,0);
     Draw("FatJet_sv_flight3Derr","SV 3D flight distance error",1,0);
     Draw("FatJet_sv_flight2Derr","SV 2D flight distance error",1,0);
-    Draw("FatJet_svnTrk","nr. of tracks from a SV",1,0);	
+    Draw("FatJet_svnTrk","nr. of tracks from a SV",1,0);
     Draw("FatJet_svnTrk_firstVxt","nr. of tracks from the first SV",1,0);
   }
-  if (Draw_muons_plots){  
-    Draw("FatJet_muon_multi"   ,      "number of muons", 1,0);       
+  if (Draw_muons_plots){
+    Draw("FatJet_muon_multi"   ,      "number of muons", 1,0);
     Draw("FatJet_muon_multi_sel"   ,  "number of selected muons",1,0);
-    Draw("FatJet_mu_ptrel"     ,      "p_{T} rel. of the muon",0,0);    
+    Draw("FatJet_mu_ptrel"     ,      "p_{T} rel. of the muon",0,0);
     Draw("FatJet_mu_chi2"      ,      "norm. #chi^{2} of the muon", 1,0);
-    Draw("FatJet_muon_Pt",	     "Muon p_{T}",1,0);	       
-    Draw("FatJet_muon_eta",	     "Muon #eta",0,0);	       
-    Draw("FatJet_muon_phi",	     "Muon #phi",0,0);	       
-    Draw("FatJet_muon_Ip3d",	     "Muon 3D IP",1,0);	       
-    Draw("FatJet_muon_Ip2d",	     "Muon 2D IP",1,0);	       
+    Draw("FatJet_muon_Pt",	     "Muon p_{T}",1,0);
+    Draw("FatJet_muon_eta",	     "Muon #eta",0,0);
+    Draw("FatJet_muon_phi",	     "Muon #phi",0,0);
+    Draw("FatJet_muon_Ip3d",	     "Muon 3D IP",1,0);
+    Draw("FatJet_muon_Ip2d",	     "Muon 2D IP",1,0);
     Draw("FatJet_muon_Sip3d",	     "Muon 3D IP significance",1,0);
     Draw("FatJet_muon_Sip2d",	     "Muon 2D IP significance",1,0);
     Draw("FatJet_muon_DeltaR",	     "Muon1 #Delta R",0,0);
 
-  } 
-  if (Draw_discriminator_plots){  
-    Draw("FatJet_TCHE_extended1"       ,"TCHE (extended)",1,0);    
-    Draw("FatJet_TCHP_extended1"       ,"TCHP (extended)",1,0);    
+  }
+  if (Draw_discriminator_plots){
+    Draw("FatJet_TCHE_extended1"       ,"TCHE (extended)",1,0);
+    Draw("FatJet_TCHP_extended1"       ,"TCHP (extended)",1,0);
     Draw("FatJet_discri_ssche0",      "SSVHE Discriminator", 1,0);
     Draw("FatJet_discri_sschp0",      "SSVHP Discriminator", 1,0);
 
-    Draw("FatJet_TCHE"	      ,"TCHE Discriminator", 1,0); 		    
-    Draw("FatJet_TCHP"	      ,"TCHP Discriminator",1,0);  		    
-    Draw("FatJet_JP"	      ,"JP Discriminator",1,0);			    
-    Draw("FatJet_JBP"	      ,"JBP Discriminator",1,0);			    
-    Draw("FatJet_SSV"	      ,"SSVHE Discriminator",1,0);			    
-    Draw("FatJet_SSVHP"        ,"SSVHP Discriminator",1,0); 		    
+    Draw("FatJet_TCHE"	      ,"TCHE Discriminator", 1,0);
+    Draw("FatJet_TCHP"	      ,"TCHP Discriminator",1,0);
+    Draw("FatJet_JP"	      ,"JP Discriminator",1,0);
+    Draw("FatJet_JBP"	      ,"JBP Discriminator",1,0);
+    Draw("FatJet_SSV"	      ,"SSVHE Discriminator",1,0);
+    Draw("FatJet_SSVHP"        ,"SSVHP Discriminator",1,0);
     Draw("FatJet_CSV"	      ,"CSV Discriminator",1,0);
   }
 
-  if (Draw_tagRate_plots){ 
+  if (Draw_tagRate_plots){
     DrawTagRate("FatJet_TCHE_extended1","TCHE (extended)", 1, 0);
     DrawTagRate("FatJet_TCHP_extended1"," TCHP (extended)",1, 0);
     DrawTagRate("FatJet_discri_ssche0","SSVHE (extended)", 1, 0);
@@ -168,24 +170,24 @@ void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bo
 
   }
 
-  /* 
+  /*
   if (Draw_2D_plots){
     Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0);
     Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",  0);
-    Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass", 0);	       
-    Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet", 0); 
-    Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum", 0);     
-    Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction", 0); 
-    Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",	 0);       
-    Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",  0);	         
+    Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass", 0);
+    Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet", 0);
+    Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum", 0);
+    Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction", 0);
+    Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",	 0);
+    Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",  0);
   }
-  */ 
+  */
 
 }
 
 //--------------------------
 
-void Draw(TString name, TString histotitle, bool log, bool doData) { 
+void Draw(TString name, TString histotitle, bool log, bool doData) {
 
   TH1F* hist_b;
   TH1F* hist_c;
@@ -193,7 +195,7 @@ void Draw(TString name, TString histotitle, bool log, bool doData) {
   TH1F* hist_l;
   TH1F* hist_data;
 
-  TFile *myFile  = TFile::Open(filename,"READ") ; 
+  TFile *myFile  = TFile::Open(filename,"READ") ;
 
   myFile->cd();
   hist_b                = (TH1F*)myFile->Get("QCD__"+name+"_b");
@@ -211,19 +213,19 @@ void Draw(TString name, TString histotitle, bool log, bool doData) {
   //}
 
   TH1F* histo_tot = (TH1F*) hist_b->Clone();
-  histo_tot->Sumw2();
+  //histo_tot->Sumw2();
   histo_tot ->Add(hist_c);
   histo_tot ->Add(hist_gsplit);
-  histo_tot ->Add(hist_l);  
+  histo_tot ->Add(hist_l);
 
-  //Already scaled if (doData) {
-  //Already scaled   float scale_f = ( hist_data->Integral() )/( hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_l->Integral() ) ;  
-  //Already scaled   hist_b       ->Scale(scale_f);
-  //Already scaled   hist_c       ->Scale(scale_f);
-  //Already scaled   hist_gsplit  ->Scale(scale_f);
-  //Already scaled   hist_l       ->Scale(scale_f);
-  //Already scaled   histo_tot    ->Scale(scale_f);
-  //Already scaled }
+  if (doData) {
+    float scale_f = ( hist_data->Integral() )/( hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_l->Integral() ) ;
+    hist_b       ->Scale(scale_f);
+    hist_c       ->Scale(scale_f);
+    hist_gsplit  ->Scale(scale_f);
+    hist_l       ->Scale(scale_f);
+    histo_tot    ->Scale(scale_f);
+  }
 
   THStack *stack = new THStack("stack","stack");
 
@@ -240,23 +242,23 @@ void Draw(TString name, TString histotitle, bool log, bool doData) {
 
     histo_ratio->Divide(histo_tot);
 
-    beautifyAxis(hist_data->GetXaxis()) ; 
-    beautifyAxis(hist_data->GetYaxis()) ; 
-    beautify(hist_data  , kBlack, 0, 1) ; 
-  } 
+    beautifyAxis(hist_data->GetXaxis()) ;
+    beautifyAxis(hist_data->GetYaxis()) ;
+    beautify(hist_data  , kBlack, 0, 1) ;
+  }
 
-  beautifyAxis(hist_b   ->GetXaxis()) ; 
-  beautifyAxis(hist_b   ->GetYaxis()) ; 
+  beautifyAxis(hist_b   ->GetXaxis()) ;
+  beautifyAxis(hist_b   ->GetYaxis()) ;
 
-  beautify(hist_c     , 8     , 8, 1) ;  
-  beautify(hist_b     , 2     , 2, 1) ;  
-  beautify(hist_gsplit, 7     , 7, 1) ;  
-  beautify(hist_l     , 4     , 4, 1) ;  
-  beautify(histo_tot  , 2     , 0, 1) ; 
+  beautify(hist_c     , 8     , 8, 1) ;
+  beautify(hist_b     , 2     , 2, 1) ;
+  beautify(hist_gsplit, 7     , 7, 1) ;
+  beautify(hist_l     , 4     , 4, 1) ;
+  beautify(histo_tot  , 2     , 0, 1) ;
 
   TCanvas *c1 = new TCanvas("c1", "c1",10,32,782,552);
   c1->SetFillColor(10);
-  c1->  cd();   
+  c1->  cd();
 
   TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,0.98);
   pad0 ->Draw();
@@ -264,14 +266,14 @@ void Draw(TString name, TString histotitle, bool log, bool doData) {
 
   pad0->SetLogy(log);
 
-  if (doData) 
-    if (hist_data->GetMaximum() > stack->GetMaximum() ) stack->SetMaximum( hist_data->GetMaximum()*1.1) ; 
+  if (doData)
+    if (hist_data->GetMaximum() > stack->GetMaximum() ) stack->SetMaximum( hist_data->GetMaximum()*1.1) ;
   if (name=="jet_phi" || name=="sv_phi" || name=="muon_phi") {
     if (log) stack->SetMinimum(0.01);
-    else  stack->SetMinimum(0.); 
+    else  stack->SetMinimum(0.);
   }
 
-  stack    ->Draw("hist");  
+  stack    ->Draw("hist");
 
   stack    ->GetHistogram()->GetXaxis()->SetTitle(name);
   stack    ->GetHistogram()->GetYaxis()->SetTitle("entries");
@@ -305,7 +307,7 @@ void Draw(TString name, TString histotitle, bool log, bool doData) {
   latex->SetTextAlign(13);
   latex->DrawLatex(0.08, 0.96, title);
 
-  c1->cd();  
+  c1->cd();
 
   if (doData) {
     TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
@@ -337,9 +339,9 @@ void Draw(TString name, TString histotitle, bool log, bool doData) {
     histo_ratio->Draw("E1X0");
   }
 
-  c1->cd();  
+  c1->cd();
 
-  TString name_plot=name+"_Linear"+format; 
+  TString name_plot=name+"_Linear"+format;
   if(log) name_plot=name+"_Log"+format;
   c1->SaveAs(dir4plots+"/"+name_plot);
 
@@ -362,7 +364,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   TH1F* hist_l;
   TH1F* hist_data;
 
-  TFile *myFile  = TFile::Open(filename,"READ"); 
+  TFile *myFile  = TFile::Open(filename,"READ");
 
   myFile->cd();
   hist_b         = (TH1F*)myFile->Get("QCD__"+name+"_b");
@@ -372,10 +374,10 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   if (doData) hist_data      = (TH1F*)myFile->Get("DATA__"+name+"_data");
 
   TH1F* histo_tot = (TH1F*) hist_b->Clone();
-  histo_tot->Sumw2();
+  //histo_tot->Sumw2();
   histo_tot ->Add(hist_c);
   histo_tot ->Add(hist_gsplit);
-  histo_tot ->Add(hist_l);  
+  histo_tot ->Add(hist_l);
 
   //Already scaled if (doData) {
   //Already scaled   float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_l->Integral());
@@ -397,14 +399,14 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   TH1F * TagRate_MC_udsg = new TH1F ("TagRate_MC_udsg",histotitle,nbinx,minx,maxx);
   TH1F * TagRate_MC_gspl = new TH1F ("TagRate_MC_gspl",histotitle,nbinx,minx,maxx);
 
-  int nbin_max ; 
-  if (doData) nbin_max = hist_data->GetNbinsX() ; 
+  int nbin_max ;
+  if (doData) nbin_max = hist_data->GetNbinsX() ;
 
   for (int ii=0; ii<nbin_max; ii++) {
 
-    float totdata ; 
-    float val ; 
-    float err ; 
+    float totdata ;
+    float val ;
+    float err ;
     if (doData) {
       totdata = hist_data->Integral(0,nbin_max+1);
       val = hist_data->Integral(ii+1,nbin_max+1) / totdata;
@@ -456,8 +458,8 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
 
   TagRate_Data->SetMarkerStyle(20);
   TagRate_Data->SetMarkerSize(0.75);
-  TagRate_Data->GetXaxis()->SetTitle();  
-  } 
+  TagRate_Data->GetXaxis()->SetTitle();
+  }
 
   // SET COLORS
   TagRate_MC->SetLineColor(2);
@@ -470,7 +472,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   THStack* hs= new THStack();
 
   hs->Add(TagRate_MC_b);
-  hs->Add(TagRate_MC_gspl);  
+  hs->Add(TagRate_MC_gspl);
   hs->Add(TagRate_MC_c);
   hs->Add(TagRate_MC_udsg);
 
@@ -484,7 +486,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   // FIRST MC & DATA
   TPad *c1_1 = new TPad("pad0", "pad0",0,0.25,1.0,0.98);
   c1_1->Draw();
-  c1_1->cd(); 
+  c1_1->cd();
   c1_1->SetLogy(log);
 
   if (doData)
@@ -494,11 +496,11 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   hs->Draw("hist");
 
   hs->GetHistogram()->SetTitleSize(0.08,"Y");
-  hs->GetHistogram()->SetTitleOffset(0.55,"Y"); 
+  hs->GetHistogram()->SetTitleOffset(0.55,"Y");
   hs->GetHistogram()->GetYaxis()->SetTitle("Tag Rate");
   hs->GetHistogram()->GetXaxis()->SetTitle(histotitle);
 
-  if (doData) TagRate_Data->Draw("e same");  
+  if (doData) TagRate_Data->Draw("e same");
   // ADD LEGEND
   TLegend* qw = 0;
   qw = new TLegend(0.6,0.73,0.95,1.);
@@ -519,7 +521,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   latex->SetTextAlign(13);
   latex->DrawLatex(0.08, 0.96, title);
 
-  c1->cd();  
+  c1->cd();
 
   if (doData) {
   TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
@@ -582,7 +584,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   TH2F* histo_tot = (TH2F*) hist_b->Clone();
   histo_tot ->Add(hist_c);
   histo_tot ->Add(hist_gsplit);
-  histo_tot ->Add(hist_l); 
+  histo_tot ->Add(hist_l);
 
   float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_l->Integral());
 
@@ -611,15 +613,15 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   pro_data->SetMarkerStyle(20);
   pro_data->SetMarkerSize(0.75);
 
-  pro_mc_gspl->GetXaxis()->SetTitle(titleX);  
-  pro_mc_gspl->GetYaxis()->SetTitle(titleY);  
+  pro_mc_gspl->GetXaxis()->SetTitle(titleX);
+  pro_mc_gspl->GetYaxis()->SetTitle(titleY);
 
 
   // SET COSMETICS
   pro_data->SetMarkerStyle(20);
   pro_data->SetMarkerSize(0.75);
-  //pro_mc_gspl->GetXaxis()->SetTitle();  
-  //pro_mc_gspl->GetYaxis()->SetTitle();  
+  //pro_mc_gspl->GetXaxis()->SetTitle();
+  //pro_mc_gspl->GetYaxis()->SetTitle();
 
   Double_t titleoffsetx=0.8;
   Double_t titleoffsety=0.8;
@@ -701,7 +703,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 
   TLegend* qw = 0;
   qw =  new TLegend(0.6,0.73,0.95,1.);
-  qw->SetHeader(histotitle) ; 
+  qw->SetHeader(histotitle) ;
   qw->AddEntry(pro_data,        datacaption                   ,"p");
   qw->AddEntry(pro_mc,          "total "                 ,"l");
   qw->AddEntry(pro_mc_b,        "b quark"                ,"l");
@@ -721,10 +723,10 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 
 //------------
 
-void DrawMC(TString name, TString histotitle, bool log) { 
+void DrawMC(TString name, TString histotitle, bool log) {
   TFile *myFile     = TFile::Open(filename,"READ");
-  TH1F* hist_mc;     
-  TH1F* hist_data;  
+  TH1F* hist_mc;
+  TH1F* hist_data;
   if (name=="nPV") {
     hist_mc       = (TH1F*)myFile->Get(name+"_mc");
   }
@@ -749,24 +751,24 @@ void DrawMC(TString name, TString histotitle, bool log) {
 
   TH1F* histo_ratio;
   histo_ratio = (TH1F*) hist_data->Clone();
-  histo_ratio->Sumw2();
+  //histo_ratio->Sumw2();
   histo_ratio->SetName("histo_ratio");
   histo_ratio->SetTitle("");
 
   histo_ratio->Divide(hist_mc);
 
   hist_data  ->SetLineWidth(2);
-  hist_data  ->SetMarkerStyle(20);  
-  hist_data  ->SetMarkerSize(0.75); 
+  hist_data  ->SetMarkerStyle(20);
+  hist_data  ->SetMarkerSize(0.75);
 
   hist_mc     ->SetFillColor(2);
 
   gStyle->SetOptTitle(0);
-  gStyle->SetOptStat(0);  
+  gStyle->SetOptStat(0);
 
   TCanvas *c1 = new TCanvas("c1", "c1",10,32,782,552);
   c1->SetFillColor(10);
-  c1->  cd();   
+  c1->  cd();
 
   TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,0.98);
   pad0 ->Draw();
@@ -774,13 +776,13 @@ void DrawMC(TString name, TString histotitle, bool log) {
 
   pad0->SetLogy(log);
 
-  hist_mc    ->Draw("hist");  
+  hist_mc    ->Draw("hist");
 
   hist_mc    ->GetXaxis()->SetTitle(name);
   hist_mc    ->GetYaxis()->SetTitle("entries");
 
   hist_mc    ->SetTitleSize(0.08,"Y");
-  hist_mc    ->SetTitleOffset(0.65,"Y"); 
+  hist_mc    ->SetTitleOffset(0.65,"Y");
 
   hist_data->Draw("same e");
 
@@ -800,7 +802,7 @@ void DrawMC(TString name, TString histotitle, bool log) {
   latex->SetTextAlign(13);
   latex->DrawLatex(0.08, 0.96, title);
 
-  c1->cd();  
+  c1->cd();
 
   TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
   pad1->Draw();
@@ -823,9 +825,9 @@ void DrawMC(TString name, TString histotitle, bool log) {
   histo_ratio->SetMaximum(1.6);
   histo_ratio->Draw("E1X0");
 
-  c1->cd();  
+  c1->cd();
 
-  TString name_plot=name+"_Linear"+format; 
+  TString name_plot=name+"_Linear"+format;
   if(log) name_plot=name+"_Log"+format;
   c1->SaveAs(dir4plots+"/"+name_plot);
 
