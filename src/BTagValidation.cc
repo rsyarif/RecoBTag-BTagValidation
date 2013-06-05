@@ -220,6 +220,8 @@ void BTagValidation::beginJob() {
   double PtMax = 3000.;
 
   h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",     2, -0.5, 1.5);
+  h1_CutFlow->Sumw2();
+  h1_CutFlow->SetDefaultSumw2(kTRUE); // enables automatic calling of TH1::Sumw2 for all subsequent histograms
   h1_CutFlow_unw    = fs->make<TH1D>("h1_CutFlow_unw",   "h1_CutFlow_unw", 2, -0.5, 1.5);
   h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    "h1_nPUtrue_mc",  60,0.,60.);
   h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw","h1_nPUtrue_mc",  60,0.,60.);
