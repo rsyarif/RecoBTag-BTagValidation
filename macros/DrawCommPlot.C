@@ -30,7 +30,7 @@ double QCDCrossSection = 1;
 TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/LXBatch_Jobs_JetHT_QCD/Final_histograms.root";
 TString dir4plots="Commissioning_plots";
-TString title= "CMS Preliminary, #sqrt{s} = 8 TeV,  L = ? fb^{-1}";
+TString title= "CMS Preliminary, #sqrt{s} = 8 TeV,  L = 19.8 fb^{-1}";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
 TString format=".png";
 bool bOverflow=true;
