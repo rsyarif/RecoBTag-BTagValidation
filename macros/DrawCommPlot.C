@@ -27,10 +27,10 @@
 using namespace std;
 
 double QCDCrossSection = 1;
-//TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_InclusiveJets/Final_histograms.root";
+TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_InclusiveJets/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms.root";
-TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets/Final_histograms.root";
+//TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/LXBatch_Jobs_JetHT_QCD/Final_histograms.root";
 TString dir4plots="Commissioning_plots";
 TString title= "CMS Preliminary, #sqrt{s} = 8 TeV,  L = 19.8 fb^{-1}";
@@ -81,12 +81,12 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 //     DrawStacked(histoTag+"_track_multi"   ,    "number of tracks in the jets",0,1);
     DrawStacked(histoTag+"_trk_multi_sel" ,    "number of selected tracks in the jets",0,1);
 //     DrawStacked(histoTag+"_track_chi2"    ,    "normalized #chi^{2} of the tracks",1,1);
-//     DrawStacked(histoTag+"_track_nHit"    ,    "number of hits",1,1);
-//     DrawStacked(histoTag+"_track_HPix"    ,    "number of hits in the Pixel",1,1);
+    DrawStacked(histoTag+"_track_nHit"    ,    "number of hits",1,1);
+    DrawStacked(histoTag+"_track_HPix"    ,    "number of hits in the Pixel",1,1);
     DrawStacked(histoTag+"_track_len"     ,    "Track decay length",1,1);
-//     DrawStacked(histoTag+"_track_dist"    ,    "Track distance to the jet axis",1,1);
+    DrawStacked(histoTag+"_track_dist"    ,    "Track distance to the jet axis",1,1);
 //     DrawStacked(histoTag+"_track_dz"      ,    "Track transverse IP",1,1);
-//     DrawStacked(histoTag+"_track_pt"      ,    "p_{T} of all the tracks",1,1);
+    DrawStacked(histoTag+"_track_pt"      ,    "p_{T} of all the tracks",1,1);
 //     DrawStacked(histoTag+"_track_isfromSV",    "Track is from SV",1,1);
 
     DrawStacked(histoTag+"_track_IPs"    ,      "3D IP significance of all tracks",1,1);
@@ -119,9 +119,9 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_track_nHit_cut"    ,"Number of hits @N-1 step",1,1);
     DrawStacked(histoTag+"_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",1,1);
 //     DrawStacked(histoTag+"_track_len_cut"     ,"Decay length @N-1 step",1,1);
-    DrawStacked(histoTag+"_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,1);
+//     DrawStacked(histoTag+"_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,1);
 //     DrawStacked(histoTag+"_track_dz_cut"      ,"Transverse IP @N-1 step",1,1);
-    DrawStacked(histoTag+"_track_pt_cut"	    ,"Track p_{T} @N-1 step",1,1);
+//     DrawStacked(histoTag+"_track_pt_cut"	    ,"Track p_{T} @N-1 step",1,1);
   }
   if (Draw_sv_plots){
     DrawStacked(histoTag+"_pt_sv"     ,"p_{T} of jets containing a SV",1 ,1);
@@ -193,19 +193,16 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 
   }
 
-  /*
-     if (Draw_2D_plots){
-     Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0);
-     Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",  0);
-     Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass", 0);
-     Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet", 0);
-     Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum", 0);
-     Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction", 0);
-     Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",	 0);
-     Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",  0);
-     }
-     */
-
+  if (Draw_2D_plots){
+    Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0);
+    Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",  0);
+    Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass", 0);
+    Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet", 0);
+    Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum", 0);
+    Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction", 0);
+    Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",	 0);
+    Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",  0);
+  }
 }
 
 //--------------------------
