@@ -29,6 +29,11 @@ options.register('applyFatJetMuonTagging', False,
     VarParsing.varType.bool,
     "Apply muon tagging to fat jets"
 )
+options.register('fatJetDoubleMuon', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Require fat jets to be double-muon-tagged"
+)
 options.register('processSubJets', True,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
@@ -86,6 +91,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     InputTTree             = cms.string('btaganaSubJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
+    FatJetDoubleMuon       = cms.bool(options.fatJetDoubleMuon),
     ProcessSubJets         = cms.bool(options.processSubJets),
     ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
     JetPtMin               = cms.double(options.jetPtMin),

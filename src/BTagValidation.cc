@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.10 2013/06/04 11:01:44 devdatta Exp $
+// $Id: BTagValidation.cc,v 1.12 2013/06/05 05:17:46 ferencek Exp $
 //
 //
 
@@ -124,6 +124,7 @@ class BTagValidation : public edm::EDAnalyzer {
     const std::string               inputTTree_;
     const std::vector<std::string>  inputFiles_;
     const bool                      applyFatJetMuonTagging_;
+    const bool                      fatJetDoubleMuon_;
     const bool                      processSubJets_;
     const bool                      applySubJetMuonTagging_;
     const double                    jetPtMin_;
@@ -160,6 +161,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   inputTTree_(iConfig.getParameter<std::string>("InputTTree")),
   inputFiles_(iConfig.getParameter<std::vector<std::string> >("InputFiles")),
   applyFatJetMuonTagging_(iConfig.getParameter<bool>("ApplyFatJetMuonTagging")),
+  fatJetDoubleMuon_(iConfig.getParameter<bool>("FatJetDoubleMuon")),
   processSubJets_(iConfig.getParameter<bool>("ProcessSubJets")),
   applySubJetMuonTagging_(iConfig.getParameter<bool>("ApplySubJetMuonTagging")),
   jetPtMin_(iConfig.getParameter<double>("JetPtMin")),
@@ -449,7 +451,52 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         }
       }
 
-      if(applyFatJetMuonTagging_ && nselmuon==0) continue;  //// if enabled, select muon-tagged fat jets
+      bool isDoubleMuonTagged = false;
+
+      if( fatJetDoubleMuon_ && SubJetInfo.nMuon>0)
+      {
+        // collect all muons matched to the two subjets
+        std::vector<int> selectedMuonIdx1, selectedMuonIdx2;
+
+        int iSubJet1 = FatJetInfo.Jet_SubJet1Idx[iJet];
+        int iSubJet2 = FatJetInfo.Jet_SubJet2Idx[iJet];
+
+        for (int iMu=0; iMu<SubJetInfo.nMuon; ++iMu)
+        {
+          if ( SubJetInfo.Muon_IdxJet[iMu]==iSubJet1 )
+          {
+            if (passMuonSelection(iMu, SubJetInfo, iSubJet1))
+              selectedMuonIdx1.push_back(iMu);
+          }
+          if ( SubJetInfo.Muon_IdxJet[iMu]==iSubJet2 )
+          {
+            if (passMuonSelection(iMu, SubJetInfo, iSubJet2))
+              selectedMuonIdx2.push_back(iMu);
+          }
+        }
+
+        // check that there are at least two distinct muons matched to the two subjets
+        for(unsigned int iMu1=0; iMu1<selectedMuonIdx1.size(); ++iMu1)
+        {
+          for(unsigned int iMu2=0; iMu2<selectedMuonIdx2.size(); ++iMu2)
+          {
+            if( fabs( SubJetInfo.Muon_eta[selectedMuonIdx1.at(iMu1)] - SubJetInfo.Muon_eta[selectedMuonIdx2.at(iMu2)] ) > 1.E-03 &&
+                fabs( SubJetInfo.Muon_phi[selectedMuonIdx1.at(iMu1)] - SubJetInfo.Muon_phi[selectedMuonIdx2.at(iMu2)] ) > 1.E-03 &&
+                fabs( SubJetInfo.Muon_pt[selectedMuonIdx1.at(iMu1)] - SubJetInfo.Muon_pt[selectedMuonIdx2.at(iMu2)] ) > 1.E-03 )
+            {
+              isDoubleMuonTagged = true;
+              break;
+            }
+          }
+          if( isDoubleMuonTagged ) break;
+        }
+      }
+
+      if(applyFatJetMuonTagging_ ) //// if enabled, select muon-tagged fat jets
+      {
+        if( fatJetDoubleMuon_ && !isDoubleMuonTagged ) continue;
+        else if( !fatJetDoubleMuon_ && nselmuon==0)    continue;
+      }
 
       //// fat jet multiplicity
       ++nFatJet;
