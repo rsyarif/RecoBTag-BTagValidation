@@ -105,7 +105,7 @@ def main():
       scale = 1.
       if group_xs[group] > 0.:
         scale = dataset_xs[dataset]/(group_xs[group]*nEvents)
-        print dataset + '-- relative xs: ' + str(dataset_xs[dataset]/group_xs[group]) + ', scale: ' + str(scale)
+        print dataset + ' -- relative xs: ' + str(dataset_xs[dataset]/group_xs[group]) + ', scale: ' + str(scale)
       else:
         print dataset + ' -- scale: ' + str(scale)
 
