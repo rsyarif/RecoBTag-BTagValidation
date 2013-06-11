@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.12 2013/06/05 05:17:46 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.13 2013/06/06 05:49:51 ferencek Exp $
 //
 //
 
@@ -256,7 +256,8 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_pt_sv"            ,"p_{T} of jets containing a SV" ,PtMax/10  ,0      ,PtMax);
   AddHisto(histoTag+"_eta"              ,"#eta of all jets"              ,50        ,-2.5   ,2.5);
   AddHisto(histoTag+"_phi"              ,"#phi of all jets"              ,40        ,-1.*pi ,pi);
-  AddHisto(histoTag+"_pruned_mass"      ,"#phi of all jets"              ,200       ,0      ,400);
+  AddHisto(histoTag+"_mass"             ,"mass of all jets"              ,400       ,0      ,400);
+  AddHisto(histoTag+"_pruned_mass"      ,"pruned mass of all jets"       ,400       ,0      ,400);
 
   AddHisto(histoTag+"_muon_multi",      "number of muons",           7, -0.5,6.5  );
   AddHisto(histoTag+"_muon_multi_sel",  "number of selected muons",  7, -0.5,6.5  );
@@ -572,6 +573,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   float ptjet      = JetInfo.Jet_pt[iJet];
   float etajet     = JetInfo.Jet_eta[iJet];
   float phijet     = JetInfo.Jet_phi[iJet];
+  float mass       = JetInfo.Jet_mass[iJet];
   float massPruned = JetInfo.Jet_massPruned[iJet];
   float ntrkjet    = JetInfo.Jet_ntracks[iJet];
   int   flav       = JetInfo.Jet_flavour[iJet];
@@ -587,6 +589,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
 
   FillHisto(histoTag+"_eta"         ,flav ,isGluonSplit ,etajet     ,wtPU) ;
   FillHisto(histoTag+"_phi"         ,flav ,isGluonSplit ,phijet     ,wtPU) ;
+  FillHisto(histoTag+"_mass"        ,flav ,isGluonSplit ,mass       ,wtPU) ; 
   FillHisto(histoTag+"_pruned_mass" ,flav ,isGluonSplit ,massPruned ,wtPU) ;
   FillHisto(histoTag+"_track_multi" ,flav ,isGluonSplit ,ntrkjet    ,wtPU) ;
 
