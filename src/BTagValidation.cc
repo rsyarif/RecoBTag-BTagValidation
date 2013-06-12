@@ -247,7 +247,8 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_pruned_mass"      ,"pruned mass of all fat jets"                          ,200       ,0      ,400);
   AddHisto("FatJet_pruned_massDrop1" ,"subjet1 mass drop"                                    ,200       ,0      ,400);
   AddHisto("FatJet_pruned_massDrop2" ,"subjet2 mass drop"                                    ,200       ,0      ,400);
-  AddHisto("FatJet_subjet_dR"        ,"dR(subjet1,subjet2)"                                  ,100       ,0      ,2);
+  AddHisto("FatJet_subjet_dR"        ,"dR(subjet1,subjet2) in eta-phi plane"                 ,250       ,0      ,5);
+  AddHisto("FatJet_subjet_dyphi"    ,"dR(subjet1,subjet2) in y-phi plane"                   ,250       ,0      ,5);
   AddHisto("FatJet_nsubjettiness"    ,"tau2/tau1"                                            ,50        ,0      ,1); 
   AddHisto2D("FatJet_prunedMass_nsubjettiness", "FatJet pruned mass vs. Nsubjettiness"       ,200       ,0      ,400      ,50        ,0      ,1);
   //// Common histograms for both fat and subjets 
@@ -471,6 +472,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       double subjet_dR = subjet1_p4.DeltaR(subjet2_p4);
 
+      double subjet_dy = subjet1_p4.Rapidity() - subjet2_p4.Rapidity() ; 
+      double subjet_dphi = subjet1_p4.Phi() - subjet2_p4.Phi() ; 
+      double subjet_dyphi = sqrt( pow(subjet_dy,2.) + pow(subjet_dphi,2.) ) ; 
+
       bool isDoubleMuonTagged = false;
 
       if( fatJetDoubleMuon_ && SubJetInfo.nMuon>0)
@@ -539,9 +544,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_pruned_massDrop1"           ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet1_p4.Mag()/FatJetInfo.Jet_massPruned[iJet]    ,wtPU);
       FillHisto("FatJet_pruned_massDrop2"           ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet2_p4.Mag()/FatJetInfo.Jet_massPruned[iJet]    ,wtPU);
       FillHisto("FatJet_subjet_dR"                  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dR                                           ,wtPU);
+      FillHisto("FatJet_subjet_dyphi"               ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dyphi                                        ,wtPU);
       FillHisto("FatJet_nsubjettiness"              ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU);
       FillHisto2D("FatJet_prunedmass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massPruned[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU); 
-
 
       fillJetHistos(FatJetInfo, iJet, isGluonSplit, "FatJet", nmu, nselmuon, idxFirstMuon);
 
