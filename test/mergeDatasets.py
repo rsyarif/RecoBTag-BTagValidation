@@ -81,7 +81,11 @@ def main():
       dataset_xs[dataset] = xs
 
   # final output file
-  output_root_file = TFile( os.path.join(output_dir,'Final_histograms.root'), 'RECREATE' )
+  filename='Final_histograms'
+  if (len(options.analyzer_module)>0): 
+    filename+=str('_'+options.analyzer_module)
+  filename+=str('.root') 
+  output_root_file = TFile( os.path.join(output_dir,filename), 'RECREATE' )
 
   # write histograms
   groups = group_datasets.keys()
