@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.13 2013/06/06 05:49:51 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.14 2013/06/11 18:50:05 devdatta Exp $
 //
 //
 
@@ -1045,8 +1045,8 @@ bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& J
 
   bool cut_mu_pass = false;
   if (JetInfo.Muon_pt[muIdx] > 5 && fabs(JetInfo.Muon_eta[muIdx]) < 2.4 && JetInfo.Muon_isGlobal[muIdx] == 1 &&
-      JetInfo.Muon_nMuHit[muIdx] > 0 && JetInfo.Muon_nMatched[muIdx] > 1 && JetInfo.Muon_nTkHit[muIdx] > 10 &&
-      JetInfo.Muon_nPixHit[muIdx] > 1 && JetInfo.Muon_nOutHit[muIdx] < 3 && JetInfo.Muon_chi2Tk[muIdx] < 10 &&
+      JetInfo.Muon_nMuHit[muIdx] > 0 && JetInfo.Muon_nMatched[muIdx] > 1 && JetInfo.Muon_nTkHit[muIdx] > 7 &&
+      JetInfo.Muon_nPixHit[muIdx] > 1 && JetInfo.Muon_nOutHit[muIdx] < 4 && JetInfo.Muon_chi2Tk[muIdx] < 10 &&
       JetInfo.Muon_chi2[muIdx] < 10  && // JetInfo.Muon_vz[muIdx]< 2 &&
       jet.DeltaR(muon) < 0.4 &&
       fabs(JetInfo.Muon_vz[muIdx]-EvtInfo.PVz) < 2.)
