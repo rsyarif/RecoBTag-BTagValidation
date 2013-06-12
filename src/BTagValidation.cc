@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.14 2013/06/11 18:50:05 devdatta Exp $
+// $Id: BTagValidation.cc,v 1.15 2013/06/12 03:13:02 ferencek Exp $
 //
 //
 
@@ -71,7 +71,7 @@ class BTagValidation : public edm::EDAnalyzer {
     virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
     bool passTrigger() ;
-    bool passMuonSelection(const int muIdx, const JetInfoBranches& JetInfo, const int iJet);
+    bool passMuonSelection(const int muIdx, const JetInfoBranches& JetInfo, const int iJet, const double deltaR=0.4);
 
     //// Manage histograms
     void createJetHistos(const TString& histoTag);
@@ -127,6 +127,7 @@ class BTagValidation : public edm::EDAnalyzer {
     const bool                      fatJetDoubleMuon_;
     const bool                      processSubJets_;
     const bool                      applySubJetMuonTagging_;
+    const bool                      dynamicMuonSubJetDR_;
     const double                    jetPtMin_;
     const double                    jetPtMax_;
     const double                    jetAbsEtaMax_;
@@ -164,6 +165,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   fatJetDoubleMuon_(iConfig.getParameter<bool>("FatJetDoubleMuon")),
   processSubJets_(iConfig.getParameter<bool>("ProcessSubJets")),
   applySubJetMuonTagging_(iConfig.getParameter<bool>("ApplySubJetMuonTagging")),
+  dynamicMuonSubJetDR_(iConfig.getParameter<bool>("DynamicMuonSubJetDR")),
   jetPtMin_(iConfig.getParameter<double>("JetPtMin")),
   jetPtMax_(iConfig.getParameter<double>("JetPtMax")),
   jetAbsEtaMax_(iConfig.getParameter<double>("JetAbsEtaMax")),
@@ -241,6 +243,9 @@ void BTagValidation::beginJob() {
     h1_subjet_pt      = fs->make<TH1D>("h1_subjet_pt",     "h1_subjet_pt",   PtMax/10,0,PtMax);
   }
 
+  AddHisto("FatJet_pruned_mass"      ,"pruned mass of all fat jets"       ,200       ,0      ,400);
+  AddHisto("FatJet_subjet_dR"        ,"dR(subjet1,subjet2)"               ,100       ,0      ,2);
+
   //// Create jet histograms
   createJetHistos("FatJet");
   if( processSubJets_ ) createJetHistos("SubJet");
@@ -256,8 +261,7 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_pt_sv"            ,"p_{T} of jets containing a SV" ,PtMax/10  ,0      ,PtMax);
   AddHisto(histoTag+"_eta"              ,"#eta of all jets"              ,50        ,-2.5   ,2.5);
   AddHisto(histoTag+"_phi"              ,"#phi of all jets"              ,40        ,-1.*pi ,pi);
-  AddHisto(histoTag+"_mass"             ,"mass of all jets"              ,400       ,0      ,400);
-  AddHisto(histoTag+"_pruned_mass"      ,"pruned mass of all jets"       ,400       ,0      ,400);
+  AddHisto(histoTag+"_mass"             ,"mass of all jets"              ,200       ,0      ,400);
 
   AddHisto(histoTag+"_muon_multi",      "number of muons",           7, -0.5,6.5  );
   AddHisto(histoTag+"_muon_multi_sel",  "number of selected muons",  7, -0.5,6.5  );
@@ -452,6 +456,17 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         }
       }
 
+      int iSubJet1 = FatJetInfo.Jet_SubJet1Idx[iJet];
+      int iSubJet2 = FatJetInfo.Jet_SubJet2Idx[iJet];
+
+      if( processSubJets_ && (SubJetInfo.Jet_pt[iSubJet1]==0. || SubJetInfo.Jet_pt[iSubJet2]==0.) ) continue; // if processing subjets, skip fat jets for which one of the subjets has pT=0
+
+      TLorentzVector subjet1_p4, subjet2_p4;
+      subjet1_p4.SetPtEtaPhiM(SubJetInfo.Jet_pt[iSubJet1], SubJetInfo.Jet_eta[iSubJet1], SubJetInfo.Jet_phi[iSubJet1], SubJetInfo.Jet_mass[iSubJet1]);
+      subjet2_p4.SetPtEtaPhiM(SubJetInfo.Jet_pt[iSubJet2], SubJetInfo.Jet_eta[iSubJet2], SubJetInfo.Jet_phi[iSubJet2], SubJetInfo.Jet_mass[iSubJet2]);
+
+      double subjet_dR = subjet1_p4.DeltaR(subjet2_p4);
+
       bool isDoubleMuonTagged = false;
 
       if( fatJetDoubleMuon_ && SubJetInfo.nMuon>0)
@@ -459,19 +474,16 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         // collect all muons matched to the two subjets
         std::vector<int> selectedMuonIdx1, selectedMuonIdx2;
 
-        int iSubJet1 = FatJetInfo.Jet_SubJet1Idx[iJet];
-        int iSubJet2 = FatJetInfo.Jet_SubJet2Idx[iJet];
-
         for (int iMu=0; iMu<SubJetInfo.nMuon; ++iMu)
         {
           if ( SubJetInfo.Muon_IdxJet[iMu]==iSubJet1 )
           {
-            if (passMuonSelection(iMu, SubJetInfo, iSubJet1))
+            if (passMuonSelection(iMu, SubJetInfo, iSubJet1, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 )))
               selectedMuonIdx1.push_back(iMu);
           }
           if ( SubJetInfo.Muon_IdxJet[iMu]==iSubJet2 )
           {
-            if (passMuonSelection(iMu, SubJetInfo, iSubJet2))
+            if (passMuonSelection(iMu, SubJetInfo, iSubJet2, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 )))
               selectedMuonIdx2.push_back(iMu);
           }
         }
@@ -493,7 +505,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         }
       }
 
-      if(applyFatJetMuonTagging_ ) //// if enabled, select muon-tagged fat jets
+      if( applyFatJetMuonTagging_ ) //// if enabled, select muon-tagged fat jets
       {
         if( fatJetDoubleMuon_ && !isDoubleMuonTagged ) continue;
         else if( !fatJetDoubleMuon_ && nselmuon==0)    continue;
@@ -518,6 +530,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( nMatchedBHadrons > 1 ) isGluonSplit = true ;
 
       //// fill fat jet histograms
+      h1_fatjet_pt->Fill(FatJetInfo.Jet_pt[iJet],wtPU);
+      FillHisto("FatJet_pruned_mass" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massPruned[iJet] ,wtPU);
+      FillHisto("FatJet_subjet_dR"   ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dR ,wtPU);
+
       fillJetHistos(FatJetInfo, iJet, isGluonSplit, "FatJet", nmu, nselmuon, idxFirstMuon);
 
       //// process subjets
@@ -539,7 +555,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
               if (SubJetInfo.Muon_IdxJet[iMu]==iSubJet )
               {
                 ++nmuSubJet;
-                if (passMuonSelection(iMu, SubJetInfo, iSubJet))
+                if (passMuonSelection(iMu, SubJetInfo, iSubJet, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 )))
                 {
                   if(nselmuonSubJet == 0)  idxFirstMuonSubJet = iMu;
                   ++nselmuonSubJet;
@@ -554,6 +570,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           ++nSubJet;
 
           //// fill subjet histograms
+          h1_subjet_pt->Fill(SubJetInfo.Jet_pt[iSubJet],wtPU);
+
           fillJetHistos(SubJetInfo, iSubJet, false, "SubJet", nmuSubJet, nselmuonSubJet, idxFirstMuonSubJet);
         }
       }
@@ -574,23 +592,15 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   float etajet     = JetInfo.Jet_eta[iJet];
   float phijet     = JetInfo.Jet_phi[iJet];
   float mass       = JetInfo.Jet_mass[iJet];
-  float massPruned = JetInfo.Jet_massPruned[iJet];
   float ntrkjet    = JetInfo.Jet_ntracks[iJet];
   int   flav       = JetInfo.Jet_flavour[iJet];
-
-  //// jet multiplicity
-  if( histoTag == "FatJet" )
-    h1_fatjet_pt->Fill(ptjet,wtPU);
-  else if( histoTag == "SubJet" )
-    h1_subjet_pt->Fill(ptjet,wtPU);
 
   FillHisto(histoTag+"_pt_all", flav, isGluonSplit , ptjet , wtPU) ;
   if (JetInfo.Jet_SV_multi[iJet] > 0) FillHisto(histoTag+"_pt_sv", flav, isGluonSplit , ptjet , wtPU) ;
 
   FillHisto(histoTag+"_eta"         ,flav ,isGluonSplit ,etajet     ,wtPU) ;
   FillHisto(histoTag+"_phi"         ,flav ,isGluonSplit ,phijet     ,wtPU) ;
-  FillHisto(histoTag+"_mass"        ,flav ,isGluonSplit ,mass       ,wtPU) ; 
-  FillHisto(histoTag+"_pruned_mass" ,flav ,isGluonSplit ,massPruned ,wtPU) ;
+  FillHisto(histoTag+"_mass"        ,flav ,isGluonSplit ,mass       ,wtPU) ;
   FillHisto(histoTag+"_track_multi" ,flav ,isGluonSplit ,ntrkjet    ,wtPU) ;
 
   float mass_sv        = 0.;
@@ -1036,7 +1046,7 @@ bool BTagValidation::passTrigger()
 }
 
 // ------------------------------------------------------------------------------
-bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& JetInfo, const int iJet)
+bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& JetInfo, const int iJet, const double deltaR)
 {
   TLorentzVector muon, jet;
 
@@ -1046,9 +1056,9 @@ bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& J
   bool cut_mu_pass = false;
   if (JetInfo.Muon_pt[muIdx] > 5 && fabs(JetInfo.Muon_eta[muIdx]) < 2.4 && JetInfo.Muon_isGlobal[muIdx] == 1 &&
       JetInfo.Muon_nMuHit[muIdx] > 0 && JetInfo.Muon_nMatched[muIdx] > 1 && JetInfo.Muon_nTkHit[muIdx] > 7 &&
-      JetInfo.Muon_nPixHit[muIdx] > 1 && JetInfo.Muon_nOutHit[muIdx] < 4 && JetInfo.Muon_chi2Tk[muIdx] < 10 &&
+      JetInfo.Muon_nPixHit[muIdx] > 0 && JetInfo.Muon_nOutHit[muIdx] < 99 && JetInfo.Muon_chi2Tk[muIdx] < 10 &&
       JetInfo.Muon_chi2[muIdx] < 10  && // JetInfo.Muon_vz[muIdx]< 2 &&
-      jet.DeltaR(muon) < 0.4 &&
+      jet.DeltaR(muon) < deltaR &&
       fabs(JetInfo.Muon_vz[muIdx]-EvtInfo.PVz) < 2.)
     cut_mu_pass = true ;
 
