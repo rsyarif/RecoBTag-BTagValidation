@@ -29,10 +29,15 @@ options.register('applyFatJetMuonTagging', False,
     VarParsing.varType.bool,
     "Apply muon tagging to fat jets"
 )
-options.register('fatJetDoubleMuon', False,
+options.register('applyFatJetBTagging', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
-    "Require fat jets to be double-muon-tagged"
+    "Apply b tagging to fat jets"
+)
+options.register('fatJetDoubleTagging', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Require fat jets to be double-tagged"
 )
 options.register('processSubJets', True,
     VarParsing.multiplicity.singleton,
@@ -44,20 +49,30 @@ options.register('applySubJetMuonTagging', False,
     VarParsing.varType.bool,
     "Apply muon tagging to subjets"
 )
+options.register('applySubJetBTagging', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Apply b tagging to subjets"
+)
 options.register('dynamicMuonSubJetDR', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
     "Use dynamic muon-subjet dR requirement"
 )
-options.register('jetPtMin', 300.,
+options.register('applySFs', False,
     VarParsing.multiplicity.singleton,
-    VarParsing.varType.float,
-    "Minimum jet Pt"
+    VarParsing.varType.bool,
+    "Apply b-tagging SFs"
 )
-options.register('jetPtMax', 1.E6,
+options.register('fatJetPtMin', 300.,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
-    "Minimum jet Pt"
+    "Minimum fat jet Pt"
+)
+options.register('fatJetPtMax', 1.E6,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Minimum fat jet Pt"
 )
 options.register('doPUReweighting', False,
     VarParsing.multiplicity.singleton,
@@ -96,13 +111,20 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     InputTTree             = cms.string('btaganaSubJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
-    FatJetDoubleMuon       = cms.bool(options.fatJetDoubleMuon),
+    ApplyFatJetBTagging    = cms.bool(options.applyFatJetBTagging),
+    FatJetDoubleTagging    = cms.bool(options.fatJetDoubleTagging),
     ProcessSubJets         = cms.bool(options.processSubJets),
     ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
+    ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),
     DynamicMuonSubJetDR    = cms.bool(options.dynamicMuonSubJetDR),
-    JetPtMin               = cms.double(options.jetPtMin),
-    JetPtMax               = cms.double(options.jetPtMax),
-    JetAbsEtaMax           = cms.double(2.4),
+    ApplySFs               = cms.bool(options.applySFs),
+    FatJetBDiscrCut        = cms.double(0.244),
+    SubJetBDiscrCut        = cms.double(0.244),
+    FatJetPtMin            = cms.double(options.fatJetPtMin),
+    FatJetPtMax            = cms.double(options.fatJetPtMax),
+    FatJetAbsEtaMax        = cms.double(2.4),
+    SFb_shift              = cms.double(0.),
+    SFl_shift              = cms.double(0.),
     DoPUReweighting        = cms.bool(options.doPUReweighting),
     File_PUDistMC          = cms.string('PUDistMC_Summer12_PU_S10.root'),
     File_PUDistData        = cms.string('PUDistData_Run2012ABCD.root'),
