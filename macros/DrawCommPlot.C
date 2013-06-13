@@ -26,14 +26,21 @@
 
 using namespace std;
 
-double QCDCrossSection = 1;
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_InclusiveJets/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets/Final_histograms.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_FatJetPt250/Final_histograms.root";
-TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms.root";
-//TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/LXBatch_Jobs_JetHT_QCD/Final_histograms.root";
+
+TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root";
+//TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID_BTaggedSubJets/Final_histograms_btagval.root";
+//TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root";
+
+//TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID_BTaggedSubJets_AppliedSFs/Final_histograms_btagval.root";
+//TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root";
+
+TString filename_ext="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root";
+
 TString dir4plots="Commissioning_plots";
 TString title= "CMS Preliminary, #sqrt{s} = 8 TeV,  L = 19.8 fb^{-1}";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
@@ -43,7 +50,7 @@ bool web = false;
 
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag);
 void Draw(TString name, TString histotitle, bool log);
-void DrawStacked(TString name, TString histotitle, bool log, bool doData);
+void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool extNorm=false, int nRebin=1);
 void DrawTagRate(TString name, TString histotitle, bool log, bool doData);
 void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY, bool log, bool doData);
 
@@ -57,7 +64,7 @@ void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bo
   gStyle->SetPadTickX(1);  // To get tick marks on the opposite side of the frame
   gStyle->SetPadTickY(1);  // To get tick marks on the opposite side of the frame
 
-  TString action = "mkdir -p "+dir4plots;
+  TString action = "mkdir -p " + dir4plots;
   system(action);
 
   Draw("h1_nPV"      ,"# of PV",0);
@@ -76,14 +83,16 @@ void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bo
 //--------------------------
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag) {
 
-  DrawStacked(histoTag+"_pt_all"      ,"p_{T} of all jets"          ,1 ,1);
-  DrawStacked(histoTag+"_eta"         ,"#eta of all jets"           ,0 ,1);
-  DrawStacked(histoTag+"_phi"         ,"#phi of all jets"           ,0 ,1);
-  DrawStacked(histoTag+"_mass"        ,"mass of all jets"           ,0 ,1);
+  DrawStacked(histoTag+"_pt_all"      ,"p_{T} of all jets"          ,1 ,1, 0, 2);
+  DrawStacked(histoTag+"_eta"         ,"#eta of all jets"           ,0 ,1, 0, 2);
+  DrawStacked(histoTag+"_phi"         ,"#phi of all jets"           ,0 ,1, 0, 2);
+  DrawStacked(histoTag+"_mass"        ,"mass of all jets"           ,0 ,1, 0, 2);
   if( histoTag=="FatJet" )
   {
-    DrawStacked(histoTag+"_pruned_mass" ,"pruned mass all jets"     ,0 ,1);
-    DrawStacked(histoTag+"_subjet_dR"   ,"dR(subjet1,subjet2)"      ,0 ,1);
+    DrawStacked(histoTag+"_pruned_mass"  ,"pruned mass all jets"     ,0 ,1, 0, 2);
+    DrawStacked(histoTag+"_subjet_dR"    ,"dR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0 ,1, 0, 2);
+    DrawStacked(histoTag+"_subjet_dyphi" ,"dR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0, 1, 0, 2);
+    DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"      ,0 ,1);
   }
 
   if (Draw_track_plots){
@@ -326,7 +335,7 @@ void Draw(TString name, TString histotitle, bool log) {
 }
 
 //--------------------------
-void DrawStacked(TString name, TString histotitle, bool log, bool doData) {
+void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool extNorm, int nRebin) {
 
   TH1D* hist_b;
   TH1D* hist_c;
@@ -335,13 +344,21 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData) {
   TH1D* hist_data;
 
   TFile *myFile  = TFile::Open(filename,"READ") ;
-
   myFile->cd();
+
   hist_b                = (TH1D*)myFile->Get("QCD__"+name+"_b");
   hist_c                = (TH1D*)myFile->Get("QCD__"+name+"_c");
   hist_gsplit           = (TH1D*)myFile->Get("QCD__"+name+"_bfromg");
   hist_l                = (TH1D*)myFile->Get("QCD__"+name+"_l");
   if (doData) hist_data = (TH1D*)myFile->Get("DATA__"+name+"_data");
+
+  if (nRebin>1) {
+    hist_b     ->Rebin(nRebin);
+    hist_c     ->Rebin(nRebin);
+    hist_gsplit->Rebin(nRebin);
+    hist_l     ->Rebin(nRebin);
+    if (doData) hist_data->Rebin(nRebin);
+  }
 
   //if (bOverflow && name!="SSV" && name!="SSVHP") {
   fix(hist_b);
@@ -357,8 +374,29 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData) {
   histo_tot ->Add(hist_gsplit);
   histo_tot ->Add(hist_l);
 
+  TH1D *hist_b_ext, *hist_c_ext, *hist_gsplit_ext, *hist_l_ext, *hist_data_ext;
+  TFile *myFile_ext;
+
+  if (extNorm) {
+    myFile_ext = TFile::Open(filename_ext,"READ") ;
+    myFile_ext->cd();
+    hist_b_ext                = (TH1D*)myFile_ext->Get("QCD__"+name+"_b");
+    hist_c_ext                = (TH1D*)myFile_ext->Get("QCD__"+name+"_c");
+    hist_gsplit_ext           = (TH1D*)myFile_ext->Get("QCD__"+name+"_bfromg");
+    hist_l_ext                = (TH1D*)myFile_ext->Get("QCD__"+name+"_l");
+    if (doData) hist_data_ext = (TH1D*)myFile_ext->Get("DATA__"+name+"_data");
+
+    fix(hist_b_ext);
+    fix(hist_c_ext);
+    fix(hist_gsplit_ext);
+    fix(hist_l_ext);
+    if (doData) fix(hist_data_ext);
+  }
+
   if (doData) {
     float scale_f = ( hist_data->Integral() )/( histo_tot->Integral() ) ;
+    if (extNorm) scale_f = ( hist_data_ext->Integral() )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_l_ext->Integral() ) ;
+    cout << "scale_f = " << scale_f << endl;
     hist_b       ->Scale(scale_f);
     hist_c       ->Scale(scale_f);
     hist_gsplit  ->Scale(scale_f);
