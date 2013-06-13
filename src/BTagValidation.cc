@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.18 2013/06/12 17:07:23 devdatta Exp $
+// $Id: BTagValidation.cc,v 1.20 2013/06/13 05:31:56 ferencek Exp $
 //
 //
 
@@ -324,11 +324,11 @@ void BTagValidation::beginJob() {
 
   //// Create jet histograms
   AddHisto("FatJet_pruned_mass"      ,"pruned mass of all fat jets"                          ,200       ,0      ,400);
-  AddHisto("FatJet_pruned_massDrop1" ,"subjet1 mass drop"                                    ,200       ,0      ,400);
-  AddHisto("FatJet_pruned_massDrop2" ,"subjet2 mass drop"                                    ,200       ,0      ,400);
-  AddHisto("FatJet_subjet_dR"        ,"dR(subjet_{1},subjet_{2}) in #eta-#phi plane"         ,250       ,0      ,5);
-  AddHisto("FatJet_subjet_dyphi"     ,"dR(subjet_{1},subjet_{2}) in y-#phi plane"            ,250       ,0      ,5);
-  AddHisto("FatJet_nsubjettiness"    ,"#tau_{2}/#tau_{1}"                                    ,50        ,0      ,1);
+  AddHisto("FatJet_pruned_massDrop1" ,"subjet1 mass drop"                                    ,50        ,0      ,4);
+  AddHisto("FatJet_pruned_massDrop2" ,"subjet2 mass drop"                                    ,50        ,0      ,4);
+  AddHisto("FatJet_subjet_dR"        ,"dR(subjet1,subjet2) in eta-phi plane"                 ,250       ,0      ,5);
+  AddHisto("FatJet_subjet_dyphi"     ,"dR(subjet1,subjet2) in y-phi plane"                   ,250       ,0      ,5);
+  AddHisto("FatJet_nsubjettiness"    ,"tau2/tau1"                                            ,50        ,0      ,1); 
   AddHisto2D("FatJet_prunedMass_nsubjettiness", "FatJet pruned mass vs. Nsubjettiness"       ,200       ,0      ,400      ,50        ,0      ,1);
   //// Common histograms for both fat jets and subjets
   createJetHistos("FatJet");
