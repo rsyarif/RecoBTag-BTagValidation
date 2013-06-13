@@ -41,11 +41,11 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 void Draw(TString name, TString histotitle, bool log);
 void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool extNorm=false, int nRebin=1);
 void DrawTagRate(TString name, TString histotitle, bool log, bool doData);
-void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY, bool log, bool doData);
+void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY, bool log, bool doData, bool doProfile);
 
 
 //--------------------------
-void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bool Draw_sv_plots=false, bool Draw_muons_plots=false, bool Draw_discriminator_plots=false, bool Draw_tagRate_plots=false, bool Draw_2D_plots=false){
+void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bool Draw_sv_plots=false, bool Draw_muons_plots=false, bool Draw_discriminator_plots=false, bool Draw_tagRate_plots=false, bool Draw_2D_plots=true){
 
   gROOT->SetBatch(kTRUE);
 //gROOT->ProcessLine(".L CMSstyle.C") ;
@@ -88,6 +88,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"      ,extNorm ,1);
     DrawStacked(histoTag+"_pruned_massDrop1","M(subjet1)/M(pruned fat jet mass)",extNorm ,1);
     DrawStacked(histoTag+"_pruned_massDrop2","M(subjet1)/M(pruned fat jet mass)",extNorm ,1);
+    if (Draw_2D_plots) Draw2DPlot(histoTag+"_prunedMass_nsubjettiness", "FatJet pruned mass vs. Nsubjettiness", "FatJet pruned mass", "Nsubjettiness", 0., 1., 0) ; 
   }
 
   if (Draw_track_plots){
@@ -206,16 +207,17 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 
   }
 
-  if (Draw_2D_plots){
-    Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0,1);
-    Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",0,1);
-    Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass",0,1);
-    Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet",0,1);
-    Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum",0,1);
-    Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction",0,1);
-    Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",0,1);
-    Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",0,1);
-  }
+  //if (Draw_2D_plots){
+  //  Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0,1);
+  //  Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",0,1);
+  //  Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass",0,1);
+  //  Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet",0,1);
+  //  Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum",0,1);
+  //  Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction",0,1);
+  //  Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",0,1);
+  //  Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",0,1);
+
+  //}
 }
 
 //--------------------------
@@ -743,24 +745,26 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
 }
 
 //--------------------------
-void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY, bool log, bool doData) {
+void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY, bool log, bool doData, bool doProfile) {
 
-  TH2F* hist_b;
-  TH2F* hist_c;
-  TH2F* hist_gsplit;
-  TH2F* hist_l;
-  TH2F* hist_data;
+  TH2D* hist_b;
+  TH2D* hist_c;
+  TH2D* hist_gsplit;
+  TH2D* hist_l;
+  TH2D* hist_data;
 
   TFile *myFile     = TFile::Open(filename,"READ");
-
   myFile->cd();
-  hist_b         = (TH2F*)myFile->Get(name+"_b");
-  hist_c         = (TH2F*)myFile->Get(name+"_c");
-  hist_gsplit    = (TH2F*)myFile->Get(name+"_bfromg");
-  hist_l         = (TH2F*)myFile->Get(name+"_l");
-  hist_data      = (TH2F*)myFile->Get(name+"_data");
 
-  TH2F* histo_tot = (TH2F*) hist_b->Clone();
+  hist_b         = (TH2D*)myFile->Get("QCD__"+name+"_b");
+  hist_c         = (TH2D*)myFile->Get("QCD__"+name+"_c");
+  hist_gsplit    = (TH2D*)myFile->Get("QCD__"+name+"_bfromg");
+  hist_l         = (TH2D*)myFile->Get("QCD__"+name+"_l");
+  hist_data      = (TH2D*)myFile->Get("DATA__"+name+"_data");
+
+  //return ; 
+
+  TH2D* histo_tot = (TH2D*) hist_b->Clone();
   histo_tot ->Add(hist_c);
   histo_tot ->Add(hist_gsplit);
   histo_tot ->Add(hist_l);
@@ -775,123 +779,165 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     histo_tot    ->Scale(scale_f);
   }
 
-  TProfile * pro_mc = histo_tot->ProfileX(name+"_tot");
-  TProfile * pro_mc_b = hist_b->ProfileX();
-  TProfile * pro_mc_c = hist_c->ProfileX();
-  TProfile * pro_mc_udsg = hist_l->ProfileX();
-  TProfile * pro_mc_gspl = hist_gsplit->ProfileX();
-  TProfile * pro_data = hist_data->ProfileX();
+  histo_tot->RebinX(10) ;  
+  histo_tot->RebinY(50) ; 
+  hist_data->RebinX(10) ;  
+  hist_data->RebinY(50) ; 
+         
+  TProfile* pro_mc      ;            
+  TProfile* pro_mc_b    ;            
+  TProfile* pro_mc_c    ;            
+  TProfile* pro_mc_udsg ;            
+  TProfile* pro_mc_gspl ;            
+  TProfile* pro_data    ;            
 
-  // SET COLORS
-  pro_mc->SetLineColor(1);
-  pro_mc_b->SetLineColor(2);
-  pro_mc_c->SetLineColor(8);
-  pro_mc_udsg->SetLineColor(4);
-  pro_mc_gspl->SetLineColor(7);
+  if (doProfile) { 
+    pro_mc      = histo_tot->ProfileX(name+"_tot");
+    pro_mc_b    = hist_b->ProfileX();
+    pro_mc_c    = hist_c->ProfileX();
+    pro_mc_udsg = hist_l->ProfileX();
+    pro_mc_gspl = hist_gsplit->ProfileX();
+    pro_data    = hist_data->ProfileX();
 
-  pro_data->SetMarkerStyle(20);
-  pro_data->SetMarkerSize(0.75);
+    pro_mc     ->Rebin(5) ; 
+    pro_mc_b   ->Rebin(5) ; 
+    pro_mc_c   ->Rebin(5) ; 
+    pro_mc_udsg->Rebin(5) ; 
+    pro_mc_gspl->Rebin(5) ; 
+    pro_data   ->Rebin(5) ; 
 
-  pro_mc_gspl->GetXaxis()->SetTitle(titleX);
-  pro_mc_gspl->GetYaxis()->SetTitle(titleY);
+    //beautify(pro_mc     , 0, 1, 1);
+    //beautify(pro_mc_b   , 0, 1, 1);
+    //beautify(pro_mc_c   , 0, 1, 1);
+    //beautify(pro_mc_udsg, 0, 1, 1);
+    //beautify(pro_mc_gspl, 0, 1, 1);
 
-  // SET COSMETICS
-  pro_data->SetMarkerStyle(20);
-  pro_data->SetMarkerSize(0.75);
-  //pro_mc_gspl->GetXaxis()->SetTitle();
-  //pro_mc_gspl->GetYaxis()->SetTitle();
+    pro_mc->SetLineColor(1);
+    pro_mc_b->SetLineColor(2);
+    pro_mc_c->SetLineColor(8);
+    pro_mc_udsg->SetLineColor(4);
+    pro_mc_gspl->SetLineColor(7);
 
-  Double_t titleoffsetx=0.8;
-  Double_t titleoffsety=0.8;
-  Double_t titlesizex=0.05;
-  Double_t titlesizey=0.05;
-  Double_t labelsizex=0.035;
-  Double_t labelsizey=0.035;
+    pro_data->SetMarkerStyle(20);
+    pro_data->SetMarkerSize(0.75);
 
-  pro_data->GetYaxis()->SetLabelSize(labelsizey);
-  pro_data->GetYaxis()->SetTitleSize(titlesizey);
-  pro_data->GetYaxis()->SetTitleOffset(titleoffsety);
-  pro_mc->GetYaxis()->SetLabelSize(labelsizey);
-  pro_mc->GetYaxis()->SetTitleSize(titlesizey);
-  pro_mc->GetYaxis()->SetTitleOffset(titleoffsety);
-  pro_mc_b->GetYaxis()->SetLabelSize(labelsizey);
-  pro_mc_b->GetYaxis()->SetTitleSize(titlesizey);
-  pro_mc_b->GetYaxis()->SetTitleOffset(titleoffsety);
-  pro_mc_c->GetYaxis()->SetLabelSize(labelsizey);
-  pro_mc_c->GetYaxis()->SetTitleSize(titlesizey);
-  pro_mc_c->GetYaxis()->SetTitleOffset(titleoffsety);
+    pro_mc_gspl->GetXaxis()->SetTitle(titleX);
+    pro_mc_gspl->GetYaxis()->SetTitle(titleY);
 
-  pro_mc_gspl->GetYaxis()->SetLabelSize(labelsizey);
-  pro_mc_gspl->GetYaxis()->SetTitleSize(titlesizey);
-  pro_mc_gspl->GetYaxis()->SetTitleOffset(titleoffsety);
+    Double_t titleoffsetx=0.8;
+    Double_t titleoffsety=0.8;
+    Double_t titlesizex=0.05;
+    Double_t titlesizey=0.05;
+    Double_t labelsizex=0.035;
+    Double_t labelsizey=0.035;
 
-  pro_mc_udsg->GetYaxis()->SetLabelSize(labelsizey);
-  pro_mc_udsg->GetYaxis()->SetTitleSize(titlesizey);
-  pro_mc_udsg->GetYaxis()->SetTitleOffset(titleoffsety);
+    pro_data->GetYaxis()->SetLabelSize(labelsizey);
+    pro_data->GetYaxis()->SetTitleSize(titlesizey);
+    pro_data->GetYaxis()->SetTitleOffset(titleoffsety);
+    pro_mc->GetYaxis()->SetLabelSize(labelsizey);
+    pro_mc->GetYaxis()->SetTitleSize(titlesizey);
+    pro_mc->GetYaxis()->SetTitleOffset(titleoffsety);
+    pro_mc_b->GetYaxis()->SetLabelSize(labelsizey);
+    pro_mc_b->GetYaxis()->SetTitleSize(titlesizey);
+    pro_mc_b->GetYaxis()->SetTitleOffset(titleoffsety);
+    pro_mc_c->GetYaxis()->SetLabelSize(labelsizey);
+    pro_mc_c->GetYaxis()->SetTitleSize(titlesizey);
+    pro_mc_c->GetYaxis()->SetTitleOffset(titleoffsety);
 
+    pro_mc_gspl->GetYaxis()->SetLabelSize(labelsizey);
+    pro_mc_gspl->GetYaxis()->SetTitleSize(titlesizey);
+    pro_mc_gspl->GetYaxis()->SetTitleOffset(titleoffsety);
 
+    pro_mc_udsg->GetYaxis()->SetLabelSize(labelsizey);
+    pro_mc_udsg->GetYaxis()->SetTitleSize(titlesizey);
+    pro_mc_udsg->GetYaxis()->SetTitleOffset(titleoffsety);
 
-  pro_data->GetXaxis()->SetLabelSize(labelsizex);
-  pro_data->GetXaxis()->SetTitleSize(titlesizex);
-  pro_data->GetXaxis()->SetTitleOffset(titleoffsetx);
-  pro_mc->GetXaxis()->SetLabelSize(labelsizex);
-  pro_mc->GetXaxis()->SetTitleSize(titlesizex);
-  pro_mc->GetXaxis()->SetTitleOffset(titleoffsetx);
-  pro_mc_b->GetXaxis()->SetLabelSize(labelsizex);
-  pro_mc_b->GetXaxis()->SetTitleSize(titlesizex);
-  pro_mc_b->GetXaxis()->SetTitleOffset(titleoffsetx);
-  pro_mc_c->GetXaxis()->SetLabelSize(labelsizex);
-  pro_mc_c->GetXaxis()->SetTitleSize(titlesizex);
-  pro_mc_c->GetXaxis()->SetTitleOffset(titleoffsetx);
+    pro_data->GetXaxis()->SetLabelSize(labelsizex);
+    pro_data->GetXaxis()->SetTitleSize(titlesizex);
+    pro_data->GetXaxis()->SetTitleOffset(titleoffsetx);
+    pro_mc->GetXaxis()->SetLabelSize(labelsizex);
+    pro_mc->GetXaxis()->SetTitleSize(titlesizex);
+    pro_mc->GetXaxis()->SetTitleOffset(titleoffsetx);
+    pro_mc_b->GetXaxis()->SetLabelSize(labelsizex);
+    pro_mc_b->GetXaxis()->SetTitleSize(titlesizex);
+    pro_mc_b->GetXaxis()->SetTitleOffset(titleoffsetx);
+    pro_mc_c->GetXaxis()->SetLabelSize(labelsizex);
+    pro_mc_c->GetXaxis()->SetTitleSize(titlesizex);
+    pro_mc_c->GetXaxis()->SetTitleOffset(titleoffsetx);
 
-  pro_mc_gspl->GetXaxis()->SetLabelSize(labelsizex);
-  pro_mc_gspl->GetXaxis()->SetTitleSize(titlesizex);
-  pro_mc_gspl->GetXaxis()->SetTitleOffset(titleoffsetx);
+    pro_mc_gspl->GetXaxis()->SetLabelSize(labelsizex);
+    pro_mc_gspl->GetXaxis()->SetTitleSize(titlesizex);
+    pro_mc_gspl->GetXaxis()->SetTitleOffset(titleoffsetx);
 
-  pro_mc_udsg->GetXaxis()->SetLabelSize(labelsizex);
-  pro_mc_udsg->GetXaxis()->SetTitleSize(titlesizex);
-  pro_mc_udsg->GetXaxis()->SetTitleOffset(titleoffsetx);
+    pro_mc_udsg->GetXaxis()->SetLabelSize(labelsizex);
+    pro_mc_udsg->GetXaxis()->SetTitleSize(titlesizex);
+    pro_mc_udsg->GetXaxis()->SetTitleOffset(titleoffsetx);
+
+    float maxhist= pro_mc_gspl->GetMaximum();
+    if (pro_mc_b->GetMaximum() > maxhist) maxhist = pro_mc_b->GetMaximum()*1.1;
+    if (pro_mc_c->GetMaximum() > maxhist) maxhist = pro_mc_c->GetMaximum()*1.1;
+    if (pro_mc_udsg->GetMaximum() > maxhist) maxhist = pro_mc_udsg->GetMaximum()*1.1;
+    if (pro_mc->GetMaximum() > maxhist) maxhist = pro_mc->GetMaximum()*1.1;
+    if (pro_data->GetMaximum() > maxhist) maxhist = pro_data->GetMaximum()*1.1;
+
+    float minhist= pro_mc_gspl->GetMinimum();
+    if (pro_mc_b->GetMinimum() < minhist) minhist = pro_mc_b->GetMinimum()*0.9;
+    if (pro_mc_c->GetMinimum() < minhist) minhist = pro_mc_c->GetMinimum()*0.9;
+    if (pro_mc_udsg->GetMinimum() < minhist) minhist = pro_mc_udsg->GetMinimum()*0.9;
+    if (pro_mc->GetMinimum() < minhist) minhist = pro_mc->GetMinimum()*0.9;
+    if (pro_data->GetMinimum() < minhist) minhist = pro_data->GetMinimum()*0.9;
+
+    if (maxhist> pro_mc_gspl->GetMaximum()) pro_mc_gspl->SetMaximum(maxhist);
+    if (pro_mc_gspl->GetMinimum() >minhist) pro_mc_gspl->SetMinimum(minhist);
+
+    pro_mc_gspl->Draw("hist");
+    pro_mc_b->Draw("hist,same");
+    pro_mc_c->Draw("hist,same");
+    pro_mc_udsg->Draw("hist,same");
+    pro_mc->Draw("hist,same");
+    pro_data->Draw("e,same");
+  } 
 
   TCanvas *canvas = new TCanvas("c1", "c1",10,32,782,552);
   canvas->cd();
+  canvas->SetRightMargin(0.08) ; 
 
-  float maxhist= pro_mc_gspl->GetMaximum();
-  if (pro_mc_b->GetMaximum() > maxhist) maxhist = pro_mc_b->GetMaximum()*1.1;
-  if (pro_mc_c->GetMaximum() > maxhist) maxhist = pro_mc_c->GetMaximum()*1.1;
-  if (pro_mc_udsg->GetMaximum() > maxhist) maxhist = pro_mc_udsg->GetMaximum()*1.1;
-  if (pro_mc->GetMaximum() > maxhist) maxhist = pro_mc->GetMaximum()*1.1;
-  if (pro_data->GetMaximum() > maxhist) maxhist = pro_data->GetMaximum()*1.1;
+  hist_data->SetMarkerStyle(kOpenCircle) ; 
+  histo_tot->SetMarkerStyle(kOpenCircle) ; 
+  hist_data->SetMarkerColor(kBlack) ; 
+  histo_tot->SetMarkerColor(kBlue) ; 
 
-  float minhist= pro_mc_gspl->GetMinimum();
-  if (pro_mc_b->GetMinimum() < minhist) minhist = pro_mc_b->GetMinimum()*0.9;
-  if (pro_mc_c->GetMinimum() < minhist) minhist = pro_mc_c->GetMinimum()*0.9;
-  if (pro_mc_udsg->GetMinimum() < minhist) minhist = pro_mc_udsg->GetMinimum()*0.9;
-  if (pro_mc->GetMinimum() < minhist) minhist = pro_mc->GetMinimum()*0.9;
-  if (pro_data->GetMinimum() < minhist) minhist = pro_data->GetMinimum()*0.9;
+  histo_tot->SetMinimum(0) ; 
+  histo_tot->SetMaximum(10) ; 
 
-  if (maxhist> pro_mc_gspl->GetMaximum()) pro_mc_gspl->SetMaximum(maxhist);
-  if (pro_mc_gspl->GetMinimum() >minhist) pro_mc_gspl->SetMinimum(minhist);
+  TAxis* ax = histo_tot->GetXaxis() ; 
+  TAxis* ay = histo_tot->GetYaxis() ; 
+  ax->SetTitle(titleX) ; 
+  ay->SetTitle(titleY) ; 
+  beautifyAxis(ax) ; 
+  beautifyAxis(ay) ; 
 
-  pro_mc_gspl->Draw("hist");
-  pro_mc_b->Draw("hist,same");
-  pro_mc_c->Draw("hist,same");
-  pro_mc_udsg->Draw("hist,same");
-  pro_mc->Draw("hist,same");
-  pro_data->Draw("e,same");
+  histo_tot->Draw("");
+  hist_data->Draw("SAME");
 
   TLegend* qw = 0;
-  qw =  new TLegend(0.6,0.73,0.95,1.);
-  qw->SetHeader(histotitle) ;
-  qw->AddEntry(pro_data,        datacaption              ,"p") ;
-  qw->AddEntry(pro_mc,          "total "                 ,"l") ;
-  qw->AddEntry(pro_mc_b,        "b quark"                ,"l") ;
-  qw->AddEntry(pro_mc_gspl,     "b from gluon splitting" ,"l") ;
-  qw->AddEntry(pro_mc_c,        "c quark"                ,"l") ;
-  qw->AddEntry(pro_mc_udsg,     "uds quark or gluon"     ,"l") ;
-
+  qw =  new TLegend(0.7,0.82,0.9,.94);
+  if (doProfile) {
+    qw =  new TLegend(0.6,0.73,0.95,1.);
+    qw->AddEntry(pro_data,        datacaption              ,"p") ;
+    qw->AddEntry(pro_mc,          "total "                 ,"l") ;
+    qw->AddEntry(pro_mc_b,        "b quark"                ,"l") ;
+    qw->AddEntry(pro_mc_gspl,     "b from gluon splitting" ,"l") ;
+    qw->AddEntry(pro_mc_c,        "c quark"                ,"l") ;
+    qw->AddEntry(pro_mc_udsg,     "uds quark or gluon"     ,"l") ;
+  } 
+  else {
+    qw->AddEntry(hist_data,  datacaption ,"p") ;
+    qw->AddEntry(histo_tot,  "QCD MC"    ,"p") ;
+  }
+  qw->SetBorderSize(2); 
   qw->SetFillColor(0);
   qw->Draw();
-
 
   TString name_plot=name+"_Linear"+format;
   if(log) name_plot=name+"_Log"+format;
