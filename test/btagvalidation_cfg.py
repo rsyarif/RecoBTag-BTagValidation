@@ -224,4 +224,13 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     )
 )
 
-process.p = cms.Path(process.btagval)
+process.btagvalsubjetmu = process.btagval.clone(
+    ApplySubJetMuonTagging = cms.bool(not options.applySubJetMuonTagging),
+)
+
+process.btagvalsubjetbtag = process.btagval.clone(
+    ApplySubJetMuonTagging = cms.bool(not options.applySubJetMuonTagging),
+    ApplySubJetBTagging = cms.bool(True),
+)
+
+process.p = cms.Path(process.btagval + process.btagvalsubjetmu + process.btagvalsubjetbtag) 

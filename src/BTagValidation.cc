@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.20 2013/06/13 05:31:56 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.21 2013/06/13 12:18:56 devdatta Exp $
 //
 //
 
@@ -541,6 +541,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         }
       }
 
+      TLorentzVector jet_p4;
+      jet_p4.SetPtEtaPhiM(FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_phi[iJet], FatJetInfo.Jet_mass[iJet]);
+
       int iSubJet1 = FatJetInfo.Jet_SubJet1Idx[iJet];
       int iSubJet2 = FatJetInfo.Jet_SubJet2Idx[iJet];
 
@@ -550,11 +553,17 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       subjet1_p4.SetPtEtaPhiM(SubJetInfo.Jet_pt[iSubJet1], SubJetInfo.Jet_eta[iSubJet1], SubJetInfo.Jet_phi[iSubJet1], SubJetInfo.Jet_mass[iSubJet1]);
       subjet2_p4.SetPtEtaPhiM(SubJetInfo.Jet_pt[iSubJet2], SubJetInfo.Jet_eta[iSubJet2], SubJetInfo.Jet_phi[iSubJet2], SubJetInfo.Jet_mass[iSubJet2]);
 
+      double fatjet_subjet1_dR = jet_p4.DeltaR(subjet1_p4);
+      double fatjet_subjet2_dR = jet_p4.DeltaR(subjet2_p4);
       double subjet_dR = subjet1_p4.DeltaR(subjet2_p4);
 
       double subjet_dy = subjet1_p4.Rapidity() - subjet2_p4.Rapidity() ;
       double subjet_dphi = subjet1_p4.Phi() - subjet2_p4.Phi() ;
       double subjet_dyphi = sqrt( pow(subjet_dy,2.) + pow(subjet_dphi,2.) ) ;
+
+      if (SubJetInfo.Jet_pt[iSubJet1] < 1. || SubJetInfo.Jet_pt[iSubJet2] < 1.) edm::LogInfo("LowSubjetPt") << " Fat jet pT = " << FatJetInfo.Jet_pt[iJet] << " subjet1 pt = " << SubJetInfo.Jet_pt[iSubJet1] << " subjet2 pt = " << SubJetInfo.Jet_pt[iSubJet2] << " dR(subjet1, subjet2) = " << subjet_dR << " subjet_dy = " << subjet_dy << " subjet_dphi = " << subjet_dphi ; 
+
+      if (subjet_dR >= 0.8)  edm::LogInfo("LargeDRSubjet1Subjet2") << " Fat jet pT = " << FatJetInfo.Jet_pt[iJet] << " subjet1 pt = " << SubJetInfo.Jet_pt[iSubJet1] << " subjet2 pt = " << SubJetInfo.Jet_pt[iSubJet2] << " dR(subjet1, subjet2) = " << subjet_dR << " subjet_dy = " << subjet_dy << " subjet_dphi = " << subjet_dphi << " dR(fatjet, subjet1) = " << fatjet_subjet1_dR << " dR(fatjet, subjet2) = " << fatjet_subjet2_dR; 
 
       bool isDoubleMuonTagged = false;
 
@@ -615,9 +624,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       //// fat jet multiplicity
       ++nFatJet;
-
-      TLorentzVector jet_p4;
-      jet_p4.SetPtEtaPhiM(FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_phi[iJet], FatJetInfo.Jet_mass[iJet]);
 
       //// test if the jet is a gluon splitting b jet
       bool isGluonSplit(false);
