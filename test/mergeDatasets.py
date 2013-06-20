@@ -150,7 +150,7 @@ def main():
   output_root_file.Close()
 
   print ''
-  print 'Final histogram file: ' + os.path.join(output_dir,'Final_histograms.root')
+  print 'Final histograms file: ' + os.path.join(output_dir,filename)
   print ''
 
 
