@@ -64,6 +64,11 @@ options.register('applySFs', False,
     VarParsing.varType.bool,
     "Apply b-tagging SFs"
 )
+options.register('useFlavorCategories', True,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Use flavor categories for MC distributions"
+)
 options.register('fatJetPtMin', 300.,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
@@ -73,6 +78,16 @@ options.register('fatJetPtMax', 1.E6,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
     "Minimum fat jet Pt"
+)
+options.register('SFbShift', 0.,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Shift in SFb in units of sigmas"
+)
+options.register('SFlShift', 0.,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Shift in SFl in units of sigmas"
 )
 options.register('doPUReweighting', False,
     VarParsing.multiplicity.singleton,
@@ -110,6 +125,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     UseJetProbaTree        = cms.bool(options.useJetProbaTree),
     InputTTree             = cms.string('btaganaSubJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
+    UseFlavorCategories    = cms.bool(options.useFlavorCategories),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
     ApplyFatJetBTagging    = cms.bool(options.applyFatJetBTagging),
     FatJetDoubleTagging    = cms.bool(options.fatJetDoubleTagging),
@@ -123,8 +139,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetPtMin            = cms.double(options.fatJetPtMin),
     FatJetPtMax            = cms.double(options.fatJetPtMax),
     FatJetAbsEtaMax        = cms.double(2.4),
-    SFb_shift              = cms.double(0.),
-    SFl_shift              = cms.double(0.),
+    SFbShift               = cms.double(options.SFbShift),
+    SFlShift               = cms.double(options.SFlShift),
     DoPUReweighting        = cms.bool(options.doPUReweighting),
     File_PUDistMC          = cms.string('PUDistMC_Summer12_PU_S10.root'),
     File_PUDistData        = cms.string('PUDistData_Run2012ABCD.root'),
@@ -233,4 +249,5 @@ process.btagvalsubjetbtag = process.btagval.clone(
     ApplySubJetBTagging = cms.bool(True),
 )
 
-process.p = cms.Path(process.btagval + process.btagvalsubjetmu + process.btagvalsubjetbtag) 
+process.p = cms.Path(process.btagval)
+#process.p = cms.Path(process.btagval + process.btagvalsubjetmu + process.btagvalsubjetbtag)
