@@ -32,15 +32,20 @@ using namespace std;
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root";
 //TString filename="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root";
-TString filename="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+
+//TString filename="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/HiggsTagCommissioning_MuonTaggedSubJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
 
 //TString filename_ext="/afs/cern.ch/work/f/ferencek/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root";
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
 
-TString dir4plots="Commissioning_plots_v2";
+//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+TString filename_ext="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/HiggsTagCommissioning_MuonTaggedSubJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+
+TString dir4plots="HiggsTagCommissioning_MuonTaggedSubJets_RelaxedMuonID_v1" ; 
 TString title= "CMS Preliminary, #sqrt{s} = 8 TeV,  L = 19.8 fb^{-1}";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
-TString format=".png";
+TString formata=".pdf";
+TString formatb=".png";
 bool bOverflow = 1;
 bool web = 0;
 bool extNorm = 0;
@@ -93,7 +98,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_subjet_dR"    ,"dR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0, 1, extNorm, 2);
     DrawStacked(histoTag+"_subjet_dyphi" ,"dR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0, 1, extNorm, 2);
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"      , 0, 1, extNorm, 2);
-    DrawStacked(histoTag+"_pruned_massDrop","mass drop", 0, 1 , extNorm, 1);
+    //DrawStacked(histoTag+"_pruned_massDrop","mass drop", 0, 1 , extNorm, 1);
   }
 
   if (Draw_track_plots){
@@ -332,8 +337,11 @@ void Draw(TString name, TString histotitle, bool log) {
 
   c1->cd();
 
-  TString name_plot=name+"_Linear"+format;
-  if(log) name_plot=name+"_Log"+format;
+  TString name_plot=name+"_Linear"+formata;
+  if(log) name_plot=name+"_Log"+formata;
+  c1->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatb;
+  if(log) name_plot=name+"_Log"+formatb;
   c1->SaveAs(dir4plots+"/"+name_plot);
 
 }
@@ -414,12 +422,12 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool e
   histo_tot ->Add(hist_l);
   histo_tot ->Add(hist_ttbar);
 
-  beautify(hist_c     , 8     , 1, 1) ;
-  beautify(hist_b     , 2     , 1, 1) ;
-  beautify(hist_gsplit, 7     , 1, 1) ;
-  beautify(hist_l     , 4     , 1, 1) ;
-  beautify(hist_ttbar , 6     , 1, 1) ;
-  beautify(histo_tot  , 0     , 0, 0) ;
+  beautify(hist_c     , 8     , 1001    , 1) ;
+  beautify(hist_b     , 2     , 1001    , 1) ;
+  beautify(hist_gsplit, 7     , 1001    , 1) ;
+  beautify(hist_l     , 4     , 1001    , 1) ;
+  beautify(hist_ttbar , 6     , 1001    , 1) ;
+  beautify(histo_tot  , 0     , 1001    , 0) ;
   if (doData) beautify(hist_data  , 1     , 0, 1) ;
 
   THStack *stack = new THStack("stack","");
@@ -477,7 +485,7 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool e
 
   if (doData) hist_data->Draw("SAMEE");
 
-  gPad->RedrawAxis();
+  pad0->RedrawAxis();
 
   int move_legend=0;
   if ( name.Contains("jet_phi") || name.Contains("sv_phi") || name.Contains("muon_phi") ) move_legend=1;
@@ -509,14 +517,17 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool e
   latex->SetTextAlign(13);
   latex->DrawLatex(0.10, 0.96, title);
 
+ // pad0->Update();
+  pad0->Modified();
+
   c1->cd();
 
   if (doData) {
     TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
     pad1->Draw();
     pad1->cd();
-    gPad->SetBottomMargin(0.375);
-    gPad->SetGridy();
+    pad1->SetBottomMargin(0.375);
+    pad1->SetGridy();
 
     histo_ratio->SetMarkerStyle(20);
     histo_ratio->SetMarkerSize(0.75);
@@ -540,19 +551,28 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool e
     histo_ratio->SetMinimum(0.4);
     histo_ratio->SetMaximum(1.6);
     histo_ratio->Draw("E1X0");
+ //   pad1->Update();
+    pad1->Modified();
   }
 
   c1->cd();
+ // c1->Update();
+  c1->Modified();
+  c1->cd();
+  c1->SetSelected(c1) ;
 
-  TString name_plot=name+"_Linear"+format;
-  if(log) name_plot=name+"_Log"+format;
+  TString name_plot=name+"_Linear"+formata;
+  if(log) name_plot=name+"_Log"+formata;
+  c1->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatb;
+  if(log) name_plot=name+"_Log"+formatb;
   c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
     pad0 ->cd();
     pad0->SetLogy(false);
     c1->cd();
-    c1->SaveAs(dir4plots+"/"+name+"_Linear"+format);
+    c1->SaveAs(dir4plots+"/"+name+"_Linear"+formata);
   }
 
 }
@@ -751,15 +771,18 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
 
   c1->cd();
 
-  TString name_plot="tag_"+name+"_Linear"+format;
-  if(log) name_plot="tag_"+name+"_Log"+format;
+  TString name_plot=name+"_Linear"+formata;
+  if(log) name_plot=name+"_Log"+formata;
+  c1->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatb;
+  if(log) name_plot=name+"_Log"+formatb;
   c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
     c1_1 ->cd();
     c1_1->SetLogy(false);
     c1->cd();
-    c1->SaveAs(dir4plots+"/tag_"+name+"_Linear"+format);
+    c1->SaveAs(dir4plots+"/tag_"+name+"_Linear"+formata);
   }
 }
 
@@ -958,8 +981,11 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   qw->SetFillColor(0);
   qw->Draw();
 
-  TString name_plot=name+"_Linear"+format;
-  if(log) name_plot=name+"_Log"+format;
+  TString name_plot=name+"_Linear"+formata;
+  if(log) name_plot=name+"_Log"+formata;
+  canvas->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatb;
+  if(log) name_plot=name+"_Log"+formatb;
   canvas->SaveAs(dir4plots+"/"+name_plot);
 
 }
