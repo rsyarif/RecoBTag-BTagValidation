@@ -59,18 +59,18 @@ void variableRebin(TH1* hin,TH1* hrebin) {
 }
 
 void beautifyNotFix(TH1* in, int color=kBlack, int style=0) {
-  in->SetFillStyle(style);
+  if(style==0 || style>3000) in->SetFillStyle(style);
   in->SetFillColor(color);
   in->SetLineColor(color);
 }
 
 void beautifyFillStyle(TH1* in, int color=kBlack, int style=0) {
-  in->SetFillStyle(style);
+  if(style==0 || style>3000) in->SetFillStyle(style);
   in->SetFillColor(color);
 }
 
 void beautify(TH1* in, int color=kBlack, int fillstyle=0, int linestyle=1) {
-  in->SetFillStyle(fillstyle);
+  if(fillstyle==0 || fillstyle>3000) in->SetFillStyle(fillstyle);
   in->SetFillColor(color);
   in->SetLineColor(color);
   in->SetLineStyle(linestyle);
