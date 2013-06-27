@@ -103,7 +103,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0, 1, extNorm, 4);
     DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0, 1, extNorm, 4);
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"      , 0, 1, extNorm, 2);
-    DrawStacked(histoTag+"_massDrop"     ,"Mass drop", 0, 1 , extNorm, 1);
+    DrawStacked(histoTag+"_massDrop"     ,"Mass drop", 0, 1 , extNorm, 4);
   }
 
   if (Draw_track_plots){
