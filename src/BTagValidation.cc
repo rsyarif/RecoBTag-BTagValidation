@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.22 2013/06/19 15:29:28 devdatta Exp $
+// $Id: BTagValidation.cc,v 1.23 2013/06/20 03:45:18 ferencek Exp $
 //
 //
 
@@ -151,6 +151,7 @@ class BTagValidation : public edm::EDAnalyzer {
     const std::string               inputTTree_;
     const std::vector<std::string>  inputFiles_;
     const bool                      useFlavorCategories_;
+    const bool                      useRelaxedMuonID_;
     const bool                      applyFatJetMuonTagging_;
     const bool                      applyFatJetBTagging_;
     const bool                      fatJetDoubleTagging_;
@@ -196,6 +197,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   inputTTree_(iConfig.getParameter<std::string>("InputTTree")),
   inputFiles_(iConfig.getParameter<std::vector<std::string> >("InputFiles")),
   useFlavorCategories_(iConfig.getParameter<bool>("UseFlavorCategories")),
+  useRelaxedMuonID_(iConfig.getParameter<bool>("UseRelaxedMuonID")),
   applyFatJetMuonTagging_(iConfig.getParameter<bool>("ApplyFatJetMuonTagging")),
   applyFatJetBTagging_(iConfig.getParameter<bool>("ApplyFatJetBTagging")),
   fatJetDoubleTagging_(iConfig.getParameter<bool>("FatJetDoubleTagging")),
@@ -325,12 +327,13 @@ void BTagValidation::beginJob() {
   }
 
   //// Create jet histograms
-  AddHisto("FatJet_pruned_mass"      ,"pruned mass of all fat jets"                          ,200       ,0      ,400);
-  AddHisto("FatJet_pruned_massDrop"  ,"mass drop"                                            ,80        ,0      ,4);
-  AddHisto("FatJet_subjet_dR"        ,"dR(subjet_{1},subjet_{2}) in #eta-#phi plane"         ,250       ,0      ,5);
-  AddHisto("FatJet_subjet_dyphi"     ,"dR(subjet_{1},subjet_{2}) in y-#phi plane"            ,250       ,0      ,5);
+  AddHisto("FatJet_prunedMass"       ,"pruned mass of all fat jets"                          ,200       ,0      ,400);
+  AddHisto("FatJet_massDrop"         ,"mass drop"                                            ,100       ,0      ,1);
+  AddHisto("FatJet_subjet_dR"        ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"    ,100       ,0      ,1);
+  AddHisto("FatJet_subjet_dyphi"     ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"       ,100       ,0      ,1);
   AddHisto("FatJet_nsubjettiness"    ,"#tau_{2}/#tau_{1}"                                    ,50        ,0      ,1);
-  AddHisto2D("FatJet_prunedMass_nsubjettiness", "FatJet pruned mass vs. Nsubjettiness"       ,200       ,0      ,400      ,50        ,0      ,1);
+  AddHisto2D("FatJet_prunedMass_nsubjettiness", "Nsubjettiness vs. pruned mass"              ,200       ,0      ,400      ,50        ,0      ,1);
+  AddHisto2D("FatJet_pt_prunedMass",  "pruned mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
   //// Common histograms for both fat jets and subjets
   createJetHistos("FatJet");
   if( processSubJets_ ) createJetHistos("SubJet");
@@ -554,15 +557,17 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       subjet1_p4.SetPtEtaPhiM(SubJetInfo.Jet_pt[iSubJet1], SubJetInfo.Jet_eta[iSubJet1], SubJetInfo.Jet_phi[iSubJet1], SubJetInfo.Jet_mass[iSubJet1]);
       subjet2_p4.SetPtEtaPhiM(SubJetInfo.Jet_pt[iSubJet2], SubJetInfo.Jet_eta[iSubJet2], SubJetInfo.Jet_phi[iSubJet2], SubJetInfo.Jet_mass[iSubJet2]);
 
-      double fatjet_subjet1_dR = jet_p4.DeltaR(subjet1_p4);
-      double fatjet_subjet2_dR = jet_p4.DeltaR(subjet2_p4);
+      //double fatjet_subjet1_dR = jet_p4.DeltaR(subjet1_p4);
+      //double fatjet_subjet2_dR = jet_p4.DeltaR(subjet2_p4);
       double subjet_dR = subjet1_p4.DeltaR(subjet2_p4);
-      double subjet_deta = subjet1_p4.Eta() - subjet2_p4.Eta() ;
+      //double subjet_deta = subjet1_p4.Eta() - subjet2_p4.Eta() ;
       double subjet_dy = subjet1_p4.Rapidity() - subjet2_p4.Rapidity() ;
       double subjet_dphi = subjet1_p4.DeltaPhi(subjet2_p4); ;
       double subjet_dyphi = sqrt( subjet_dy*subjet_dy + subjet_dphi*subjet_dphi ) ;
 
       if( processSubJets_ && subjet_dR>0.8 ) continue; // if processing subjets, skip fat jets for which the subjets are separated by dR>0.8
+
+      if( processSubJets_ && subjet_dR<(FatJetInfo.Jet_mass[iJet]/FatJetInfo.Jet_pt[iJet]) ) continue; // if processing subjets, skip infrared unsafe configurations
 
 //       if( subjet_dR > 0.8 )
 //       {
@@ -678,8 +683,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       //// fill fat jet histograms
       h1_fatjet_pt->Fill(FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
-      FillHisto("FatJet_pruned_mass"                ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massPruned[iJet]                     ,wtPU*wtFatJet);
-      FillHisto("FatJet_pruned_massDrop"            ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,std::max( SubJetInfo.Jet_mass[iSubJet1]/SubJetInfo.Jet_jes[iSubJet1], SubJetInfo.Jet_mass[iSubJet2]/SubJetInfo.Jet_jes[iSubJet2] )/(FatJetInfo.Jet_massPruned[iJet]/FatJetInfo.Jet_jesPruned[iJet]) ,wtPU*wtFatJet);
+      FillHisto("FatJet_prunedMass"                 ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massPruned[iJet]                     ,wtPU*wtFatJet);
+      FillHisto("FatJet_massDrop"                   ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,std::max( SubJetInfo.Jet_mass[iSubJet1]/SubJetInfo.Jet_jes[iSubJet1], SubJetInfo.Jet_mass[iSubJet2]/SubJetInfo.Jet_jes[iSubJet2] )/(FatJetInfo.Jet_massPruned[iJet]/FatJetInfo.Jet_jesPruned[iJet]) ,wtPU*wtFatJet);
       FillHisto("FatJet_subjet_dR"                  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dR                                           ,wtPU*wtFatJet);
       FillHisto("FatJet_subjet_dyphi"               ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dyphi                                        ,wtPU*wtFatJet);
       FillHisto("FatJet_nsubjettiness"              ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
@@ -1261,8 +1266,8 @@ bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& J
 
   bool cut_mu_pass = false;
   if (JetInfo.Muon_pt[muIdx] > 5 && fabs(JetInfo.Muon_eta[muIdx]) < 2.4 && JetInfo.Muon_isGlobal[muIdx] == 1 &&
-      JetInfo.Muon_nMuHit[muIdx] > 0 && JetInfo.Muon_nMatched[muIdx] > 1 && JetInfo.Muon_nTkHit[muIdx] > 7 &&
-      JetInfo.Muon_nPixHit[muIdx] > 0 && JetInfo.Muon_nOutHit[muIdx] < 99 && JetInfo.Muon_chi2Tk[muIdx] < 10 &&
+      JetInfo.Muon_nMuHit[muIdx] > 0 && JetInfo.Muon_nMatched[muIdx] > 1 && JetInfo.Muon_nTkHit[muIdx] > (useRelaxedMuonID_ ? 7 : 10) &&
+      JetInfo.Muon_nPixHit[muIdx] > (useRelaxedMuonID_ ? 0 : 1) && JetInfo.Muon_nOutHit[muIdx] < (useRelaxedMuonID_ ? 99 : 3) && JetInfo.Muon_chi2Tk[muIdx] < 10 &&
       JetInfo.Muon_chi2[muIdx] < 10  && // JetInfo.Muon_vz[muIdx]< 2 &&
       jet.DeltaR(muon) < deltaR &&
       fabs(JetInfo.Muon_vz[muIdx]-EvtInfo.PVz) < 2.)

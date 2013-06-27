@@ -69,6 +69,11 @@ options.register('useFlavorCategories', True,
     VarParsing.varType.bool,
     "Use flavor categories for MC distributions"
 )
+options.register('useRelaxedMuonID', True,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Use relaxed muon ID"
+)
 options.register('fatJetPtMin', 300.,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
@@ -126,6 +131,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     InputTTree             = cms.string('btaganaSubJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
+    UseRelaxedMuonID      = cms.bool(options.useRelaxedMuonID),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
     ApplyFatJetBTagging    = cms.bool(options.applyFatJetBTagging),
     FatJetDoubleTagging    = cms.bool(options.fatJetDoubleTagging),
@@ -240,14 +246,14 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     )
 )
 
-process.btagvalsubjetmu = process.btagval.clone(
-    ApplySubJetMuonTagging = cms.bool(not options.applySubJetMuonTagging),
-)
+#process.btagvalsubjetmu = process.btagval.clone(
+    #ApplySubJetMuonTagging = cms.bool(not options.applySubJetMuonTagging),
+#)
 
-process.btagvalsubjetbtag = process.btagval.clone(
-    ApplySubJetMuonTagging = cms.bool(not options.applySubJetMuonTagging),
-    ApplySubJetBTagging = cms.bool(True),
-)
+#process.btagvalsubjetbtag = process.btagval.clone(
+    #ApplySubJetMuonTagging = cms.bool(not options.applySubJetMuonTagging),
+    #ApplySubJetBTagging = cms.bool(True),
+#)
 
 process.p = cms.Path(process.btagval)
 #process.p = cms.Path(process.btagval + process.btagvalsubjetmu + process.btagvalsubjetbtag)
