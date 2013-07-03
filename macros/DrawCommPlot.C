@@ -26,33 +26,25 @@
 
 using namespace std;
 
-//TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root";
-//TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root";
-//TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root";
-//TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root";
-//TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root";
-TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root";
-//TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root";
-//TString filename="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root";
+TString filename="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
 
-//TString filename="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/HiggsTagCommissioning_MuonTaggedSubJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
 
-TString filename_ext="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root";
+TString filename_uncUp="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ; 
 
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/HiggsTagCommissioning_MuonTaggedSubJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ; 
 
-TString filename_uncUp="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root";
-TString filename_uncDown="/afs/cern.ch/work/f/ferencek/BoostedHiggs/CMSSW_5_3_9/src/MyAnalysis/BTagValidation/test/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root";
+TString dir4plots="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID_v4" ; 
 
-TString dir4plots="Commissioning_plots";
-//TString dir4plots="HiggsTagCommissioning_MuonTaggedSubJets_RelaxedMuonID_v1";
+//TString title= "CMS Preliminary, #sqrt{s} = 8 TeV,  L = 19.8 fb^{-1}";
 TString title1 = "CMS Preliminary";
 TString title2 = "#sqrt{s} = 8 TeV     L = 19.8 fb^{-1}";
+
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
+
 TString formata=".pdf";
 TString formatb=".png";
+
 bool bOverflow = 1;
 bool web = 0;
 bool extNorm = 1;
@@ -61,18 +53,19 @@ bool uncBand = 0;
 
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag);
 void Draw(TString name, TString histotitle, bool log);
-void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool fExtNorm=false, int nRebin=1);
+void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool fExtNorm=false, int nRebin=1, bool setXRange=false, double rangeXLow=0., double rangeXHigh=0.); 
 void DrawTagRate(TString name, TString histotitle, bool log, bool doData);
 void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY, bool log, bool doData, bool doProfile);
 
+//DrawCommPlot(true,false,true,false,true,false,false) 
 
 //--------------------------
 void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bool Draw_sv_plots=false, bool Draw_muons_plots=false, bool Draw_discriminator_plots=false, bool Draw_tagRate_plots=false, bool Draw_2D_plots=false){
 
   gROOT->SetBatch(kTRUE);
+  gROOT->SetStyle("Plain");
   //gROOT->ProcessLine(".L CMSstyle.C") ;
   //CMSstyle() ;
-  //gROOT->SetStyle("Plain");
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
   gStyle->SetPadTickX(1);  // To get tick marks on the opposite side of the frame
@@ -97,117 +90,117 @@ void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bo
 //--------------------------
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag) {
 
-  DrawStacked(histoTag+"_pt_all"      ,"p_{T} [GeV]"          ,1 ,1, extNorm, 6);
-  DrawStacked(histoTag+"_eta"         ,"#eta"           ,0 ,1, extNorm, 2);
-  DrawStacked(histoTag+"_phi"         ,"#phi"           ,0 ,1, extNorm, 2);
-  DrawStacked(histoTag+"_mass"        ,"Mass [GeV]"           ,0 ,1, extNorm, 4);
+  DrawStacked(histoTag+"_pt_all"      ,"p_{T} [GeV]"    ,1 ,1 ,extNorm ,6 ,1 ,0. ,2000.); 
+  DrawStacked(histoTag+"_eta"         ,"#eta"           ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.);
+  DrawStacked(histoTag+"_phi"         ,"#phi"           ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.);
+  DrawStacked(histoTag+"_mass"        ,"Mass [GeV]"     ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
   if( histoTag=="FatJet" )
   {
-    DrawStacked(histoTag+"_prunedMass"   ,"Pruned mass [GeV]"     ,0 ,1, extNorm, 4);
-    DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0, 1, extNorm, 4);
-    DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0, 1, extNorm, 4);
-    DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"      , 0, 1, extNorm, 2);
-    DrawStacked(histoTag+"_massDrop"     ,"Mass drop", 0, 1 , extNorm, 4);
+    DrawStacked(histoTag+"_prunedMass"   ,"Pruned mass [GeV]"                                   ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                   ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_massDrop"     ,"Mass drop"                                           ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
   }
 
   if (Draw_track_plots){
-//     DrawStacked(histoTag+"_track_multi"   ,    "number of tracks in the jets",0,1);
-    DrawStacked(histoTag+"_trk_multi_sel" ,    "number of selected tracks in the jets",0,1);
-//     DrawStacked(histoTag+"_track_chi2"    ,    "normalized #chi^{2} of the tracks",1,1);
-    DrawStacked(histoTag+"_track_nHit"    ,    "number of hits",1,1);
-    DrawStacked(histoTag+"_track_HPix"    ,    "number of hits in the Pixel",1,1);
-    DrawStacked(histoTag+"_track_len"     ,    "Track decay length",1,1);
-    DrawStacked(histoTag+"_track_dist"    ,    "Track distance to the jet axis",1,1);
-//     DrawStacked(histoTag+"_track_dz"      ,    "Track transverse IP",1,1);
-    DrawStacked(histoTag+"_track_pt"      ,    "p_{T} of all the tracks",1,1);
-//     DrawStacked(histoTag+"_track_isfromSV",    "Track is from SV",1,1);
+    //     DrawStacked(histoTag+"_track_multi"   ,    "number of tracks in the jets",0,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trk_multi_sel" ,    "number of selected tracks in the jets",0,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_chi2"    ,    "normalized #chi^{2} of the tracks",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_nHit"    ,    "number of hits",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_HPix"    ,    "number of hits in the Pixel",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_len"     ,    "Track decay length",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_dist"    ,    "Track distance to the jet axis",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_dz"      ,    "Track transverse IP",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_pt"      ,    "p_{T} of all the tracks",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_isfromSV",    "Track is from SV",1,1 ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_track_IPs"    ,      "3D IP significance of all tracks",1,1);
-//     DrawStacked(histoTag+"_track_IPs1tr" ,      "3D IP significance of the first track",1,1);
-//     DrawStacked(histoTag+"_track_IPs2tr" ,      "3D IP significance of the second track",1,1);
-//     DrawStacked(histoTag+"_track_IPs3tr" ,      "3D IP significance of the third track",1,1);
-    DrawStacked(histoTag+"_track_IP"     ,      "3D IP of all tracks",1,1);
-//     DrawStacked(histoTag+"_track_IP1tr"  ,      "3D IP of the first track",1,1);
-//     DrawStacked(histoTag+"_track_IP2tr"  ,      "3D IP of the second track",1,1);
-//     DrawStacked(histoTag+"_track_IP3tr"  ,      "3D IP of the third track",1,1);
-//     DrawStacked(histoTag+"_track_IP2Ds"       ,     "2D IP significance of all tracks",1,1);
-//     DrawStacked(histoTag+"_track_IP2Ds1tr" ,    "2D IP significance of the first track",1,1);
-//     DrawStacked(histoTag+"_track_IP2Ds2tr" ,    "2D IP significance of the second track" ,1,1);
-//     DrawStacked(histoTag+"_track_IP2Ds3tr" ,    "2D IP significance of the second track" ,1,1);
-//     DrawStacked(histoTag+"_track_IP2D"    ,     "2D IP of all tracks",1,1);
-//     DrawStacked(histoTag+"_track_IP2D1tr" ,     "2D IP of the first track",1,1);
-//     DrawStacked(histoTag+"_track_IP2D2tr" ,     "2D IP of the second track",1,1);
-//     DrawStacked(histoTag+"_track_IP2D3tr" ,     "2D IP of the third track",1,1);
-//     DrawStacked(histoTag+"_track_IP2Derr" ,     "2D IP error of all tracks",1,1);
-//     DrawStacked(histoTag+"_track_IP2Derr1tr" ,  "2D IP error of the first track",1,1);
-//     DrawStacked(histoTag+"_track_IP2Derr2tr" ,  "2D IP error of the second track" ,1,1);
-//     DrawStacked(histoTag+"_track_IP2Derr3tr" ,  "2D IP error of the third track",1,1);
-//     DrawStacked(histoTag+"_track_IPerr"   ,     "3D IP error of all tracks",1,1);
-//     DrawStacked(histoTag+"_track_IPerr1tr"   ,  "3D IP error of the first track" ,1,1);
-//     DrawStacked(histoTag+"_track_IPerr2tr"   ,  "3D IP error of the second track" ,1,1);
-//     DrawStacked(histoTag+"_track_IPerr3tr"   ,  "3D IP error of the third track" ,1,1);
+    DrawStacked(histoTag+"_track_IPs"    ,      "3D IP significance of all tracks",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IPs1tr" ,      "3D IP significance of the first track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IPs2tr" ,      "3D IP significance of the second track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IPs3tr" ,      "3D IP significance of the third track",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_IP"     ,      "3D IP of all tracks",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP1tr"  ,      "3D IP of the first track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2tr"  ,      "3D IP of the second track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP3tr"  ,      "3D IP of the third track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Ds"       ,     "2D IP significance of all tracks",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Ds1tr" ,    "2D IP significance of the first track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Ds2tr" ,    "2D IP significance of the second track" ,1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Ds3tr" ,    "2D IP significance of the second track" ,1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2D"    ,     "2D IP of all tracks",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2D1tr" ,     "2D IP of the first track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2D2tr" ,     "2D IP of the second track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2D3tr" ,     "2D IP of the third track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Derr" ,     "2D IP error of all tracks",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Derr1tr" ,  "2D IP error of the first track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Derr2tr" ,  "2D IP error of the second track" ,1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IP2Derr3tr" ,  "2D IP error of the third track",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IPerr"   ,     "3D IP error of all tracks",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IPerr1tr"   ,  "3D IP error of the first track" ,1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IPerr2tr"   ,  "3D IP error of the second track" ,1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_IPerr3tr"   ,  "3D IP error of the third track" ,1,1 ,0 ,0. ,0.);
   }
   if (Draw_Nminus1_plots){
-//     DrawStacked(histoTag+"_track_chi2_cut"    ,"Normalized #chi^{2} @N-1 step",1,1);
-    DrawStacked(histoTag+"_track_nHit_cut"    ,"Number of hits @N-1 step",1,1);
-    DrawStacked(histoTag+"_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",1,1);
-//     DrawStacked(histoTag+"_track_len_cut"     ,"Decay length @N-1 step",1,1);
-//     DrawStacked(histoTag+"_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,1);
-//     DrawStacked(histoTag+"_track_dz_cut"      ,"Transverse IP @N-1 step",1,1);
-//     DrawStacked(histoTag+"_track_pt_cut"          ,"Track p_{T} @N-1 step",1,1);
+    //     DrawStacked(histoTag+"_track_chi2_cut"    ,"Normalized #chi^{2} @N-1 step",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_nHit_cut"    ,"Number of hits @N-1 step",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_len_cut"     ,"Decay length @N-1 step",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_dz_cut"      ,"Transverse IP @N-1 step",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_track_pt_cut"          ,"Track p_{T} @N-1 step",1,1 ,0 ,0. ,0.);
   }
   if (Draw_sv_plots){
-    DrawStacked(histoTag+"_pt_sv"     ,"p_{T} of jets containing a SV",1 ,1);
-    DrawStacked(histoTag+"_sv_multi_0","nr. of SV including bin 0",1,1);
-//     DrawStacked(histoTag+"_sv_multi","nr. of SV",1,1);
-    DrawStacked(histoTag+"_sv_mass","SV mass",0,1);
-//     DrawStacked(histoTag+"_sv_mass_3trk","SV mass if #tracks@SV >=3",0,1);
-//     DrawStacked(histoTag+"_sv_chi2norm","SV norm. #chi^{2}",1,1);
-    DrawStacked(histoTag+"_sv_deltaR_jet","#DeltaR between the jet and the SV direction",0,1);
-//     DrawStacked(histoTag+"_sv_deltaR_sumJet","#DeltaR between the jet and the SV",0,1);
-//     DrawStacked(histoTag+"_sv_deltaR_sumDir","#DeltaR between the jet direction and the SV",0,1);
-    DrawStacked(histoTag+"_sv_en_ratio","SV energy ratio",0,1);
-//     DrawStacked(histoTag+"_sv_aboveC","IP2D of the first track above the charm threshold",1,1);
-    DrawStacked(histoTag+"_sv_pt","SV p_{T}",1,1);
-//     DrawStacked(histoTag+"_sv_eta","SV #eta",0,1);
-//     DrawStacked(histoTag+"_sv_phi","SV #phi",0,1);
-//     DrawStacked(histoTag+"_sv_flight3D","SV 3D flight distance",1,1);
-//     DrawStacked(histoTag+"_sv_flight2D","SV 2D flight distance",1,1);
-    DrawStacked(histoTag+"_sv_flight3DSig","SV 3D flight distance significance",1,1);
-//     DrawStacked(histoTag+"_sv_flightSig2D","SV 2D flight distance significance",1,1);
-//     DrawStacked(histoTag+"_sv_flight3Derr","SV 3D flight distance error",1,1);
-//     DrawStacked(histoTag+"_sv_flight2Derr","SV 2D flight distance error",1,1);
-//     DrawStacked(histoTag+"_svnTrk","nr. of tracks from a SV",1,1);
-    DrawStacked(histoTag+"_svnTrk_firstVxt","nr. of tracks from the first SV",1,1);
+    DrawStacked(histoTag+"_pt_sv"     ,"p_{T} of jets containing a SV",1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_sv_multi_0","nr. of SV including bin 0",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_multi","nr. of SV",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_sv_mass","SV mass",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_mass_3trk","SV mass if #tracks@SV >=3",0,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_chi2norm","SV norm. #chi^{2}",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_sv_deltaR_jet","#DeltaR between the jet and the SV direction",0,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_deltaR_sumJet","#DeltaR between the jet and the SV",0,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_deltaR_sumDir","#DeltaR between the jet direction and the SV",0,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_sv_en_ratio","SV energy ratio",0,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_aboveC","IP2D of the first track above the charm threshold",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_sv_pt","SV p_{T}",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_eta","SV #eta",0,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_phi","SV #phi",0,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_flight3D","SV 3D flight distance",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_flight2D","SV 2D flight distance",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_sv_flight3DSig","SV 3D flight distance significance",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_flightSig2D","SV 2D flight distance significance",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_flight3Derr","SV 3D flight distance error",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_sv_flight2Derr","SV 2D flight distance error",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_svnTrk","nr. of tracks from a SV",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_svnTrk_firstVxt","nr. of tracks from the first SV",1,1 ,0 ,0. ,0.);
   }
   if (Draw_muons_plots){
-    DrawStacked(histoTag+"_muon_multi"   ,      "number of muons", 1,1);
-    DrawStacked(histoTag+"_muon_multi_sel"   ,  "number of selected muons",1,1);
-    DrawStacked(histoTag+"_mu_ptrel"     ,      "p_{T} rel. of the muon",0,1);
-    DrawStacked(histoTag+"_mu_chi2"      ,      "norm. #chi^{2} of the muon", 1,1);
-    DrawStacked(histoTag+"_muon_Pt",           "Muon p_{T}",1,1);
-    DrawStacked(histoTag+"_muon_eta",          "Muon #eta",0,1);
-    DrawStacked(histoTag+"_muon_phi",          "Muon #phi",0,1);
-    DrawStacked(histoTag+"_muon_Ip3d",         "Muon 3D IP",1,1);
-    DrawStacked(histoTag+"_muon_Ip2d",         "Muon 2D IP",1,1);
-    DrawStacked(histoTag+"_muon_Sip3d",        "Muon 3D IP significance",1,1);
-    DrawStacked(histoTag+"_muon_Sip2d",        "Muon 2D IP significance",1,1);
-    DrawStacked(histoTag+"_muon_DeltaR",       "Muon1 #Delta R",0,1);
+    DrawStacked(histoTag+"_muon_multi"   ,      "number of muons", 1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_multi_sel"   ,  "number of selected muons",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_mu_ptrel"     ,      "p_{T} rel. of the muon",0,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_mu_chi2"      ,      "norm. #chi^{2} of the muon", 1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Pt",           "Muon p_{T}",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_eta",          "Muon #eta",0,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_phi",          "Muon #phi",0,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip3d",         "Muon 3D IP",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip2d",         "Muon 2D IP",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Sip3d",        "Muon 3D IP significance",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Sip2d",        "Muon 2D IP significance",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_DeltaR",       "Muon1 #Delta R",0,1 ,0 ,0. ,0.);
 
   }
   if (Draw_discriminator_plots){
-//     DrawStacked(histoTag+"_TCHE_extended1"       ,"TCHE (extended)",1,1);
-//     DrawStacked(histoTag+"_TCHP_extended1"       ,"TCHP (extended)",1,1);
-//     DrawStacked(histoTag+"_discri_ssche0",      "SSVHE Discriminator", 1,1);
-//     DrawStacked(histoTag+"_discri_sschp0",      "SSVHP Discriminator", 1,1);
-//
-//     DrawStacked(histoTag+"_TCHE"             ,"TCHE Discriminator", 1,1);
-//     DrawStacked(histoTag+"_TCHP"             ,"TCHP Discriminator",1,1);
-    DrawStacked(histoTag+"_JP"           ,"JP Discriminator",1,1);
-//     DrawStacked(histoTag+"_JBP"       ,"JBP Discriminator",1,1);
-//     DrawStacked(histoTag+"_SSV"       ,"SSVHE Discriminator",1,1);
-//     DrawStacked(histoTag+"_SSVHP"        ,"SSVHP Discriminator",1,1);
-    DrawStacked(histoTag+"_CSV"          ,"CSV Discriminator",1,1);
+    //     DrawStacked(histoTag+"_TCHE_extended1"       ,"TCHE (extended)",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_TCHP_extended1"       ,"TCHP (extended)",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_discri_ssche0",      "SSVHE Discriminator", 1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_discri_sschp0",      "SSVHP Discriminator", 1,1 ,0 ,0. ,0.);
+    //
+    //     DrawStacked(histoTag+"_TCHE"             ,"TCHE Discriminator", 1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_TCHP"             ,"TCHP Discriminator",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_JP"           ,"JP Discriminator",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_JBP"       ,"JBP Discriminator",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_SSV"       ,"SSVHE Discriminator",1,1 ,0 ,0. ,0.);
+    //     DrawStacked(histoTag+"_SSVHP"        ,"SSVHP Discriminator",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_CSV"          ,"CSV Discriminator",1,1 ,0 ,0. ,0.);
   }
 
   if (Draw_tagRate_plots){
@@ -230,14 +223,14 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     if( histoTag=="FatJet" ){
       Draw2DPlot(histoTag+"_prunedMass_nsubjettiness", "FatJet pruned mass vs. Nsubjettiness", "FatJet pruned mass", "Nsubjettiness", 0, 1, 0);
     }
-//     Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0,1);
-//     Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",0,1);
-//     Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass",0,1);
-//     Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet",0,1);
-//     Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum",0,1);
-//     Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction",0,1);
-//     Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",0,1);
-//     Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",0,1);
+    //     Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0,1);
+    //     Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",0,1);
+    //     Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass",0,1);
+    //     Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet",0,1);
+    //     Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum",0,1);
+    //     Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction",0,1);
+    //     Draw2DPlot("muon_ptrel_vs_jetpt","Muon_p{T}^{rel} as a function of the jet p_{T}","jet p_{T}","Muon_p{T}^{rel}",0,1);
+    //     Draw2DPlot("muon_DeltaR_vs_jetpt","Muon #Delta R as a function of the jet p_{T}","jet p_{T}","Muon #Delta R",0,1);
   }
 }
 
@@ -358,7 +351,7 @@ void Draw(TString name, TString histotitle, bool log) {
 }
 
 //--------------------------
-void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool fExtNorm, int nRebin) {
+void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool fExtNorm, int nRebin, bool setXRange, double rangeXLow, double rangeXHigh) {
 
   TH1D* hist_b;
   TH1D* hist_c;
@@ -565,7 +558,7 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
 
   if( name.Contains("FatJet_phi") )
     cout << "Data/MC ratio:       " << histo_ratio->GetBinContent(1) << endl
-         << "Data/MC ratio error: " << histo_ratio->GetBinError(1) << endl;
+      << "Data/MC ratio error: " << histo_ratio->GetBinError(1) << endl;
 
   TCanvas *c1 = new TCanvas("c1", "c1",1200,800);
   c1->SetFillColor(10);
@@ -577,7 +570,8 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
 
   pad0->SetLogy(log);
 
-  histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1.5 : histo_tot->GetMaximum()*1.5);
+  if (!log) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1.5 : histo_tot->GetMaximum()*1.5) ;  
+  else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*150 : histo_tot->GetMaximum()*150) ; 
   if (doData) {
     hist_data->SetMarkerStyle(20);
     hist_data->SetMarkerSize(0.75);
@@ -594,6 +588,13 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
   histo_tot->SetTitleOffset(0.75,"Y");
   histo_tot->GetYaxis()->SetLabelSize( 0.05 );
   histo_tot->GetYaxis()->SetTitleSize( 0.06 );
+
+  if (setXRange) {
+    if (rangeXLow == rangeXHigh) std::cout << "Error: X-axis low and high ranges have same value\n" ; 
+    else {
+      histo_tot->GetXaxis()->SetRangeUser(rangeXLow, rangeXHigh) ; 
+    }
+  }
 
   histo_tot->Draw("hist");
 
@@ -639,7 +640,7 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
   latex->SetTextFont(42);
   latex->DrawLatex(0.10+0.22, 0.92, title2);
 
- // pad0->Update();
+  // pad0->Update();
   pad0->Modified();
 
   c1->cd();
@@ -670,6 +671,13 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
     histo_ratio->GetYaxis()->SetLabelSize( labelsizey );
     histo_ratio->GetYaxis()->SetTitleSize( titlesizey );
 
+    if (setXRange) {
+      if (rangeXLow == rangeXHigh) std::cout << "Error: X-axis low and high ranges have same value\n" ; 
+      else {
+        histo_ratio->GetXaxis()->SetRangeUser(rangeXLow, rangeXHigh) ; 
+      }
+    }
+
     histo_ratio->SetMinimum(0.4);
     histo_ratio->SetMaximum(1.6);
     histo_ratio->Draw("E1X0");
@@ -680,7 +688,7 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
   }
 
   c1->cd();
- // c1->Update();
+  // c1->Update();
   c1->Modified();
   c1->cd();
   c1->SetSelected(c1) ;
