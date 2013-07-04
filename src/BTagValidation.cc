@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.23 2013/06/20 03:45:18 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.24 2013/06/27 05:22:11 ferencek Exp $
 //
 //
 
@@ -379,14 +379,14 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_sv_flight3DSig",     "flight distance significance 3D",                    150,0.,150.   );
   AddHisto(histoTag+"_sv_multi_0",         "number of secondary vertex",                          6,-0.5,5.5   );
   AddHisto(histoTag+"_sv_multi",           "number of secondary vertex",                          6,-0.5,5.5   );
-  AddHisto(histoTag+"_sv_mass",            "invariant mass of the secondary vertex",             150,0.,15.    );
+  AddHisto(histoTag+"_sv_mass",            "invariant mass of the secondary vertex",             750,0.,15.    );
   AddHisto(histoTag+"_sv_chi2norm",        "normalized chi2 of the secondary vertex",            100,0.,20.    );
   AddHisto(histoTag+"_sv_tot_charge",      "Total charge",                                        21,-10.5,10.5);
   AddHisto(histoTag+"_svnTrk",             "Track multiplicity : SVnVertexTracks (centered)",     15,-0.5,14.5 );
   AddHisto(histoTag+"_svnTrk_firstVxt",    "Track multiplicity : SVnFirstVertexTracks (centered)",15,-0.5,14.5 );
   AddHisto(histoTag+"_sv_flight3Derr",     "Flight distance error 3D",                           100,0.,1.0);
   AddHisto(histoTag+"_sv_flight2Derr",     "Flight distance error 2D",                           100,0.,1.0);
-  AddHisto(histoTag+"_sv_mass_3trk",       "invariant mass of the secondary vertex with at least 3 SV tracks", 150,0.,15.);
+  AddHisto(histoTag+"_sv_mass_3trk",       "invariant mass of the secondary vertex with at least 3 SV tracks", 750,0.,15.);
 
   AddHisto(histoTag+"_track_multi"  ,      "number of tracks in the jets",                80,-0.5,79.5  );
   AddHisto(histoTag+"_trk_multi_sel"  ,    "number of selected tracks in the jets",       80,-0.5,79.5  );
@@ -491,6 +491,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     h1_CutFlow->Fill(0.,wtPU); //// count all events
     h1_CutFlow_unw->Fill(0.);
+
+    //edm::LogInfo("PUWeight") << " EvtInfo.nPUtrue: " << EvtInfo.nPUtrue << " wtPU: " << wtPU ; 
 
     if( !isData ) h1_pt_hat->Fill(EvtInfo.pthat,wtPU);
 
