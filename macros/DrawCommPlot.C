@@ -26,15 +26,14 @@
 
 using namespace std;
 
-TString filename="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+TString filename="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/HiggsTagCommissioning_InclusiveJets_Rebinned/Final_histograms_btagval.root" ; 
+TString filename_ext="/afs/cern.ch/work/d/devdatta/CMSREL/CMSSW_5_3_9_BTagVal/src/RecoBTag/BTagValidation/test/HiggsTagCommissioning_InclusiveJets_Rebinned/Final_histograms_btagval.root" ; 
 
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_uncUp="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ; 
+//
+//TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ; 
 
-TString filename_uncUp="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ; 
-
-TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ; 
-
-TString dir4plots="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID_v4" ; 
+TString dir4plots="HiggsTagCommissioning_InclusiveJets" ; 
 
 //TString title= "CMS Preliminary, #sqrt{s} = 8 TeV,  L = 19.8 fb^{-1}";
 TString title1 = "CMS Preliminary";
@@ -60,7 +59,13 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 //DrawCommPlot(true,false,true,false,true,false,false) 
 
 //--------------------------
-void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bool Draw_sv_plots=false, bool Draw_muons_plots=false, bool Draw_discriminator_plots=false, bool Draw_tagRate_plots=false, bool Draw_2D_plots=false){
+void DrawCommPlot(bool Draw_track_plots=false, 
+                  bool Draw_Nminus1_plots=false, 
+                  bool Draw_sv_plots=false, 
+                  bool Draw_muons_plots=false, 
+                  bool Draw_discriminator_plots=false, 
+                  bool Draw_tagRate_plots=false, 
+                  bool Draw_2D_plots=false) { 
 
   gROOT->SetBatch(kTRUE);
   gROOT->SetStyle("Plain");
@@ -91,11 +96,10 @@ void DrawCommPlot(bool Draw_track_plots=false, bool Draw_Nminus1_plots=false, bo
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag) {
 
   DrawStacked(histoTag+"_pt_all"      ,"p_{T} [GeV]"    ,1 ,1 ,extNorm ,6 ,1 ,0. ,2000.); 
-  DrawStacked(histoTag+"_eta"         ,"#eta"           ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.);
-  DrawStacked(histoTag+"_phi"         ,"#phi"           ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.);
-  DrawStacked(histoTag+"_mass"        ,"Mass [GeV]"     ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
-  if( histoTag=="FatJet" )
-  {
+  DrawStacked(histoTag+"_eta"         ,"#eta"           ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.   );
+  DrawStacked(histoTag+"_phi"         ,"#phi"           ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.   );
+  DrawStacked(histoTag+"_mass"        ,"Mass [GeV]"     ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.   );
+  if( histoTag=="FatJet" ) { 
     DrawStacked(histoTag+"_prunedMass"   ,"Pruned mass [GeV]"                                   ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
@@ -103,23 +107,22 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_massDrop"     ,"Mass drop"                                           ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
   }
 
-  if (Draw_track_plots){
+  if (Draw_track_plots) { 
+    DrawStacked(histoTag+"_trk_multi_sel" ,"number of selected tracks in the jets",0, 1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_track_nHit"    ,"number of hits"                       ,1, 1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_track_HPix"    ,"number of hits in the Pixel"          ,1, 1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_track_len"     ,"Track decay length"                   ,1, 1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_track_dist"    ,"Track distance to the jet axis"       ,1, 1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_track_pt"      ,"p_{T} of all the tracks"              ,1, 1 ,0 ,4. ,0.);
+    DrawStacked(histoTag+"_track_IPs"     ,"3D IP significance of all tracks"     ,1, 1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_track_IP"      ,"3D IP of all tracks"                  ,1, 1 ,0 ,2. ,0.);
     //     DrawStacked(histoTag+"_track_multi"   ,    "number of tracks in the jets",0,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trk_multi_sel" ,    "number of selected tracks in the jets",0,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_chi2"    ,    "normalized #chi^{2} of the tracks",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_nHit"    ,    "number of hits",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_HPix"    ,    "number of hits in the Pixel",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_len"     ,    "Track decay length",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_dist"    ,    "Track distance to the jet axis",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_dz"      ,    "Track transverse IP",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_pt"      ,    "p_{T} of all the tracks",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_isfromSV",    "Track is from SV",1,1 ,0 ,0. ,0.);
-
-    DrawStacked(histoTag+"_track_IPs"    ,      "3D IP significance of all tracks",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_IPs1tr" ,      "3D IP significance of the first track",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_IPs2tr" ,      "3D IP significance of the second track",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_IPs3tr" ,      "3D IP significance of the third track",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_IP"     ,      "3D IP of all tracks",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_IP1tr"  ,      "3D IP of the first track",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_IP2tr"  ,      "3D IP of the second track",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_IP3tr"  ,      "3D IP of the third track",1,1 ,0 ,0. ,0.);
@@ -141,66 +144,66 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     //     DrawStacked(histoTag+"_track_IPerr3tr"   ,  "3D IP error of the third track" ,1,1 ,0 ,0. ,0.);
   }
   if (Draw_Nminus1_plots){
+    DrawStacked(histoTag+"_track_nHit_cut"    ,"Number of hits @N-1 step"             ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",1 ,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_chi2_cut"    ,"Normalized #chi^{2} @N-1 step",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_nHit_cut"    ,"Number of hits @N-1 step",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_track_HPix_cut"    ,"Number of hits in the Pixel @N-1 step",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_len_cut"     ,"Decay length @N-1 step",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_dist_cut"    ,"Distance to the jet axis @N-1 step" ,1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_dz_cut"      ,"Transverse IP @N-1 step",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_pt_cut"          ,"Track p_{T} @N-1 step",1,1 ,0 ,0. ,0.);
   }
   if (Draw_sv_plots){
-    DrawStacked(histoTag+"_pt_sv"     ,"p_{T} of jets containing a SV",1 ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_sv_multi_0","nr. of SV including bin 0",1,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_sv_multi_0"      ,"nr. of SV including bin 0"                    ,1 ,1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_pt_sv"           ,"p_{T} of jets containing a SV"                ,1 ,1 ,0 ,4. ,0.);
+    DrawStacked(histoTag+"_sv_mass"         ,"SV mass"                                      ,1 ,1 ,1 ,2. ,1, 0., 4.);
+    DrawStacked(histoTag+"_sv_mass"         ,"SV mass"                                      ,0 ,1 ,1 ,2. ,1, 0., 4.);
+    DrawStacked(histoTag+"_sv_deltaR_jet"   ,"#DeltaR between the jet and the SV direction" ,0 ,1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_sv_en_ratio"     ,"SV energy ratio"                              ,0 ,1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_sv_pt"           ,"SV p_{T}"                                     ,1 ,1 ,0 ,5. ,0.);
+    DrawStacked(histoTag+"_sv_flight3DSig"  ,"SV 3D flight distance significance"           ,1 ,1 ,0 ,5. ,0.);
+    DrawStacked(histoTag+"_svnTrk_firstVxt" ,"nr. of tracks from the first SV"              ,1 ,1 ,0 ,1. ,0.);
     //     DrawStacked(histoTag+"_sv_multi","nr. of SV",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_sv_mass","SV mass",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_mass_3trk","SV mass if #tracks@SV >=3",0,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_chi2norm","SV norm. #chi^{2}",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_sv_deltaR_jet","#DeltaR between the jet and the SV direction",0,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_deltaR_sumJet","#DeltaR between the jet and the SV",0,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_deltaR_sumDir","#DeltaR between the jet direction and the SV",0,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_sv_en_ratio","SV energy ratio",0,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_aboveC","IP2D of the first track above the charm threshold",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_sv_pt","SV p_{T}",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_eta","SV #eta",0,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_phi","SV #phi",0,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_flight3D","SV 3D flight distance",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_flight2D","SV 2D flight distance",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_sv_flight3DSig","SV 3D flight distance significance",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_flightSig2D","SV 2D flight distance significance",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_flight3Derr","SV 3D flight distance error",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_sv_flight2Derr","SV 2D flight distance error",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_svnTrk","nr. of tracks from a SV",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_svnTrk_firstVxt","nr. of tracks from the first SV",1,1 ,0 ,0. ,0.);
   }
   if (Draw_muons_plots){
-    DrawStacked(histoTag+"_muon_multi"   ,      "number of muons", 1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_multi_sel"   ,  "number of selected muons",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_mu_ptrel"     ,      "p_{T} rel. of the muon",0,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_mu_chi2"      ,      "norm. #chi^{2} of the muon", 1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Pt",           "Muon p_{T}",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_eta",          "Muon #eta",0,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_phi",          "Muon #phi",0,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip3d",         "Muon 3D IP",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip2d",         "Muon 2D IP",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Sip3d",        "Muon 3D IP significance",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Sip2d",        "Muon 2D IP significance",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_DeltaR",       "Muon1 #Delta R",0,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_multi",     "number of muons"            ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_multi_sel", "number of selected muons"   ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_mu_ptrel",       "p_{T} rel. of the muon"     ,0 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_mu_chi2",        "norm. #chi^{2} of the muon" ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T}"                 ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_eta",       "Muon #eta"                  ,0 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_phi",       "Muon #phi"                  ,0 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip3d",      "Muon 3D IP"                 ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip2d",      "Muon 2D IP"                 ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Sip3d",     "Muon 3D IP significance"    ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Sip2d",     "Muon 2D IP significance"    ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_DeltaR",    "Muon1 #Delta R"             ,0 ,1 ,0 ,0. ,0.);
 
   }
   if (Draw_discriminator_plots){
+    DrawStacked(histoTag+"_JP"    ,"JP Discriminator"    ,1 ,1 ,0 ,0. ,0.) ;
+    DrawStacked(histoTag+"_JBP"   ,"JBP Discriminator"   ,1 ,1 ,0 ,0. ,0.) ;
+    DrawStacked(histoTag+"_SSV"   ,"SSVHE Discriminator" ,1 ,1 ,0 ,0. ,0.) ;
+    DrawStacked(histoTag+"_SSVHP" ,"SSVHP Discriminator" ,1 ,1 ,0 ,0. ,0.) ;
+    DrawStacked(histoTag+"_CSV"   ,"CSV Discriminator"   ,1 ,1 ,0 ,0. ,0.) ;
     //     DrawStacked(histoTag+"_TCHE_extended1"       ,"TCHE (extended)",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_TCHP_extended1"       ,"TCHP (extended)",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_discri_ssche0",      "SSVHE Discriminator", 1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_discri_sschp0",      "SSVHP Discriminator", 1,1 ,0 ,0. ,0.);
-    //
     //     DrawStacked(histoTag+"_TCHE"             ,"TCHE Discriminator", 1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_TCHP"             ,"TCHP Discriminator",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_JP"           ,"JP Discriminator",1,1 ,0 ,0. ,0.);
-    //     DrawStacked(histoTag+"_JBP"       ,"JBP Discriminator",1,1 ,0 ,0. ,0.);
-    //     DrawStacked(histoTag+"_SSV"       ,"SSVHE Discriminator",1,1 ,0 ,0. ,0.);
-    //     DrawStacked(histoTag+"_SSVHP"        ,"SSVHP Discriminator",1,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_CSV"          ,"CSV Discriminator",1,1 ,0 ,0. ,0.);
   }
 
   if (Draw_tagRate_plots){
@@ -208,7 +211,6 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawTagRate(histoTag+"_TCHP_extended1"," TCHP (extended)",1, 1);
     DrawTagRate(histoTag+"_discri_ssche0","SSVHE (extended)", 1, 1);
     DrawTagRate(histoTag+"_discri_sschp0","SSVHP (extended)", 1, 1);
-
     DrawTagRate(histoTag+"_TCHE"	      ,"TCHE Discriminator"     ,1 ,1);
     DrawTagRate(histoTag+"_TCHP"	      ,"TCHP Discriminator"     ,1 ,1);
     DrawTagRate(histoTag+"_JP"	      ,"JP Discriminator"         ,1 ,1);
@@ -351,7 +353,15 @@ void Draw(TString name, TString histotitle, bool log) {
 }
 
 //--------------------------
-void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool fExtNorm, int nRebin, bool setXRange, double rangeXLow, double rangeXHigh) {
+void DrawStacked(TString name, 
+                 TString histotitle, 
+                 bool log, 
+                 bool doData, 
+                 bool fExtNorm, 
+                 int nRebin, 
+                 bool setXRange, 
+                 double rangeXLow, 
+                 double rangeXHigh) { 
 
   TH1D* hist_b;
   TH1D* hist_c;
@@ -370,22 +380,36 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
   if (inclTTbar) hist_ttbar = (TH1D*)myFile->Get("TTJets__"+name+"_mc");
   if (doData)    hist_data  = (TH1D*)myFile->Get("DATA__"+name+"_data");
 
-  if (nRebin>1) {
-    hist_b     ->Rebin(nRebin);
-    hist_c     ->Rebin(nRebin);
-    hist_gsplit->Rebin(nRebin);
-    hist_l     ->Rebin(nRebin);
-    if (inclTTbar) hist_ttbar->Rebin(nRebin);
-    if (doData)    hist_data->Rebin(nRebin);
+  if ( filename.Contains("MuonTagged") && 
+      ( name.Contains("track_pt") || name.Contains("track_IP") || name.Contains("pt_sv")  || name.Contains("sv_pt") || name.Contains("sv_flight3DSig") )
+     ) {
+    hist_b                    -> Rebin(5);
+    hist_c                    -> Rebin(5);
+    hist_gsplit               -> Rebin(5);
+    hist_l                    -> Rebin(5);
+    if (inclTTbar) hist_ttbar -> Rebin(5);
+    if (doData)    hist_data  -> Rebin(5);
+  } 
+  else {
+    if (nRebin>1) {
+      hist_b     ->Rebin(nRebin);
+      hist_c     ->Rebin(nRebin);
+      hist_gsplit->Rebin(nRebin);
+      hist_l     ->Rebin(nRebin);
+      if (inclTTbar) hist_ttbar->Rebin(nRebin);
+      if (doData)    hist_data->Rebin(nRebin);
+    }
   }
 
   //if (bOverflow && name!="SSV" && name!="SSVHP") {
-  fix(hist_b);
-  fix(hist_c);
-  fix(hist_gsplit);
-  fix(hist_l);
-  if (inclTTbar) fix(hist_ttbar);
-  if (doData)    fix(hist_data);
+  if (!name.Contains("sv_mass")) {
+    fix(hist_b);
+    fix(hist_c);
+    fix(hist_gsplit);
+    fix(hist_l);
+    if (inclTTbar) fix(hist_ttbar);
+    if (doData)    fix(hist_data);
+  }
   //}
 
   TH1D *hist_b_ext, *hist_c_ext, *hist_gsplit_ext, *hist_l_ext, *hist_ttbar_ext, *hist_data_ext;
@@ -401,12 +425,14 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
     if (inclTTbar) hist_ttbar_ext = (TH1D*)myFile_ext->Get("TTJets__"+name+"_mc");
     if (doData)    hist_data_ext  = (TH1D*)myFile_ext->Get("DATA__"+name+"_data");
 
-    fix(hist_b_ext);
-    fix(hist_c_ext);
-    fix(hist_gsplit_ext);
-    fix(hist_l_ext);
-    if (inclTTbar) fix(hist_ttbar_ext);
-    if (doData)    fix(hist_data_ext);
+    if (!name.Contains("sv_mass")) {
+      fix(hist_b_ext);
+      fix(hist_c_ext);
+      fix(hist_gsplit_ext);
+      fix(hist_l_ext);
+      if (inclTTbar) fix(hist_ttbar_ext);
+      if (doData)    fix(hist_data_ext);
+    }
   }
 
   TH1D *hist_b_uncUp, *hist_c_uncUp, *hist_gsplit_uncUp, *hist_l_uncUp, *hist_ttbar_uncUp, *hist_b_uncDown, *hist_c_uncDown, *hist_gsplit_uncDown, *hist_l_uncDown, *hist_ttbar_uncDown;
@@ -421,11 +447,13 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
     hist_l_uncUp                = (TH1D*)myFile_uncUp->Get("QCD__"+name+"_l");
     if (inclTTbar) hist_ttbar_uncUp = (TH1D*)myFile_uncUp->Get("TTJets__"+name+"_mc");
 
-    fix(hist_b_uncUp);
-    fix(hist_c_uncUp);
-    fix(hist_gsplit_uncUp);
-    fix(hist_l_uncUp);
-    if (inclTTbar) fix(hist_ttbar_uncUp);
+    if (!name.Contains("sv_mass")) {
+      fix(hist_b_uncUp);
+      fix(hist_c_uncUp);
+      fix(hist_gsplit_uncUp);
+      fix(hist_l_uncUp);
+      if (inclTTbar) fix(hist_ttbar_uncUp);
+    }
 
     myFile_uncDown = TFile::Open(filename_uncDown,"READ") ;
     myFile_uncDown->cd();
@@ -435,11 +463,13 @@ void DrawStacked(TString name, TString histotitle, bool log, bool doData, bool f
     hist_l_uncDown                = (TH1D*)myFile_uncDown->Get("QCD__"+name+"_l");
     if (inclTTbar) hist_ttbar_uncDown = (TH1D*)myFile_uncDown->Get("TTJets__"+name+"_mc");
 
-    fix(hist_b_uncDown);
-    fix(hist_c_uncDown);
-    fix(hist_gsplit_uncDown);
-    fix(hist_l_uncDown);
-    if (inclTTbar) fix(hist_ttbar_uncDown);
+    if (!name.Contains("sv_mass")) {
+      fix(hist_b_uncDown);
+      fix(hist_c_uncDown);
+      fix(hist_gsplit_uncDown);
+      fix(hist_l_uncDown);
+      if (inclTTbar) fix(hist_ttbar_uncDown);
+    }
 
     if (nRebin>1) {
       hist_b_uncUp     ->Rebin(nRebin);
