@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.24 2013/06/27 05:22:11 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.25 2013/07/04 19:36:13 devdatta Exp $
 //
 //
 
@@ -177,6 +177,8 @@ class BTagValidation : public edm::EDAnalyzer {
 
     //// Event variables
     bool isData;
+    int nEventsAll;
+    int nEventsStored;
 };
 
 //
@@ -223,6 +225,8 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
 {
   //now do what ever initialization is needed
   isData = true;
+  nEventsAll = 0;
+  nEventsStored = 0;
 
   if (doPUReweighting_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ;
 
@@ -285,7 +289,19 @@ void BTagValidation::beginJob() {
   JetTree = new TChain(inputTTree_.c_str());
 
   for(unsigned i=0; i<inputFiles_.size(); ++i)
+  {
     JetTree->Add(inputFiles_.at(i).c_str());
+
+    TFile *f = TFile::Open(inputFiles_.at(i).c_str(),"READ");
+
+    TH1D *hEventCountAll    = (TH1D*)f->Get("allEvents/hEventCount");
+    TH1D *hEventCountStored = (TH1D*)f->Get("selectedEvents/hEventCount");
+
+    nEventsAll+=hEventCountAll->GetBinContent(1);
+    nEventsStored+=hEventCountStored->GetBinContent(1);
+
+    f->Close();
+  }
 
   //--------------------------------------------------------
   EvtInfo.ReadTree(JetTree);
@@ -306,10 +322,10 @@ void BTagValidation::beginJob() {
 
   double PtMax = 3000.;
 
-  h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",     2, -0.5, 1.5);
+  h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",     4, -0.5, 3.5);
   h1_CutFlow->Sumw2();
   h1_CutFlow->SetDefaultSumw2(kTRUE); // enables automatic calling of TH1::Sumw2 for all subsequent histograms
-  h1_CutFlow_unw    = fs->make<TH1D>("h1_CutFlow_unw",   "h1_CutFlow_unw", 2, -0.5, 1.5);
+  h1_CutFlow_unw    = fs->make<TH1D>("h1_CutFlow_unw",   "h1_CutFlow_unw", 4, -0.5, 3.5);
   h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    "h1_nPUtrue_mc",  60,0.,60.);
   h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw","h1_nPUtrue_mc",  60,0.,60.);
   h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      "h1_nPV_data",    60,0.,60.);
@@ -489,17 +505,17 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     if ( doPUReweighting_ && !isData )
       wtPU *= LumiWeights_.weight(EvtInfo.nPUtrue);
 
-    h1_CutFlow->Fill(0.,wtPU); //// count all events
-    h1_CutFlow_unw->Fill(0.);
+    h1_CutFlow->Fill(2.,wtPU); //// count all events
+    h1_CutFlow_unw->Fill(2.);
 
-    //edm::LogInfo("PUWeight") << " EvtInfo.nPUtrue: " << EvtInfo.nPUtrue << " wtPU: " << wtPU ; 
+    //edm::LogInfo("PUWeight") << " EvtInfo.nPUtrue: " << EvtInfo.nPUtrue << " wtPU: " << wtPU ;
 
     if( !isData ) h1_pt_hat->Fill(EvtInfo.pthat,wtPU);
 
     if( !passTrigger() ) continue; //// apply trigger selection
 
-    h1_CutFlow->Fill(1.,wtPU); //// count events passing trigger selection
-    h1_CutFlow_unw->Fill(1.);
+    h1_CutFlow->Fill(3.,wtPU); //// count events passing trigger selection
+    h1_CutFlow_unw->Fill(3.);
 
     //// pileup distributions
     if( isData )
@@ -1079,6 +1095,11 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
 
 // ------------ method called once each job just after ending the event loop  ------------
 void BTagValidation::endJob() {
+
+  h1_CutFlow->SetBinContent(1, nEventsAll); //// strictly speaking not correct since event weights not applied
+  h1_CutFlow->SetBinContent(2, nEventsStored); //// strictly speaking not correct since event weights not applied
+  h1_CutFlow_unw->SetBinContent(1, nEventsAll);
+  h1_CutFlow_unw->SetBinContent(2, nEventsStored);
 }
 
 // ------------ method called when starting to processes a run  ------------

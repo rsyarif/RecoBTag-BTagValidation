@@ -5,16 +5,6 @@ DATA:
 /JetHT/Run2012C-22Jan2013-v1/AOD       -1
 /JetHT/Run2012D-22Jan2013-v1/AOD       -1
 
-#/Jet/Run2012A-22Jan2013-v1/AOD         -1
-#/JetMon/Run2012B-22Jan2013-v1/AOD      -1
-#/JetMon/Run2012C-22Jan2013-v1/AOD      -1
-#/JetMon/Run2012D-22Jan2013-v1/AOD      -1
-
-#/BTag/Run2012A-22Jan2013-v1/AOD        -1
-#/BTag/Run2012B-22Jan2013-v1/AOD        -1
-#/BTag/Run2012C-22Jan2013-v1/AOD        -1
-#/BTag/Run2012D-22Jan2013-v1/AOD        -1
-
 QCD:
 # Dataset_name                                                                                       xs (in pb, for data set to -1)
 #/QCD_Pt-15to30_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM                   9.8828742E08
@@ -44,5 +34,7 @@ QCD:
 /QCD_Pt-800to1000_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM  0.368781
 /QCD_Pt-1000_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM       0.0849078
 
-TTJets: L=19767
-/TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM  245.8
+TTJets: L=19784
+/TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM               112.3247008
+/TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM            107.6721984
+/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM            25.8031008

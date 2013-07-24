@@ -108,19 +108,18 @@ def main():
 
       # open input ROOT file
       root_file = TFile(input_root_file)
-      htemp = root_file.Get(os.path.join(options.analyzer_module,'h1_CutFlow'))
-      nEvents = htemp.GetBinContent(1)
-      htemp_unw = root_file.Get(os.path.join(options.analyzer_module,'h1_CutFlow_unw'))
-      nEvents_unw = htemp_unw.GetBinContent(1)
+      htemp = root_file.Get(os.path.join(options.analyzer_module,'h1_CutFlow_unw'))
+      nEventsAll = htemp.GetBinContent(1)
+      nEventsStored = htemp.GetBinContent(2)
       scale = 1.
       if group_xs[group] > 0.:
         if group_L[group] > 0.:
-          scale = (dataset_xs[dataset]*group_L[group])/nEvents
+          scale = (dataset_xs[dataset]*group_L[group])/nEventsAll
         else:
-          scale = dataset_xs[dataset]/(group_xs[group]*nEvents)
-        print dataset + ' -- Events: ' + str(nEvents_unw) + ' (unweighted), ' + str(nEvents) + ' (weighted); relative xs: ' + str(dataset_xs[dataset]/group_xs[group]) + '; scale: ' + str(scale)
+          scale = dataset_xs[dataset]/(group_xs[group]*nEventsAll)
+        print dataset + ' -- Events: ' + str(nEventsAll) + ' (all), ' + str(nEventsStored) + ' (stored); relative xs: ' + str(dataset_xs[dataset]/group_xs[group]) + '; scale: ' + str(scale)
       else:
-        print dataset + ' -- Events: ' + str(nEvents) + ', scale: ' + str(scale)
+        print dataset + ' -- Events: ' + str(nEventsAll) + ' (all), ' + str(nEventsStored) + ' (stored); scale: ' + str(scale)
 
       # get the number of histograms
       nHistos = root_file.Get(options.analyzer_module).GetListOfKeys().GetEntries()
