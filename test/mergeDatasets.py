@@ -117,9 +117,9 @@ def main():
           scale = (dataset_xs[dataset]*group_L[group])/nEventsAll
         else:
           scale = dataset_xs[dataset]/(group_xs[group]*nEventsAll)
-        print dataset + ' -- Events: ' + str(nEventsAll) + ' (all), ' + str(nEventsStored) + ' (stored); relative xs: ' + str(dataset_xs[dataset]/group_xs[group]) + '; scale: ' + str(scale)
+        print dataset + ' -- Events: %.0f (all), %.0f (stored); relative xs: %.8E; scale: %.8E'%(nEventsAll,nEventsStored,(dataset_xs[dataset]/group_xs[group]),scale)
       else:
-        print dataset + ' -- Events: ' + str(nEventsAll) + ' (all), ' + str(nEventsStored) + ' (stored); scale: ' + str(scale)
+        print dataset + ' -- Events: %.0f (all), %.0f (stored); scale: %.8E'%(nEventsAll,nEventsStored,scale)
 
       # get the number of histograms
       nHistos = root_file.Get(options.analyzer_module).GetListOfKeys().GetEntries()
