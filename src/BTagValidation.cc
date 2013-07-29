@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.25 2013/07/04 19:36:13 devdatta Exp $
+// $Id: BTagValidation.cc,v 1.26 2013/07/24 02:42:29 ferencek Exp $
 //
 //
 
@@ -583,7 +583,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       double subjet_dphi = subjet1_p4.DeltaPhi(subjet2_p4); ;
       double subjet_dyphi = sqrt( subjet_dy*subjet_dy + subjet_dphi*subjet_dphi ) ;
 
-      if( processSubJets_ && subjet_dR>0.8 ) continue; // if processing subjets, skip fat jets for which the subjets are separated by dR>0.8
+      //if( processSubJets_ && subjet_dR>0.8 ) continue; // if processing subjets, skip fat jets for which the subjets are separated by dR>0.8
 
       if( processSubJets_ && subjet_dR<(FatJetInfo.Jet_mass[iJet]/FatJetInfo.Jet_pt[iJet]) ) continue; // if processing subjets, skip infrared unsafe configurations
 
