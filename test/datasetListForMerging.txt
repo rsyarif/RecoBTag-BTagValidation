@@ -11,7 +11,7 @@ QCD:
 ##/QCD_Pt-30to50_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM                   66285328.0
 ##/QCD_Pt-50to80_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM                   8148778.0
 ##/QCD_Pt-80to120_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v3/AODSIM                  1033680.0
-##/QCD_Pt-120to170_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v3/AODSIM                 156293.3
+#/QCD_Pt-120to170_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v3/AODSIM                 156293.3
 #/QCD_Pt-170to300_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM                 34138.15
 #/QCD_Pt-300to470_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM                 1759.549
 #/QCD_Pt-470to600_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM                 113.8791
@@ -38,3 +38,7 @@ TTJets: L=19784
 /TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM               112.3247008
 /TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM            107.6721984
 /TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM            25.8031008
+
+ZJetsFullyHadronic: L=19784
+# Dataset_name                                                                                                                  xs (in pb, for data set to -1)
+/ZJetsFullyHadronic_PtZ-350_8TeV-madgraph/ferencek-Summer12_DR53X-PU_S10_START53_V7C-v1-c9b345a6407f828c1cc6a52f8007a229/USER   2.08784838129
