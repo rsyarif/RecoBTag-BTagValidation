@@ -25,37 +25,25 @@
 
 using namespace std;
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString dir4plots="HiggsTagCommissioning_InclusiveJets" ;
+TString filename    ="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+TString filename_ext="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+TString dir4plots="HiggsTagCommissioning_InclusiveJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
+//TString filename    ="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ;
-
-TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
-
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp" ;
-
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
+//TString filename    ="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ; 
 
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
@@ -133,11 +121,11 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_trk_multi_sel" ,"number of selected tracks in the jets",0, 1 ,0 ,1. ,0.);
     DrawStacked(histoTag+"_track_nHit"    ,"number of hits"                       ,1, 1 ,0 ,1. ,0.);
     DrawStacked(histoTag+"_track_HPix"    ,"number of hits in the Pixel"          ,1, 1 ,0 ,1. ,0.);
-    DrawStacked(histoTag+"_track_len"     ,"Track decay length"                   ,1, 1 ,0 ,2. ,0.);
-    DrawStacked(histoTag+"_track_dist"    ,"Track distance to the jet axis"       ,1, 1 ,0 ,2. ,0.);
-    DrawStacked(histoTag+"_track_pt"      ,"p_{T} of all the tracks"              ,1, 1 ,0 ,4. ,0.);
+    DrawStacked(histoTag+"_track_len"     ,"Track decay length [cm]"                   ,1, 1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_track_dist"    ,"Track distance to the jet axis [cm]"       ,1, 1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_track_pt"      ,"p_{T} of all the tracks [GeV]"              ,1, 1 ,0 ,4. ,0.);
     DrawStacked(histoTag+"_track_IPs"     ,"3D IP significance of all tracks"     ,1, 1 ,0 ,2. ,0.);
-    DrawStacked(histoTag+"_track_IP"      ,"3D IP of all tracks"                  ,1, 1 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_track_IP"      ,"3D IP of all tracks [cm]"                  ,1, 1 ,0 ,2. ,0.);
     DrawStacked(histoTag+"_track_multi"   ,"number of tracks in the jets"         ,0, 1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_chi2"    ,    "normalized #chi^{2} of the tracks",1,1 ,0 ,0. ,0.);
     //     DrawStacked(histoTag+"_track_dz"      ,    "Track transverse IP",1,1 ,0 ,0. ,0.);
@@ -176,12 +164,12 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   }
   if (Draw_sv_plots){
     DrawStacked(histoTag+"_sv_multi_0"      ,"nr. of SV including bin 0"                    ,1 ,1 ,0 ,1. ,0.);
-    DrawStacked(histoTag+"_pt_sv"           ,"p_{T} of jets containing a SV"                ,1 ,1 ,0 ,4. ,0.);
-    DrawStacked(histoTag+"_sv_mass"         ,"SV mass"                                      ,1 ,1 ,1 ,2. ,1, 0., 4.);
-    DrawStacked(histoTag+"_sv_mass"         ,"SV mass"                                      ,0 ,1 ,1 ,2. ,1, 0., 4.);
+    DrawStacked(histoTag+"_pt_sv"           ,"p_{T} of jets containing a SV [GeV]"                ,1 ,1 ,0 ,4. ,0.);
+    DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV]"                                      ,1 ,1 ,1 ,2. ,1, 0., 4.);
+    DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV]"                                      ,0 ,1 ,1 ,2. ,1, 0., 4.);
     DrawStacked(histoTag+"_sv_deltaR_jet"   ,"#DeltaR between the jet and the SV direction" ,0 ,1 ,0 ,2. ,0.);
     DrawStacked(histoTag+"_sv_en_ratio"     ,"SV energy ratio"                              ,0 ,1 ,0 ,2. ,0.);
-    DrawStacked(histoTag+"_sv_pt"           ,"SV p_{T}"                                     ,1 ,1 ,0 ,5. ,0.);
+    DrawStacked(histoTag+"_sv_pt"           ,"SV p_{T} [GeV]"                                     ,1 ,1 ,0 ,5. ,0.);
     DrawStacked(histoTag+"_sv_flight3DSig"  ,"SV 3D flight distance significance"           ,1 ,1 ,0 ,5. ,0.);
     DrawStacked(histoTag+"_svnTrk_firstVxt" ,"nr. of tracks from the first SV"              ,1 ,1 ,0 ,1. ,0.);
     //     DrawStacked(histoTag+"_sv_multi","nr. of SV",1,1 ,0 ,0. ,0.);
@@ -202,13 +190,13 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   if (Draw_muons_plots){
     DrawStacked(histoTag+"_muon_multi",     "number of muons"            ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_multi_sel", "number of selected muons"   ,1 ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_mu_ptrel",       "p_{T} rel. of the muon"     ,0 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_mu_ptrel",       "p_{T} rel. of the muon [GeV]"     ,0 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_mu_chi2",        "norm. #chi^{2} of the muon" ,1 ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T}"                 ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T} [GeV]"                 ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_eta",       "Muon #eta"                  ,0 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_phi",       "Muon #phi"                  ,0 ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip3d",      "Muon 3D IP"                 ,1 ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip2d",      "Muon 2D IP"                 ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip3d",      "Muon 3D IP [cm]"                 ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip2d",      "Muon 2D IP [cm]"                 ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_Sip3d",     "Muon 3D IP significance"    ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_Sip2d",     "Muon 2D IP significance"    ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_DeltaR",    "Muon1 #Delta R"             ,0 ,1 ,0 ,0. ,0.);
