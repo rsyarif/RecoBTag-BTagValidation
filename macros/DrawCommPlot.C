@@ -25,29 +25,25 @@
 
 using namespace std;
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString dir4plots="HiggsTagCommissioning_InclusiveJets" ;
+TString filename    ="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+TString filename_ext="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+TString dir4plots="HiggsTagCommissioning_InclusiveJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ; 
 
-TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
+//TString filename    ="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ;
-
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
+//TString filename    ="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ; 
 
 //TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 //TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
@@ -65,6 +61,7 @@ TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
 
 TString formata=".pdf";
 TString formatb=".png";
+TString formatc=".C";
 
 bool bOverflow = 1;
 bool web       = 0;
@@ -397,6 +394,9 @@ void Draw(TString name, TString histotitle, bool log) {
   c1->SaveAs(dir4plots+"/"+name_plot);
   name_plot=name+"_Linear"+formatb;
   if(log) name_plot=name+"_Log"+formatb;
+  c1->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatc;
+  if(log) name_plot=name+"_Log"+formatc;
   c1->SaveAs(dir4plots+"/"+name_plot);
 
 }
@@ -834,6 +834,9 @@ void DrawStacked(TString name,
   name_plot=name+"_Linear"+formatb;
   if(log) name_plot=name+"_Log"+formatb;
   c1->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatc;
+  if(log) name_plot=name+"_Log"+formatc;
+  c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
     pad0 ->cd();
@@ -1042,6 +1045,9 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   c1->SaveAs(dir4plots+"/"+name_plot);
   name_plot=name+"_Linear"+formatb;
   if(log) name_plot=name+"_Log"+formatb;
+  c1->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatc;
+  if(log) name_plot=name+"_Log"+formatc;
   c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
@@ -1252,6 +1258,9 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   canvas->SaveAs(dir4plots+"/"+name_plot);
   name_plot=name+"_Linear"+formatb;
   if(log) name_plot=name+"_Log"+formatb;
+  canvas->SaveAs(dir4plots+"/"+name_plot);
+  name_plot=name+"_Linear"+formatc;
+  if(log) name_plot=name+"_Log"+formatc;
   canvas->SaveAs(dir4plots+"/"+name_plot);
 
 }
