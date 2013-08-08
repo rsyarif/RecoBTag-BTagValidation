@@ -69,10 +69,10 @@ TString formatc=".C";
 
 bool bOverflow = 1;
 bool web       = 0;
-bool extNorm   = 0;
+bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 bool inclTTbar = 1;
 bool inclZjj   = 1;
-bool uncBand   = 0;
+bool uncBand   = 0; // used only for double-muon- and double-b-tagged fat jets with scale factors applied
 bool setSampleName = 1;
 
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag);
