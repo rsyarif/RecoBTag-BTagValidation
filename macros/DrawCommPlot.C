@@ -754,11 +754,11 @@ void DrawStacked(TString name,
 
   if (setSampleName) {
     TString sample = "";
-    if (filename.Contains("InclusiveJets")) sample += " Fat jets" ;
-    else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "Double muon-tagged fat jets" ;
-    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "Muon-tagged fat jets" ;
-    else if (filename.Contains("MuonTaggedSubJets")) sample += "Muon-tagged subjets" ;
-    else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Double muon- and}{double b-tagged fat jets}" ;
+    if (filename.Contains("InclusiveJets")) sample += "Multijet sample (CA8 jets)" ;
+    else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double muon-tagged CA8 jets)}" ;
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged CA8 jets)}" ;
+    else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged CA8 subjets)}" ;
+    else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double muon- and}{double b-tagged fat jets)}" ; 
     else std::cout << " >>>> Error:Check sample name\n" ;
     TLatex *tex1 = new TLatex(0.15,0.85,sample);
     tex1->SetNDC();
