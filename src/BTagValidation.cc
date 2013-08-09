@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.26 2013/07/24 02:42:29 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.27 2013/07/29 04:41:11 ferencek Exp $
 //
 //
 
@@ -89,11 +89,15 @@ class BTagValidation : public edm::EDAnalyzer {
     void fillJetHistos(const JetInfoBranches& JetInfo, const int iJet, const bool isGluonSplit, const TString& histoTag, const int nmu, const int nselmuon, const int idxFirstMuon, const double wt);
 
     // b-tagging scale factors
-    double scaleFactor(const int partonFlavor, const double jetPt, const double jetEta);
+    double scaleFactor(const int partonFlavor, const double jetPt, const double jetEta, const bool isCSVM);
 
     double scaleFactorB_CSVL(const double jetPt, const double jetEta);
     double scaleFactorC_CSVL(const double jetPt, const double jetEta);
     double scaleFactorUDSG_CSVL(const double jetPt, const double jetEta);
+
+    double scaleFactorB_CSVM(const double jetPt, const double jetEta);
+    double scaleFactorC_CSVM(const double jetPt, const double jetEta);
+    double scaleFactorUDSG_CSVM(const double jetPt, const double jetEta);
 
     // ----------member data ---------------------------
     EventInfoBranches EvtInfo;
@@ -141,6 +145,22 @@ class BTagValidation : public edm::EDAnalyzer {
     TF1 *CSVL_SFl_1p0to1p5_max;
     TF1 *CSVL_SFl_1p5to2p4_max;
 
+    // CSVM scale factors
+    TF1  *CSVM_SFb_0to2p4;
+    TH1D *CSVM_SFb_errors;
+
+    TF1 *CSVM_SFl_0to0p8;
+    TF1 *CSVM_SFl_0p8to1p6;
+    TF1 *CSVM_SFl_1p6to2p4;
+
+    TF1 *CSVM_SFl_0to0p8_min;
+    TF1 *CSVM_SFl_0p8to1p6_min;
+    TF1 *CSVM_SFl_1p6to2p4_min;
+
+    TF1 *CSVM_SFl_0to0p8_max;
+    TF1 *CSVM_SFl_0p8to1p6_max;
+    TF1 *CSVM_SFl_1p6to2p4_max;
+
     //// Lumi reweighting object
     edm::LumiReWeighting LumiWeights_;
 
@@ -165,6 +185,8 @@ class BTagValidation : public edm::EDAnalyzer {
     const double                    fatJetPtMin_;
     const double                    fatJetPtMax_;
     const double                    fatJetAbsEtaMax_;
+    const double                    fatJetPrunedMassMin_;
+    const double                    fatJetPrunedMassMax_;
     const double                    SFbShift_;
     const double                    SFlShift_;
     const std::vector<std::string>  triggerSelection_;
@@ -213,6 +235,8 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   fatJetPtMin_(iConfig.getParameter<double>("FatJetPtMin")),
   fatJetPtMax_(iConfig.getParameter<double>("FatJetPtMax")),
   fatJetAbsEtaMax_(iConfig.getParameter<double>("FatJetAbsEtaMax")),
+  fatJetPrunedMassMin_(iConfig.getParameter<double>("FatJetPrunedMassMin")),
+  fatJetPrunedMassMax_(iConfig.getParameter<double>("FatJetPrunedMassMax")),
   SFbShift_(iConfig.getParameter<double>("SFbShift")),
   SFlShift_(iConfig.getParameter<double>("SFlShift")),
   triggerSelection_(iConfig.getParameter<std::vector<std::string> >("TriggerSelection")),
@@ -230,8 +254,10 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
 
   if (doPUReweighting_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ;
 
-  // CSVL scale factors
+  // Pt bins for SFb
   double PtBins[] = {20, 30, 40, 50, 60, 70, 80, 100, 120, 160, 210, 260, 320, 400, 500, 600, 800};
+
+  // CSVL scale factors
   CSVL_SFb_0to2p4 = new TF1("CSVL_SFb_0to2p4","0.997942*((1.+(0.00923753*x))/(1.+(0.0096119*x)))", 20.,800.);
 
   CSVL_SFb_errors = new TH1D("CSVL_SFb_errors", "CSVL_SFb_errors", 16, PtBins);
@@ -268,6 +294,41 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   CSVL_SFl_0p5to1p0_max = new TF1("CSVL_SFl_0p5to1p0_max","((1.00683+(0.00246404*x))+(-4.96729e-06*(x*x)))+(2.85697e-09*(x*(x*x)))", 20.,1000.);
   CSVL_SFl_1p0to1p5_max = new TF1("CSVL_SFl_1p0to1p5_max","((0.964787+(0.00219574*x))+(-4.85552e-06*(x*x)))+(3.09457e-09*(x*(x*x)))", 20.,1000.);
   CSVL_SFl_1p5to2p4_max = new TF1("CSVL_SFl_1p5to2p4_max","((1.03039+(0.0013358*x))+(-3.89284e-06*(x*x)))+(3.01155e-09*(x*(x*x)))", 20.,850.);
+
+  // CSVM scale factors
+  CSVM_SFb_0to2p4 = new TF1("CSVM_SFb_0to2p4","(0.938887+(0.00017124*x))+(-2.76366e-07*(x*x))", 20.,800.);
+
+  CSVM_SFb_errors = new TH1D("CSVM_SFb_errors", "CSVM_SFb_errors", 16, PtBins);
+  CSVM_SFb_errors->SetBinContent( 0,(2*0.0415707));
+  CSVM_SFb_errors->SetBinContent( 1,0.0415707);
+  CSVM_SFb_errors->SetBinContent( 2,0.0204209);
+  CSVM_SFb_errors->SetBinContent( 3,0.0223227);
+  CSVM_SFb_errors->SetBinContent( 4,0.0206655);
+  CSVM_SFb_errors->SetBinContent( 5,0.0199325);
+  CSVM_SFb_errors->SetBinContent( 6,0.0174121);
+  CSVM_SFb_errors->SetBinContent( 7,0.0202332);
+  CSVM_SFb_errors->SetBinContent( 8,0.0182446);
+  CSVM_SFb_errors->SetBinContent( 9,0.0159777);
+  CSVM_SFb_errors->SetBinContent(10,0.0218531);
+  CSVM_SFb_errors->SetBinContent(11,0.0204688);
+  CSVM_SFb_errors->SetBinContent(12,0.0265191);
+  CSVM_SFb_errors->SetBinContent(13,0.0313175);
+  CSVM_SFb_errors->SetBinContent(14,0.0415417);
+  CSVM_SFb_errors->SetBinContent(15,0.0740446);
+  CSVM_SFb_errors->SetBinContent(16,0.0596716);
+  CSVM_SFb_errors->SetBinContent(17,(2*0.0596716));
+
+  CSVM_SFl_0to0p8 =   new TF1("CSVM_SFl_0to0p8","((1.07541+(0.00231827*x))+(-4.74249e-06*(x*x)))+(2.70862e-09*(x*(x*x)))", 20.,1000.);
+  CSVM_SFl_0p8to1p6 = new TF1("CSVM_SFl_0p8to1p6","((1.05613+(0.00114031*x))+(-2.56066e-06*(x*x)))+(1.67792e-09*(x*(x*x)))", 20.,1000.);
+  CSVM_SFl_1p6to2p4 = new TF1("CSVM_SFl_1p6to2p4","((1.05625+(0.000487231*x))+(-2.22792e-06*(x*x)))+(1.70262e-09*(x*(x*x)))", 20.,850.);
+
+  CSVM_SFl_0to0p8_min =   new TF1("CSVM_SFl_0to0p8_min","((0.964527+(0.00149055*x))+(-2.78338e-06*(x*x)))+(1.51771e-09*(x*(x*x)))", 20.,1000.);
+  CSVM_SFl_0p8to1p6_min = new TF1("CSVM_SFl_0p8to1p6_min","((0.946051+(0.000759584*x))+(-1.52491e-06*(x*x)))+(9.65822e-10*(x*(x*x)))", 20.,1000.);
+  CSVM_SFl_1p6to2p4_min = new TF1("CSVM_SFl_1p6to2p4_min","((0.956736+(0.000280197*x))+(-1.42739e-06*(x*x)))+(1.0085e-09*(x*(x*x)))", 20.,850.);
+
+  CSVM_SFl_0to0p8_max =   new TF1("CSVM_SFl_0to0p8_max","((1.18638+(0.00314148*x))+(-6.68993e-06*(x*x)))+(3.89288e-09*(x*(x*x)))", 20.,1000.);
+  CSVM_SFl_0p8to1p6_max = new TF1("CSVM_SFl_0p8to1p6_max","((1.16624+(0.00151884*x))+(-3.59041e-06*(x*x)))+(2.38681e-09*(x*(x*x)))", 20.,1000.);
+  CSVM_SFl_1p6to2p4_max = new TF1("CSVM_SFl_1p6to2p4_max","((1.15575+(0.000693344*x))+(-3.02661e-06*(x*x)))+(2.39752e-09*(x*(x*x)))", 20.,850.);
 }
 
 
@@ -539,9 +600,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     for(int iJet = 0; iJet < FatJetInfo.nJet; ++iJet)
     {
       if ( FatJetInfo.Jet_pt[iJet] < fatJetPtMin_ ||
-           FatJetInfo.Jet_pt[iJet] > fatJetPtMax_   )           continue; //// apply jet pT cut
-      if ( fabs(FatJetInfo.Jet_eta[iJet]) > fatJetAbsEtaMax_ )  continue; //// apply jet eta cut
-      if ( FatJetInfo.Jet_looseID[iJet]==0 )                    continue; //// apply loose jet ID
+           FatJetInfo.Jet_pt[iJet] > fatJetPtMax_ )                  continue; //// apply jet pT cut
+      if ( fabs(FatJetInfo.Jet_eta[iJet]) > fatJetAbsEtaMax_ )       continue; //// apply jet eta cut
+      if ( FatJetInfo.Jet_looseID[iJet]==0 )                         continue; //// apply loose jet ID
+      if ( FatJetInfo.Jet_massPruned[iJet] < fatJetPrunedMassMin_ ||
+           FatJetInfo.Jet_massPruned[iJet] > fatJetPrunedMassMax_ )  continue; //// apply pruned jet mass cut
 
       int idxFirstMuon = -1;
       int nselmuon = 0;
@@ -680,8 +743,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       //// apply b-tagging scale factors
       double wtFatJet = 1.;
       if( applySFs_ && !isData && applyFatJetBTagging_ && fatJetDoubleTagging_ ) {
-        wtFatJet *= ( scaleFactor(SubJetInfo.Jet_flavour[iSubJet1],SubJetInfo.Jet_pt[iSubJet1],SubJetInfo.Jet_eta[iSubJet1]) *
-                      scaleFactor(SubJetInfo.Jet_flavour[iSubJet2],SubJetInfo.Jet_pt[iSubJet2],SubJetInfo.Jet_eta[iSubJet2]) );
+        wtFatJet *= ( scaleFactor(SubJetInfo.Jet_flavour[iSubJet1], SubJetInfo.Jet_pt[iSubJet1], SubJetInfo.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
+                      scaleFactor(SubJetInfo.Jet_flavour[iSubJet2], SubJetInfo.Jet_pt[iSubJet2], SubJetInfo.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
       }
 
       //// fat jet multiplicity
@@ -738,14 +801,14 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             }
           }
 
-          if(applySubJetMuonTagging_ && nselmuonSubJet==0) continue;  //// if enabled, select muon-tagged subjets
+          if(applySubJetMuonTagging_ && nselmuonSubJet==0)                              continue;  //// if enabled, select muon-tagged subjets
           if(applySubJetBTagging_ && SubJetInfo.Jet_CombSvx[iSubJet]<=subJetBDiscrCut_) continue;  //// if enabled, select b-tagged subjets
 
           //// apply b-tagging scale factors
           double wtSubJet = 1.;
           if( applySFs_ && !isData ) {
             if( applyFatJetBTagging_ && fatJetDoubleTagging_ ) wtSubJet *= wtFatJet;
-            else                                               wtSubJet *= scaleFactor(SubJetInfo.Jet_flavour[iSubJet],SubJetInfo.Jet_pt[iSubJet],SubJetInfo.Jet_eta[iSubJet]);
+            else                                               wtSubJet *= scaleFactor(SubJetInfo.Jet_flavour[iSubJet], SubJetInfo.Jet_pt[iSubJet], SubJetInfo.Jet_eta[iSubJet], (subJetBDiscrCut_>0.25));
           }
 
           //// subjet multiplicity
@@ -1300,14 +1363,26 @@ bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& J
 }
 
 // ------------ method that returns pT- and eta-dependent b-tag efficiency scale factor  ------------
-double BTagValidation::scaleFactor(const int partonFlavor, const double jetPt, const double jetEta)
+double BTagValidation::scaleFactor(const int partonFlavor, const double jetPt, const double jetEta, const bool isCSVM)
 {
-  if( abs(partonFlavor)==5 )
-    return scaleFactorB_CSVL(jetPt,jetEta);
-  else if( abs(partonFlavor)==4 )
-    return scaleFactorC_CSVL(jetPt,jetEta);
+  if( isCSVM )
+  {
+    if( abs(partonFlavor)==5 )
+      return scaleFactorB_CSVM(jetPt,jetEta);
+    else if( abs(partonFlavor)==4 )
+      return scaleFactorC_CSVM(jetPt,jetEta);
+    else
+      return scaleFactorUDSG_CSVM(jetPt,jetEta);
+  }
   else
-    return scaleFactorUDSG_CSVL(jetPt,jetEta);
+  {
+    if( abs(partonFlavor)==5 )
+      return scaleFactorB_CSVL(jetPt,jetEta);
+    else if( abs(partonFlavor)==4 )
+      return scaleFactorC_CSVL(jetPt,jetEta);
+    else
+      return scaleFactorUDSG_CSVL(jetPt,jetEta);
+  }
 }
 
 // ------------ method that returns pT- and eta-dependent b-tag efficiency scale factor for b-jets and CSVL tagger  ------------
@@ -1364,6 +1439,59 @@ double BTagValidation::scaleFactorUDSG_CSVL(const double jetPt, const double jet
     if(Pt>850.) Pt = 850.;
 
     SF = CSVL_SFl_1p5to2p4->Eval(Pt) + ( (jetPt<20. || jetPt>850.) ? 2. : 1. )*fabs(SFlShift_)*( SFlShift_ >= 0. ? (CSVL_SFl_1p5to2p4_max->Eval(Pt) - CSVL_SFl_1p5to2p4->Eval(Pt)) : (CSVL_SFl_1p5to2p4_min->Eval(Pt) - CSVL_SFl_1p5to2p4->Eval(Pt)) );
+  }
+
+  return SF;
+}
+
+// ------------ method that returns pT- and eta-dependent b-tag efficiency scale factor for b-jets and CSVM tagger  ------------
+double BTagValidation::scaleFactorB_CSVM(const double jetPt, const double jetEta)
+{
+  double Pt = jetPt;
+  // for scale factor extrapolation
+  if(Pt<20.) Pt = 20.;
+  if(Pt>800.) Pt = 800.;
+
+  return CSVM_SFb_0to2p4->Eval(Pt) + SFbShift_*CSVM_SFb_errors->GetBinContent(CSVM_SFb_errors->GetXaxis()->FindBin(jetPt));
+}
+
+// ------------ method that returns pT- and eta-dependent b-tag efficiency scale factor for c-jets and CSVM tagger  ------------
+double BTagValidation::scaleFactorC_CSVM(const double jetPt, const double jetEta)
+{
+  double Pt = jetPt;
+  // for scale factor extrapolation
+  if(Pt<20.) Pt = 20.;
+  if(Pt>800.) Pt = 800.;
+
+  return CSVM_SFb_0to2p4->Eval(Pt) + 2*SFbShift_*CSVM_SFb_errors->GetBinContent(CSVM_SFb_errors->GetXaxis()->FindBin(jetPt));
+}
+
+// ------------ method that returns pT- and eta-dependent b-tag efficiency scale factor for light flavor jets and CSVM tagger ------------
+double BTagValidation::scaleFactorUDSG_CSVM(const double jetPt, const double jetEta)
+{
+  double SF = 1.;
+  double Pt = jetPt;
+  double absEta = fabs(jetEta);
+  // for scale factor extrapolation
+  if(Pt<20.) Pt = 20.;
+
+  if(absEta<0.8)
+  {
+    if(Pt>1000.) Pt = 1000.;
+
+    SF = CSVM_SFl_0to0p8->Eval(Pt) + ( (jetPt<20. || jetPt>1000.) ? 2. : 1. )*fabs(SFlShift_)*( SFlShift_ >= 0. ? (CSVM_SFl_0to0p8_max->Eval(Pt) - CSVM_SFl_0to0p8->Eval(Pt)) : (CSVM_SFl_0to0p8_min->Eval(Pt) - CSVM_SFl_0to0p8->Eval(Pt)) );
+  }
+  else if(absEta>=0.8 && absEta<1.6)
+  {
+    if(Pt>1000.) Pt = 1000.;
+
+    SF = CSVM_SFl_0p8to1p6->Eval(Pt) + ( (jetPt<20. || jetPt>1000.) ? 2. : 1. )*fabs(SFlShift_)*( SFlShift_ >= 0. ? (CSVM_SFl_0p8to1p6_max->Eval(Pt) - CSVM_SFl_0p8to1p6->Eval(Pt)) : (CSVM_SFl_0p8to1p6_min->Eval(Pt) - CSVM_SFl_0p8to1p6->Eval(Pt)) );
+  }
+  else
+  {
+    if(Pt>850.) Pt = 850.;
+
+    SF = CSVM_SFl_1p6to2p4->Eval(Pt) + ( (jetPt<20. || jetPt>850.) ? 2. : 1. )*fabs(SFlShift_)*( SFlShift_ >= 0. ? (CSVM_SFl_1p6to2p4_max->Eval(Pt) - CSVM_SFl_1p6to2p4->Eval(Pt)) : (CSVM_SFl_1p6to2p4_min->Eval(Pt) - CSVM_SFl_1p6to2p4->Eval(Pt)) );
   }
 
   return SF;

@@ -82,7 +82,27 @@ options.register('fatJetPtMin', 300.,
 options.register('fatJetPtMax', 1.E6,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
-    "Minimum fat jet Pt"
+    "Maximum fat jet Pt"
+)
+options.register('fatJetPrunedMassMin', 0.,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Minimum fat jet pruned mass"
+)
+options.register('fatJetPrunedMassMax', 1.E6,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Maximum fat jet pruned mass"
+)
+options.register('fatJetBDiscrCut', 0.244,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "B discriminator cut for fat jets"
+)
+options.register('subJetBDiscrCut', 0.244,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "B discriminator cut for fat jets"
 )
 options.register('SFbShift', 0.,
     VarParsing.multiplicity.singleton,
@@ -140,10 +160,12 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),
     DynamicMuonSubJetDR    = cms.bool(options.dynamicMuonSubJetDR),
     ApplySFs               = cms.bool(options.applySFs),
-    FatJetBDiscrCut        = cms.double(0.244),
-    SubJetBDiscrCut        = cms.double(0.244),
+    FatJetBDiscrCut        = cms.double(options.fatJetBDiscrCut),
+    SubJetBDiscrCut        = cms.double(options.subJetBDiscrCut),
     FatJetPtMin            = cms.double(options.fatJetPtMin),
     FatJetPtMax            = cms.double(options.fatJetPtMax),
+    FatJetPrunedMassMin    = cms.double(options.fatJetPrunedMassMin),
+    FatJetPrunedMassMax    = cms.double(options.fatJetPrunedMassMax),
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
