@@ -25,42 +25,38 @@
 
 using namespace std;
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString dir4plots="HiggsTagCommissioning_InclusiveJets" ;
+TString filename    ="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+TString filename_ext="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+TString dir4plots="HiggsTagCommissioning_InclusiveJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ; 
 
-TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
+//TString filename    ="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ;
-
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
+//TString filename    ="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ; 
 
 //TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 //TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 //TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp" ;
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
 
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
 
-TString title1 = "CMS preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV";
+TString title1 = "CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
 
 TString formata=".pdf";
@@ -296,7 +292,8 @@ void Draw(TString name, TString histotitle, bool log) {
   gStyle->SetOptTitle(0);
   gStyle->SetOptStat(0);
 
-  TCanvas *c1 = new TCanvas("c1", "c1",432,69,782,552);
+  //TCanvas *c1 = new TCanvas("c1", "c1",432,69,782,552);
+  TCanvas *c1 = new TCanvas("c1", "c1",441,159,782,552);
   c1->Range(0,0,1,1);
   c1->SetFillColor(10);
   c1->SetBorderMode(0);
@@ -326,7 +323,7 @@ void Draw(TString name, TString histotitle, bool log) {
 
   hist_data->Draw("SAMEE");
 
-  TLegend* leg = new TLegend(0.58,0.65,0.86,0.87,NULL,"brNDC");
+  TLegend* leg = new TLegend(0.58,0.53,0.86,0.89,NULL,"brNDC");
   leg->SetBorderSize(1);
   leg->SetTextFont(62);
   leg->SetLineColor(1);
@@ -343,7 +340,7 @@ void Draw(TString name, TString histotitle, bool log) {
   leg->SetFillColor(0);
   leg->Draw();
 
-  TLatex *   tex = new TLatex(0.42,0.96,"CMS preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
+  TLatex *   tex = new TLatex(0.42,0.96,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
   tex->SetNDC();
   tex->SetTextAlign(13);
   tex->SetTextFont(42);
@@ -661,7 +658,8 @@ void DrawStacked(TString name,
     cout << "Data/MC ratio:       " << histo_ratio->GetBinContent(1) << endl
       << "Data/MC ratio error: " << histo_ratio->GetBinError(1) << endl;
 
-  TCanvas *c1 = new TCanvas("c1", "c1",432,69,782,552);
+  //TCanvas *c1 = new TCanvas("c1", "c1",432,69,782,552);
+  TCanvas *c1 = new TCanvas("c1", "c1",441,159,782,552);
   c1->Range(0,0,1,1);
   c1->SetFillColor(10);
   c1->SetBorderMode(0);
@@ -672,7 +670,8 @@ void DrawStacked(TString name,
   TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,0.98);
   pad0 ->Draw();
   pad0 ->cd();
-  pad0->Range(-1,-336.2494,9,3026.244);
+  //pad0->Range(-1,-336.2494,9,3026.244);
+  pad0->Range(-1.75,-1.336976,10.75,7.664202);
   pad0->SetFillColor(0);
   pad0->SetBorderMode(0);
   pad0->SetBorderSize(2);
@@ -682,7 +681,8 @@ void DrawStacked(TString name,
 
   if (!log) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*3.0 : histo_tot->GetMaximum()*3.0) ;
   else {
-    if (name.Contains("track_nHit") || name.Contains("track_HPix") || name.Contains("track_IP")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*5000000 : histo_tot->GetMaximum()*5000000) ;
+    if (name.Contains("track_nHit") || name.Contains("track_HPix")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*5000000 : histo_tot->GetMaximum()*5000000) ;
+    else if (name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") || name.Contains("_sv_multi_0")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1000 : histo_tot->GetMaximum()*1000) ;
     else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*100000 : histo_tot->GetMaximum()*100000) ;
   }
   if (doData) {
@@ -692,7 +692,7 @@ void DrawStacked(TString name,
   }
 
   //if (name=="jet_phi" || name=="sv_phi" || name=="muon_phi") {
-  if (log) histo_tot->SetMinimum(0.1);
+  if (log) histo_tot->SetMinimum(0.5);
   else     histo_tot->SetMinimum(0.);
   //}
 
@@ -701,6 +701,7 @@ void DrawStacked(TString name,
   histo_tot->SetTitleOffset(0.75,"Y");
   histo_tot->GetYaxis()->SetLabelSize( 0.05 );
   histo_tot->GetYaxis()->SetTitleSize( 0.06 );
+  //if ( log == false) histo_tot->GetYaxis()->SetNoExponent(kTRUE) ; 
 
   if (setXRange) {
     if (rangeXLow == rangeXHigh) std::cout << "Error: X-axis low and high ranges have same value\n" ;
@@ -724,9 +725,9 @@ void DrawStacked(TString name,
   if (log && name.Contains("sv_en_ratio") ) move_legend=1;
   TLegend *leg ;
   if (move_legend==1) {
-    leg =  new TLegend(0.1,0.53,0.44,.89,NULL,"brNDC");
+    leg =  new TLegend(0.1,0.53,0.39,.89,NULL,"brNDC");
   }
-  else leg = new TLegend(0.54,0.53,0.88,0.89,NULL,"brNDC");
+  else leg = new TLegend(0.58,0.53,0.86,0.89,NULL,"brNDC");
   leg->SetBorderSize(1);
   leg->SetTextFont(62);
   leg->SetLineColor(1);
@@ -747,7 +748,7 @@ void DrawStacked(TString name,
 
   leg->Draw();
 
-  TLatex *   tex0 = new TLatex(0.42,0.96,"CMS preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
+  TLatex *   tex0 = new TLatex(0.42,0.96,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
   tex0->SetNDC();
   tex0->SetTextAlign(13);
   tex0->SetTextFont(42);
@@ -1014,7 +1015,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   latex->SetTextSize(0.055);
   latex->SetTextFont(62);
   latex->SetTextAlign(13);
-  latex->DrawLatex(0.10, 0.92, title1);
+  latex->DrawLatex(0.42, 0.96, title1);
 
   c1->cd();
 
@@ -1232,6 +1233,8 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   TAxis* ay = histo_tot->GetYaxis() ;
   ax->SetTitle(titleX) ;
   ay->SetTitle(titleY) ;
+  ax->SetNoExponent(kTRUE) ; 
+  ay->SetNoExponent(kTRUE) ; 
   beautifyAxis(ax) ;
   beautifyAxis(ay) ;
 
