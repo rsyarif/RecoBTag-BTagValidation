@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Devdatta Majumder,13 2-054,+41227671675,
 //         Created:  Fri May 17 13:56:04 CEST 2013
-// $Id: BTagValidation.cc,v 1.27 2013/07/29 04:41:11 ferencek Exp $
+// $Id: BTagValidation.cc,v 1.28 2013/08/09 00:34:56 ferencek Exp $
 //
 //
 
@@ -34,6 +34,7 @@ Implementation:
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
+#include "DataFormats/Math/interface/deltaR.h"
 
 #include "RecoBTag/PerformanceMeasurements/interface/JetInfoBranches.h"
 #include "RecoBTag/PerformanceMeasurements/interface/EventInfoBranches.h"
@@ -43,6 +44,7 @@ Implementation:
 #include <TFile.h>
 #include <TH1D.h>
 #include <TH2D.h>
+#include <TProfile.h>
 #include <TLorentzVector.h>
 #include <TF1.h>
 
@@ -125,6 +127,14 @@ class BTagValidation : public edm::EDAnalyzer {
 
     TH1D *h1_nSubJet;
     TH1D *h1_subjet_pt;
+
+    TProfile *p1_SubJetPt_TotalTracks;
+    TProfile *p1_SubJetPt_SharedTracks;
+    TProfile *p1_SubJetPt_SharedTracksRatio;
+
+    TProfile *p1_FatJetPt_TotalTracks;
+    TProfile *p1_FatJetPt_SharedTracks;
+    TProfile *p1_FatJetPt_SharedTracksRatio;
 
     // CSVL scale factors
     TF1  *CSVL_SFb_0to2p4;
@@ -402,6 +412,14 @@ void BTagValidation::beginJob() {
     h1_nSubJet        = fs->make<TH1D>("h1_nSubJet",       "h1_nSubJet",     100,0,100);
     h1_subjet_pt      = fs->make<TH1D>("h1_subjet_pt",     "h1_subjet_pt",   PtMax/10,0,PtMax);
   }
+
+  p1_SubJetPt_TotalTracks = fs->make<TProfile>("p1_SubJetPt_TotalTracks",";p_{T} [GeV];",20,0,1000);
+  p1_SubJetPt_SharedTracks = fs->make<TProfile>("p1_SubJetPt_SharedTracks",";p_{T} [GeV];",20,0,1000);
+  p1_SubJetPt_SharedTracksRatio = fs->make<TProfile>("p1_SubJetPt_SharedTracksRatio",";p_{T} [GeV];",20,0,1000);
+
+  p1_FatJetPt_TotalTracks = fs->make<TProfile>("p1_FatJetPt_TotalTracks",";p_{T} [GeV];",20,0,1000);
+  p1_FatJetPt_SharedTracks = fs->make<TProfile>("p1_FatJetPt_SharedTracks",";p_{T} [GeV];",20,0,1000);
+  p1_FatJetPt_SharedTracksRatio = fs->make<TProfile>("p1_FatJetPt_SharedTracksRatio",";p_{T} [GeV];",20,0,1000);
 
   //// Create jet histograms
   AddHisto("FatJet_prunedMass"       ,"pruned mass of all fat jets"                          ,200       ,0      ,400);
@@ -776,6 +794,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       //// ------- start process subjets --------------
       if( processSubJets_ )
       {
+        int nTotalFat = 0, nSharedFat = 0; // for track sharing
+
         for(int sj=0; sj<2; ++sj)
         {
           int iSubJet = FatJetInfo.Jet_SubJet1Idx[iJet];
@@ -818,7 +838,34 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           h1_subjet_pt->Fill(SubJetInfo.Jet_pt[iSubJet],wtPU*wtSubJet);
 
           fillJetHistos(SubJetInfo, iSubJet, false, "SubJet", nmuSubJet, nselmuonSubJet, idxFirstMuonSubJet, wtPU*wtSubJet);
+
+          //// track sharing
+          int iSubJetComp = (sj==0 ? FatJetInfo.Jet_SubJet2Idx[iJet] : FatJetInfo.Jet_SubJet1Idx[iJet]); // companion subjet index
+          int nTotal = 0, nShared = 0;
+
+          for (int iTrk=SubJetInfo.Jet_nFirstTrack[iSubJet]; iTrk<SubJetInfo.Jet_nLastTrack[iSubJet]; ++iTrk)
+          {
+            if( reco::deltaR( SubJetInfo.Track_eta[iTrk], SubJetInfo.Track_phi[iTrk], SubJetInfo.Jet_eta[iSubJet], SubJetInfo.Jet_phi[iSubJet] ) < 0.3 )
+            {
+              ++nTotal;
+              ++nTotalFat;
+              if( reco::deltaR( SubJetInfo.Track_eta[iTrk], SubJetInfo.Track_phi[iTrk], SubJetInfo.Jet_eta[iSubJetComp], SubJetInfo.Jet_phi[iSubJetComp] ) < 0.3 )
+              {
+                ++nShared;
+                if(sj==0) ++nSharedFat;
+              }
+            }
+          }
+
+          p1_SubJetPt_TotalTracks->Fill(SubJetInfo.Jet_pt[iSubJet], nTotal, wtPU*wtSubJet);
+          p1_SubJetPt_SharedTracks->Fill(SubJetInfo.Jet_pt[iSubJet], nShared, wtPU*wtSubJet);
+          if( nTotal>0 ) p1_SubJetPt_SharedTracksRatio->Fill(SubJetInfo.Jet_pt[iSubJet], double(nShared)/double(nTotal), wtPU*wtSubJet);
         }
+
+        p1_FatJetPt_TotalTracks->Fill(FatJetInfo.Jet_pt[iJet], nTotalFat-nSharedFat, wtPU*wtFatJet);
+        p1_FatJetPt_SharedTracks->Fill(FatJetInfo.Jet_pt[iJet], nSharedFat, wtPU*wtFatJet);
+        if( nTotalFat>0 ) p1_FatJetPt_SharedTracksRatio->Fill(FatJetInfo.Jet_pt[iJet], double(nSharedFat)/double(nTotalFat-nSharedFat), wtPU*wtFatJet);
+
       } //// ------- end process subjets --------------
     }
     //----------------------------- End fat jet loop ----------------------------------------//
