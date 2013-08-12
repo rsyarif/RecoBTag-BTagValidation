@@ -25,37 +25,33 @@
 
 using namespace std;
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-//TString dir4plots="HiggsTagCommissioning_InclusiveJets" ;
+//TString filename    ="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
+//TString dir4plots="HiggsTagCommissioning_InclusiveJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ;
+//TString filename    ="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ; 
 
-TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
+TString filename    ="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+TString filename_ext="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ; 
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ;
-
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
+//TString filename    ="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString filename_ext="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ; 
 
 //TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 //TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 //TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp" ;
 
-//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
-//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
 
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
@@ -683,10 +679,13 @@ void DrawStacked(TString name,
 
   pad0->SetLogy(log);
 
-  if (!log) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*3.0 : histo_tot->GetMaximum()*3.0) ;
+  if (!log) {
+   if ( name.Contains("_sv_mass")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*2.1 : histo_tot->GetMaximum()*2.1) ;
+   else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*3.0 : histo_tot->GetMaximum()*3.0) ;
+  }
   else {
     if (name.Contains("track_nHit") || name.Contains("track_HPix")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*5000000 : histo_tot->GetMaximum()*5000000) ;
-    else if (name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") || name.Contains("_sv_multi_0")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1000 : histo_tot->GetMaximum()*1000) ;
+    else if (name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") || name.Contains("_sv_multi_0")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*3000 : histo_tot->GetMaximum()*3000) ;
     else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*100000 : histo_tot->GetMaximum()*100000) ;
   }
   if (doData) {
@@ -702,7 +701,7 @@ void DrawStacked(TString name,
 
   histo_tot->GetXaxis()->SetTitle(name);
   histo_tot->GetYaxis()->SetTitle("Entries");
-  histo_tot->SetTitleOffset(0.75,"Y");
+  histo_tot->SetTitleOffset(0.81,"Y");
   histo_tot->GetYaxis()->SetLabelSize( 0.05 );
   histo_tot->GetYaxis()->SetTitleSize( 0.06 );
   //if ( log == false) histo_tot->GetYaxis()->SetNoExponent(kTRUE) ;
@@ -731,7 +730,12 @@ void DrawStacked(TString name,
   if (move_legend==1) {
     leg =  new TLegend(0.1,0.53,0.39,.89,NULL,"brNDC");
   }
-  else leg = new TLegend(0.56,0.52,0.86,0.88,NULL,"brNDC");
+  else {
+    if (name.Contains("_track_IP")) {
+      leg = new TLegend(0.56,0.56,0.86,0.89,NULL,"brNDC");
+    } 
+    else leg = new TLegend(0.56,0.52,0.86,0.88,NULL,"brNDC");
+  }
   leg->SetBorderSize(1);
   leg->SetTextFont(62);
   leg->SetLineColor(1);
@@ -801,7 +805,7 @@ void DrawStacked(TString name,
     histo_ratio->SetLineWidth(2);
 
     histo_ratio->GetYaxis()->SetTitle("Data/MC");
-    histo_ratio->SetTitleOffset(0.3,"Y");
+    histo_ratio->SetTitleOffset(0.31,"Y");
     histo_ratio->GetXaxis()->SetTitle(histotitle);
     histo_ratio->GetYaxis()->SetNdivisions( 505 );
 
