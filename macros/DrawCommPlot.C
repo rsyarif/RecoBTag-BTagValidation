@@ -177,7 +177,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     //DrawStacked(histoTag+"_track_pt_cut"          ,"Track p_{T} @N-1 step"            ,1,1 ,0 ,0. ,0.);
   }
   if (Draw_sv_plots){
-    DrawStacked(histoTag+"_sv_multi_0"      ,"SV multiplicity"                              ,1 ,1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_sv_multi_0"      ,"Nb. of secondary vertices"                    ,1 ,1 ,0 ,1. ,0.);
     DrawStacked(histoTag+"_pt_sv"           ,"p_{T} of jets containing a SV [GeV/c]"        ,1 ,1 ,0 ,4. ,0.);
     DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,1 ,1 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
     DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,0 ,1 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
