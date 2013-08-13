@@ -25,33 +25,37 @@
 
 using namespace std;
 
-//TString filename    ="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
-//TString filename_ext="LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ; 
-//TString dir4plots="HiggsTagCommissioning_InclusiveJets" ; 
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
+// TString dir4plots="HiggsTagCommissioning_InclusiveJets" ;
 
-//TString filename    ="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
-//TString filename_ext="LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ; 
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ; 
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ;
 
-//TString filename    ="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
-//TString filename_ext="LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ; 
-//TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ; 
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ;
 
-TString filename    ="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
-TString filename_ext="LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
-TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ; 
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
 
-//TString filename    ="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
-//TString filename_ext="LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ; 
-//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ; 
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ;
+
+TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
+TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
 
 //TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 //TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 //TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp" ;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
+//TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
+//TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+//TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
 
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
@@ -65,10 +69,10 @@ TString formatc=".C";
 
 bool bOverflow = 1;
 bool web       = 0;
-bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
+bool extNorm   = 1; // used only for double-muon- and double-b-tagged fat jets
 bool inclTTbar = 1;
 bool inclZjj   = 1;
-bool uncBand   = 0; // used only for double-muon- and double-b-tagged fat jets with scale factors applied
+bool uncBand   = 1; // used only for double-muon- and double-b-tagged fat jets with scale factors applied
 bool setSampleName = 1;
 
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag);
@@ -98,7 +102,7 @@ void DrawCommPlot(bool Draw_track_plots=false,
   TString action = "mkdir -p " + dir4plots;
   system(action);
 
-  Draw("h1_nPV"      ,"# of PV",0);
+  //Draw("h1_nPV"      ,"# of PV",0);
   //Draw("h1_nFatJet"  ,"# of fat jets",0);
   //Draw("h1_nSubJet"  ,"# of subjets",0);
 
@@ -117,6 +121,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   DrawStacked(histoTag+"_pt_all"      ,"p_{T} [GeV/c]"    ,1 ,1 ,extNorm ,6 ,1 ,0. ,2000.);
   DrawStacked(histoTag+"_eta"         ,"#eta"             ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.   );
   DrawStacked(histoTag+"_phi"         ,"#phi"             ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.   );
+  DrawStacked(histoTag+"_phi"         ,"#phi"             ,0 ,1 ,extNorm ,40 ,0 ,0. ,0.   );
   DrawStacked(histoTag+"_mass"        ,"Mass [GeV/c^{2}]" ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.   );
   if( histoTag=="FatJet" ) {
     DrawStacked(histoTag+"_prunedMass"   ,"Pruned mass [GeV/c^{2}]"                             ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
@@ -127,15 +132,15 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   }
 
   if (Draw_track_plots) {
-    DrawStacked(histoTag+"_trk_multi_sel" ,"number of selected tracks in the jets" ,0, 1 ,0 ,1. ,0.);
-    DrawStacked(histoTag+"_track_nHit"    ,"number of hits"                        ,1, 1 ,0 ,1. ,0.);
-    DrawStacked(histoTag+"_track_HPix"    ,"number of hits in the Pixel"           ,1, 1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_trk_multi_sel" ,"Number of selected tracks in the jets" ,0, 1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_track_nHit"    ,"Number of hits"                        ,1, 1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_track_HPix"    ,"Number of hits in the Pixel"           ,1, 1 ,0 ,1. ,0.);
     DrawStacked(histoTag+"_track_len"     ,"Track decay length [cm]"               ,1, 1 ,0 ,2. ,0.);
     DrawStacked(histoTag+"_track_dist"    ,"Track distance to the jet axis [cm]"   ,1, 1 ,0 ,2. ,0.);
     DrawStacked(histoTag+"_track_pt"      ,"p_{T} of all the tracks [GeV/c]"       ,1, 1 ,0 ,4. ,0.);
     DrawStacked(histoTag+"_track_IPs"     ,"3D IP significance of all tracks"      ,1, 1 ,0 ,2. ,0.);
     DrawStacked(histoTag+"_track_IP"      ,"3D IP of all tracks [cm]"              ,1, 1 ,0 ,2. ,0.);
-    DrawStacked(histoTag+"_track_multi"   ,"number of tracks in the jets"          ,0, 1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_track_multi"   ,"Number of tracks in the jets"          ,0, 1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_track_chi2"    ,     "normalized #chi^{2} of the tracks" ,1, 1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_track_dz"      ,     "Track transverse IP"               ,1, 1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_track_isfromSV",     "Track is from SV"                  ,1, 1 ,0 ,0. ,0.);
@@ -172,7 +177,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     //DrawStacked(histoTag+"_track_pt_cut"          ,"Track p_{T} @N-1 step"            ,1,1 ,0 ,0. ,0.);
   }
   if (Draw_sv_plots){
-    DrawStacked(histoTag+"_sv_multi_0"      ,"nr. of SV including bin 0"                    ,1 ,1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_sv_multi_0"      ,"SV multiplicity"                              ,1 ,1 ,0 ,1. ,0.);
     DrawStacked(histoTag+"_pt_sv"           ,"p_{T} of jets containing a SV [GeV/c]"        ,1 ,1 ,0 ,4. ,0.);
     DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,1 ,1 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
     DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,0 ,1 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
@@ -180,7 +185,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_sv_en_ratio"     ,"SV energy ratio"                              ,0 ,1 ,0 ,2. ,0.);
     DrawStacked(histoTag+"_sv_pt"           ,"SV p_{T} [GeV/c]"                             ,1 ,1 ,0 ,5. ,0.);
     DrawStacked(histoTag+"_sv_flight3DSig"  ,"SV 3D flight distance significance"           ,1 ,1 ,0 ,5. ,0.);
-    DrawStacked(histoTag+"_svnTrk_firstVxt" ,"nr. of tracks from the first SV"              ,1 ,1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_svnTrk_firstVxt" ,"Number of tracks from the first SV"              ,1 ,1 ,0 ,1. ,0.);
     //DrawStacked(histoTag+"_sv_multi","nr. of SV"                                            ,1 ,1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_sv_mass_3trk","SV mass if #tracks@SV >=3"                        ,0 ,1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_sv_chi2norm","SV norm. #chi^{2}"                                 ,1 ,1 ,0 ,0. ,0.);
@@ -197,10 +202,10 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     //DrawStacked(histoTag+"_svnTrk","nr. of tracks from a SV"                                ,1, 1 ,0 ,0. ,0.);
   }
   if (Draw_muons_plots){
-    DrawStacked(histoTag+"_muon_multi",     "number of muons"                ,1 ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_muon_multi_sel", "number of selected muons"       ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_multi",     "Number of muons"                ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_muon_multi_sel", "Number of selected muons"       ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_mu_ptrel",       "p_{T} rel. of the muon [GeV/c]" ,0 ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_mu_chi2",        "norm. #chi^{2} of the muon"     ,1 ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_mu_chi2",        "Norm. #chi^{2} of the muon"     ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T} [GeV/c]"             ,1 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_eta",       "Muon #eta"                      ,0 ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_muon_phi",       "Muon #phi"                      ,0 ,1 ,0 ,0. ,0.);
@@ -302,20 +307,20 @@ void Draw(TString name, TString histotitle, bool log) {
   c1->SetFrameBorderMode(0);
   c1->cd();
 
-  TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,0.98);
+  TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,1.00);
   pad0 ->Draw();
   pad0 ->cd();
-  pad0->Range(-1,-336.2494,9,3026.244);
   pad0->SetFillColor(0);
   pad0->SetBorderMode(0);
   pad0->SetBorderSize(2);
+  pad0->SetTopMargin(0.065);
   pad0->SetFrameBorderMode(0);
 
   pad0->SetLogy(log);
 
   hist_mc->GetXaxis()->SetTitle(name);
   hist_mc->GetYaxis()->SetTitle("Entries");
-  hist_mc->SetTitleOffset(0.75,"Y");
+  hist_mc->SetTitleOffset(0.81,"Y");
   hist_mc->GetYaxis()->SetLabelSize( 0.05 );
   hist_mc->GetYaxis()->SetTitleSize( 0.06 );
 
@@ -323,7 +328,7 @@ void Draw(TString name, TString histotitle, bool log) {
 
   hist_data->Draw("SAMEE");
 
-  TLegend* leg = new TLegend(0.56,0.52,0.86,0.88,NULL,"brNDC");
+  TLegend* leg = new TLegend(0.56,0.60,0.86,0.85,NULL,"brNDC");
   leg->SetBorderSize(1);
   leg->SetTextFont(62);
   leg->SetLineColor(1);
@@ -332,7 +337,7 @@ void Draw(TString name, TString histotitle, bool log) {
   leg->SetFillColor(0);
   leg->SetFillStyle(1001);
   leg->SetBorderSize(0);
-  leg->SetTextSize(0.05);
+  leg->SetTextSize(0.07);
 
   leg->AddEntry(hist_data,     datacaption,   "pl");
   leg->AddEntry(hist_mc,        "MC "  ,      "f");
@@ -340,7 +345,7 @@ void Draw(TString name, TString histotitle, bool log) {
   leg->SetFillColor(0);
   leg->Draw();
 
-  TLatex *   tex = new TLatex(0.42,0.96,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
+  TLatex *   tex = new TLatex(0.42,1.00,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
   tex->SetNDC();
   tex->SetTextAlign(13);
   tex->SetTextFont(42);
@@ -356,12 +361,11 @@ void Draw(TString name, TString histotitle, bool log) {
   TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
   pad1->Draw();
   pad1->cd();
-  pad1->Range(-1,-0.4571429,9,1.828571);
   pad1->SetFillColor(0);
   pad1->SetBorderMode(0);
   pad1->SetBorderSize(2);
   pad1->SetGridy();
-  pad1->SetBottomMargin(0.375);
+  pad1->SetBottomMargin(0.31);
   pad1->SetFrameBorderMode(0);
   pad1->SetFrameBorderMode(0);
 
@@ -370,7 +374,8 @@ void Draw(TString name, TString histotitle, bool log) {
   histo_ratio->SetLineWidth(2);
 
   histo_ratio->GetYaxis()->SetTitle("Data/MC");
-  histo_ratio->SetTitleOffset(0.3,"Y");
+  histo_ratio->SetTitleOffset(0.9,"X");
+  histo_ratio->SetTitleOffset(0.31,"Y");
   histo_ratio->GetXaxis()->SetTitle(histotitle);
   histo_ratio->GetYaxis()->SetNdivisions( 505 );
 
@@ -398,7 +403,7 @@ void Draw(TString name, TString histotitle, bool log) {
   c1->SaveAs(dir4plots+"/"+name_plot);
   name_plot=name+"_Linear"+formatc;
   if(log) name_plot=name+"_Log"+formatc;
-  c1->SaveAs(dir4plots+"/"+name_plot);
+  //c1->SaveAs(dir4plots+"/"+name_plot);
 
 }
 
@@ -654,7 +659,7 @@ void DrawStacked(TString name,
     }
   }
 
-  if( name.Contains("FatJet_phi") )
+  if( name.Contains("FatJet_phi") && nRebin==40 )
     cout << "Data/MC ratio:       " << histo_ratio->GetBinContent(1) << endl
       << "Data/MC ratio error: " << histo_ratio->GetBinError(1) << endl;
 
@@ -667,15 +672,14 @@ void DrawStacked(TString name,
   c1->SetFrameFillColor(0);
   c1->SetFrameBorderMode(0);
 
-  TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,0.98);
+  TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,1.00);
   pad0 ->Draw();
   pad0 ->cd();
-  //pad0->Range(-1,-336.2494,9,3026.244);
-  pad0->Range(-1.75,-1.336976,10.75,7.664202);
   pad0->SetFillColor(0);
   pad0->SetBorderMode(0);
   pad0->SetBorderSize(2);
   pad0->SetFrameBorderMode(0);
+  pad0->SetTopMargin(0.065);
 
   pad0->SetLogy(log);
 
@@ -728,13 +732,10 @@ void DrawStacked(TString name,
   if (log && name.Contains("sv_en_ratio") ) move_legend=1;
   TLegend *leg ;
   if (move_legend==1) {
-    leg =  new TLegend(0.1,0.53,0.39,.89,NULL,"brNDC");
+    leg =  new TLegend(0.1,0.55,0.40,.90,NULL,"brNDC");
   }
   else {
-    if (name.Contains("_track_IP")) {
-      leg = new TLegend(0.56,0.56,0.86,0.89,NULL,"brNDC");
-    } 
-    else leg = new TLegend(0.56,0.52,0.86,0.88,NULL,"brNDC");
+    leg = new TLegend(0.555,0.55,0.855,0.90,NULL,"brNDC");
   }
   leg->SetBorderSize(1);
   leg->SetTextFont(62);
@@ -756,7 +757,7 @@ void DrawStacked(TString name,
 
   leg->Draw();
 
-  TLatex *   tex0 = new TLatex(0.42,0.96,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
+  TLatex *   tex0 = new TLatex(0.42,1.00,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
   tex0->SetNDC();
   tex0->SetTextAlign(13);
   tex0->SetTextFont(42);
@@ -773,7 +774,7 @@ void DrawStacked(TString name,
     else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged CA8 subjets)}" ;
     else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged CA8 jets)}}" ;
     else std::cout << " >>>> Error:Check sample name\n" ;
-    TLatex *tex1 = new TLatex(0.15,0.85,sample);
+    TLatex *tex1 = new TLatex(0.14,0.88,sample);
     tex1->SetNDC();
     tex1->SetTextAlign(13);
     tex1->SetTextFont(42);
@@ -791,13 +792,11 @@ void DrawStacked(TString name,
     TPad* pad1 = new TPad("pad1", "pad1",0,0.,1.0,0.32);
     pad1->Draw();
     pad1->cd();
-    pad1->Range(-1,-0.4571429,9,1.828571);
     pad1->SetFillColor(0);
     pad1->SetBorderMode(0);
     pad1->SetBorderSize(2);
     pad1->SetGridy();
-    pad1->SetBottomMargin(0.375);
-    pad1->SetFrameBorderMode(0);
+    pad1->SetBottomMargin(0.31);
     pad1->SetFrameBorderMode(0);
 
     histo_ratio->SetMarkerStyle(20);
@@ -805,6 +804,7 @@ void DrawStacked(TString name,
     histo_ratio->SetLineWidth(2);
 
     histo_ratio->GetYaxis()->SetTitle("Data/MC");
+    histo_ratio->SetTitleOffset(0.9,"X");
     histo_ratio->SetTitleOffset(0.31,"Y");
     histo_ratio->GetXaxis()->SetTitle(histotitle);
     histo_ratio->GetYaxis()->SetNdivisions( 505 );
@@ -841,6 +841,8 @@ void DrawStacked(TString name,
   c1->cd();
   c1->SetSelected(c1) ;
 
+  if( name.Contains("FatJet_phi") && nRebin==40 ) name = name + "_SingleBin";
+
   TString name_plot=name+"_Linear"+formata;
   if(log) name_plot=name+"_Log"+formata;
   c1->SaveAs(dir4plots+"/"+name_plot);
@@ -849,7 +851,7 @@ void DrawStacked(TString name,
   c1->SaveAs(dir4plots+"/"+name_plot);
   name_plot=name+"_Linear"+formatc;
   if(log) name_plot=name+"_Log"+formatc;
-  c1->SaveAs(dir4plots+"/"+name_plot);
+  //c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
     pad0 ->cd();
