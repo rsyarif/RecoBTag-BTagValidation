@@ -125,6 +125,16 @@ class BTagValidation : public edm::EDAnalyzer {
     TH1D *h1_nFatJet;
     TH1D *h1_fatjet_pt;
 
+    TH1D *h1_FatJet_CSV_dRsubjets0to0p2;
+    TH1D *h1_FatJet_CSV_dRsubjets0p2to0p4;
+    TH1D *h1_FatJet_CSV_dRsubjets0p4to0p6;
+    TH1D *h1_FatJet_CSV_dRsubjets0p6to0p8;
+
+    TH2D *h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0to0p2;
+    TH2D *h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p2to0p4;
+    TH2D *h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p4to0p6;
+    TH2D *h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p6to0p8;
+
     TH1D *h1_nSubJet;
     TH1D *h1_subjet_pt;
 
@@ -407,6 +417,16 @@ void BTagValidation::beginJob() {
   h1_nFatJet        = fs->make<TH1D>("h1_nFatJet",       "h1_nFatJet",     100,0,100);
   h1_fatjet_pt      = fs->make<TH1D>("h1_fatjet_pt",     "h1_fatjet_pt",   PtMax/10,0,PtMax);
 
+  h1_FatJet_CSV_dRsubjets0to0p2   = fs->make<TH1D>("h1_FatJet_CSV_dRsubjets0to0p2",   "CSV for #DeltaR(subjets)<0.2_nFatJet", 100,0,1);
+  h1_FatJet_CSV_dRsubjets0p2to0p4 = fs->make<TH1D>("h1_FatJet_CSV_dRsubjets0p2to0p4", "CSV for 0.2#leq#DeltaR(subjets)<0.4",  100,0,1);
+  h1_FatJet_CSV_dRsubjets0p4to0p6 = fs->make<TH1D>("h1_FatJet_CSV_dRsubjets0p4to0p6", "CSV for 0.4#leq#DeltaR(subjets)<0.6",  100,0,1);
+  h1_FatJet_CSV_dRsubjets0p6to0p8 = fs->make<TH1D>("h1_FatJet_CSV_dRsubjets0p6to0p8", "CSV for 0.6#leq#DeltaR(subjets)<0.8",  100,0,1);
+
+  h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0to0p2   = fs->make<TH2D>("h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0to0p2",   "Subjet_{1} CSV vs. Subjet_{2} CSV for #DeltaR(subjets)<0.2_nFatJet", 100,0,1, 100,0,1);
+  h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p2to0p4 = fs->make<TH2D>("h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p2to0p4", "Subjet_{1} CSV vs. Subjet_{2} CSV for 0.2#leq#DeltaR(subjets)<0.4",  100,0,1, 100,0,1);
+  h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p4to0p6 = fs->make<TH2D>("h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p4to0p6", "Subjet_{1} CSV vs. Subjet_{2} CSV for 0.4#leq#DeltaR(subjets)<0.6",  100,0,1, 100,0,1);
+  h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p6to0p8 = fs->make<TH2D>("h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p6to0p8", "Subjet_{1} CSV vs. Subjet_{2} CSV for 0.6#leq#DeltaR(subjets)<0.8",  100,0,1, 100,0,1);
+
   if( processSubJets_ )
   {
     h1_nSubJet        = fs->make<TH1D>("h1_nSubJet",       "h1_nSubJet",     100,0,100);
@@ -427,16 +447,8 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_subjet_dR"        ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"    ,100       ,0      ,1);
   AddHisto("FatJet_subjet_dyphi"     ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"       ,100       ,0      ,1);
   AddHisto("FatJet_nsubjettiness"    ,"#tau_{2}/#tau_{1}"                                    ,50        ,0      ,1);
-  AddHisto("FatJet_CSV_dRsubjets0to0p2"   ,"CSV for #DeltaR(subjets)<0.2"                    ,100       ,0      ,1);
-  AddHisto("FatJet_CSV_dRsubjets0p2to0p4" ,"CSV for 0.2#leq#DeltaR(subjets)<0.4"             ,100       ,0      ,1);
-  AddHisto("FatJet_CSV_dRsubjets0p4to0p6" ,"CSV for 0.4#leq#DeltaR(subjets)<0.6"             ,100       ,0      ,1);
-  AddHisto("FatJet_CSV_dRsubjets0p6to0p8" ,"CSV for 0.6#leq#DeltaR(subjets)<0.8"             ,100       ,0      ,1);
   AddHisto2D("FatJet_prunedMass_nsubjettiness", "Nsubjettiness vs. pruned mass"              ,200       ,0      ,400      ,50        ,0      ,1);
   AddHisto2D("FatJet_pt_prunedMass",  "pruned mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
-  AddHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0to0p2"   ,"Subjet_{1} CSV vs. Subjet_{2} CSV for #DeltaR(subjets)<0.2"        ,100       ,0      ,1 ,100       ,0      ,1);
-  AddHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p2to0p4" ,"Subjet_{1} CSV vs. Subjet_{2} CSV for 0.2#leq#DeltaR(subjets)<0.4" ,100       ,0      ,1 ,100       ,0      ,1);
-  AddHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p4to0p6" ,"Subjet_{1} CSV vs. Subjet_{2} CSV for 0.4#leq#DeltaR(subjets)<0.6" ,100       ,0      ,1 ,100       ,0      ,1);
-  AddHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p6to0p8" ,"Subjet_{1} CSV vs. Subjet_{2} CSV for 0.6#leq#DeltaR(subjets)<0.8" ,100       ,0      ,1 ,100       ,0      ,1);
   //// Common histograms for both fat jets and subjets
   createJetHistos("FatJet");
   if( processSubJets_ ) createJetHistos("SubJet");
@@ -658,6 +670,14 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       int iSubJet1 = FatJetInfo.Jet_SubJet1Idx[iJet];
       int iSubJet2 = FatJetInfo.Jet_SubJet2Idx[iJet];
 
+      // order subjets by uncorrected pT
+      //if( SubJetInfo.Jet_pt[iSubJet1]/SubJetInfo.Jet_jes[iSubJet1] < SubJetInfo.Jet_pt[iSubJet2]/SubJetInfo.Jet_jes[iSubJet2] )
+      //{
+      //   iSubJet1 = iSubJet1 + iSubJet2;
+      //   iSubJet2 = iSubJet1 - iSubJet2;
+      //   iSubJet1 = iSubJet1 - iSubJet2;
+      //}
+
       if( processSubJets_ && (SubJetInfo.Jet_pt[iSubJet1]==0. || SubJetInfo.Jet_pt[iSubJet2]==0.) ) continue; // if processing subjets, skip fat jets for which one of the subjets has pT=0
 
       TLorentzVector subjet1_p4, subjet2_p4;
@@ -795,16 +815,20 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_subjet_dR"                  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dR                                           ,wtPU*wtFatJet);
       FillHisto("FatJet_subjet_dyphi"               ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dyphi                                        ,wtPU*wtFatJet);
       FillHisto("FatJet_nsubjettiness"              ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
-      if(subjet_dR>=0. && subjet_dR<0.2)       FillHisto("FatJet_CSV_dRsubjets0to0p2"    ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
-      else if(subjet_dR>=0.2 && subjet_dR<0.4) FillHisto("FatJet_CSV_dRsubjets0p2to0p4"  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
-      else if(subjet_dR>=0.4 && subjet_dR<0.6) FillHisto("FatJet_CSV_dRsubjets0p2to0p4"  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
-      else if(subjet_dR>=0.6 && subjet_dR<0.8) FillHisto("FatJet_CSV_dRsubjets0p2to0p4"  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
-
       FillHisto2D("FatJet_prunedMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massPruned[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
-      if(subjet_dR>=0. && subjet_dR<0.2)       FillHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0to0p2"    ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
-      else if(subjet_dR>=0.2 && subjet_dR<0.4) FillHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p2to0p4"  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
-      else if(subjet_dR>=0.4 && subjet_dR<0.6) FillHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p4to0p6"  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
-      else if(subjet_dR>=0.6 && subjet_dR<0.8) FillHisto2D("FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p6to0p8"  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
+
+      if( abs(SubJetInfo.Jet_flavour[iSubJet1])==21 && abs(SubJetInfo.Jet_flavour[iSubJet2])==21 )
+      {
+        if(subjet_dR>=0. && subjet_dR<0.2)       h1_FatJet_CSV_dRsubjets0to0p2  ->Fill(FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
+        else if(subjet_dR>=0.2 && subjet_dR<0.4) h1_FatJet_CSV_dRsubjets0p2to0p4->Fill(FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
+        else if(subjet_dR>=0.4 && subjet_dR<0.6) h1_FatJet_CSV_dRsubjets0p4to0p6->Fill(FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
+        else if(subjet_dR>=0.6 && subjet_dR<0.8) h1_FatJet_CSV_dRsubjets0p6to0p8->Fill(FatJetInfo.Jet_CombSvx[iJet] ,wtPU*wtFatJet);
+
+        if(subjet_dR>=0. && subjet_dR<0.2)       h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0to0p2  ->Fill(SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
+        else if(subjet_dR>=0.2 && subjet_dR<0.4) h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p2to0p4->Fill(SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
+        else if(subjet_dR>=0.4 && subjet_dR<0.6) h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p4to0p6->Fill(SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
+        else if(subjet_dR>=0.6 && subjet_dR<0.8) h2_FatJet_Subjet1CSV_Subjet2CSV_dRsubjets0p6to0p8->Fill(SubJetInfo.Jet_CombSvx[iSubJet1] ,SubJetInfo.Jet_CombSvx[iSubJet2] ,wtPU*wtFatJet);
+      }
 
       fillJetHistos(FatJetInfo, iJet, isGluonSplit, "FatJet", nmu, nselmuon, idxFirstMuon, wtPU*wtFatJet);
 
@@ -815,8 +839,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         for(int sj=0; sj<2; ++sj)
         {
-          int iSubJet = FatJetInfo.Jet_SubJet1Idx[iJet];
-          if( sj==1 ) iSubJet = FatJetInfo.Jet_SubJet2Idx[iJet];
+          int iSubJet = iSubJet1;
+          if( sj==1 ) iSubJet = iSubJet2;
 
           int idxFirstMuonSubJet = -1;
           int nselmuonSubJet = 0;
