@@ -195,6 +195,7 @@ class BTagValidation : public edm::EDAnalyzer {
     const bool                      applyFatJetMuonTagging_;
     const bool                      applyFatJetBTagging_;
     const bool                      fatJetDoubleTagging_;
+    const bool                      fatJetDoubleBTagging_;
     const bool                      processSubJets_;
     const bool                      applySubJetMuonTagging_;
     const bool                      applySubJetBTagging_;
@@ -245,6 +246,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   applyFatJetMuonTagging_(iConfig.getParameter<bool>("ApplyFatJetMuonTagging")),
   applyFatJetBTagging_(iConfig.getParameter<bool>("ApplyFatJetBTagging")),
   fatJetDoubleTagging_(iConfig.getParameter<bool>("FatJetDoubleTagging")),
+  fatJetDoubleBTagging_(iConfig.exists("FatJetDoubleBTagging") ? iConfig.getParameter<bool>("FatJetDoubleBTagging") : fatJetDoubleTagging_ ),
   processSubJets_(iConfig.getParameter<bool>("ProcessSubJets")),
   applySubJetMuonTagging_(iConfig.getParameter<bool>("ApplySubJetMuonTagging")),
   applySubJetBTagging_(iConfig.getParameter<bool>("ApplySubJetBTagging")),
@@ -782,15 +784,21 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       if( applyFatJetBTagging_ ) //// if enabled, select b-tagged fat jets
       {
-        if( fatJetDoubleTagging_ && !(SubJetInfo.Jet_CombSvx[iSubJet1]>subJetBDiscrCut_ && SubJetInfo.Jet_CombSvx[iSubJet2]>subJetBDiscrCut_) ) continue;
-        else if( !fatJetDoubleTagging_ && FatJetInfo.Jet_CombSvx[iJet]<=fatJetBDiscrCut_ ) continue;
+        if( fatJetDoubleBTagging_ && !(SubJetInfo.Jet_CombSvx[iSubJet1]>subJetBDiscrCut_ && SubJetInfo.Jet_CombSvx[iSubJet2]>subJetBDiscrCut_) ) continue;
+        else if( !fatJetDoubleBTagging_ && FatJetInfo.Jet_CombSvx[iJet]<=fatJetBDiscrCut_ ) continue;
       }
 
       //// apply b-tagging scale factors
       double wtFatJet = 1.;
-      if( applySFs_ && !isData && applyFatJetBTagging_ && fatJetDoubleTagging_ ) {
-        wtFatJet *= ( scaleFactor(SubJetInfo.Jet_flavour[iSubJet1], SubJetInfo.Jet_pt[iSubJet1], SubJetInfo.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
-                      scaleFactor(SubJetInfo.Jet_flavour[iSubJet2], SubJetInfo.Jet_pt[iSubJet2], SubJetInfo.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
+      if( applySFs_ && !isData )
+      {
+        if( applyFatJetBTagging_ && fatJetDoubleBTagging_ ) 
+        {
+          wtFatJet *= ( scaleFactor(SubJetInfo.Jet_flavour[iSubJet1], SubJetInfo.Jet_pt[iSubJet1], SubJetInfo.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
+                        scaleFactor(SubJetInfo.Jet_flavour[iSubJet2], SubJetInfo.Jet_pt[iSubJet2], SubJetInfo.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
+        }
+        else if( applyFatJetBTagging_ && !fatJetDoubleBTagging_ )
+          wtFatJet *= scaleFactor(FatJetInfo.Jet_flavour[iJet], FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], (fatJetBDiscrCut_>0.25));
       }
 
       //// fat jet multiplicity
@@ -868,7 +876,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           //// apply b-tagging scale factors
           double wtSubJet = 1.;
           if( applySFs_ && !isData ) {
-            if( applyFatJetBTagging_ && fatJetDoubleTagging_ ) wtSubJet *= wtFatJet;
+            if( applyFatJetBTagging_ && fatJetDoubleBTagging_ ) wtSubJet *= wtFatJet;
             else                                               wtSubJet *= scaleFactor(SubJetInfo.Jet_flavour[iSubJet], SubJetInfo.Jet_pt[iSubJet], SubJetInfo.Jet_eta[iSubJet], (subJetBDiscrCut_>0.25));
           }
 
