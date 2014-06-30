@@ -25,40 +25,59 @@
 
 using namespace std;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
 // TString dir4plots="HiggsTagCommissioning_InclusiveJets" ;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
 // TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
 // TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ;
 
-TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 // TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 // TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 // TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp" ;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 // TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
 
-TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
-TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
+TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
+TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
+//-------------------------------------------------------------
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID" ;
+
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
+
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp" ;
+
+// TString filename    ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
+// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
+
+// TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
+// TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/BTV-13-001/LXBatch_Jobs_DoubleMuonAndSingleBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
 
 TString title1 = "CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
@@ -773,6 +792,7 @@ void DrawStacked(TString name,
     else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged CA8 jets)}" ;
     else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged CA8 subjets)}" ;
     else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged CA8 jets)}}" ;
+    else if (filename.Contains("DoubleMuonAndSingleBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{single-b-tagged CA8 jets)}}" ;
     else std::cout << " >>>> Error:Check sample name\n" ;
     TLatex *tex1 = new TLatex(0.14,0.88,sample);
     tex1->SetNDC();
