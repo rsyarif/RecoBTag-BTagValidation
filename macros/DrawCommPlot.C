@@ -2,6 +2,7 @@
 #include "help.C"
 #include <TH2.h>
 #include <TStyle.h>
+#include <TCanvas.h>
 #include "TH1D.h"
 #include "TMultiGraph.h"
 #include "TGraph.h"
