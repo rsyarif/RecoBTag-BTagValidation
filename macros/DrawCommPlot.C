@@ -26,37 +26,9 @@
 
 using namespace std;
 
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_InclusiveJets/Final_histograms_btagval.root" ;
-// TString dir4plots="HiggsTagCommissioning_InclusiveJets" ;
-
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedFatJets/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_MuonTaggedFatJets" ;
-
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_MuonTaggedSubJets/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_MuonTaggedSubJets" ;
-
-TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
+TString filename    ="../test/bTagValPlots.root";
 TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
-
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID" ;
-
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs" ;
-
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp" ;
-
-// TString filename    ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
-// TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-// TString dir4plots   ="HiggsTagCommissioning_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown" ;
 
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
@@ -71,8 +43,8 @@ TString formatc=".C";
 bool bOverflow = 1;
 bool web       = 0;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
-bool inclTTbar = 1;
-bool inclZjj   = 1;
+bool inclTTbar = 0;
+bool inclZjj   = 0;
 bool uncBand   = 0; // used only for double-muon- and double-b-tagged fat jets with scale factors applied
 bool setSampleName = 1;
 
@@ -119,17 +91,17 @@ void DrawCommPlot(bool Draw_track_plots=false,
 //--------------------------
 void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots, bool Draw_muons_plots, bool Draw_discriminator_plots, bool Draw_tagRate_plots, bool Draw_2D_plots, TString histoTag) {
 
-  DrawStacked(histoTag+"_pt_all"      ,"p_{T} [GeV/c]"    ,1 ,1 ,extNorm ,6 ,1 ,0. ,2000.);
-  DrawStacked(histoTag+"_eta"         ,"#eta"             ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.   );
-  DrawStacked(histoTag+"_phi"         ,"#phi"             ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.   );
-  DrawStacked(histoTag+"_phi"         ,"#phi"             ,0 ,1 ,extNorm ,40 ,0 ,0. ,0.   );
-  DrawStacked(histoTag+"_mass"        ,"Mass [GeV/c^{2}]" ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.   );
+  DrawStacked(histoTag+"_pt_all"      ,"p_{T} [GeV/c]"    ,1 ,0 ,extNorm ,6 ,1 ,0. ,2000.);
+  DrawStacked(histoTag+"_eta"         ,"#eta"             ,0 ,0 ,extNorm ,2 ,0 ,0. ,0.   );
+  DrawStacked(histoTag+"_phi"         ,"#phi"             ,0 ,0 ,extNorm ,2 ,0 ,0. ,0.   );
+  DrawStacked(histoTag+"_phi"         ,"#phi"             ,0 ,0 ,extNorm ,40,0 ,0. ,0.   );
+  DrawStacked(histoTag+"_mass"        ,"Mass [GeV/c^{2}]" ,0 ,0 ,extNorm ,4 ,0 ,0. ,400. );
   if( histoTag=="FatJet" ) {
-    DrawStacked(histoTag+"_prunedMass"   ,"Pruned mass [GeV/c^{2}]"                             ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                   ,0 ,1 ,extNorm ,2 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_massDrop"     ,"Mass drop"                                           ,0 ,1 ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_softdropMass"   ,"SoftDrop mass [GeV/c^{2}]"                         ,0 ,0 ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"   ,0 ,0 ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0 ,0 ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                   ,0 ,0 ,extNorm ,2 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_massDrop"     ,"Mass drop"                                           ,0 ,0 ,extNorm ,4 ,0 ,0. ,0.);
   }
 
   if (Draw_track_plots) {
@@ -248,7 +220,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 
   if (Draw_2D_plots){
     if( histoTag=="FatJet" ){
-      Draw2DPlot(histoTag+"_prunedMass_nsubjettiness", "FatJet pruned mass vs. Nsubjettiness", "FatJet pruned mass", "Nsubjettiness", 0, 1, 0);
+      Draw2DPlot(histoTag+"_softdropMass_nsubjettiness", "FatJet softdrop mass vs. Nsubjettiness", "FatJet softdrop mass", "Nsubjettiness", 0, 1, 0);
     }
     //Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0,1);
     //Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",0,1);
@@ -429,14 +401,17 @@ void DrawStacked(TString name,
 
   TFile *myFile  = TFile::Open(filename,"READ") ;
   myFile->cd();
+  TString fdir = "/btagval/" ;
 
-  hist_b      = (TH1D*)myFile->Get("QCD__"+name+"_b");
-  hist_c      = (TH1D*)myFile->Get("QCD__"+name+"_c");
-  hist_gsplit = (TH1D*)myFile->Get("QCD__"+name+"_bfromg");
-  hist_l      = (TH1D*)myFile->Get("QCD__"+name+"_l");
+  hist_b      = (TH1D*)myFile->Get(fdir+name+"_b");
+  hist_c      = (TH1D*)myFile->Get(fdir+name+"_c");
+  hist_gsplit = (TH1D*)myFile->Get(fdir+name+"_bfromg");
+  hist_l      = (TH1D*)myFile->Get(fdir+name+"_l");
   if (inclTTbar) hist_ttbar = (TH1D*)myFile->Get("TTJets__"+name+"_mc");
   if (inclZjj)   hist_zjj   = (TH1D*)myFile->Get("ZJetsFullyHadronic__"+name+"_mc");
   if (doData)    hist_data  = (TH1D*)myFile->Get("DATA__"+name+"_data");
+
+  std::cout << " hist_b name = " << hist_b->GetName() << endl ; 
 
   if ( filename.Contains("MuonTagged") &&
       ( name.Contains("track_pt") || name.Contains("track_IP") || name.Contains("pt_sv")  || name.Contains("sv_pt") || name.Contains("sv_flight3DSig") )
@@ -660,7 +635,7 @@ void DrawStacked(TString name,
     }
   }
 
-  if( name.Contains("FatJet_phi") && nRebin==40 )
+  if( doData && name.Contains("FatJet_phi") && nRebin==40 )
     cout << "Data/MC ratio:       " << histo_ratio->GetBinContent(1) << endl
       << "Data/MC ratio error: " << histo_ratio->GetBinError(1) << endl;
 

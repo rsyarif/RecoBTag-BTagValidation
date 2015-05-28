@@ -82,10 +82,10 @@ class BTagValidation : public edm::EDAnalyzer {
     void AddHisto2D(const TString& name, const TString& title, const int nbins, const double min, const double max, const int nbins2, const double min2, const double max2);
 
     template <class Type>
-    void FillHisto(const TString& name, const int flavour, const bool isGS, const Type value, const double weight);
+      void FillHisto(const TString& name, const int flavour, const bool isGS, const Type value, const double weight);
 
     template <class Type1, class Type2>
-    void FillHisto2D(const TString& name, const int flavour, const bool isGS, const Type1 value, const Type2 value2, const double weight);
+      void FillHisto2D(const TString& name, const int flavour, const bool isGS, const Type1 value, const Type2 value2, const double weight);
 
     //// Fill jet histograms
     void fillJetHistos(const JetInfoBranches& JetInfo, const int iJet, const bool isGluonSplit, const TString& histoTag, const int nmu, const int nselmuon, const int idxFirstMuon, const double wt);
@@ -392,9 +392,10 @@ void BTagValidation::beginJob() {
   SubJets.ReadSubJetSpecificTree(JetTree,"SoftDropSubJetInfo") ; 
 
   if (useJetProbaTree_) {
-    EvtInfo.ReadJetTrackTree(JetTree);
+    EvtInfo.ReadJetTrackTree(JetTreeEvtInfo);
     FatJetInfo.ReadJetTrackTree(JetTree,"FatJetInfo");
-    SubJets.ReadJetTrackTree(JetTree,"FatJetInfo");
+    SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
+    SubJets.ReadJetTrackTree(JetTree,"SoftDropSubJetInfo");
   }
 
   double PtMax = 3000.;
@@ -543,6 +544,8 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_SSV"       ,         "SSVHE",                            70,0.,7.  );
   AddHisto(histoTag+"_SSVHP"     ,         "SSVHP",                            70,0.,7.  );
   AddHisto(histoTag+"_CSV"       ,         "CSV",                              50,0.,1.  );
+  AddHisto(histoTag+"_CSVIVFv2"  ,         "CSVIVFv2",                         50,0.,1.  );
+  AddHisto(histoTag+"_DoubleB"   ,         "DoubleB",                         100,-1,1.  );
 
   AddHisto(histoTag+"_TCHE_extended1"   ,  "TCHE_extended1",                   70, -30.,30. );
   AddHisto(histoTag+"_TCHP_extended1"   ,  "TCHP_extended1",                   70, -30.,30. );
@@ -623,11 +626,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     for(int iJet = 0; iJet < FatJetInfo.nJet; ++iJet)
     {
       if ( FatJetInfo.Jet_pt[iJet] < fatJetPtMin_ ||
-           FatJetInfo.Jet_pt[iJet] > fatJetPtMax_ )                  continue; //// apply jet pT cut
+          FatJetInfo.Jet_pt[iJet] > fatJetPtMax_ )                  continue; //// apply jet pT cut
       if ( fabs(FatJetInfo.Jet_eta[iJet]) > fatJetAbsEtaMax_ )       continue; //// apply jet eta cut
       if ( FatJetInfo.Jet_looseID[iJet]==0 )                         continue; //// apply loose jet ID
       if ( FatJetInfo.Jet_massSoftDrop[iJet] < fatJetSoftDropMassMin_ ||
-           FatJetInfo.Jet_massSoftDrop[iJet] > fatJetSoftDropMassMax_ )  continue; //// apply softdrop jet mass cut
+          FatJetInfo.Jet_massSoftDrop[iJet] > fatJetSoftDropMassMax_ )  continue; //// apply softdrop jet mass cut
 
       int idxFirstMuon = -1;
       int nselmuon = 0;
@@ -675,45 +678,45 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       if( processSubJets_ && subjet_dR<(FatJetInfo.Jet_mass[iJet]/FatJetInfo.Jet_pt[iJet]) ) continue; // if processing subjets, skip infrared unsafe configurations
 
-//       if( subjet_dR > 0.8 )
-//       {
-//         std::string category = "LargeDRSubjet1Subjet2";
-//
-//         std::cout << category << ": ----------- START ------------" << std::endl;
-//
-//         std::cout << category << ": Run, lumi, event: " << EvtInfo.Run << ", "
-//                                                         << EvtInfo.LumiBlock << ", "
-//                                                         << EvtInfo.Evt << std::endl;
-//         std::cout << category << ": N fat jets, N subjets: " << FatJetInfo.nJet << ", "
-//                                                            << SubJetInfo.nJet << std::endl;
-//         std::cout << category << ": Fat jet idx, pt, eta, phi, mass, jes: " << iJet << ", "
-//                                                                             << FatJetInfo.Jet_pt[iJet] << ", "
-//                                                                             << FatJetInfo.Jet_eta[iJet] << ", "
-//                                                                             << FatJetInfo.Jet_phi[iJet] << ", "
-//                                                                             << FatJetInfo.Jet_mass[iJet] << ", "
-//                                                                             << FatJetInfo.Jet_jes[iJet] << std::endl;
-//         std::cout << category << ": SubJet1 idx, pt, eta, phi, mass, jes: " << iSubJet1 << ", "
-//                                                                             << SubJetInfo.Jet_pt[iSubJet1] << ", "
-//                                                                             << SubJetInfo.Jet_eta[iSubJet1] << ", "
-//                                                                             << SubJetInfo.Jet_phi[iSubJet1] << ", "
-//                                                                             << SubJetInfo.Jet_mass[iSubJet1] << ", "
-//                                                                             << SubJetInfo.Jet_jes[iSubJet1] << std::endl;
-//         std::cout << category << ": SubJet2 idx, pt, eta, phi, mass, jes: " << iSubJet2 << ", "
-//                                                                             << SubJetInfo.Jet_pt[iSubJet2] << ", "
-//                                                                             << SubJetInfo.Jet_eta[iSubJet2] << ", "
-//                                                                             << SubJetInfo.Jet_phi[iSubJet2] << ", "
-//                                                                             << SubJetInfo.Jet_mass[iSubJet2] << ", "
-//                                                                             << SubJetInfo.Jet_jes[iSubJet2] << std::endl;
-//         std::cout << category << ": dR(fat jet, subjet1): "<< fatjet_subjet1_dR << std::endl;
-//         std::cout << category << ": dR(fat jet, subjet2): "<< fatjet_subjet2_dR << std::endl;
-//         std::cout << category << ": dR(subjet1, subjet2): "<< subjet_dR << std::endl;
-//         std::cout << category << ": dyphi(subjet1, subjet2): "<< subjet_dyphi << std::endl;
-//         std::cout << category << ": |deta(subjet1, subjet2)|: "<< fabs(subjet_deta) << std::endl;
-//         std::cout << category << ": |dy(subjet1, subjet2)|: "<< fabs(subjet_dy) << std::endl;
-//         std::cout << category << ": |dphi(subjet1, subjet2)|: "<< fabs(subjet_dphi) << std::endl;
-//
-//         std::cout << category << ": ------------ END -------------" << std::endl;
-//       }
+      //       if( subjet_dR > 0.8 )
+      //       {
+      //         std::string category = "LargeDRSubjet1Subjet2";
+      //
+      //         std::cout << category << ": ----------- START ------------" << std::endl;
+      //
+      //         std::cout << category << ": Run, lumi, event: " << EvtInfo.Run << ", "
+      //                                                         << EvtInfo.LumiBlock << ", "
+      //                                                         << EvtInfo.Evt << std::endl;
+      //         std::cout << category << ": N fat jets, N subjets: " << FatJetInfo.nJet << ", "
+      //                                                            << SubJetInfo.nJet << std::endl;
+      //         std::cout << category << ": Fat jet idx, pt, eta, phi, mass, jes: " << iJet << ", "
+      //                                                                             << FatJetInfo.Jet_pt[iJet] << ", "
+      //                                                                             << FatJetInfo.Jet_eta[iJet] << ", "
+      //                                                                             << FatJetInfo.Jet_phi[iJet] << ", "
+      //                                                                             << FatJetInfo.Jet_mass[iJet] << ", "
+      //                                                                             << FatJetInfo.Jet_jes[iJet] << std::endl;
+      //         std::cout << category << ": SubJet1 idx, pt, eta, phi, mass, jes: " << iSubJet1 << ", "
+      //                                                                             << SubJetInfo.Jet_pt[iSubJet1] << ", "
+      //                                                                             << SubJetInfo.Jet_eta[iSubJet1] << ", "
+      //                                                                             << SubJetInfo.Jet_phi[iSubJet1] << ", "
+      //                                                                             << SubJetInfo.Jet_mass[iSubJet1] << ", "
+      //                                                                             << SubJetInfo.Jet_jes[iSubJet1] << std::endl;
+      //         std::cout << category << ": SubJet2 idx, pt, eta, phi, mass, jes: " << iSubJet2 << ", "
+      //                                                                             << SubJetInfo.Jet_pt[iSubJet2] << ", "
+      //                                                                             << SubJetInfo.Jet_eta[iSubJet2] << ", "
+      //                                                                             << SubJetInfo.Jet_phi[iSubJet2] << ", "
+      //                                                                             << SubJetInfo.Jet_mass[iSubJet2] << ", "
+      //                                                                             << SubJetInfo.Jet_jes[iSubJet2] << std::endl;
+      //         std::cout << category << ": dR(fat jet, subjet1): "<< fatjet_subjet1_dR << std::endl;
+      //         std::cout << category << ": dR(fat jet, subjet2): "<< fatjet_subjet2_dR << std::endl;
+      //         std::cout << category << ": dR(subjet1, subjet2): "<< subjet_dR << std::endl;
+      //         std::cout << category << ": dyphi(subjet1, subjet2): "<< subjet_dyphi << std::endl;
+      //         std::cout << category << ": |deta(subjet1, subjet2)|: "<< fabs(subjet_deta) << std::endl;
+      //         std::cout << category << ": |dy(subjet1, subjet2)|: "<< fabs(subjet_dy) << std::endl;
+      //         std::cout << category << ": |dphi(subjet1, subjet2)|: "<< fabs(subjet_dphi) << std::endl;
+      //
+      //         std::cout << category << ": ------------ END -------------" << std::endl;
+      //       }
 
       bool isDoubleMuonTagged = false;
 
@@ -766,7 +769,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       double wtFatJet = 1.;
       if( applySFs_ && !isData && applyFatJetBTagging_ && fatJetDoubleTagging_ ) {
         wtFatJet *= ( scaleFactor(SubJets.Jet_flavour[iSubJet1], SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
-                      scaleFactor(SubJets.Jet_flavour[iSubJet2], SubJets.Jet_pt[iSubJet2], SubJets.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
+            scaleFactor(SubJets.Jet_flavour[iSubJet2], SubJets.Jet_pt[iSubJet2], SubJets.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
       }
 
       //// fat jet multiplicity
@@ -883,7 +886,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
 // ------------------------------------------------------------------------------
 void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJet, const bool isGluonSplit, const TString& histoTag,
-                                   const int nmu, const int nselmuon, const int idxFirstMuon, const double wt) {
+    const int nmu, const int nselmuon, const int idxFirstMuon, const double wt) {
 
   float ptjet      = JetInfo.Jet_pt[iJet];
   float etajet     = JetInfo.Jet_eta[iJet];
@@ -933,8 +936,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
 
   int ntracksel   = 0;
 
-  if ( useJetProbaTree_ )
-  {
+  if ( useJetProbaTree_ ) {
     //---------------------------- Start tracks loop ---------------------------------------//
     for (int iTrk=JetInfo.Jet_nFirstTrack[iJet]; iTrk<JetInfo.Jet_nLastTrack[iJet] ; ++iTrk)
     {
@@ -1072,71 +1074,77 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
     FillHisto(histoTag+"_trk_multi_sel",     flav, isGluonSplit , ntracksel           , wt);
     FillHisto2D(histoTag+"_seltrack_vs_jetpt", flav, isGluonSplit ,ptjet ,  ntracksel , wt);
 
-    // ------------------------------------------------
-    // -------------- SV information ------------------
-    // ------------------------------------------------
-    n_sv = JetInfo.Jet_SV_multi[iJet];
-    FillHisto(histoTag+"_sv_multi_0",      flav, isGluonSplit ,n_sv   ,         wt);
-
-    if (n_sv>0)
-    {
-      chi2norm_sv    = JetInfo.SV_chi2[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_ndf[JetInfo.Jet_nFirstSV[iJet]];
-      flightSig_sv   = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
-      flight2DSig_sv = JetInfo.SV_flight2D[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flight2DErr[JetInfo.Jet_nFirstSV[iJet]];
-      mass_sv        = JetInfo.SV_mass[JetInfo.Jet_nFirstSV[iJet]];
-      sv_dR_jet      = JetInfo.SV_deltaR_jet[JetInfo.Jet_nFirstSV[iJet]];
-      sv_dR_dir_sum  = JetInfo.SV_deltaR_sum_dir[JetInfo.Jet_nFirstSV[iJet]];
-      sv_dR_jet_sum  = JetInfo.SV_deltaR_sum_jet[JetInfo.Jet_nFirstSV[iJet]];
-      sv_en_rat      = JetInfo.SV_EnergyRatio[JetInfo.Jet_nFirstSV[iJet]];
-      //DMsv_aboveC       = JetInfo.SV_aboveC[JetInfo.Jet_nFirstSV[iJet]];
-      sv_pt          = JetInfo.SV_vtx_pt[JetInfo.Jet_nFirstSV[iJet]];
-      sveta          = JetInfo.SV_vtx_eta[JetInfo.Jet_nFirstSV[iJet]];
-      svphi          = JetInfo.SV_vtx_phi[JetInfo.Jet_nFirstSV[iJet]];
-
-      sv_flight3D     = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]] ;
-      sv_flight3Derr  = JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
-      sv_flight2D     = JetInfo.SV_flight2D[JetInfo.Jet_nFirstSV[iJet]];
-      sv_flight2Derr  = JetInfo.SV_flight2DErr[JetInfo.Jet_nFirstSV[iJet]];
-      sv_totchar      = JetInfo.SV_totCharge[JetInfo.Jet_nFirstSV[iJet]] ;
-
-      sv_nTrk         = JetInfo.SV_nTrk[JetInfo.Jet_nFirstSV[iJet]] ;
-      //DMsv_1st_nTrk     = JetInfo.SV_nTrk_firstVxt[JetInfo.Jet_nFirstSV[iJet]];
-
-      // --------- SV histograms --------
-      FillHisto(histoTag+"_sv_multi",        flav, isGluonSplit ,n_sv ,  wt);
-      FillHisto(histoTag+"_sv_chi2norm",     flav, isGluonSplit ,chi2norm_sv        , wt);
-      FillHisto(histoTag+"_sv_mass",         flav, isGluonSplit ,mass_sv,             wt);
-      FillHisto(histoTag+"_sv_deltaR_jet",   flav, isGluonSplit ,sv_dR_jet,           wt);
-      FillHisto(histoTag+"_sv_deltaR_sumJet",flav, isGluonSplit ,sv_dR_dir_sum,       wt);
-      FillHisto(histoTag+"_sv_deltaR_sumDir",flav, isGluonSplit ,sv_dR_jet_sum,       wt);
-      FillHisto(histoTag+"_sv_en_ratio",     flav, isGluonSplit ,sv_en_rat,           wt);
-      //DMFillHisto(histoTag+"_sv_aboveC",       flav, isGluonSplit ,sv_aboveC,            wt);
-      FillHisto(histoTag+"_sv_pt",           flav, isGluonSplit ,sv_pt,               wt);
-      FillHisto(histoTag+"_sv_flight2D",     flav, isGluonSplit ,sv_flight2D,         wt);
-      FillHisto(histoTag+"_sv_flight2Derr",  flav, isGluonSplit ,sv_flight2Derr,      wt);
-      FillHisto(histoTag+"_sv_flightSig2D",  flav, isGluonSplit ,flight2DSig_sv,      wt);
-      FillHisto(histoTag+"_sv_tot_charge",   flav, isGluonSplit ,sv_totchar,          wt);
-      FillHisto(histoTag+"_svnTrk",          flav, isGluonSplit ,sv_nTrk,             wt);
-      //DMFillHisto(histoTag+"_svnTrk_firstVxt", flav, isGluonSplit ,sv_1st_nTrk,         wt);
-      FillHisto(histoTag+"_sv_eta",          flav, isGluonSplit ,sveta,               wt);
-      FillHisto(histoTag+"_sv_phi",          flav, isGluonSplit ,svphi,               wt);
-      FillHisto(histoTag+"_sv_flight3D",     flav, isGluonSplit ,sv_flight3D,         wt);
-      FillHisto(histoTag+"_sv_flight3Derr",  flav, isGluonSplit ,sv_flight3Derr,      wt);
-      FillHisto(histoTag+"_sv_flight3DSig",  flav, isGluonSplit ,flightSig_sv,        wt);
-
-      if (sv_nTrk >2)
-      {
-        FillHisto(histoTag+"_sv_mass_3trk", flav, isGluonSplit ,mass_sv,wt);
-        FillHisto(histoTag+"_sv_flightSig2D_3trk",  flav, isGluonSplit ,flight2DSig_sv,        wt);
-      }
-
-      FillHisto2D(histoTag+"_sv_mass_vs_flightDist3D"     ,flav,isGluonSplit ,sv_flight3D,mass_sv,wt);
-      FillHisto2D(histoTag+"_avg_sv_mass_vs_jetpt"        ,flav,isGluonSplit ,ptjet,mass_sv,wt);
-      FillHisto2D(histoTag+"_sv_deltar_jet_vs_jetpt"      ,flav,isGluonSplit ,ptjet,sv_dR_jet,wt);
-      FillHisto2D(histoTag+"_sv_deltar_sum_jet_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_dir_sum,wt);
-      FillHisto2D(histoTag+"_sv_deltar_sum_dir_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_jet_sum,wt);
-    } // if n_sv > 0
   } // end useJetProbaTree
+  
+  // ------------------------------------------------
+  // -------------- SV information ------------------
+  // ------------------------------------------------
+  n_sv = JetInfo.Jet_SV_multi[iJet];
+  FillHisto(histoTag+"_sv_multi_0",      flav, isGluonSplit ,n_sv   ,         wt);
+
+  if (n_sv>0)
+  {
+
+    //std::cout << " Jet 1st sv = " << JetInfo.Jet_nFirstSV[iJet] 
+    //  << " 1st pt = " << JetInfo.SV_vtx_pt[JetInfo.Jet_nFirstSV[iJet]]
+    //  << std::endl ; 
+
+    chi2norm_sv    = JetInfo.SV_chi2[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_ndf[JetInfo.Jet_nFirstSV[iJet]];
+    flightSig_sv   = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
+    flight2DSig_sv = JetInfo.SV_flight2D[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flight2DErr[JetInfo.Jet_nFirstSV[iJet]];
+    mass_sv        = JetInfo.SV_mass[JetInfo.Jet_nFirstSV[iJet]];
+    sv_dR_jet      = JetInfo.SV_deltaR_jet[JetInfo.Jet_nFirstSV[iJet]];
+    sv_dR_dir_sum  = JetInfo.SV_deltaR_sum_dir[JetInfo.Jet_nFirstSV[iJet]];
+    sv_dR_jet_sum  = JetInfo.SV_deltaR_sum_jet[JetInfo.Jet_nFirstSV[iJet]];
+    sv_en_rat      = JetInfo.SV_EnergyRatio[JetInfo.Jet_nFirstSV[iJet]];
+    //DMsv_aboveC       = JetInfo.SV_aboveC[JetInfo.Jet_nFirstSV[iJet]];
+    sv_pt          = JetInfo.SV_vtx_pt[JetInfo.Jet_nFirstSV[iJet]];
+    sveta          = JetInfo.SV_vtx_eta[JetInfo.Jet_nFirstSV[iJet]];
+    svphi          = JetInfo.SV_vtx_phi[JetInfo.Jet_nFirstSV[iJet]];
+
+    sv_flight3D     = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]] ;
+    sv_flight3Derr  = JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
+    sv_flight2D     = JetInfo.SV_flight2D[JetInfo.Jet_nFirstSV[iJet]];
+    sv_flight2Derr  = JetInfo.SV_flight2DErr[JetInfo.Jet_nFirstSV[iJet]];
+    sv_totchar      = JetInfo.SV_totCharge[JetInfo.Jet_nFirstSV[iJet]] ;
+
+    sv_nTrk         = JetInfo.SV_nTrk[JetInfo.Jet_nFirstSV[iJet]] ;
+    //DMsv_1st_nTrk     = JetInfo.SV_nTrk_firstVxt[JetInfo.Jet_nFirstSV[iJet]];
+
+    // --------- SV histograms --------
+    FillHisto(histoTag+"_sv_multi",        flav, isGluonSplit ,n_sv ,  wt);
+    FillHisto(histoTag+"_sv_chi2norm",     flav, isGluonSplit ,chi2norm_sv        , wt);
+    FillHisto(histoTag+"_sv_mass",         flav, isGluonSplit ,mass_sv,             wt);
+    FillHisto(histoTag+"_sv_deltaR_jet",   flav, isGluonSplit ,sv_dR_jet,           wt);
+    FillHisto(histoTag+"_sv_deltaR_sumJet",flav, isGluonSplit ,sv_dR_dir_sum,       wt);
+    FillHisto(histoTag+"_sv_deltaR_sumDir",flav, isGluonSplit ,sv_dR_jet_sum,       wt);
+    FillHisto(histoTag+"_sv_en_ratio",     flav, isGluonSplit ,sv_en_rat,           wt);
+    //DMFillHisto(histoTag+"_sv_aboveC",       flav, isGluonSplit ,sv_aboveC,            wt);
+    FillHisto(histoTag+"_sv_pt",           flav, isGluonSplit ,sv_pt,               wt);
+    FillHisto(histoTag+"_sv_flight2D",     flav, isGluonSplit ,sv_flight2D,         wt);
+    FillHisto(histoTag+"_sv_flight2Derr",  flav, isGluonSplit ,sv_flight2Derr,      wt);
+    FillHisto(histoTag+"_sv_flightSig2D",  flav, isGluonSplit ,flight2DSig_sv,      wt);
+    FillHisto(histoTag+"_sv_tot_charge",   flav, isGluonSplit ,sv_totchar,          wt);
+    FillHisto(histoTag+"_svnTrk",          flav, isGluonSplit ,sv_nTrk,             wt);
+    //DMFillHisto(histoTag+"_svnTrk_firstVxt", flav, isGluonSplit ,sv_1st_nTrk,         wt);
+    FillHisto(histoTag+"_sv_eta",          flav, isGluonSplit ,sveta,               wt);
+    FillHisto(histoTag+"_sv_phi",          flav, isGluonSplit ,svphi,               wt);
+    FillHisto(histoTag+"_sv_flight3D",     flav, isGluonSplit ,sv_flight3D,         wt);
+    FillHisto(histoTag+"_sv_flight3Derr",  flav, isGluonSplit ,sv_flight3Derr,      wt);
+    FillHisto(histoTag+"_sv_flight3DSig",  flav, isGluonSplit ,flightSig_sv,        wt);
+
+    if (sv_nTrk >2)
+    {
+      FillHisto(histoTag+"_sv_mass_3trk", flav, isGluonSplit ,mass_sv,wt);
+      FillHisto(histoTag+"_sv_flightSig2D_3trk",  flav, isGluonSplit ,flight2DSig_sv,        wt);
+    }
+
+    FillHisto2D(histoTag+"_sv_mass_vs_flightDist3D"     ,flav,isGluonSplit ,sv_flight3D,mass_sv,wt);
+    FillHisto2D(histoTag+"_avg_sv_mass_vs_jetpt"        ,flav,isGluonSplit ,ptjet,mass_sv,wt);
+    FillHisto2D(histoTag+"_sv_deltar_jet_vs_jetpt"      ,flav,isGluonSplit ,ptjet,sv_dR_jet,wt);
+    FillHisto2D(histoTag+"_sv_deltar_sum_jet_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_dir_sum,wt);
+    FillHisto2D(histoTag+"_sv_deltar_sum_dir_vs_jetpt"  ,flav,isGluonSplit ,ptjet,sv_dR_jet_sum,wt);
+  } // if n_sv > 0
 
   // ------------------------------------------------
   // ------------- tagger information ---------------
@@ -1148,14 +1156,18 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   float ssvhe     = JetInfo.Jet_Svx[iJet] ;
   float ssvhp     = JetInfo.Jet_SvxHP[iJet];
   float csv       = JetInfo.Jet_CombSvx[iJet];
+  float csvivfv2  = JetInfo.Jet_CombIVF[iJet];
+  float doubleb   = JetInfo.Jet_DoubleSV[iJet];
 
-  FillHisto(histoTag+"_TCHE",  flav, isGluonSplit, tche   ,   wt);
-  FillHisto(histoTag+"_TCHP",  flav, isGluonSplit, tchp   ,   wt);
-  FillHisto(histoTag+"_JP",    flav, isGluonSplit, jetproba  , wt);
-  FillHisto(histoTag+"_JBP",   flav, isGluonSplit, jetbproba , wt);
-  FillHisto(histoTag+"_SSV",   flav, isGluonSplit, ssvhe         ,   wt);
-  FillHisto(histoTag+"_SSVHP", flav, isGluonSplit, ssvhp         ,   wt);
-  FillHisto(histoTag+"_CSV",   flav, isGluonSplit, csv    ,   wt);
+  FillHisto(histoTag+"_TCHE",     flav, isGluonSplit, tche      ,wt);
+  FillHisto(histoTag+"_TCHP",     flav, isGluonSplit, tchp      ,wt);
+  FillHisto(histoTag+"_JP",       flav, isGluonSplit, jetproba  ,wt);
+  FillHisto(histoTag+"_JBP",      flav, isGluonSplit, jetbproba ,wt);
+  FillHisto(histoTag+"_SSV",      flav, isGluonSplit, ssvhe     ,wt);
+  FillHisto(histoTag+"_SSVHP",    flav, isGluonSplit, ssvhp     ,wt);
+  FillHisto(histoTag+"_CSV",      flav, isGluonSplit, csv       ,wt);
+  FillHisto(histoTag+"_CSVIVFv2", flav, isGluonSplit, csvivfv2  ,wt);
+  FillHisto(histoTag+"_DoubleB",  flav, isGluonSplit, doubleb   ,wt);
 
   FillHisto(histoTag+"_TCHE_extended1",  flav, isGluonSplit, tche  , wt);
   FillHisto(histoTag+"_TCHP_extended1",  flav, isGluonSplit, tchp  , wt);
@@ -1206,6 +1218,10 @@ void BTagValidation::endJob() {
   h1_CutFlow->SetBinContent(2, nEventsStored); //// strictly speaking not correct since event weights not applied
   h1_CutFlow_unw->SetBinContent(1, nEventsAll);
   h1_CutFlow_unw->SetBinContent(2, nEventsStored);
+  h1_CutFlow->SetBinError(1, TMath::Sqrt(nEventsAll)); //// strictly speaking not correct since event weights not applied
+  h1_CutFlow->SetBinError(2, TMath::Sqrt(nEventsStored)); //// strictly speaking not correct since event weights not applied
+  h1_CutFlow_unw->SetBinError(1, TMath::Sqrt(nEventsAll));
+  h1_CutFlow_unw->SetBinError(2, TMath::Sqrt(nEventsStored));
 }
 
 // ------------ method called when starting to processes a run  ------------
@@ -1310,7 +1326,7 @@ void BTagValidation::AddHisto2D(const TString& name, const TString& title, const
 }
 
 // ------------------------------------------------------------------------------
-template <class Type>
+  template <class Type>
 void BTagValidation::FillHisto(const TString& name, const int flavour, const bool isGS, const Type value, const double weight)
 {
   if (!isData)
@@ -1334,7 +1350,7 @@ void BTagValidation::FillHisto(const TString& name, const int flavour, const boo
 }
 
 // ------------------------------------------------------------------------------
-template <class Type1, class Type2>
+  template <class Type1, class Type2>
 void BTagValidation::FillHisto2D(const TString& name, const int flavour, const bool isGS, const Type1 value, const Type2 value2, const double weight)
 {
   if (!isData)
@@ -1400,7 +1416,7 @@ bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& J
       JetInfo.PFMuon_chi2[muIdx] < 10  && // JetInfo.PFMuon_vz[muIdx]< 2 &&
       jet.DeltaR(muon) < deltaR 
       //DM&& fabs(JetInfo.PFMuon_vz[muIdx]-EvtInfo.PVz) < 2.
-      )
+     )
     cut_mu_pass = true ;
 
   return cut_mu_pass;
