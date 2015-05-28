@@ -28,7 +28,7 @@ using namespace std;
 
 TString filename    ="../test/bTagValPlots.root";
 TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString dir4plots   ="HiggsTagCommissioning_DoubleMuonTaggedFatJets_RelaxedMuonID" ;
+TString dir4plots   ="BoostedBTagCommissioning2015" ; 
 
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
@@ -59,7 +59,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 //--------------------------
 void DrawCommPlot(bool Draw_track_plots=false,
     bool Draw_Nminus1_plots=false,
-    bool Draw_sv_plots=false,
+    bool Draw_sv_plots=true,
     bool Draw_muons_plots=false,
     bool Draw_discriminator_plots=false,
     bool Draw_tagRate_plots=false,
@@ -102,7 +102,13 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"      ,0 ,0 ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                   ,0 ,0 ,extNorm ,2 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_massDrop"     ,"Mass drop"                                           ,0 ,0 ,extNorm ,4 ,0 ,0. ,0.);
-  }
+    DrawStacked(histoTag+"_CSVIVFv2"     ,"CSVIVFv2"                                            ,0 ,0 ,extNorm ,1 ,0 ,0. ,1.);
+    DrawStacked(histoTag+"_DoubleB"      ,"DoubleB"                                             ,0 ,0 ,extNorm ,1 ,0 ,-1 ,1.);
+    DrawStacked(histoTag+"_CSV"      ,"CSV"                                                 ,0 ,0 ,extNorm ,1 ,0 ,0 ,1.);
+    DrawStacked(histoTag+"_CSVIVFv2"     ,"CSVIVFv2"                                            ,1 ,0 ,extNorm ,1 ,0 ,0. ,1.);
+    DrawStacked(histoTag+"_DoubleB"      ,"DoubleB"                                             ,1 ,0 ,extNorm ,1 ,0 ,-1 ,1.);
+    DrawStacked(histoTag+"_CSV"      ,"CSV"                                                 ,1 ,0 ,extNorm ,1 ,0 ,0 ,1.);
+ }
 
   if (Draw_track_plots) {
     DrawStacked(histoTag+"_trk_multi_sel" ,"Number of selected tracks in the jets" ,0, 1 ,0 ,1. ,0.);
@@ -150,15 +156,15 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     //DrawStacked(histoTag+"_track_pt_cut"          ,"Track p_{T} @N-1 step"            ,1,1 ,0 ,0. ,0.);
   }
   if (Draw_sv_plots){
-    DrawStacked(histoTag+"_sv_multi_0"      ,"Nb. of secondary vertices"                    ,1 ,1 ,0 ,1. ,0.);
-    DrawStacked(histoTag+"_pt_sv"           ,"p_{T} of jets containing a SV [GeV/c]"        ,1 ,1 ,0 ,4. ,0.);
-    DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,1 ,1 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
-    DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,0 ,1 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
-    DrawStacked(histoTag+"_sv_deltaR_jet"   ,"#DeltaR between the jet and the SV direction" ,0 ,1 ,0 ,2. ,0.);
-    DrawStacked(histoTag+"_sv_en_ratio"     ,"SV energy ratio"                              ,0 ,1 ,0 ,2. ,0.);
-    DrawStacked(histoTag+"_sv_pt"           ,"SV p_{T} [GeV/c]"                             ,1 ,1 ,0 ,5. ,0.);
-    DrawStacked(histoTag+"_sv_flight3DSig"  ,"SV 3D flight distance significance"           ,1 ,1 ,0 ,5. ,0.);
-    DrawStacked(histoTag+"_svnTrk_firstVxt" ,"Number of tracks from the first SV"              ,1 ,1 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_sv_multi_0"      ,"Nb. of secondary vertices"                    ,1 ,0 ,0 ,1. ,0.);
+    DrawStacked(histoTag+"_pt_sv"           ,"p_{T} of jets containing a SV [GeV/c]"        ,1 ,0 ,0 ,4. ,0.);
+    DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,1 ,0 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
+    DrawStacked(histoTag+"_sv_mass"         ,"SV mass [GeV/c^{2}]"                          ,0 ,0 ,0 ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
+    DrawStacked(histoTag+"_sv_deltaR_jet"   ,"#DeltaR between the jet and the SV direction" ,0 ,0 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_sv_en_ratio"     ,"SV energy ratio"                              ,0 ,0 ,0 ,2. ,0.);
+    DrawStacked(histoTag+"_sv_pt"           ,"SV p_{T} [GeV/c]"                             ,1 ,0 ,0 ,5. ,0.);
+    DrawStacked(histoTag+"_sv_flight3DSig"  ,"SV 3D flight distance significance"           ,1 ,0 ,0 ,5. ,0.);
+    DrawStacked(histoTag+"_svnTrk_firstVxt" ,"Number of tracks from the first SV"           ,1 ,0 ,0 ,1. ,0.);
     //DrawStacked(histoTag+"_sv_multi","nr. of SV"                                            ,1 ,1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_sv_mass_3trk","SV mass if #tracks@SV >=3"                        ,0 ,1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_sv_chi2norm","SV norm. #chi^{2}"                                 ,1 ,1 ,0 ,0. ,0.);
