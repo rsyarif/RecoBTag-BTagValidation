@@ -460,8 +460,8 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_muon_Pt",         "Muon p_{T}",               250, 0, 500   );
   AddHisto(histoTag+"_muon_eta",        "Muon #eta",                50, -2.5, 2.5 );
   AddHisto(histoTag+"_muon_phi",        "Muon #phi",                40, -1.*pi,pi );
-  AddHisto(histoTag+"_muon_Ip3d",       "Muon 3D IP",              100, -0.2, 0.2 );
-  AddHisto(histoTag+"_muon_Ip2d",       "Muon 2D IP",              100, -0.2, 0.2 );
+  AddHisto(histoTag+"_muon_Ip3d",       "Muon 3D IP",              200, -0.4, 0.4 );
+  AddHisto(histoTag+"_muon_Ip2d",       "Muon 2D IP",              200, -0.4, 0.4 );
   AddHisto(histoTag+"_muon_Sip3d",      "Muon 3D IP significance", 100, -50, 50   );
   AddHisto(histoTag+"_muon_Sip2d",      "Muon 2D IP significance", 100, -50, 50   );
   AddHisto(histoTag+"_muon_DeltaR",     "Muon1 #DeltaR",            50, 0,   0.5  ); //90
