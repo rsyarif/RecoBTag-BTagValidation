@@ -26,14 +26,14 @@
 
 using namespace std;
 
-TString filename    ="../test/bTagValPlots.root";
+TString filename    ="../test/bTagValPlots_applyFatJetMuonTaggingAndfatJetDoubleTagging.root";
 TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString dir4plots   ="BoostedBTagCommissioning2015" ; 
+TString dir4plots   ="RunIISpring15_applyFatJetMuonTaggingAndfatJetDoubleTagging" ; 
 
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
 
-TString title1 = "CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV";
+TString title1 = "CMS Simulation, #sqrt{s} = 13 TeV";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
 
 TString formata=".pdf";
@@ -324,7 +324,7 @@ void Draw(TString name, TString histotitle, bool log) {
   leg->SetFillColor(0);
   leg->Draw();
 
-  TLatex *   tex = new TLatex(0.42,1.00,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
+  TLatex *   tex = new TLatex(0.42,1.00,"CMS Simulation, #sqrt{s} = 13 TeV");
   tex->SetNDC();
   tex->SetTextAlign(13);
   tex->SetTextFont(42);
@@ -739,7 +739,7 @@ void DrawStacked(TString name,
 
   leg->Draw();
 
-  TLatex *   tex0 = new TLatex(0.42,1.00,"CMS Preliminary, 19.8 fb^{-1} at #sqrt{s} = 8 TeV");
+  TLatex *   tex0 = new TLatex(0.42,1.00,"CMS Simulation, #sqrt{s} = 13 TeV");
   tex0->SetNDC();
   tex0->SetTextAlign(13);
   tex0->SetTextFont(42);
