@@ -460,8 +460,8 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_muon_Pt",         "Muon p_{T}",               250, 0, 500   );
   AddHisto(histoTag+"_muon_eta",        "Muon #eta",                50, -2.5, 2.5 );
   AddHisto(histoTag+"_muon_phi",        "Muon #phi",                40, -1.*pi,pi );
-  AddHisto(histoTag+"_muon_Ip3d",       "Muon 3D IP",              200, -0.4, 0.4 );
-  AddHisto(histoTag+"_muon_Ip2d",       "Muon 2D IP",              200, -0.4, 0.4 );
+  AddHisto(histoTag+"_muon_Ip3d",       "Muon 3D IP",              500, -1.0, 1.0 );
+  AddHisto(histoTag+"_muon_Ip2d",       "Muon 2D IP",              500, -1.0, 1.0 );
   AddHisto(histoTag+"_muon_Sip3d",      "Muon 3D IP significance", 100, -50, 50   );
   AddHisto(histoTag+"_muon_Sip2d",      "Muon 2D IP significance", 100, -50, 50   );
   AddHisto(histoTag+"_muon_DeltaR",     "Muon1 #DeltaR",            50, 0,   0.5  ); //90
@@ -795,6 +795,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_subjet_dyphi"               ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dyphi                                        ,wtPU*wtFatJet);
       FillHisto("FatJet_nsubjettiness"              ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
       FillHisto2D("FatJet_softdropMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massSoftDrop[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
+      FillHisto2D("FatJet_pt_softdropMass" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit , FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_massSoftDrop[iJet] ,wtPU*wtFatJet);
 
       fillJetHistos(FatJetInfo, iJet, isGluonSplit, "FatJet", nmu, nselmuon, idxFirstMuon, wtPU*wtFatJet);
 
