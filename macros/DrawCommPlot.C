@@ -26,10 +26,35 @@
 
 using namespace std;
 
-TString filename    ="../test/test1.root" ; 
-TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
-TString dir4plots   ="test1_02Jun2015" ; 
+//TString filename    ="./test/ValPlotFiles/QCD_15to7000/50nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/FatJetNoOpts" ; 
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/linear/FatJetNoOpts" ; 
+//TString filename    ="./test/ValPlotFiles/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/FatJetNoOpts" ; 
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/linear/FatJetNoOpts" ; 
 
+//TString filename    ="./test/ValPlotFiles/QCD_15to7000/50nsPU/bTagValPlots_FatJetMuonTagged_alltracks.root"; 
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/FatJetMuonTag" ;
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/linear/FatJetMuonTag" ;
+//TString filename    ="./test/ValPlotFiles/QCD_15to7000/25nsPU/bTagValPlots_FatJetMuonTagged_alltracks.root"; 
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/FatJetMuonTag" ;
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/linear/FatJetMuonTag" ;
+
+//TString filename    ="./test/ValPlotFiles/QCD_15to7000/50nsPU/bTagValPlots_SubJetMuonTagged_alltracks.root";
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/SubJetMuonTag";
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/linear/SubJetMuonTag";
+//TString filename    ="./test/ValPlotFiles/QCD_15to7000/25nsPU/bTagValPlots_SubJetMuonTagged_alltracks.root";
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/SubJetMuonTag";
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/linear/SubJetMuonTag";
+
+//TString filename    ="./test/ValPlotFiles/QCD_15to7000/50nsPU/bTagValPlots_FatJetDoubleMuonTagged_alltracks.root";
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/FatJetDoubleMuonTag";
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/50nsPU/alltracks/linear/FatJetDoubleMuonTag";
+TString filename    ="./test/ValPlotFiles/QCD_15to7000/25nsPU/bTagValPlots_FatJetDoubleMuonTagged_alltracks.root";
+//TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/FatJetDoubleMuonTag";
+TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/linear/FatJetDoubleMuonTag";
+
+TString filename_ext="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonTaggedFatJets_RelaxedMuonID/Final_histograms_btagval.root" ;
 TString filename_uncUp  ="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbUp/Final_histograms_btagval.root" ;
 TString filename_uncDown="/afs/cern.ch/user/f/ferencek/public/ForDevdatta/LXBatch_Jobs_DoubleMuonAndBTaggedFatJets_RelaxedMuonID_AppliedSFs_SFbDown/Final_histograms_btagval.root" ;
 
@@ -43,7 +68,7 @@ TString formatc=".C";
 bool bOverflow = 1;
 bool web       = 0;
 
-bool logy      = 1;
+bool logy      = 0;
 bool dodata    = 0; 
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
@@ -61,7 +86,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 //DrawCommPlot(true,false,true,false,true,false,false)
 
 //--------------------------
-void DrawCommPlot(bool Draw_track_plots=false,
+void DrawCommPlot(bool Draw_track_plots=true,
     bool Draw_Nminus1_plots=false,
     bool Draw_sv_plots=true,
     bool Draw_muons_plots=true,
