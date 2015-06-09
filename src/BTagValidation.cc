@@ -388,6 +388,7 @@ void BTagValidation::beginJob() {
   EvtInfo.ReadTree(JetTreeEvtInfo);
   EvtInfo.ReadPatMuonTree(JetTree);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
   FatJetInfo.ReadTree(JetTree,"FatJetInfo");
   FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
@@ -402,6 +403,8 @@ void BTagValidation::beginJob() {
     SubJetInfo.ReadTree(JetTree,"FatJetInfo","Pruned");
     SubJets.ReadJetTrackTree(JetTree,"PrunedSubJetInfo");
 =======
+=======
+>>>>>>> Stashed changes
   
   if (applyPrunedSubJet_)
   {
@@ -433,6 +436,9 @@ void BTagValidation::beginJob() {
       SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
       SubJets.ReadJetTrackTree(JetTree,"SoftDropSubJetInfo");
     }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 
@@ -468,8 +474,11 @@ void BTagValidation::beginJob() {
 
   //// Create jet histograms
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   AddHisto("FatJet_prunedMass"       ,"pruned mass of all fat jets"                          ,200       ,0      ,400);
 =======
+=======
+>>>>>>> Stashed changes
   if (applyPrunedSubJet_) 
   {
     AddHisto("FatJet_PrunedMass"       ,"softdrop mass of all fat jets"                          ,200       ,0      ,400); 
@@ -482,14 +491,20 @@ void BTagValidation::beginJob() {
     AddHisto2D("FatJet_SoftDropMass_nsubjettiness", "Nsubjettiness vs. SoftDrop mass"              ,200       ,0      ,400      ,50        ,0      ,1);
     AddHisto2D("FatJet_pt_softdropMass",  "softdrop mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
   }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   AddHisto("FatJet_massDrop"         ,"mass drop"                                            ,100       ,0      ,1);
   AddHisto("FatJet_subjet_dR"        ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"    ,100       ,0      ,1);
   AddHisto("FatJet_subjet_dyphi"     ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"       ,100       ,0      ,1);
   AddHisto("FatJet_nsubjettiness"    ,"#tau_{2}/#tau_{1}"                                    ,50        ,0      ,1);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   AddHisto2D("FatJet_prunedMass_nsubjettiness", "Nsubjettiness vs. pruned mass"              ,200       ,0      ,400      ,50        ,0      ,1);
   AddHisto2D("FatJet_pt_prunedMass",  "pruned mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   //// Common histograms for both fat jets and subjets
@@ -686,15 +701,21 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( fabs(FatJetInfo.Jet_eta[iJet]) > fatJetAbsEtaMax_ )       continue; //// apply jet eta cut
       if ( FatJetInfo.Jet_looseID[iJet]==0 )                         continue; //// apply loose jet ID
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       if ( FatJetInfo.Jet_massPruned[iJet] < fatJetSoftDropMassMin_ ||
           FatJetInfo.Jet_massPruned[iJet] > fatJetSoftDropMassMax_ )  continue; //// apply softdrop jet mass cut
 =======
+=======
+>>>>>>> Stashed changes
       if ( applyPrunedSubJet_ ) ; 
       else   
       {
            if ( FatJetInfo.Jet_massSoftDrop[iJet] < fatJetSoftDropMassMin_ ||
               FatJetInfo.Jet_massSoftDrop[iJet] > fatJetSoftDropMassMax_ )  continue; //// apply softdrop jet mass cut
       }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
       int idxFirstMuon = -1;
@@ -855,6 +876,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       //// fill fat jet histograms
       h1_fatjet_pt->Fill(FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       FillHisto("FatJet_prunedMass"                 ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massPruned[iJet]                     ,wtPU*wtFatJet);
       FillHisto("FatJet_massDrop"                   ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,std::max( SubJets.Jet_mass[iSubJet1]/SubJets.Jet_jes[iSubJet1], SubJets.Jet_mass[iSubJet2]/SubJets.Jet_jes[iSubJet2] )/(FatJetInfo.Jet_massPruned[iJet]/FatJetInfo.Jet_jes[iJet]) ,wtPU*wtFatJet);
       FillHisto("FatJet_subjet_dR"                  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dR                                           ,wtPU*wtFatJet);
@@ -863,6 +885,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto2D("FatJet_prunedMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massPruned[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
       FillHisto2D("FatJet_pt_prunedMass" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit , FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_massPruned[iJet] ,wtPU*wtFatJet);
 =======
+=======
+>>>>>>> Stashed changes
       
       if (applyPrunedSubJet_)
       {
@@ -881,6 +905,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_subjet_dR"                  ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dR                                           ,wtPU*wtFatJet);
       FillHisto("FatJet_subjet_dyphi"               ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,subjet_dyphi                                        ,wtPU*wtFatJet);
       FillHisto("FatJet_nsubjettiness"              ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
       fillJetHistos(FatJetInfo, iJet, isGluonSplit, "FatJet", nmu, nselmuon, idxFirstMuon, wtPU*wtFatJet);
