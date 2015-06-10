@@ -89,15 +89,15 @@ options.register('fatJetPtMax', 1.E6,
     VarParsing.varType.float,
     "Maximum fat jet Pt"
 )
-options.register('fatJetPrunedMassMin', 0.,
+options.register('fatJetSoftDropMassMin', 0.,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
-    "Minimum fat jet pruned mass"
+    "Minimum fat jet softdrop mass"
 )
-options.register('fatJetPrunedMassMax', 1.E6,
+options.register('fatJetSoftDropMassMax', 1.E6,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
-    "Maximum fat jet pruned mass"
+    "Maximum fat jet softdrop mass"
 )
 options.register('fatJetBDiscrCut', 0.244,
     VarParsing.multiplicity.singleton,
@@ -153,7 +153,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     MaxEvents              = cms.int32(options.maxEvents),
     ReportEvery            = cms.int32(options.reportEvery),
     UseJetProbaTree        = cms.bool(options.useJetProbaTree),
-    InputTTree             = cms.string('btaganaSubJets/ttree'),
+    InputTTreeEvtInfo      = cms.string('btagana/ttree'),
+    InputTTree             = cms.string('btaganaFatJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
     UseRelaxedMuonID      = cms.bool(options.useRelaxedMuonID),
@@ -170,8 +171,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     SubJetBDiscrCut        = cms.double(options.subJetBDiscrCut),
     FatJetPtMin            = cms.double(options.fatJetPtMin),
     FatJetPtMax            = cms.double(options.fatJetPtMax),
-    FatJetPrunedMassMin    = cms.double(options.fatJetPrunedMassMin),
-    FatJetPrunedMassMax    = cms.double(options.fatJetPrunedMassMax),
+    FatJetSoftDropMassMin    = cms.double(options.fatJetSoftDropMassMin),
+    FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
