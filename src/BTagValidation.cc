@@ -106,7 +106,7 @@ class BTagValidation : public edm::EDAnalyzer {
     JetInfoBranches FatJetInfo;
     SubJetInfoBranches SubJetInfo;
 
-    JetInfoBranches SubJets ; 
+    JetInfoBranches SubJets ;
 
     TChain* JetTreeEvtInfo;
     TChain* JetTree;
@@ -239,7 +239,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   useFlavorCategories_(iConfig.getParameter<bool>("UseFlavorCategories")),
   useRelaxedMuonID_(iConfig.getParameter<bool>("UseRelaxedMuonID")),
   applyFatJetMuonTagging_(iConfig.getParameter<bool>("ApplyFatJetMuonTagging")),
-  fatJetDoubleTagging_(iConfig.getParameter<bool>("FatJetDoubleTagging")), 
+  fatJetDoubleTagging_(iConfig.getParameter<bool>("FatJetDoubleTagging")),
   applyFatJetBTagging_(iConfig.getParameter<bool>("ApplyFatJetBTagging")),
   fatJetDoubleBTagging_(iConfig.exists("FatJetDoubleBTagging") ? iConfig.getParameter<bool>("FatJetDoubleBTagging") : fatJetDoubleTagging_ ),
   processSubJets_(iConfig.getParameter<bool>("ProcessSubJets")),
@@ -265,7 +265,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   doPUReweighting_(iConfig.getParameter<bool>("DoPUReweighting"))
 {
   //now do what ever initialization is needed
-  isData = false ; 
+  isData = false ;
   nEventsAll = 0;
   nEventsStored = 0;
 
@@ -390,8 +390,8 @@ void BTagValidation::beginJob() {
   FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
   SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
 
-  SubJets.ReadTree(JetTree,"SoftDropSubJetInfo") ; 
-  SubJets.ReadSubJetSpecificTree(JetTree,"SoftDropSubJetInfo") ; 
+  SubJets.ReadTree(JetTree,"SoftDropSubJetInfo") ;
+  SubJets.ReadSubJetSpecificTree(JetTree,"SoftDropSubJetInfo") ;
 
   if (useJetProbaTree_) {
     EvtInfo.ReadJetTrackTree(JetTreeEvtInfo);
@@ -438,6 +438,23 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_nsubjettiness"    ,"#tau_{2}/#tau_{1}"                                    ,50        ,0      ,1);
   AddHisto2D("FatJet_softdropMass_nsubjettiness", "Nsubjettiness vs. softdrop mass"              ,200       ,0      ,400      ,50        ,0      ,1);
   AddHisto2D("FatJet_pt_softdropMass",  "softdrop mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
+
+  // Hbb tag vars - added by rizki - start
+  AddHisto("FatJet_nSL"                ,         "nSL"                ,                         13, -0.5, 12.5  );
+  AddHisto("FatJet_PFLepton_ptrel"     ,         "PFLepton p_{T,rel}" ,                         100, 0., 50.  );
+  AddHisto("FatJet_PFLepton_IP2D"      ,         "PFLepton IP2D"      ,                         100, -50., 50.  );
+  AddHisto("FatJet_z_ratio"   	       ,         "z ratio" 	      ,                         100, 0., 1.  );
+  AddHisto("FatJet_tau_dot"  	       ,         "#tau#cdotSV_{0}"    ,                         100, -1., 1.  );
+  AddHisto("FatJet_SV_mass_0"          ,         "SV_{0} mass"	      ,                         100, -1. ,10.  );
+  AddHisto("FatJet_SV_EnergyRatio_0"   ,         "SV_EnergyRatio_0"   ,                         100, -1. ,10.  );
+  AddHisto("FatJet_SV_EnergyRatio_1"   ,         "SV_EnergyRatio_1"   ,                         100, -1. ,10.  );
+  AddHisto("FatJet_vertexNTracks"      ,         "_vertexNTracks"     ,                         10, 0., 10.  );
+  AddHisto("FatJet_tau2tau1"           ,         "#tau_{2} / #tau_{1}",                         100, 0., 1.  );
+  AddHisto("FatJet_BDTG_SV"   	       ,         "BDTG SV"	      ,                         100, -1., 1.  );
+  AddHisto("FatJet_BDTG_SL"   	       ,         "BDTG SL"	      ,                         100, -1., 1.  );
+  AddHisto("FatJet_BDTG_Cascade"       ,         "BDTG Cascade"	      ,                         100, -1., 1.  );
+  // added by rizki - end
+
   //// Common histograms for both fat jets and subjets
   createJetHistos("FatJet");
   if( processSubJets_ ) createJetHistos("SubJet");
@@ -549,6 +566,7 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_CSVIVFv2"  ,         "CSVIVFv2",                         50,0.,1.  );
   AddHisto(histoTag+"_DoubleB"   ,         "DoubleB",                         100,-1,1.  );
 
+
   AddHisto(histoTag+"_TCHE_extended1"   ,  "TCHE_extended1",                   70, -30.,30. );
   AddHisto(histoTag+"_TCHP_extended1"   ,  "TCHP_extended1",                   70, -30.,30. );
   AddHisto(histoTag+"_TCHE_extended2"   ,  "TCHE_extended2",                  100,-30.,30. );
@@ -657,10 +675,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TLorentzVector jet_p4;
       jet_p4.SetPtEtaPhiM(FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_phi[iJet], FatJetInfo.Jet_mass[iJet]);
 
-      if ( SubJetInfo.Jet_nSubJets[iJet] != 2 ) continue ; 
+      if ( SubJetInfo.Jet_nSubJets[iJet] != 2 ) continue ;
 
-      int iSubJet1 = SubJetInfo.SubJetIdx[0] ; 
-      int iSubJet2 = SubJetInfo.SubJetIdx[1] ; 
+      int iSubJet1 = SubJetInfo.SubJetIdx[0] ;
+      int iSubJet2 = SubJetInfo.SubJetIdx[1] ;
 
       if( processSubJets_ && (SubJets.Jet_pt[iSubJet1]==0. || SubJets.Jet_pt[iSubJet2]==0.) ) continue; // if processing subjets, skip fat jets for which one of the subjets has pT=0
 
@@ -774,7 +792,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           wtFatJet *= ( scaleFactor(SubJets.Jet_flavour[iSubJet1], SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
               scaleFactor(SubJets.Jet_flavour[iSubJet2], SubJets.Jet_pt[iSubJet2], SubJets.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
         }
-        else if( applyFatJetBTagging_ && !fatJetDoubleBTagging_ ) 
+        else if( applyFatJetBTagging_ && !fatJetDoubleBTagging_ )
           wtFatJet *= scaleFactor(FatJetInfo.Jet_flavour[iJet], FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], (fatJetBDiscrCut_>0.25));
       }
 
@@ -803,6 +821,44 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_nsubjettiness"              ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
       FillHisto2D("FatJet_softdropMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit ,FatJetInfo.Jet_massSoftDrop[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
       FillHisto2D("FatJet_pt_softdropMass" ,FatJetInfo.Jet_flavour[iJet] ,isGluonSplit , FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_massSoftDrop[iJet] ,wtPU*wtFatJet);
+
+      // ------------------------------------------------
+      // ---------- fill fat jet Hbb tagger information -------------- added by rizki
+      // ------------------------------------------------
+
+      float nSL = FatJetInfo.Jet_nSE[iJet] + FatJetInfo.Jet_nSM[iJet] ;
+      float lep_ptrel = FatJetInfo.Jet_PFLepton_ptrel[iJet];
+      float lep_ip2d = FatJetInfo.Jet_PFLepton_IP2D[iJet];
+      float z_ratio = FatJetInfo.Jet_z_ratio[iJet];
+      float tau_dot = FatJetInfo.Jet_tau_dot[iJet];
+      float SV_mass_0 = FatJetInfo.Jet_SV_mass_0[iJet];
+      float SV_EnRat_0 = FatJetInfo.Jet_SV_EnergyRatio_0[iJet];
+      float SV_EnRat_1 = FatJetInfo.Jet_SV_EnergyRatio_1[iJet];
+      float vtxNTracks = FatJetInfo.TagVarCSV_vertexNTracks[iJet];
+
+      float tau1 = FatJetInfo.Jet_tau1[iJet];
+      float tau2 = FatJetInfo.Jet_tau2[iJet];
+      float tau2tau1 = (tau1!=0 ? tau2/tau1 : -1.);
+
+      float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
+      float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
+      float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
+
+      FillHisto("FatJet_nSL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, nSL  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFLepton_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ptrel  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFLepton_IP2D",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ip2d  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, z_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, tau_dot  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_mass_0  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_EnRat_0  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_EnRat_1  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexNTracks",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, vtxNTracks  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_tau2tau1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, tau2tau1  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SV  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SL  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_Cascade  ,   wtPU*wtFatJet);
+
+      //added by rizki - end
 
       fillJetHistos(FatJetInfo, iJet, isGluonSplit, "FatJet", nmu, nselmuon, idxFirstMuon, wtPU*wtFatJet);
 
@@ -1093,9 +1149,9 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   if (n_sv>0)
   {
 
-    //std::cout << " Jet 1st sv = " << JetInfo.Jet_nFirstSV[iJet] 
+    //std::cout << " Jet 1st sv = " << JetInfo.Jet_nFirstSV[iJet]
     //  << " 1st pt = " << JetInfo.SV_vtx_pt[JetInfo.Jet_nFirstSV[iJet]]
-    //  << std::endl ; 
+    //  << std::endl ;
 
     chi2norm_sv    = JetInfo.SV_chi2[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_ndf[JetInfo.Jet_nFirstSV[iJet]];
     flightSig_sv   = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
@@ -1191,6 +1247,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   FillHisto(histoTag+"_SoftMu",      flav, isGluonSplit, softmu  ,   wt);
   FillHisto(histoTag+"_SoftEl",      flav, isGluonSplit, solfel  ,   wt);
   //DMFillHisto(histoTag+"_CombCSVSL",   flav, isGluonSplit, combsl  ,   wt);
+
 
   // ------------------------------------------------
   // ------------- muon information -----------------
@@ -1422,7 +1479,7 @@ bool BTagValidation::passMuonSelection(const int muIdx, const JetInfoBranches& J
       JetInfo.PFMuon_nMuHit[muIdx] > 0 && JetInfo.PFMuon_nMatched[muIdx] > 1 && JetInfo.PFMuon_nTkHit[muIdx] > (useRelaxedMuonID_ ? 7 : 10) &&
       JetInfo.PFMuon_nPixHit[muIdx] > (useRelaxedMuonID_ ? 0 : 1) && JetInfo.PFMuon_nOutHit[muIdx] < (useRelaxedMuonID_ ? 99 : 3) && JetInfo.PFMuon_chi2Tk[muIdx] < 10 &&
       JetInfo.PFMuon_chi2[muIdx] < 10  && // JetInfo.PFMuon_vz[muIdx]< 2 &&
-      jet.DeltaR(muon) < deltaR 
+      jet.DeltaR(muon) < deltaR
       //DM&& fabs(JetInfo.PFMuon_vz[muIdx]-EvtInfo.PVz) < 2.
      )
     cut_mu_pass = true ;
