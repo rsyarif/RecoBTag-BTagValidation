@@ -27,10 +27,10 @@
 using namespace std;
 
 //TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
-TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/bTagValPlots.root" ;
+TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/QCD50ns_bTagValPlots.root" ;
 TString filename_ext="" ;
 //TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ;
-TString dir4plots   ="Rizki_testing" ;
+TString dir4plots   ="HbbTagVal_QCD50ns_logy" ;
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
@@ -45,7 +45,7 @@ TString formatc=".C";
 bool bOverflow = 1;
 bool web       = 0;
 
-bool logy      = 0;
+bool logy      = 1;
 bool dodata    = 0;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
@@ -117,8 +117,23 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 
     //added by rizki - start
     DrawStacked(histoTag+"_nSL"               ,"nSL"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFLepton_ptrel"    ,"PFLepton p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFLepton_IP2D"     ,"PFLepton IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_nSE"               ,"nSE"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_nSM"               ,"nSM"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_PFLepton_ptrel"    ,"PF Lepton p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFLepton_IP2D"     ,"PF Lepton IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFElectron_ptrel"    ,"PF Electron p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFElectron_IP2D"     ,"PF Electron IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFMuon_ptrel"    ,"PF Muon p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFMuon_IP2D"     ,"PF Muon IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_PFLepton_deltaR"    ,"PF Lepton #DeltaR"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFLepton_ratioRel"    ,"PF Lepton ratioRel"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFElectron_deltaR"    ,"PF Electron #DeltaR"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFElectron_ratioRel"    ,"PF Electron ratioRel"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFMuon_deltaR"    ,"PF Muon #DeltaR"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFMuon_ratioRel"    ,"PF Muon ratioRel"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
     DrawStacked(histoTag+"_z_ratio"           ,"z ratio"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_tau_dot"           ,"#tau #cdot SV_{0}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_SV_mass_0"         ,"SV_{0} mass"                               ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);

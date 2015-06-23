@@ -441,15 +441,30 @@ void BTagValidation::beginJob() {
 
   // Hbb tag vars - added by rizki - start
   AddHisto("FatJet_nSL"                ,         "nSL"                ,                         13, -0.5, 12.5  );
-  AddHisto("FatJet_PFLepton_ptrel"     ,         "PFLepton p_{T,rel}" ,                         100, 0., 50.  );
-  AddHisto("FatJet_PFLepton_IP2D"      ,         "PFLepton IP2D"      ,                         100, -50., 50.  );
+  AddHisto("FatJet_nSE"                ,         "nSE"                ,                         13, -0.5, 12.5  );
+  AddHisto("FatJet_nSM"                ,         "nSM"                ,                         13, -0.5, 12.5  );
+
+  AddHisto("FatJet_PFLepton_ptrel"     ,         "PF Lepton p_{T,rel}" ,                         100, 0., 50.  );
+  AddHisto("FatJet_PFLepton_IP2D"      ,         "PF Lepton IP2D"      ,                         100, -50., 50.  );
+  AddHisto("FatJet_PFElectron_ptrel"     ,         "PF Electron p_{T,rel}" ,                         100, 0., 50.  );
+  AddHisto("FatJet_PFElectron_IP2D"      ,         "PF Electron IP2D"      ,                         100, -50., 50.  );
+  AddHisto("FatJet_PFMuon_ptrel"     ,         "PF Muon p_{T,rel}" ,                         100, 0., 50.  );
+  AddHisto("FatJet_PFMuon_IP2D"      ,         "PF Muon IP2D"      ,                         100, -50., 50.  );
+
+  AddHisto("FatJet_PFLepton_deltaR"     ,         "PF Lepton #DeltaR" ,                         80, 0., 0.8  );
+  AddHisto("FatJet_PFLepton_ratioRel"   ,         "PF Lepton ratioRel" ,                         50, 0., 0.1  );
+  AddHisto("FatJet_PFElectron_deltaR"     ,         "PF Electron #DeltaR" ,                         80, 0., 0.8  );
+  AddHisto("FatJet_PFElectron_ratioRel"   ,         "PF Electron ratioRel" ,                         50, 0., 0.1  );
+  AddHisto("FatJet_PFMuon_deltaR"     ,         "PF Muon #DeltaR" ,                         80, 0., 0.8  );
+  AddHisto("FatJet_PFMuon_ratioRel"   ,         "PF Muon ratioRel" ,                         50, 0., 0.1  );
+
   AddHisto("FatJet_z_ratio"   	       ,         "z ratio" 	      ,                         100, 0., 1.  );
-  AddHisto("FatJet_tau_dot"  	       ,         "#tau#cdotSV_{0}"    ,                         100, -1., 1.  );
+  AddHisto("FatJet_tau_dot"  	       ,         "#tau #cdot SV_{0}"    ,                         100, -1., 1.  );
   AddHisto("FatJet_SV_mass_0"          ,         "SV_{0} mass"	      ,                         100, -1. ,10.  );
   AddHisto("FatJet_SV_EnergyRatio_0"   ,         "SV_EnergyRatio_0"   ,                         100, -1. ,10.  );
   AddHisto("FatJet_SV_EnergyRatio_1"   ,         "SV_EnergyRatio_1"   ,                         100, -1. ,10.  );
-  AddHisto("FatJet_vertexNTracks"      ,         "_vertexNTracks"     ,                         10, 0., 10.  );
-  AddHisto("FatJet_tau2tau1"           ,         "#tau_{2} / #tau_{1}",                         100, 0., 1.  );
+  AddHisto("FatJet_vertexNTracks"      ,         "vertexNTracks"     ,                         10, 0., 10.  );
+  AddHisto("FatJet_tau2tau1"           ,         "#tau_{2}/#tau_{1}",                         100, 0., 1.  );
   AddHisto("FatJet_BDTG_SV"   	       ,         "BDTG SV"	      ,                         100, -1., 1.  );
   AddHisto("FatJet_BDTG_SL"   	       ,         "BDTG SL"	      ,                         100, -1., 1.  );
   AddHisto("FatJet_BDTG_Cascade"       ,         "BDTG Cascade"	      ,                         100, -1., 1.  );
@@ -640,8 +655,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     int nFatJet = 0;
     int nSubJet = 0;
 
-    double fatJetCone(0.8);
-
     //---------------------------- Start fat jet loop ---------------------------------------//
     for(int iJet = 0; iJet < FatJetInfo.nJet; ++iJet)
     {
@@ -802,15 +815,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       //// test if the jet is a gluon splitting b jet
       bool isGluonSplit(false);
-      int nMatchedBHadrons(0);
-      for (int iB = 0; iB < EvtInfo.nBHadrons; ++iB)
-      {
-        if (EvtInfo.BHadron_hasBdaughter[iB]==1) continue; //// skip excited B hadrons
-        TLorentzVector bhad_p4;
-        bhad_p4.SetPtEtaPhiM(EvtInfo.BHadron_pT[iB], EvtInfo.BHadron_eta[iB], EvtInfo.BHadron_phi[iB], EvtInfo.BHadron_mass[iB]);
-        if ( jet_p4.DeltaR(bhad_p4) < fatJetCone ) ++nMatchedBHadrons;
-      }
-      if ( nMatchedBHadrons > 1 ) isGluonSplit = true ;
+      if ( FatJetInfo.Jet_nbHadrons[iJet] > 1 ) isGluonSplit = true ;
 
       //// fill fat jet histograms
       h1_fatjet_pt->Fill(FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
@@ -826,9 +831,44 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       // ---------- fill fat jet Hbb tagger information -------------- added by rizki
       // ------------------------------------------------
 
+      float nSE = FatJetInfo.Jet_nSE[iJet];
+      float nSM = FatJetInfo.Jet_nSM[iJet];
       float nSL = FatJetInfo.Jet_nSE[iJet] + FatJetInfo.Jet_nSM[iJet] ;
+
       float lep_ptrel = FatJetInfo.Jet_PFLepton_ptrel[iJet];
       float lep_ip2d = FatJetInfo.Jet_PFLepton_IP2D[iJet];
+
+      float ele_ptrel = -1., mu_ptrel = -1.;
+      float ele_ip2d = -1., mu_ip2d = -1.;
+      float ele_deltaR = -1., mu_deltaR = -1., lep_deltaR = -1. ;
+      float ele_ratioRel = -1., mu_ratioRel = -1., lep_ratioRel=-1. ;
+
+      //elecron loop
+      for(int iSE = FatJetInfo.Jet_nFirstSE[iJet]; iSE<FatJetInfo.Jet_nLastSE[iJet]; ++iSE){
+	if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
+	  {
+	    ele_ptrel = lep_ptrel;
+	    ele_ip2d = lep_ip2d;
+	    ele_deltaR = FatJetInfo.PFElectron_deltaR[iSE];
+	    ele_ratioRel = FatJetInfo.PFElectron_ratioRel[iSE];
+	    lep_deltaR = ele_deltaR;
+	    lep_ratioRel = ele_ratioRel;
+	  }
+      }// end ele loop
+
+      //muon loop
+      for(int iSM = FatJetInfo.Jet_nFirstSM[iJet]; iSM<FatJetInfo.Jet_nLastSM[iJet]; ++iSM){
+	if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
+          {
+	    mu_ptrel = lep_ptrel;
+	    mu_ip2d = lep_ip2d;
+            mu_deltaR = FatJetInfo.PFMuon_deltaR[iSM];
+            mu_ratioRel = FatJetInfo.PFMuon_ratioRel[iSM];
+            lep_deltaR = mu_deltaR;
+            lep_ratioRel = mu_ratioRel;
+          }
+      }//end mu loop
+
       float z_ratio = FatJetInfo.Jet_z_ratio[iJet];
       float tau_dot = FatJetInfo.Jet_tau_dot[iJet];
       float SV_mass_0 = FatJetInfo.Jet_SV_mass_0[iJet];
@@ -845,8 +885,23 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
 
       FillHisto("FatJet_nSL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, nSL  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_nSE",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, nSE  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_nSM",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, nSM  ,   wtPU*wtFatJet);
+
       FillHisto("FatJet_PFLepton_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFLepton_IP2D",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ip2d  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFElectron_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, ele_ptrel  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFElectron_IP2D",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, ele_ip2d  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFMuon_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, mu_ptrel  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFMuon_IP2D",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, mu_ip2d  ,   wtPU*wtFatJet);
+
+      FillHisto("FatJet_PFLepton_deltaR",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_deltaR  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFLepton_ratioRel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ratioRel  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFElectron_deltaR",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, ele_deltaR  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFElectron_ratioRel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, ele_ratioRel  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFMuon_deltaR",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, mu_deltaR  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFMuon_ratioRel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, mu_ratioRel  ,   wtPU*wtFatJet);
+
       FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, z_ratio  ,   wtPU*wtFatJet);
       FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, tau_dot  ,   wtPU*wtFatJet);
       FillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_mass_0  ,   wtPU*wtFatJet);
