@@ -26,12 +26,14 @@
 
 using namespace std;
 
-TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ; 
-TString filename_ext="" ; 
-TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ; 
+//TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
+TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/bTagValPlots.root" ;
+TString filename_ext="" ;
+//TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ;
+TString dir4plots   ="Rizki_testing" ;
 
 TString filename_uncUp  ="" ;
-TString filename_uncDown="" ; 
+TString filename_uncDown="" ;
 
 TString title1 = "CMS Simulation, #sqrt{s} = 13 TeV";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
@@ -44,7 +46,7 @@ bool bOverflow = 1;
 bool web       = 0;
 
 bool logy      = 0;
-bool dodata    = 0; 
+bool dodata    = 0;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
 bool inclTTbar = 0;
@@ -112,6 +114,23 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                 ,logy ,dodata ,extNorm ,2 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_massDrop"     ,"Mass drop"                                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_DoubleB"      ,"DoubleB"                                           ,logy ,dodata ,extNorm ,1 ,0 ,-1 ,1.);
+
+    //added by rizki - start
+    DrawStacked(histoTag+"_nSL"               ,"nSL"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFLepton_ptrel"    ,"PFLepton p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFLepton_IP2D"     ,"PFLepton IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_z_ratio"           ,"z ratio"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau_dot"           ,"#tau #cdot SV_{0}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_SV_mass_0"         ,"SV_{0} mass"                               ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_SV_EnergyRatio_0"  ,"SV_EnergyRatio_0"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_SV_EnergyRatio_1"  ,"SV_EnergyRatio_1"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_vertexNTracks"     ,"vertexNTracks"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau2tau1"          ,"#tau_{2}/#tau_{1}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_BDTG_SL"           ,"BDTG SL"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_BDTG_Cascade"      ,"BDTG Cascade"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    //added by rizki - end
+
  }
 
   if (Draw_track_plots) {
@@ -419,7 +438,7 @@ void DrawStacked(TString name,
   if (inclZjj)   hist_zjj   = (TH1D*)myFile->Get("ZJetsFullyHadronic__"+name+"_mc");
   if (doData)    hist_data  = (TH1D*)myFile->Get("DATA__"+name+"_data");
 
-  std::cout << " hist_b name = " << hist_b->GetName() << endl ; 
+  std::cout << " hist_b name = " << hist_b->GetName() << endl ;
 
   if ( filename.Contains("MuonTagged") &&
       ( name.Contains("track_pt") || name.Contains("track_IP") || name.Contains("pt_sv")  || name.Contains("sv_pt") || name.Contains("sv_flight3DSig") )
