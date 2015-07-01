@@ -178,7 +178,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_sv_multi_0"       ,"Nb. of secondary vertices"                         ,logy ,dodata ,extNorm ,1. ,0.);
     DrawStacked(histoTag+"_pt_sv"            ,"p_{T} of jets containing a SV [GeV/c]"             ,logy ,dodata ,extNorm ,4. ,0.);
     DrawStacked(histoTag+"_sv_mass"          ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
-    DrawStacked(histoTag+"_sv_mass"          ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
+    DrawStacked(histoTag+"_TagVarCSV_sv_mass"          ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
     DrawStacked(histoTag+"_sv_deltaR_jet"    ,"#DeltaR between the jet and the SV direction"      ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_sv_en_ratio"      ,"SV energy ratio"                                   ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_sv_pt"            ,"SV p_{T} [GeV/c]"                                  ,logy ,dodata ,extNorm ,5. ,0.);

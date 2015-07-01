@@ -486,6 +486,7 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_sv_multi_0",         "number of secondary vertex",                          6,-0.5,5.5   );
   AddHisto(histoTag+"_sv_multi",           "number of secondary vertex",                          6,-0.5,5.5   );
   AddHisto(histoTag+"_sv_mass",            "invariant mass of the secondary vertex",             750,0.,15.    );
+  AddHisto(histoTag+"_TagVarCSV_sv_mass",            "invariant mass of the secondary vertex from TagVarCSV",             750,0.,15.    );
   AddHisto(histoTag+"_sv_chi2norm",        "normalized chi2 of the secondary vertex",            100,0.,20.    );
   AddHisto(histoTag+"_sv_tot_charge",      "Total charge",                                        21,-10.5,10.5);
   AddHisto(histoTag+"_svnTrk",             "Track multiplicity : SVnVertexTracks (centered)",     15,-0.5,14.5 );
@@ -909,6 +910,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   FillHisto(histoTag+"_track_multi" ,flav ,isGluonSplit ,ntrkjet    ,wt) ;
 
   float mass_sv        = 0.;
+  float mass_TagVarCSV_sv = 0.;
   int   n_sv           = 0 ;
   float chi2norm_sv    = 0.;
   float flightSig_sv   = 0.;
@@ -1098,6 +1100,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
     flightSig_sv   = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
     flight2DSig_sv = JetInfo.SV_flight2D[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flight2DErr[JetInfo.Jet_nFirstSV[iJet]];
     mass_sv        = JetInfo.SV_mass[JetInfo.Jet_nFirstSV[iJet]];
+    mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[JetInfo.Jet_nFirstSV[iJet]];
     sv_dR_jet      = JetInfo.SV_deltaR_jet[JetInfo.Jet_nFirstSV[iJet]];
     sv_dR_dir_sum  = JetInfo.SV_deltaR_sum_dir[JetInfo.Jet_nFirstSV[iJet]];
     sv_dR_jet_sum  = JetInfo.SV_deltaR_sum_jet[JetInfo.Jet_nFirstSV[iJet]];
@@ -1120,6 +1123,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
     FillHisto(histoTag+"_sv_multi",        flav, isGluonSplit ,n_sv ,  wt);
     FillHisto(histoTag+"_sv_chi2norm",     flav, isGluonSplit ,chi2norm_sv        , wt);
     FillHisto(histoTag+"_sv_mass",         flav, isGluonSplit ,mass_sv,             wt);
+    FillHisto(histoTag+"_TagVarCSV_sv_mass",         flav, isGluonSplit ,mass_TagVarCSV_sv,             wt);
     FillHisto(histoTag+"_sv_deltaR_jet",   flav, isGluonSplit ,sv_dR_jet,           wt);
     FillHisto(histoTag+"_sv_deltaR_sumJet",flav, isGluonSplit ,sv_dR_dir_sum,       wt);
     FillHisto(histoTag+"_sv_deltaR_sumDir",flav, isGluonSplit ,sv_dR_jet_sum,       wt);
