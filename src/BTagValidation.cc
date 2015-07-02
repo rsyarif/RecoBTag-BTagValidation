@@ -389,9 +389,11 @@ void BTagValidation::beginJob() {
   FatJetInfo.ReadTree(JetTree,"FatJetInfo");
   FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
   SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
+  FatJetInfo.ReadCSVTagVarTree(JetTree, "FatJetInfo"); 
 
   SubJets.ReadTree(JetTree,"SoftDropSubJetInfo") ; 
   SubJets.ReadSubJetSpecificTree(JetTree,"SoftDropSubJetInfo") ; 
+  SubJets.ReadCSVTagVarTree(JetTree, "SoftDropSubJetInfo"); 
 
   if (useJetProbaTree_) {
     EvtInfo.ReadJetTrackTree(JetTreeEvtInfo);
@@ -483,6 +485,7 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_sv_flight3DSig",     "flight distance significance 3D",                    150,0.,150.   );
   AddHisto(histoTag+"_sv_multi_0",         "number of secondary vertex",                          6,-0.5,5.5   );
   AddHisto(histoTag+"_sv_multi",           "number of secondary vertex",                          6,-0.5,5.5   );
+  AddHisto(histoTag+"_TagVarCSV_sv_mass",  ";M(sv from CSV TagVar);;",                           750,0.,15.    );
   AddHisto(histoTag+"_sv_mass",            "invariant mass of the secondary vertex",             750,0.,15.    );
   AddHisto(histoTag+"_sv_chi2norm",        "normalized chi2 of the secondary vertex",            100,0.,20.    );
   AddHisto(histoTag+"_sv_tot_charge",      "Total charge",                                        21,-10.5,10.5);
@@ -1120,26 +1123,26 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
     //DMsv_1st_nTrk     = JetInfo.SV_nTrk_firstVxt[JetInfo.Jet_nFirstSV[iJet]];
 
     // --------- SV histograms --------
-    FillHisto(histoTag+"_sv_multi",        flav, isGluonSplit ,n_sv ,  wt);
-    FillHisto(histoTag+"_sv_chi2norm",     flav, isGluonSplit ,chi2norm_sv        , wt);
-    FillHisto(histoTag+"_sv_mass",         flav, isGluonSplit ,mass_sv,             wt);
-    FillHisto(histoTag+"_sv_deltaR_jet",   flav, isGluonSplit ,sv_dR_jet,           wt);
-    FillHisto(histoTag+"_sv_deltaR_sumJet",flav, isGluonSplit ,sv_dR_dir_sum,       wt);
-    FillHisto(histoTag+"_sv_deltaR_sumDir",flav, isGluonSplit ,sv_dR_jet_sum,       wt);
-    FillHisto(histoTag+"_sv_en_ratio",     flav, isGluonSplit ,sv_en_rat,           wt);
+    FillHisto(histoTag+"_sv_multi",          flav, isGluonSplit ,n_sv ,               wt);
+    FillHisto(histoTag+"_sv_chi2norm",       flav, isGluonSplit ,chi2norm_sv,         wt);
+    FillHisto(histoTag+"_sv_mass",           flav, isGluonSplit ,mass_sv,             wt);
+    FillHisto(histoTag+"_sv_deltaR_jet",     flav, isGluonSplit ,sv_dR_jet,           wt);
+    FillHisto(histoTag+"_sv_deltaR_sumJet",  flav, isGluonSplit ,sv_dR_dir_sum,       wt);
+    FillHisto(histoTag+"_sv_deltaR_sumDir",  flav, isGluonSplit ,sv_dR_jet_sum,       wt);
+    FillHisto(histoTag+"_sv_en_ratio",       flav, isGluonSplit ,sv_en_rat,           wt);
     //DMFillHisto(histoTag+"_sv_aboveC",       flav, isGluonSplit ,sv_aboveC,            wt);
-    FillHisto(histoTag+"_sv_pt",           flav, isGluonSplit ,sv_pt,               wt);
-    FillHisto(histoTag+"_sv_flight2D",     flav, isGluonSplit ,sv_flight2D,         wt);
-    FillHisto(histoTag+"_sv_flight2Derr",  flav, isGluonSplit ,sv_flight2Derr,      wt);
-    FillHisto(histoTag+"_sv_flightSig2D",  flav, isGluonSplit ,flight2DSig_sv,      wt);
-    FillHisto(histoTag+"_sv_tot_charge",   flav, isGluonSplit ,sv_totchar,          wt);
-    FillHisto(histoTag+"_svnTrk",          flav, isGluonSplit ,sv_nTrk,             wt);
+    FillHisto(histoTag+"_sv_pt",             flav, isGluonSplit ,sv_pt,               wt);
+    FillHisto(histoTag+"_sv_flight2D",       flav, isGluonSplit ,sv_flight2D,         wt);
+    FillHisto(histoTag+"_sv_flight2Derr",    flav, isGluonSplit ,sv_flight2Derr,      wt);
+    FillHisto(histoTag+"_sv_flightSig2D",    flav, isGluonSplit ,flight2DSig_sv,      wt);
+    FillHisto(histoTag+"_sv_tot_charge",     flav, isGluonSplit ,sv_totchar,          wt);
+    FillHisto(histoTag+"_svnTrk",            flav, isGluonSplit ,sv_nTrk,             wt);
     //DMFillHisto(histoTag+"_svnTrk_firstVxt", flav, isGluonSplit ,sv_1st_nTrk,         wt);
-    FillHisto(histoTag+"_sv_eta",          flav, isGluonSplit ,sveta,               wt);
-    FillHisto(histoTag+"_sv_phi",          flav, isGluonSplit ,svphi,               wt);
-    FillHisto(histoTag+"_sv_flight3D",     flav, isGluonSplit ,sv_flight3D,         wt);
-    FillHisto(histoTag+"_sv_flight3Derr",  flav, isGluonSplit ,sv_flight3Derr,      wt);
-    FillHisto(histoTag+"_sv_flight3DSig",  flav, isGluonSplit ,flightSig_sv,        wt);
+    FillHisto(histoTag+"_sv_eta",            flav, isGluonSplit ,sveta,               wt);
+    FillHisto(histoTag+"_sv_phi",            flav, isGluonSplit ,svphi,               wt);
+    FillHisto(histoTag+"_sv_flight3D",       flav, isGluonSplit ,sv_flight3D,         wt);
+    FillHisto(histoTag+"_sv_flight3Derr",    flav, isGluonSplit ,sv_flight3Derr,      wt);
+    FillHisto(histoTag+"_sv_flight3DSig",    flav, isGluonSplit ,flightSig_sv,        wt);
 
     if (sv_nTrk >2)
     {
@@ -1166,6 +1169,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   float csv       = JetInfo.Jet_CombSvx[iJet];
   float csvivfv2  = JetInfo.Jet_CombIVF[iJet];
   float doubleb   = JetInfo.Jet_DoubleSV[iJet];
+  float mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[iJet]; 
 
   FillHisto(histoTag+"_TCHE",     flav, isGluonSplit, tche      ,wt);
   FillHisto(histoTag+"_TCHP",     flav, isGluonSplit, tchp      ,wt);
@@ -1176,6 +1180,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   FillHisto(histoTag+"_CSV",      flav, isGluonSplit, csv       ,wt);
   FillHisto(histoTag+"_CSVIVFv2", flav, isGluonSplit, csvivfv2  ,wt);
   FillHisto(histoTag+"_DoubleB",  flav, isGluonSplit, doubleb   ,wt);
+  FillHisto(histoTag+"_TagVarCSV_sv_mass", flav, isGluonSplit ,mass_TagVarCSV_sv,   wt);
 
   FillHisto(histoTag+"_TCHE_extended1",  flav, isGluonSplit, tche  , wt);
   FillHisto(histoTag+"_TCHP_extended1",  flav, isGluonSplit, tchp  , wt);
