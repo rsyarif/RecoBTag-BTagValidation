@@ -126,7 +126,7 @@ options.register('doPUReweighting', False,
 )
 
 ## 'maxEvents' is already registered by the Framework, changing default value
-options.setDefault('maxEvents', 2000)
+options.setDefault('maxEvents', 1000)
 
 options.parseArguments()
 
