@@ -690,7 +690,9 @@ void DrawStacked(TString name,
   c1->SetFrameFillColor(0);
   c1->SetFrameBorderMode(0);
 
-  TPad* pad0 = new TPad("pad0", "pad0",0,0.25,1.0,1.00);
+  float pad0height = (dodata? 0.25: 0.0) ; //adjust height if no data ie. no histo_ratio - added by rizki
+
+  TPad* pad0 = new TPad("pad0", "pad0",0,pad0height,1.0,1.00);
   pad0 ->Draw();
   pad0 ->cd();
   pad0->SetFillColor(0);
@@ -724,7 +726,7 @@ void DrawStacked(TString name,
   histo_tot->GetXaxis()->SetTitle(name);
   histo_tot->GetYaxis()->SetTitle("Entries");
   histo_tot->SetTitleOffset(0.81,"Y");
-  histo_tot->GetYaxis()->SetLabelSize( 0.05 );
+  histo_tot->GetYaxis()->SetLabelSize( (dodata? 0.05 : 0.035) ); //added by rizki
   histo_tot->GetYaxis()->SetTitleSize( 0.06 );
   //if ( log == false) histo_tot->GetYaxis()->SetNoExponent(kTRUE) ;
 
@@ -763,7 +765,7 @@ void DrawStacked(TString name,
   leg->SetFillColor(0);
   leg->SetFillStyle(1001);
   leg->SetBorderSize(0);
-  leg->SetTextSize(0.05);
+  leg->SetTextSize( (dodata? 0.05:0.035) ); //added by rizki
 
   if (doData) leg->AddEntry(hist_data,     datacaption,     "pl");
   leg->AddEntry(hist_b,        "b quark"           ,         "f");
@@ -775,12 +777,12 @@ void DrawStacked(TString name,
 
   leg->Draw();
 
-  TLatex *   tex0 = new TLatex(0.42,1.00,"CMS Simulation, #sqrt{s} = 13 TeV");
+  TLatex *   tex0 = new TLatex(0.42,0.99,"CMS Simulation, #sqrt{s} = 13 TeV");
   tex0->SetNDC();
   tex0->SetTextAlign(13);
   tex0->SetTextFont(42);
   tex0->SetTextFont(62);
-  tex0->SetTextSize(0.055);
+  tex0->SetTextSize( (dodata? 0.55 : 0.050) ); //added by rizki
   tex0->SetLineWidth(2);
   tex0->Draw();
 

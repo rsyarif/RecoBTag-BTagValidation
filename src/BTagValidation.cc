@@ -202,6 +202,8 @@ class BTagValidation : public edm::EDAnalyzer {
     const double                    fatJetAbsEtaMax_;
     const double                    fatJetSoftDropMassMin_;
     const double                    fatJetSoftDropMassMax_;
+    const bool 			    applyFatJetTau21_; //added by rizki
+    const double		    fatJetTau21Cut_; //added by rizki
     const double                    SFbShift_;
     const double                    SFlShift_;
     const std::vector<std::string>  triggerSelection_;
@@ -254,6 +256,8 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   fatJetAbsEtaMax_(iConfig.getParameter<double>("FatJetAbsEtaMax")),
   fatJetSoftDropMassMin_(iConfig.getParameter<double>("FatJetSoftDropMassMin")),
   fatJetSoftDropMassMax_(iConfig.getParameter<double>("FatJetSoftDropMassMax")),
+  applyFatJetTau21_(iConfig.getParameter<bool>("ApplyFatJetTau21")), //added by rizki
+  fatJetTau21Cut_(iConfig.getParameter<double>("FatJetTau21Cut")), //added by rizki
   SFbShift_(iConfig.getParameter<double>("SFbShift")),
   SFlShift_(iConfig.getParameter<double>("SFlShift")),
   triggerSelection_(iConfig.getParameter<std::vector<std::string> >("TriggerSelection")),
@@ -665,6 +669,13 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( FatJetInfo.Jet_massSoftDrop[iJet] < fatJetSoftDropMassMin_ ||
           FatJetInfo.Jet_massSoftDrop[iJet] > fatJetSoftDropMassMax_ )  continue; //// apply softdrop jet mass cut
 
+      //added by rizki - start
+      float tau1 = FatJetInfo.Jet_tau1[iJet];
+      float tau2 = FatJetInfo.Jet_tau2[iJet];
+      float tau21 = (tau1!=0 ? tau2/tau1 : -1.);
+      if ( applyFatJetTau21_ && ( tau21 > fatJetTau21Cut_ || tau21 < 0) ) continue ; ////apply jet substructure tau21 cut.
+      //added by rizki - end
+
       int idxFirstMuon = -1;
       int nselmuon = 0;
       int nmu = 0;
@@ -876,10 +887,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float SV_EnRat_1 = FatJetInfo.Jet_SV_EnergyRatio_1[iJet];
       float vtxNTracks = FatJetInfo.TagVarCSV_vertexNTracks[iJet];
 
-      float tau1 = FatJetInfo.Jet_tau1[iJet];
-      float tau2 = FatJetInfo.Jet_tau2[iJet];
-      float tau2tau1 = (tau1!=0 ? tau2/tau1 : -1.);
-
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
       float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
       float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
@@ -908,7 +915,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_EnRat_0  ,   wtPU*wtFatJet);
       FillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_EnRat_1  ,   wtPU*wtFatJet);
       FillHisto("FatJet_vertexNTracks",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, vtxNTracks  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_tau2tau1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, tau2tau1  ,   wtPU*wtFatJet);
+      //FillHisto("FatJet_tau2tau1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, tau21  ,   wtPU*wtFatJet); //redundant, there is nsubjettines already
       FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SV  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SL  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_Cascade  ,   wtPU*wtFatJet);

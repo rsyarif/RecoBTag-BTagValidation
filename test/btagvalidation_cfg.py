@@ -99,6 +99,16 @@ options.register('fatJetSoftDropMassMax', 1.E6,
     VarParsing.varType.float,
     "Maximum fat jet softdrop mass"
 )
+options.register('applyFatJetTau21', False, #added by rizki
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Apply tau2/tau1 jet substructure cut for fat jets"
+)
+options.register('fatJetTau21Cut', 0.5, #added by rizki
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "tau2/tau1 jet substructure cut for fat jets"
+)
 options.register('fatJetBDiscrCut', 0.244,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
@@ -173,6 +183,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetPtMax            = cms.double(options.fatJetPtMax),
     FatJetSoftDropMassMin    = cms.double(options.fatJetSoftDropMassMin),
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
+    ApplyFatJetTau21       = cms.bool(options.applyFatJetTau21), #added by rizki
+    FatJetTau21Cut         = cms.double(options.fatJetTau21Cut), #added by rizki
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
