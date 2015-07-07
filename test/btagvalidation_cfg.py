@@ -39,6 +39,11 @@ options.register('fatJetDoubleTagging', False,
     VarParsing.varType.bool,
     "Require fat jets to be double-tagged"
 )
+options.register('fatJetDoubleBTagging', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Require fat jets to be double-b-tagged"
+)
 options.register('processSubJets', True,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
@@ -161,6 +166,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
     ApplyFatJetBTagging    = cms.bool(options.applyFatJetBTagging),
     FatJetDoubleTagging    = cms.bool(options.fatJetDoubleTagging),
+    FatJetDoubleBTagging   = cms.bool(options.fatJetDoubleBTagging),
     ProcessSubJets         = cms.bool(options.processSubJets),
     ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
     ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),

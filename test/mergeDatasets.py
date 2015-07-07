@@ -55,6 +55,7 @@ def main():
   group = ''
   group_datasets = {}
   group_xs = {}
+  group_L = {}
   dataset_xs = {}
 
   # open and read the dataset_list_for_merging
@@ -70,6 +71,9 @@ def main():
       group = line_elements[0].rstrip(':')
       group_datasets[group] = []
       group_xs[group] = 0.
+      group_L[group] = -1.
+      if re.search('L=', line):
+        group_L[group] = float(line.split('L=')[-1].strip('\n'))
     else:
       dataset = line_elements[0]
       xs = float(line_elements[1])
@@ -82,9 +86,9 @@ def main():
 
   # final output file
   filename='Final_histograms'
-  if (len(options.analyzer_module)>0): 
+  if (len(options.analyzer_module)>0):
     filename+=str('_'+options.analyzer_module)
-  filename+=str('.root') 
+  filename+=str('.root')
   output_root_file = TFile( os.path.join(output_dir,filename), 'RECREATE' )
 
   # write histograms
@@ -104,14 +108,18 @@ def main():
 
       # open input ROOT file
       root_file = TFile(input_root_file)
-      htemp = root_file.Get(os.path.join(options.analyzer_module,'h1_CutFlow'))
-      nEvents = htemp.GetBinContent(1)
+      htemp = root_file.Get(os.path.join(options.analyzer_module,'h1_CutFlow_unw'))
+      nEventsAll = htemp.GetBinContent(1)
+      nEventsStored = htemp.GetBinContent(2)
       scale = 1.
       if group_xs[group] > 0.:
-        scale = dataset_xs[dataset]/(group_xs[group]*nEvents)
-        print dataset + ' -- relative xs: ' + str(dataset_xs[dataset]/group_xs[group]) + ', scale: ' + str(scale)
+        if group_L[group] > 0.:
+          scale = (dataset_xs[dataset]*group_L[group])/nEventsAll
+        else:
+          scale = dataset_xs[dataset]/(group_xs[group]*nEventsAll)
+        print dataset + ' -- Events: %.0f (all), %.0f (stored); relative xs: %.8E; scale: %.8E'%(nEventsAll,nEventsStored,(dataset_xs[dataset]/group_xs[group]),scale)
       else:
-        print dataset + ' -- scale: ' + str(scale)
+        print dataset + ' -- Events: %.0f (all), %.0f (stored); scale: %.8E'%(nEventsAll,nEventsStored,scale)
 
       # get the number of histograms
       nHistos = root_file.Get(options.analyzer_module).GetListOfKeys().GetEntries()
@@ -141,7 +149,7 @@ def main():
   output_root_file.Close()
 
   print ''
-  print 'Final histogram file: ' + os.path.join(output_dir,'Final_histograms.root')
+  print 'Final histograms file: ' + os.path.join(output_dir,filename)
   print ''
 
 

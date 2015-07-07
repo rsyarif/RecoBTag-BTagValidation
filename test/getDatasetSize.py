@@ -51,6 +51,8 @@ def main():
   dataset_list_file = open(dataset_list,"r")
   dataset_list_lines = dataset_list_file.readlines()
 
+  total = 0.
+
   # loop over datasets
   for line in dataset_list_lines:
     line_elements = line.split()
@@ -67,10 +69,13 @@ def main():
 
     print "  Size: %.1f kB, %.1f MB, %.1f GB"%(size/1024.,size/(1024.**2),size/(1024.**3))
 
+    total = total + size
 
   # close all open files
   dataset_list_file.close()
 
+  print ""
+  print "Total Size: %.1f kB, %.1f MB, %.1f GB"%(total/1024.,total/(1024.**2),total/(1024.**3))
 
 if __name__ == "__main__":
   main()
