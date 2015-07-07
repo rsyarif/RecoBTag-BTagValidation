@@ -124,6 +124,11 @@ options.register('doPUReweighting', False,
     VarParsing.varType.bool,
     "Do pileup reweighting"
 )
+options.register('usePrunedJets', True,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Use pruned subjets"
+)
 
 ## 'maxEvents' is already registered by the Framework, changing default value
 options.setDefault('maxEvents', 1000)
@@ -173,6 +178,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetPtMax            = cms.double(options.fatJetPtMax),
     FatJetSoftDropMassMin    = cms.double(options.fatJetSoftDropMassMin),
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
+    UsePrunedJets          = cms.bool(options.usePrunedJets),
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
