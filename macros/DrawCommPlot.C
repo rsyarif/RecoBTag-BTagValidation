@@ -26,9 +26,9 @@
 
 using namespace std;
 
-TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ; 
 TString filename_ext="" ; 
-TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ; 
+TString filename    ="./test/ValPlotFiles/QCD_15to7000/25nsPU/bTagValPlots_FatJetDoubleMuonTagged_alltracks.root";
+TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/linear/FatJetDoubleMuonTag";
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ; 
@@ -42,7 +42,7 @@ TString formatc=".C";
 
 bool bOverflow = 1;
 bool web       = 0;
-
+bool prunedjets = 1;
 bool logy      = 0;
 bool dodata    = 0; 
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
@@ -106,7 +106,8 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   DrawStacked(histoTag+"_JBP"         ,"JBP"                          ,logy ,dodata ,extNorm ,1  ,0 ,0. ,1.   );
   DrawStacked(histoTag+"_track_multi" ,"Number of tracks in the jets" ,logy ,dodata ,extNorm ,0. ,0.,0. ,0.   );
   if( histoTag=="FatJet" ) {
-    DrawStacked(histoTag+"_softdropMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    if( !prunedjets) DrawStacked(histoTag+"_softdropMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    if( prunedjets) DrawStacked(histoTag+"_prunedMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane" ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"    ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                 ,logy ,dodata ,extNorm ,2 ,0 ,0. ,0.);
@@ -228,7 +229,8 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 
   if (Draw_2D_plots){
     if( histoTag=="FatJet" ){
-      Draw2DPlot(histoTag+"_softdropMass_nsubjettiness", "FatJet softdrop mass vs. Nsubjettiness", "FatJet softdrop mass", "Nsubjettiness", 0, 1, 0);
+      if( !prunedjets) Draw2DPlot(histoTag+"_softdropMass_nsubjettiness", "FatJet softdrop mass vs. Nsubjettiness", "FatJet softdrop mass", "Nsubjettiness", 0, 1, 0);
+      if( prunedjets) Draw2DPlot(histoTag+"_prunedMass_nsubjettiness", "FatJet pruned mass vs. Nsubjettiness", "FatJet pruned mass", "Nsubjettiness", 0, 1, 0);
     }
     //Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0,1);
     //Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",0,1);
