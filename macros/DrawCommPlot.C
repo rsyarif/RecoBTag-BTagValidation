@@ -27,10 +27,10 @@
 using namespace std;
 
 //TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
-TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/QCD50ns_bTagValPlots.root" ;
+TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/bTagValPlots_QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6_mc_subjets.root" ;
 TString filename_ext="" ;
 //TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ;
-TString dir4plots   ="HbbTagVal_QCD50ns_logy" ;
+TString dir4plots   ="HbbTagVal_newBDTWeights" ;
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
@@ -45,7 +45,7 @@ TString formatc=".C";
 bool bOverflow = 1;
 bool web       = 0;
 
-bool logy      = 1;
+bool logy      = 0;
 bool dodata    = 0;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
@@ -65,9 +65,9 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 //--------------------------
 void DrawCommPlot(bool Draw_track_plots=false,
     bool Draw_Nminus1_plots=false,
-    bool Draw_sv_plots=true,
-    bool Draw_muons_plots=true,
-    bool Draw_discriminator_plots=true,
+    bool Draw_sv_plots=false,
+    bool Draw_muons_plots=false,
+    bool Draw_discriminator_plots=false,
     bool Draw_tagRate_plots=false,
     bool Draw_2D_plots=false) {
 
@@ -116,31 +116,27 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_DoubleB"      ,"DoubleB"                                           ,logy ,dodata ,extNorm ,1 ,0 ,-1 ,1.);
 
     //added by rizki - start
-    DrawStacked(histoTag+"_nSL"               ,"nSL"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_nSE"               ,"nSE"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_nSM"               ,"nSM"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-
-    DrawStacked(histoTag+"_PFLepton_ptrel"    ,"PF Lepton p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFLepton_IP2D"     ,"PF Lepton IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFElectron_ptrel"    ,"PF Electron p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFElectron_IP2D"     ,"PF Electron IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFMuon_ptrel"    ,"PF Muon p_{T,rel}"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFMuon_IP2D"     ,"PF Muon IP2D"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-
-    DrawStacked(histoTag+"_PFLepton_deltaR"    ,"PF Lepton #DeltaR"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFLepton_ratioRel"    ,"PF Lepton ratioRel"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFElectron_deltaR"    ,"PF Electron #DeltaR"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFElectron_ratioRel"    ,"PF Electron ratioRel"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFMuon_deltaR"    ,"PF Muon #DeltaR"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFMuon_ratioRel"    ,"PF Muon ratioRel"                        ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_z_ratio"           ,"z ratio"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_tau_dot"           ,"#tau #cdot SV_{0}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_SV_mass_0"         ,"SV_{0} mass"                               ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_SV_EnergyRatio_0"  ,"SV_EnergyRatio_0"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_SV_EnergyRatio_1"  ,"SV_EnergyRatio_1"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_vertexNTracks"     ,"vertexNTracks"                             ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_tau2tau1"          ,"#tau_{2}/#tau_{1}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_jetNTracksEtaRel"  ,"jetNTracksEtaRel"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_PFLepton_ptrel"    ,"PF Lepton p_{T,rel}"                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFElectron_ptrel"  ,"PF Electron p_{T,rel}"                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFMuon_ptrel"      ,"PF Muon p_{T,rel}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_PFLepton_ratio"    ,"PF Lepton ratio"                           ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_nSL_3"             ,"nSL_3"                                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_nSE"               ,"nSE"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_nSM"               ,"nSM"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_trackSip3dSig_3"  ,"trackSip3dSig_3"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_SL"           ,"BDTG SL"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_Cascade"      ,"BDTG Cascade"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
@@ -237,8 +233,8 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     //DrawStacked(histoTag+"_JBP"   ,"JBP Discriminator"                ,1 ,1 ,0 ,0. ,0.) ;
     //DrawStacked(histoTag+"_SSV"   ,"SSVHE Discriminator"              ,1 ,1 ,0 ,0. ,0.) ;
     //DrawStacked(histoTag+"_SSVHP" ,"SSVHP Discriminator"              ,1 ,1 ,0 ,0. ,0.) ;
-    //DrawStacked(histoTag+"_TCHE_extended1"       ,"TCHE (extended)"   ,1,1 ,0 ,0. ,0.);
-    //DrawStacked(histoTag+"_TCHP_extended1"       ,"TCHP (extended)"   ,1,1 ,0 ,0. ,0.);
+    ////DrawStacked(histoTag+"_TCHE_extended1"       ,"TCHE (extended)"   ,1,1 ,0 ,0. ,0.); //commented by rizki
+    ////DrawStacked(histoTag+"_TCHP_extended1"       ,"TCHP (extended)"   ,1,1 ,0 ,0. ,0.); //commented by rizki
     //DrawStacked(histoTag+"_discri_ssche0",      "SSVHE Discriminator" ,1,1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_discri_sschp0",      "SSVHP Discriminator" ,1,1 ,0 ,0. ,0.);
     //DrawStacked(histoTag+"_TCHE"             ,"TCHE Discriminator"    ,1,1 ,0 ,0. ,0.);
@@ -246,12 +242,12 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   }
 
   if (Draw_tagRate_plots){
-    DrawTagRate(histoTag+"_TCHE_extended1","TCHE (extended)"     ,1 , 1);
-    DrawTagRate(histoTag+"_TCHP_extended1"," TCHP (extended)"    ,1 , 1);
+    // DrawTagRate(histoTag+"_TCHE_extended1","TCHE (extended)"     ,1 , 1); //commented by rizki
+    // DrawTagRate(histoTag+"_TCHP_extended1"," TCHP (extended)"    ,1 , 1); //commented by rizki
     DrawTagRate(histoTag+"_discri_ssche0","SSVHE (extended)"     ,1 , 1);
     DrawTagRate(histoTag+"_discri_sschp0","SSVHP (extended)"     ,1 , 1);
-    DrawTagRate(histoTag+"_TCHE"	      ,"TCHE Discriminator"   ,1 , 1);
-    DrawTagRate(histoTag+"_TCHP"	      ,"TCHP Discriminator"   ,1 , 1);
+    // DrawTagRate(histoTag+"_TCHE"	      ,"TCHE Discriminator"   ,1 , 1); //commented by rizki
+    // DrawTagRate(histoTag+"_TCHP"	      ,"TCHP Discriminator"   ,1 , 1); //commented by rizki
     DrawTagRate(histoTag+"_JP"	      ,"JP Discriminator"     ,1 , 1);
     DrawTagRate(histoTag+"_JBP"	      ,"JBP Discriminator"    ,1 , 1);
     DrawTagRate(histoTag+"_SSV"	      ,"SSVHE Discriminator"  ,1 , 1);
