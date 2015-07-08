@@ -962,7 +962,6 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   FillHisto(histoTag+"_track_multi" ,flav ,isGluonSplit ,ntrkjet    ,wt) ;
 
   float mass_sv        = 0.;
-  float mass_TagVarCSV_sv = 0.;
   int   n_sv           = 0 ;
   float chi2norm_sv    = 0.;
   float flightSig_sv   = 0.;
@@ -1152,7 +1151,6 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
     flightSig_sv   = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
     flight2DSig_sv = JetInfo.SV_flight2D[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flight2DErr[JetInfo.Jet_nFirstSV[iJet]];
     mass_sv        = JetInfo.SV_mass[JetInfo.Jet_nFirstSV[iJet]];
-    mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[JetInfo.Jet_nFirstSV[iJet]];
     sv_dR_jet      = JetInfo.SV_deltaR_jet[JetInfo.Jet_nFirstSV[iJet]];
     sv_dR_dir_sum  = JetInfo.SV_deltaR_sum_dir[JetInfo.Jet_nFirstSV[iJet]];
     sv_dR_jet_sum  = JetInfo.SV_deltaR_sum_jet[JetInfo.Jet_nFirstSV[iJet]];
