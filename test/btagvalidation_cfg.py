@@ -44,10 +44,15 @@ options.register('fatJetDoubleBTagging', False,
     VarParsing.varType.bool,
     "Require fat jets to be double-b-tagged"
 )
-options.register('processSubJets', True,
+options.register('usePrunedSubjets', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
-    "Process subjets"
+    "Process pruned subjets"
+)
+options.register('useSoftDropSubjets', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Process soft drop subjets"
 )
 options.register('applySubJetMuonTagging', False,
     VarParsing.multiplicity.singleton,
@@ -124,16 +129,16 @@ options.register('doPUReweighting', False,
     VarParsing.varType.bool,
     "Do pileup reweighting"
 )
-options.register('usePrunedJets', True,
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.bool,
-    "Use pruned subjets"
-)
 
 ## 'maxEvents' is already registered by the Framework, changing default value
-options.setDefault('maxEvents', 1000)
+options.setDefault('maxEvents', 2000)
 
 options.parseArguments()
+
+if options.usePrunedSubjets and options.useSoftDropSubjets:
+  print "Warning: both pruned and soft drop subjets chosen. Only pruned subjets will be processed."
+elif not options.usePrunedSubjets and not options.useSoftDropSubjets:
+  print "Warning: no subjets will be processed."
 
 #print options
 
@@ -162,12 +167,13 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     InputTTree             = cms.string('btaganaFatJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
-    UseRelaxedMuonID      = cms.bool(options.useRelaxedMuonID),
+    UseRelaxedMuonID       = cms.bool(options.useRelaxedMuonID),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
     ApplyFatJetBTagging    = cms.bool(options.applyFatJetBTagging),
     FatJetDoubleTagging    = cms.bool(options.fatJetDoubleTagging),
     FatJetDoubleBTagging   = cms.bool(options.fatJetDoubleBTagging),
-    ProcessSubJets         = cms.bool(options.processSubJets),
+    UsePrunedSubjets       = cms.bool(options.usePrunedSubjets),
+    UseSoftDropSubjets     = cms.bool(options.useSoftDropSubjets),
     ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
     ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),
     DynamicMuonSubJetDR    = cms.bool(options.dynamicMuonSubJetDR),
@@ -178,11 +184,9 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetPtMax            = cms.double(options.fatJetPtMax),
     FatJetSoftDropMassMin    = cms.double(options.fatJetSoftDropMassMin),
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
-    UsePrunedJets          = cms.bool(options.usePrunedJets),
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
-    ApplyPrunedSubJet      = cms.bool(options.applyPrunedSubJet),
     DoPUReweighting        = cms.bool(options.doPUReweighting),
     File_PUDistMC          = cms.string('PUDistMC_Summer12_PU_S10.root'),
     File_PUDistData        = cms.string('PUDistData_Run2012ABCD.root'),
