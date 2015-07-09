@@ -463,7 +463,7 @@ void BTagValidation::beginJob() {
   //AddHisto("FatJet_vertexNTracks"      ,         "vertexNTracks"     ,                         10, 0., 10.  );
   //AddHisto("FatJet_tau2tau1"           ,         "#tau_{2}/#tau_{1}",                         100, 0., 1.  );
 
-  AddHisto("FatJet_z_ratio"   	       ,         "z ratio" 	      ,                         100, 0., 1.  );
+  AddHisto("FatJet_z_ratio"   	       ,         "z ratio" 	      ,                         100, 0., 60.  );
   AddHisto("FatJet_tau_dot"  	       ,         "#tau #cdot SV_{0}"  ,                         100, -1., 1.  );
   AddHisto("FatJet_SV_mass_0"          ,         "SV_{0} mass"	      ,                         100, -1. ,10.  );
   AddHisto("FatJet_SV_EnergyRatio_0"   ,         "SV_EnergyRatio_0"   ,                         100, -1. ,10.  );
