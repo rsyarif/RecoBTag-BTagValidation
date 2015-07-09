@@ -691,6 +691,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( applyFatJetTau21_ && ( tau21 > fatJetTau21Cut_ || tau21 < 0) ) continue ; ////apply jet substructure tau21 cut.
       //added by rizki - end
 
+      if (FatJetInfo.Jet_BDTG_S[iJet]L < 0. && FatJetInfo.Jet_BDTG_SL[iJet] >0.05) continue; //debugSpike
+
       int idxFirstMuon = -1;
       int nselmuon = 0;
       int nmu = 0;
