@@ -691,7 +691,15 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( applyFatJetTau21_ && ( tau21 > fatJetTau21Cut_ || tau21 < 0) ) continue ; ////apply jet substructure tau21 cut.
       //added by rizki - end
 
-      if (FatJetInfo.Jet_BDTG_SL[iJet] < 0. && FatJetInfo.Jet_BDTG_SL[iJet] >0.05) continue; //debugSpike
+      //added by rizki - debug Spike - start
+      if (FatJetInfo.Jet_BDTG_SL[iJet] < 0.024 || FatJetInfo.Jet_BDTG_SL[iJet] >0.026) {
+
+	//std::cout << "THROW AWAY : BDTG_SL["<<iJet <<" = " << FatJetInfo.Jet_BDTG_SL[iJet]<<std::endl;
+	continue;
+      }
+      //if (FatJetInfo.Jet_BDTG_SL[iJet] !=0.0251383) continue;
+      //std::cout << "PLOT : BDTG_SL["<<iJet <<" = " << FatJetInfo.Jet_BDTG_SL[iJet]<<std::endl;
+      //added by rizki - debug Spike - end
 
       int idxFirstMuon = -1;
       int nselmuon = 0;
