@@ -521,7 +521,6 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_sv_multi",           "number of secondary vertex",                          6,-0.5,5.5   );
   AddHisto(histoTag+"_TagVarCSV_sv_mass",  ";M(sv from TagVarCSV);;",                           750,0.,15.    );
   AddHisto(histoTag+"_sv_mass",            "invariant mass of the secondary vertex",             750,0.,15.    );
-  AddHisto(histoTag+"_TagVarCSV_sv_mass",            "invariant mass of the secondary vertex from TagVarCSV",             750,0.,15.    );
   AddHisto(histoTag+"_sv_chi2norm",        "normalized chi2 of the secondary vertex",            100,0.,20.    );
   AddHisto(histoTag+"_sv_tot_charge",      "Total charge",                                        21,-10.5,10.5);
   AddHisto(histoTag+"_svnTrk",             "Track multiplicity : SVnVertexTracks (centered)",     15,-0.5,14.5 );
