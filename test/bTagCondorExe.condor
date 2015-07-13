@@ -1,0 +1,10 @@
+universe = vanilla
+executable = condorBTag.sh
+should_transfer_files = yes
+when_to_transfer_output = on_exit
+output = condor/condorBTag.out
+error = condor/condorBTag.err
+log = condor/condorBTag.log
+input = inputFiles_cfi.py
+getenv = True
+queue
