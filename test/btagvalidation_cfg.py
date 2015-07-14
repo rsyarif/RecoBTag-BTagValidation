@@ -109,12 +109,12 @@ options.register('fatJetTau21Cut', 0.5, #added by rizki
     VarParsing.varType.float,
     "tau2/tau1 jet substructure cut for fat jets"
 )
-options.register('fatJetBDiscrCut', 0.244,
+options.register('fatJetBDiscrCut', 0.6,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
     "B discriminator cut for fat jets"
 )
-options.register('subJetBDiscrCut', 0.244,
+options.register('subJetBDiscrCut', 0.6,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
     "B discriminator cut for fat jets"

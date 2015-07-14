@@ -1,12 +1,88 @@
 DATA:
 # Dataset_name                         xs (in pb, for data set to -1)
-/Jet/Run2012A-22Jan2013-v1/AOD         -1
-/JetHT/Run2012B-22Jan2013-v1/AOD       -1
-/JetHT/Run2012C-22Jan2013-v1/AOD       -1
-/JetHT/Run2012D-22Jan2013-v1/AOD       -1
+#/Jet/Run2012A-22Jan2013-v1/AOD         -1
+#/JetHT/Run2012B-22Jan2013-v1/AOD       -1
+#/JetHT/Run2012C-22Jan2013-v1/AOD       -1
+#/JetHT/Run2012D-22Jan2013-v1/AOD       -1
 
-QCD:
+QCD: L=1000
 # Dataset_name                                                                                       xs (in pb, for data set to -1)
+# QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 117276
+# QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 7823
+# QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 648.2
+# QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 186.9
+# QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 32.293
+# QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 9.4183
+# QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 0.84265
+# QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 0.114943
+# QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 0.00682981
+# QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj 0.000165445
+
+# QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8s_nocut 117276
+# QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8s_nocut 7823
+# QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8s_nocut 648.2
+# QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8s_nocut 186.9
+# QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8s_nocut 32.293
+# QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8s_nocut 9.4183
+# QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8s_nocut 0.84265
+# QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8s_nocut 0.114943
+# QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8s_nocut 0.00682981
+# QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8s_nocut 0.000165445
+
+# QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 117276
+# QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 7823
+# QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 648.2
+# QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 186.9
+# QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 32.293
+# QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 9.4183
+# QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 0.84265
+# QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 0.114943
+# QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 0.00682981
+# QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8s_mtag_fj2mtag_sjmtag 0.000165445
+
+# QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 117276
+# QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 7823
+# QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 648.2
+# QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 186.9
+# QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 32.293
+# QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 9.4183
+# QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag  0.84265
+# QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 0.114943
+# QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 0.00682981
+# QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8s_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 0.000165445
+
+# #muenriched
+
+# QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj 117989
+# QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj 7820.25
+# QCD_Pt-470to600_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj 645.528
+# QCD_Pt-600to800_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj 187.109
+# QCD_Pt-800to1000_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj 32.3486
+# QCD_Pt-1000toInf_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj 10.4305
+
+QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_nocut 117989
+QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_nocut 7820.25
+QCD_Pt-470to600_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_nocut 645.528
+QCD_Pt-600to800_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_nocut  187.109
+QCD_Pt-800to1000_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_nocut  32.3486
+QCD_Pt-1000toInf_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_nocut  10.4305
+
+
+# QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_mtag_fj2mtag_sjmtag 117989
+# QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_mtag_fj2mtag_sjmtag 7820.25
+# QCD_Pt-470to600_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_mtag_fj2mtag_sjmtag 645.528
+# QCD_Pt-600to800_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_mtag_fj2mtag_sjmtag 187.109
+# QCD_Pt-800to1000_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_mtag_fj2mtag_sjmtag 32.3486
+# QCD_Pt-1000toInf_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_mtag_fj2mtag_sjmtag 10.4305
+
+# QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 117989
+# QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 7820.25
+# QCD_Pt-470to600_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 645.528
+# QCD_Pt-600to800_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 187.109
+# QCD_Pt-800to1000_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 32.3486
+# QCD_Pt-1000toInf_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8_fjbtag_2fjbtag_sjbtag_tau21fj_mtag_fj2mtag_sjmtag 10.4305
+
+
 ##/QCD_Pt-15to30_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM                   9.8828742E08
 ##/QCD_Pt-30to50_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM                   66285328.0
 ##/QCD_Pt-50to80_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM                   8148778.0
@@ -26,19 +102,19 @@ QCD:
 ##/QCD_Pt-30to50_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM     806298.0
 ##/QCD_Pt-50to80_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM     176187.6
 ##/QCD_Pt-80to120_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM    40448
-/QCD_Pt-120to170_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   7463.94
-/QCD_Pt-170to300_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   2299.752
-/QCD_Pt-300to470_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   151.8048
-/QCD_Pt-470to600_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   11.79648
-/QCD_Pt-600to800_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   2.690196
-/QCD_Pt-800to1000_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM  0.368781
-/QCD_Pt-1000_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM       0.0849078
+# /QCD_Pt-120to170_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   7463.94
+# /QCD_Pt-170to300_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   2299.752
+# /QCD_Pt-300to470_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   151.8048
+# /QCD_Pt-470to600_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   11.79648
+# /QCD_Pt-600to800_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM   2.690196
+# /QCD_Pt-800to1000_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM  0.368781
+# /QCD_Pt-1000_MuEnrichedPt5_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM       0.0849078
 
-TTJets: L=19784
-/TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM               112.3247008
-/TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM            107.6721984
-/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM            25.8031008
+#TTJets: L=19784
+#/TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM               112.3247008
+#/TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM            107.6721984
+#/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM            25.8031008
 
-ZJetsFullyHadronic: L=19784
+#ZJetsFullyHadronic: L=19784
 # Dataset_name                                                                                                                  xs (in pb, for data set to -1)
-/ZJetsFullyHadronic_PtZ-350_8TeV-madgraph/ferencek-Summer12_DR53X-PU_S10_START53_V7C-v1-c9b345a6407f828c1cc6a52f8007a229/USER   2.08784838129
+#/ZJetsFullyHadronic_PtZ-350_8TeV-madgraph/ferencek-Summer12_DR53X-PU_S10_START53_V7C-v1-c9b345a6407f828c1cc6a52f8007a229/USER   2.08784838129

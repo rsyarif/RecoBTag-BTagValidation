@@ -36,11 +36,11 @@ Implementation:
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
-//#include "RecoBTag/PerformanceMeasurements/interface/JetInfoBranches.h"
-//#include "RecoBTag/PerformanceMeasurements/interface/EventInfoBranches.h"
+#include "RecoBTag/PerformanceMeasurements/interface/JetInfoBranches.h"
+#include "RecoBTag/PerformanceMeasurements/interface/EventInfoBranches.h"
 
-#include "RecoBTag/BTagAnalyzerLite/interface/JetInfoBranches.h"
-#include "RecoBTag/BTagAnalyzerLite/interface/EventInfoBranches.h"
+//#include "RecoBTag/BTagAnalyzerLite/interface/JetInfoBranches.h"
+//#include "RecoBTag/BTagAnalyzerLite/interface/EventInfoBranches.h"
 
 #include <TString.h>
 #include <TChain.h>
@@ -474,13 +474,13 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_PFElectron_ptrel"   ,         "PF Electron p_{T,rel}" ,                         100, 0., 50.  );
   AddHisto("FatJet_PFMuon_ptrel"       ,         "PF Muon p_{T,rel}" 	 ,                         100, 0., 50.  );
 
-  AddHisto("FatJet_PFLepton_ratio"     ,         "PF Lepton ratio"    ,                         100, -1., 1.  );
+  //AddHisto("FatJet_PFLepton_ratio"     ,         "PF Lepton ratio"    ,                         100, -1., 1.  ); //for BTagAnaLite by rizki
 
   AddHisto("FatJet_nSL_3"              ,         "nSL_3"              ,                         8, -0.5, 7.5  );
   AddHisto("FatJet_nSE"                ,         "nSE"                ,                         13, -0.5, 12.5  );
   AddHisto("FatJet_nSM"                ,         "nSM"                ,                         13, -0.5, 12.5  );
 
-  AddHisto("FatJet_trackSip3dSig_3"    ,         "trackSip3dSig_3"    ,                         100, -20, 20  );
+  //AddHisto("FatJet_trackSip3dSig_3"    ,         "trackSip3dSig_3"    ,                         100, -20, 20  ); //for BTagAnaLite by rizki
 
   AddHisto("FatJet_BDTG_SV"   	       ,         "BDTG SV"	      ,                         100, -1., 1.  );
   AddHisto("FatJet_BDTG_SL"   	       ,         "BDTG SL"	      ,                         100, -1., 1.  );
@@ -883,13 +883,13 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           }
       }//end mu loop
 
-      float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet];
+      //float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet]; //for BTagAnaLite by rizki
 
       float nSE = FatJetInfo.Jet_nSE[iJet];
       float nSM = FatJetInfo.Jet_nSM[iJet];
       float nSL_3 = nSE + nSM ;
 
-      float trackSip3dSig_3 = FatJetInfo.Jet_trackSip3dSig_3[iJet];
+      //float trackSip3dSig_3 = FatJetInfo.Jet_trackSip3dSig_3[iJet]; //for BTagAnaLite by rizki
 
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
       float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
@@ -906,13 +906,13 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_PFElectron_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, ele_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFMuon_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, mu_ptrel  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ratio  ,   wtPU*wtFatJet);
+      //FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ratio  ,   wtPU*wtFatJet); //for BTagAnaLite by rizki
 
       FillHisto("FatJet_nSL_3",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, nSL_3  ,   wtPU*wtFatJet);
       FillHisto("FatJet_nSE",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, nSE  ,   wtPU*wtFatJet);
       FillHisto("FatJet_nSM",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, nSM  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, trackSip3dSig_3  ,   wtPU*wtFatJet);
+      //FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, trackSip3dSig_3  ,   wtPU*wtFatJet); //for BTagAnalite by rizki
 
       FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SV  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SL  ,   wtPU*wtFatJet);
