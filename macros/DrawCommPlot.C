@@ -124,19 +124,19 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_SV_EnergyRatio_0"  ,"SV_EnergyRatio_0"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_SV_EnergyRatio_1"  ,"SV_EnergyRatio_1"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_jetNTracksEtaRel"  ,"jetNTracksEtaRel"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_jetNTracksEtaRel"  ,"jetNTracksEtaRel"                          ,logy ,dodata ,extNorm ,100/35 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_PFLepton_ptrel"    ,"PF Lepton p_{T,rel}"                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFElectron_ptrel"  ,"PF Electron p_{T,rel}"                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_PFMuon_ptrel"      ,"PF Muon p_{T,rel}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    //DrawStacked(histoTag+"_PFElectron_ptrel"  ,"PF Electron p_{T,rel}"                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    //DrawStacked(histoTag+"_PFMuon_ptrel"      ,"PF Muon p_{T,rel}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
-    //DrawStacked(histoTag+"_PFLepton_ratio"    ,"PF Lepton ratio"                           ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.); //for BTagAnalyzer added by rizki
+    //DrawStacked(histoTag+"_PFLepton_ratio"    ,"PF Lepton ratio"                           ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.); //for BTagAnalyzerLite added by rizki
 
     DrawStacked(histoTag+"_nSL_3"             ,"nSL_3"                                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_nSE"               ,"nSE"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_nSM"               ,"nSM"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
-    //DrawStacked(histoTag+"_trackSip3dSig_3"  ,"trackSip3dSig_3"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.); //for BTagAnalyerzer added by rizki
+    //DrawStacked(histoTag+"_trackSip3dSig_3"  ,"trackSip3dSig_3"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.); //for BTagAnalyerzeLiter added by rizki
 
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_SL"           ,"BDTG SL"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
