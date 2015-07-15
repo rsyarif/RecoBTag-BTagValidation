@@ -395,6 +395,7 @@ void BTagValidation::beginJob() {
 
   FatJetInfo.ReadTree(JetTree,"FatJetInfo");
   FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
+  FatJetInfo.ReadCSVTagVarTree(JetTree,"FatJetInfo"); //added by rizki
   SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
 
   SubJets.ReadTree(JetTree,"SoftDropSubJetInfo") ;
@@ -470,11 +471,11 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_SV_EnergyRatio_1"   ,         "SV_EnergyRatio_1"   ,                         100, -1. ,10.  );
   AddHisto("FatJet_jetNTracksEtaRel"   ,         "jetNTracksEtaRel"   ,                         100, 0. , 35.  );
 
-  AddHisto("FatJet_PFLepton_ptrel"     ,         "PF Lepton p_{T,rel}"   ,                         100, 0., 50.  );
-  AddHisto("FatJet_PFElectron_ptrel"   ,         "PF Electron p_{T,rel}" ,                         100, 0., 50.  );
-  AddHisto("FatJet_PFMuon_ptrel"       ,         "PF Muon p_{T,rel}" 	 ,                         100, 0., 50.  );
+  AddHisto("FatJet_PFLepton_ptrel"     ,         "PF Lepton p_{T,rel}"   ,                         100, -5., 50.  );
+  //AddHisto("FatJet_PFElectron_ptrel"   ,         "PF Electron p_{T,rel}" ,                         100, -5., 50.  );
+  //AddHisto("FatJet_PFMuon_ptrel"       ,         "PF Muon p_{T,rel}" 	 ,                         100, -5., 50.  );
 
-  AddHisto("FatJet_PFLepton_ratio"     ,         "PF Lepton ratio"    ,                         100, -1., 1.  );
+  AddHisto("FatJet_PFLepton_ratio"     ,         "PF Lepton ratio"    ,                         100, -5., 5.  );
 
   AddHisto("FatJet_nSL_3"              ,         "nSL_3"              ,                         8, -0.5, 7.5  );
   AddHisto("FatJet_nSE"                ,         "nSE"                ,                         13, -0.5, 12.5  );
@@ -639,7 +640,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     JetTreeEvtInfo->GetEntry(iEntry);
     JetTree->GetEntry(iEntry);
     if((iEntry%reportEvery_) == 0) edm::LogInfo("EventNumber") << "Processing event " << iEntry << " of " << nEntries;
-
+    for(int iJet = 0; iJet < FatJetInfo.nJet; ++iJet){std::cout<<"A.jetNTracksEtaRel["<<iJet<<"] ="<< FatJetInfo.TagVarCSV_jetNTracksEtaRel[iJet] <<std::endl;} //debug rizki
     if(EvtInfo.Run < 0) isData = false;
 
     double wtPU = 1.;
@@ -692,11 +693,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       //added by rizki - end
 
       //added by rizki - debug Spike - start
-      if (FatJetInfo.Jet_BDTG_SL[iJet] < 0.024 || FatJetInfo.Jet_BDTG_SL[iJet] >0.026) {
+      //if (FatJetInfo.Jet_BDTG_SL[iJet] < 0.024 || FatJetInfo.Jet_BDTG_SL[iJet] >0.026) {
+      //if ( (FatJetInfo.Jet_nSE[iJet] + FatJetInfo.Jet_nSM[iJet]) < 0) continue;
+      if ( (FatJetInfo.Jet_nSE[iJet] + FatJetInfo.Jet_nSM[iJet]) == 0) continue;
 
-	//std::cout << "THROW AWAY : BDTG_SL["<<iJet <<" = " << FatJetInfo.Jet_BDTG_SL[iJet]<<std::endl;
-	continue;
-      }
       //if (FatJetInfo.Jet_BDTG_SL[iJet] !=0.0251383) continue;
       //std::cout << "PLOT : BDTG_SL["<<iJet <<" = " << FatJetInfo.Jet_BDTG_SL[iJet]<<std::endl;
       //added by rizki - debug Spike - end
@@ -875,23 +875,23 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float jetNTracksEtaRel = FatJetInfo.TagVarCSV_jetNTracksEtaRel[iJet];
 
       float lep_ptrel = FatJetInfo.Jet_PFLepton_ptrel[iJet];
-      float ele_ptrel = -1., mu_ptrel = -1.;
+      //float ele_ptrel = -1., mu_ptrel = -1.;
 
       //elecron loop
-      for(int iSE = FatJetInfo.Jet_nFirstSE[iJet]; iSE<FatJetInfo.Jet_nLastSE[iJet]; ++iSE){
-	if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
-	  {
-	    ele_ptrel = lep_ptrel;
-	  }
-      }// end ele loop
+      // for(int iSE = FatJetInfo.Jet_nFirstSE[iJet]; iSE<FatJetInfo.Jet_nLastSE[iJet]; ++iSE){
+      // 	if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
+      // 	  {
+      // 	    ele_ptrel = lep_ptrel;
+      // 	  }
+      // }// end ele loop
 
       //muon loop
-      for(int iSM = FatJetInfo.Jet_nFirstSM[iJet]; iSM<FatJetInfo.Jet_nLastSM[iJet]; ++iSM){
-	if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
-          {
-	    mu_ptrel = lep_ptrel;
-          }
-      }//end mu loop
+      // for(int iSM = FatJetInfo.Jet_nFirstSM[iJet]; iSM<FatJetInfo.Jet_nLastSM[iJet]; ++iSM){
+      // 	if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
+      //     {
+      // 	    mu_ptrel = lep_ptrel;
+      //     }
+      // }//end mu loop
 
       float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet];
 
@@ -910,11 +910,12 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_mass_0  ,   wtPU*wtFatJet);
       FillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_EnRat_0  ,   wtPU*wtFatJet);
       FillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, SV_EnRat_1  ,   wtPU*wtFatJet);
+      std::cout<<"B. jetNTracksEtaRel["<<iJet<<"] ="<< FatJetInfo.TagVarCSV_jetNTracksEtaRel[iJet] <<std::endl; //debug rizki
       FillHisto("FatJet_jetNTracksEtaRel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, jetNTracksEtaRel  ,   wtPU*wtFatJet);
 
       FillHisto("FatJet_PFLepton_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ptrel  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_PFElectron_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, ele_ptrel  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_PFMuon_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, mu_ptrel  ,   wtPU*wtFatJet);
+      //FillHisto("FatJet_PFElectron_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, ele_ptrel  ,   wtPU*wtFatJet);
+      //FillHisto("FatJet_PFMuon_ptrel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, mu_ptrel  ,   wtPU*wtFatJet);
 
       FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, lep_ratio  ,   wtPU*wtFatJet);
 
