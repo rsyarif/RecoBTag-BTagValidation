@@ -471,9 +471,9 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_SV_EnergyRatio_1"   ,         "SV_EnergyRatio_1"   ,                         100, -1. ,10.  );
   AddHisto("FatJet_jetNTracksEtaRel"   ,         "jetNTracksEtaRel"   ,                        35, 0. , 35.  );
 
-  AddHisto("FatJet_PFLepton_ptrel"     ,         "PF Lepton p_{T,rel}"   ,                         100, 0., 50.  );
+  AddHisto("FatJet_PFLepton_ptrel"     ,         "PF Lepton p_{T,rel}"   ,                         220, -5, 50.  );
   //AddHisto("FatJet_PFElectron_ptrel"   ,         "PF Electron p_{T,rel}" ,                         100, 0., 50.  );
-  //AddHisto("FatJet_PFMuon_ptrel"       ,         "PF Muon p_{T,rel}" 	 ,                         110, -5, 50.  );
+  //AddHisto("FatJet_PFMuon_ptrel"       ,         "PF Muon p_{T,rel}" 	 ,                         100, 0, 50.  );
 
   AddHisto("FatJet_PFLepton_ratio"     ,         "PF Lepton ratio"    ,                         120, -5, 1.  );
 
