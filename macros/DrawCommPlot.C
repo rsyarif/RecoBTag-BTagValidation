@@ -27,10 +27,10 @@
 using namespace std;
 
 TString filename_ext="" ; 
-//TString filename    ="./test/ValPlotFiles/QCD/prunedSubjets/Final_histograms_btagval.root";
-//TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD-TTJets/prunedSubjets/linear";
-TString filename    ="./test/ValPlotFiles/merged/softdropSubjets/Final_histograms_btagval.root";
-TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD/softdropSubjets/log";
+TString filename    ="./test/ValPlotFiles/merged/prunedSubjets/Final_histograms_btagval.root";
+TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD-TTJets/prunedSubjets/test/log";
+//TString filename    ="./test/ValPlotFiles/merged/softdropSubjets/Final_histograms_btagval.root";
+//TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD/softdropSubjets/test/log";
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ; 
@@ -44,12 +44,12 @@ TString formatc=".C";
 
 bool bOverflow = 1;
 bool web       = 0;
-bool prunedjets = 0;
+bool prunedjets = 1;
 bool logy      = 1;
 bool dodata    = 0; 
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
-bool inclTTbar = 0;
+bool inclTTbar = 1;
 bool inclZjj   = 0;
 bool uncBand   = 0; // used only for double-muon- and double-b-tagged fat jets with scale factors applied
 bool setSampleName = 1;
@@ -615,11 +615,11 @@ void DrawStacked(TString name,
   }
 
   THStack *stack = new THStack("stack","");
+  if (inclTTbar) stack->Add(hist_ttbar);
   stack->Add(hist_b);
   stack->Add(hist_gsplit);
   stack->Add(hist_c);
   stack->Add(hist_l);
-  if (inclTTbar) stack->Add(hist_ttbar);
   if (inclZjj) stack->Add(hist_zjj);
 
   TH1D *histo_ratio, *histo_ratio_uncUp, *histo_ratio_uncDown, *histo_ratio_unc;
