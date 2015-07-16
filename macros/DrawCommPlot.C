@@ -28,11 +28,28 @@ using namespace std;
 
 //TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
 //TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/mergedData/Final_histograms_btagval_MuEnriched_ALLtag.root" ;
-TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/bTagValPlots_Newer_BDT_14July_QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6_mc_subjets.root" ;
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/bTagValPlots_Newer_BDT_14July_QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6_mc_subjets.root" ;
+
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_btag.root" ;
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_nocut.root" ;
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_mtag.root" ;
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_alltag.root" ;
+TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCDMuEnriched_nocut.root" ;
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCDMuEnriched_mtag.root" ;
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCDMuEnriched_alltag.root" ;
+
 TString filename_ext="" ;
 //TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ;
-//TString dir4plots   ="HbbTagVal_eventSelStudies_MuEnriched_alltag" ;
-TString dir4plots   ="HbbTagVal_newerBDT_14July" ;
+//TString dir4plots   ="HbbTagVal_newerBDT_14July" ;
+
+//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_btag_logy" ;
+//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_nocut_logy" ;
+//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_mtag_logy" ;
+//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_alltag_logy" ;
+TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCDMuEnriched_nocut_logy" ;
+//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCDMuEnriched_mtag_logy" ;
+//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCDMuEnriched_alltag_logy" ;
+
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
@@ -89,8 +106,8 @@ void DrawCommPlot(bool Draw_track_plots=false,
 
   TString histoTag = "FatJet" ;
   DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoTag) ;
-  // histoTag = "SubJet" ; // commented by rizki
-  // DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoTag) ; //commented by rizki
+  histoTag = "SubJet" ; // commented by rizki
+  DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoTag) ; //commented by rizki
 
   return ;
 
@@ -141,7 +158,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_SL"           ,"BDTG SL"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_Cascade"      ,"BDTG Cascade"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_BDTG_Baseline"     ,"BDTG Baseline"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    //    DrawStacked(histoTag+"_BDTG_Baseline"     ,"BDTG Baseline"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     //added by rizki - end
 
  }
@@ -441,7 +458,8 @@ void DrawStacked(TString name,
 
   TFile *myFile  = TFile::Open(filename,"READ") ;
   myFile->cd();
-  TString fdir = "/btagval/" ;
+  //TString fdir = "/btagval/" ;
+  TString fdir = "QCD__" ;
 
   hist_b      = (TH1D*)myFile->Get(fdir+name+"_b");
   hist_c      = (TH1D*)myFile->Get(fdir+name+"_c");
