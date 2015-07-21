@@ -66,7 +66,7 @@ bash_template = """#!/bin/bash
 
 BATCHDIR=${PWD}
 
-export SCRAM_ARCH=slc5_amd64_gcc462
+export SCRAM_ARCH=slc6_amd64_gcc491
 cd MAIN_WORKDIR
 eval `scram runtime -sh`
 
