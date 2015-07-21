@@ -1,0 +1,81 @@
+#!/bin/sh
+
+python checkError_rizki.py QCDincl_Pt170_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt170_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt170_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt170_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt170_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt170_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt170_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt300_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt300_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt300_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt300_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt300_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt300_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt300_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt470_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt470_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt470_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt470_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt470_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt470_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt470_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt600_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt600_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt600_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt600_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt600_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt600_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt600_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt800_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt800_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt800_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt800_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt800_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt800_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt800_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt1000_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1000_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1000_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt1000_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1000_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1000_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1000_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt1400_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1400_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1400_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt1400_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1400_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1400_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1400_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt1800_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1800_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1800_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt1800_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1800_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1800_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt1800_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt2400_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt2400_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt2400_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt2400_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt2400_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt2400_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt2400_ptmin-300_70m200_CSVIVF-09_tau21-05/output
+
+python checkError_rizki.py QCDincl_Pt3200_ptmin-300_70m200_CSVIVF-04_tau21-05/output
+python checkError_rizki.py QCDincl_Pt3200_ptmin-300_70m200_CSVIVF-05_tau21-05/output
+python checkError_rizki.py QCDincl_Pt3200_ptmin-300_70m200_CSVIVF-06_tau21-04/output
+python checkError_rizki.py QCDincl_Pt3200_ptmin-300_70m200_CSVIVF-06_tau21-05/output
+python checkError_rizki.py QCDincl_Pt3200_ptmin-300_70m200_CSVIVF-07_tau21-05/output
+python checkError_rizki.py QCDincl_Pt3200_ptmin-300_70m200_CSVIVF-08_tau21-05/output
+python checkError_rizki.py QCDincl_Pt3200_ptmin-300_70m200_CSVIVF-09_tau21-05/output
