@@ -134,6 +134,25 @@ options.register('doPUReweighting', False,
     VarParsing.varType.bool,
     "Do pileup reweighting"
 )
+# added by rizki - start
+options.register('useExternalInput', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Use external input"
+)
+options.register('externalInput', '',
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.string,
+    "Path of an external list of input files"
+)
+options.register('dumpPythonCfg', '',
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.string,
+    "Name of the rewritten cfg file"
+)
+# added by rizki - end
+
+
 
 ## 'maxEvents' is already registered by the Framework, changing default value
 options.setDefault('maxEvents', 1000)
@@ -158,7 +177,13 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string(options.outFilename)
 )
 
-from inputFiles_cfi import *
+#from inputFiles_cfi import * #commented by rizki
+
+#added by rizki - start
+if options.useExternalInput:
+    FileNames = open(options.externalInput,"r").read().splitlines()
+#added by rizki - end
+
 process.btagval = cms.EDAnalyzer('BTagValidation',
     MaxEvents              = cms.int32(options.maxEvents),
     ReportEvery            = cms.int32(options.reportEvery),
@@ -298,3 +323,9 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
 
 process.p = cms.Path(process.btagval)
 #process.p = cms.Path(process.btagval + process.btagvalsubjetmu + process.btagvalsubjetbtag)
+
+#added by rizki - start
+## Rewrite the cfg file
+if options.dumpPythonCfg != '':
+    open(options.dumpPythonCfg,'w').write(process.dumpPython())
+#added by rizki - end

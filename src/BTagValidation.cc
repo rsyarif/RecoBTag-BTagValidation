@@ -821,8 +821,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       if( applyFatJetBTagging_ ) //// if enabled, select b-tagged fat jets
       {
-        if( fatJetDoubleBTagging_ && !(SubJets.Jet_CombSvx[iSubJet1]>subJetBDiscrCut_ && SubJets.Jet_CombSvx[iSubJet2]>subJetBDiscrCut_) ) continue;
-        else if( !fatJetDoubleBTagging_ && FatJetInfo.Jet_CombSvx[iJet]<=fatJetBDiscrCut_ ) continue;
+        if( fatJetDoubleBTagging_ && !(SubJets.Jet_CombIVF[iSubJet1]>subJetBDiscrCut_ && SubJets.Jet_CombIVF[iSubJet2]>subJetBDiscrCut_) ) continue;
+        else if( !fatJetDoubleBTagging_ && FatJetInfo.Jet_CombIVF[iJet]<=fatJetBDiscrCut_ ) continue;
       }
 
       //// apply b-tagging scale factors
@@ -956,7 +956,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           }
 
           if(applySubJetMuonTagging_ && nselmuonSubJet==0)                              continue;  //// if enabled, select muon-tagged subjets
-          if(applySubJetBTagging_ && SubJets.Jet_CombSvx[iSubJet]<=subJetBDiscrCut_) continue;  //// if enabled, select b-tagged subjets
+          if(applySubJetBTagging_ && SubJets.Jet_CombIVF[iSubJet]<=subJetBDiscrCut_) continue;  //// if enabled, select b-tagged subjets
 
           //// apply b-tagging scale factors
           double wtSubJet = 1.;
