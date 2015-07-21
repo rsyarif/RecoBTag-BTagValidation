@@ -27,8 +27,10 @@
 using namespace std;
 
 TString filename_ext="" ; 
-TString filename    ="./test/ValPlotFiles/QCD_15to7000/25nsPU/bTagValPlots_FatJetDoubleMuonTagged_alltracks.root";
-TString dir4plots   ="BoostedBTagCommissioning2015/QCD_15to7000/25nsPU/alltracks/linear/FatJetDoubleMuonTag";
+TString filename    ="./test/ValPlotFiles/merged/prunedSubjets/Final_histograms_btagval.root";
+TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD-TTJets/prunedSubjets/test/log";
+//TString filename    ="./test/ValPlotFiles/merged/softdropSubjets/Final_histograms_btagval.root";
+//TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD/softdropSubjets/test/log";
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ; 
@@ -43,11 +45,11 @@ TString formatc=".C";
 bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets = 1;
-bool logy      = 0;
+bool logy      = 1;
 bool dodata    = 0; 
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
-bool inclTTbar = 0;
+bool inclTTbar = 1;
 bool inclZjj   = 0;
 bool uncBand   = 0; // used only for double-muon- and double-b-tagged fat jets with scale factors applied
 bool setSampleName = 1;
@@ -65,7 +67,7 @@ void DrawCommPlot(bool Draw_track_plots=true,
     bool Draw_Nminus1_plots=false,
     bool Draw_sv_plots=true,
     bool Draw_muons_plots=true,
-    bool Draw_discriminator_plots=true,
+    bool Draw_discriminator_plots=false,
     bool Draw_tagRate_plots=false,
     bool Draw_2D_plots=false) {
 
@@ -85,7 +87,8 @@ void DrawCommPlot(bool Draw_track_plots=true,
 
   TString histoTag = "FatJet" ;
   DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoTag) ;
-  histoTag = "SubJet" ;
+  if (prunedjets) histoTag = "PrunedSubJet" ;
+  else            histoTag = "SoftDropSubJet" ;
   DrawAll(Draw_track_plots, Draw_Nminus1_plots, Draw_sv_plots, Draw_muons_plots, Draw_discriminator_plots, Draw_tagRate_plots, Draw_2D_plots, histoTag) ;
 
   return ;
@@ -155,6 +158,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_pt_sv"                ,"p_{T} of jets containing a SV [GeV/c]"             ,logy ,dodata ,extNorm ,4. ,0.);
     DrawStacked(histoTag+"_sv_mass"              ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
     DrawStacked(histoTag+"_sv_mass"              ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
+    DrawStacked(histoTag+"_TagVarCSV_sv_mass"              ,"TagVarCSV(SV mass) [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
     DrawStacked(histoTag+"_sv_deltaR_jet"        ,"#DeltaR between the jet and the SV direction"      ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_sv_en_ratio"          ,"SV energy ratio"                                   ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_sv_pt"                ,"SV p_{T} [GeV/c]"                                  ,logy ,dodata ,extNorm ,5. ,0.);
@@ -235,6 +239,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     //Draw2DPlot("seltrack_vs_jetpt", "nr. of selected tracks as a function of the jet p_{T}", "jet p_{T}","nr. of selected tracks",0,1);
     //Draw2DPlot("sv_mass_vs_flightDist3D", " SV mass as a function of the SV 3D flight distance ","SV 3D flight distance","SV mass",0,1);
     //Draw2DPlot("avg_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass",0,1);
+    //Draw2DPlot("TagVarCSV_sv_mass_vs_jetpt","Avg SV mass as a function of the jet p_{T}","jet p_{T}","Avg SV mass",0,1);
     //Draw2DPlot("sv_deltar_jet_vs_jetpt","#Delta R between the SV and the jet as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet",0,1);
     //Draw2DPlot("sv_deltar_sum_jet_vs_jetpt","#Delta R between the SV and the jet sum as a function of the jet p_{T}","jet p_{T}","#Delta R between the SV and the jet sum",0,1);
     //Draw2DPlot("sv_deltar_sum_dir_vs_jetpt","#Delta R between the SV and the jet direction as a function of the jet p_{T}", "jet p_{T}","#Delta R between the SV and the jet direction",0,1);
@@ -411,7 +416,7 @@ void DrawStacked(TString name,
 
   TFile *myFile  = TFile::Open(filename,"READ") ;
   myFile->cd();
-  TString fdir = "/btagval/" ;
+  TString fdir = "QCD__" ;
 
   hist_b      = (TH1D*)myFile->Get(fdir+name+"_b");
   hist_c      = (TH1D*)myFile->Get(fdir+name+"_c");
@@ -610,11 +615,11 @@ void DrawStacked(TString name,
   }
 
   THStack *stack = new THStack("stack","");
+  if (inclTTbar) stack->Add(hist_ttbar);
   stack->Add(hist_b);
   stack->Add(hist_gsplit);
   stack->Add(hist_c);
   stack->Add(hist_l);
-  if (inclTTbar) stack->Add(hist_ttbar);
   if (inclZjj) stack->Add(hist_zjj);
 
   TH1D *histo_ratio, *histo_ratio_uncUp, *histo_ratio_uncDown, *histo_ratio_unc;
