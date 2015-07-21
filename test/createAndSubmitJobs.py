@@ -29,18 +29,18 @@ def process_input_dir(input_dir, match, filelist):
             continue
         if ( match!=None and not re.search(match, filename) ):
             continue
-        m1 = re.search('_\d+_\d+_\w+.root', filename)
+        m1 = re.search('_\d+.root', filename)
         if name=='':
-            name = re.split('_\d+_\d+_\w+.root', filename)[0]
+            name = re.split('_\d+.root', filename)[0]
         jobstring = filename[m1.start():].lstrip('_').replace('.root','').split('_')
         job = int(jobstring[0])
         if job not in jobdict.keys():
             jobdict[job] = []
-            jobdict[job].append([int(jobstring[1])])
-            jobdict[job].append([jobstring[2]])
-        else:
-            jobdict[job][0].append(int(jobstring[1]))
-            jobdict[job][1].append(jobstring[2])
+            #jobdict[job].append([int(jobstring[1])])
+            #jobdict[job].append([jobstring[2]])
+        #else:
+        #    jobdict[job][0].append(int(jobstring[1]))
+        #    jobdict[job][1].append(jobstring[2])
 
     jobs = jobdict.keys()
     if( len(jobs)==0 ):
@@ -49,8 +49,7 @@ def process_input_dir(input_dir, match, filelist):
 
     jobs.sort()
     for job in jobs:
-        maxsub = max(jobdict[job][0])
-        filename = (path+name+'_%i_%i_%s.root')%(job, maxsub, jobdict[job][1][jobdict[job][0].index(maxsub)])
+        filename = (path+name+'_%i.root')%(job) 
         filelist.append(filename)
 
     return
