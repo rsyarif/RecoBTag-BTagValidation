@@ -666,8 +666,8 @@ void DrawStacked(TString name,
   THStack *stack = new THStack("stack","");
   stack->Add(hist_b);
   stack->Add(hist_gsplit);
-  stack->Add(hist_gsplit_c);
   stack->Add(hist_c);
+  stack->Add(hist_gsplit_c);
   stack->Add(hist_l);
   if (inclTTbar) stack->Add(hist_ttbar);
   if (inclZjj) stack->Add(hist_zjj);
@@ -1296,8 +1296,8 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 
     pro_mc_gspl->Draw("hist");
     pro_mc_b->Draw("hist,same");
-    pro_mc_c->Draw("hist,same");
     pro_mc_gspl_c->Draw("hist,same");
+    pro_mc_c->Draw("hist,same");
     pro_mc_udsg->Draw("hist,same");
     pro_mc->Draw("hist,same");
     pro_data->Draw("e,same");
