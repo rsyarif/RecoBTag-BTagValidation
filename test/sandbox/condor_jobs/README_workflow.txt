@@ -5,7 +5,7 @@
 
 ./mergeCondorOutput.sh --> hadd s condor output root files, saves in /eos/ area
 
-./mergeQCDincl.sh --> calls ../../mergeDatasets.py many times and uses datasetListForMerging_QCDincl* in this folder
+./mergeQCDincl.sh --> calls ../../mergeDatasets.py many times and uses datasetListForMerging_QCDincl*.txt in this folder
 
 ---> Get Final QCD histos
 
