@@ -26,29 +26,33 @@
 
 using namespace std;
 
-//TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/mergedData/Final_histograms_btagval_MuEnriched_ALLtag.root" ;
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/bTagValPlots_Newer_BDT_14July_QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6_mc_subjets.root" ;
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-09_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-08_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-07_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-06_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-06_tau21-04/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-05_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-04_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_CSVIVF-06/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDincl_ptmin-300_70m200_muTag_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDMuEnriched_ptmin-300_70m200_muTag_tau21-05/Final_histograms_btagval.root";
+// TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDMuEnriched_ptmin-300_70m200_muTag_tau21-04/Final_histograms_btagval.root";
+TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/condor_jobs/QCDMuEnriched_ptmin-300_70m200_muTag/Final_histograms_btagval.root";
 
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_btag.root" ;
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_nocut.root" ;
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_mtag.root" ;
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCD_alltag.root" ;
-TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCDMuEnriched_nocut.root" ;
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCDMuEnriched_mtag.root" ;
-//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/XbbEventSelectionStudy_tighterBTag/mergedData_norm/Final_histograms_btagval_QCDMuEnriched_alltag.root" ;
 
 TString filename_ext="" ;
-//TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ;
-//TString dir4plots   ="HbbTagVal_newerBDT_14July" ;
-
-//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_btag_logy" ;
-//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_nocut_logy" ;
-//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_mtag_logy" ;
-//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCD_alltag_logy" ;
-TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCDMuEnriched_nocut_logy" ;
-//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCDMuEnriched_mtag_logy" ;
-//TString dir4plots   ="HbbTagVal_eventSelStudies_norm_tighterBtag_QCDMuEnriched_alltag_logy" ;
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-09_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-08_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-07_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-06_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-06_tau21-04_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-05_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-04_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_CSVIVF-06_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDincl_ptmin-300_70m200_muTag_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDMuEnriched_ptmin-300_70m200_muTag_tau21-05_linear";
+// TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDMuEnriched_ptmin-300_70m200_muTag_tau21-04_linear";
+TString dir4plots   ="HbbTagVal_EventSelStudies_Normalized_Condor/QCDMuEnriched_ptmin-300_70m200_muTag_linear";
 
 
 TString filename_uncUp  ="" ;
@@ -64,7 +68,7 @@ TString formatc=".C";
 bool bOverflow = 1;
 bool web       = 0;
 
-bool logy      = 1;
+bool logy      = 0;
 bool dodata    = 0;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
