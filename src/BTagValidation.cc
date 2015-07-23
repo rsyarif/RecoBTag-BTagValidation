@@ -470,12 +470,12 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_nSE"                ,         "nSE"                ,                         13, -0.5, 12.5  );
   AddHisto("FatJet_nSM"                ,         "nSM"                ,                         13, -0.5, 12.5  );
 
-  //AddHisto("FatJet_trackSip3dSig_3"    ,         "trackSip3dSig_3"    ,                         100, -20, 20  );
+  //  AddHisto("FatJet_trackSip3dSig_3"    ,         "trackSip3dSig_3"    ,                         100, -20, 20  ); //for BTagAnaLite by rizki
 
   AddHisto("FatJet_BDTG_SV"   	       ,         "BDTG SV"	      ,                         100, -1., 1.  );
   AddHisto("FatJet_BDTG_SL"   	       ,         "BDTG SL"	      ,                         100, -1., 1.  );
   AddHisto("FatJet_BDTG_Cascade"       ,         "BDTG Cascade"	      ,                         100, -1., 1.  );
-
+  //  AddHisto("FatJet_BDTG_Baseline"      ,         "BDTG Basline"	      ,                         100, -1., 1.  );
 
   // added by rizki - end
 
@@ -884,15 +884,18 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           }
       }//end mu loop
 
+      //      float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet]; //for BTagAnaLite by rizki
+
       float nSE = FatJetInfo.Jet_nSE[iJet];
       float nSM = FatJetInfo.Jet_nSM[iJet];
       float nSL_3 = nSE + nSM ;
 
-      //float trackSip3dSig_3 = FatJetInfo.Jet_trackSip3dSig_3[iJet];
+      //      float trackSip3dSig_3 = FatJetInfo.Jet_trackSip3dSig_3[iJet]; //for BTagAnaLite by rizki
 
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
       float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
       float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
+      //      float BDTG_Baseline = FatJetInfo.Jet_BDTG_Baseline[iJet];
 
       FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, z_ratio  ,   wtPU*wtFatJet);
       FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, tau_dot  ,   wtPU*wtFatJet);
@@ -913,11 +916,12 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_nSE",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, nSE  ,   wtPU*wtFatJet);
       FillHisto("FatJet_nSM",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, nSM  ,   wtPU*wtFatJet);
 
-      //FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, trackSip3dSig_3  ,   wtPU*wtFatJet);
+      //      FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, trackSip3dSig_3  ,   wtPU*wtFatJet); //for BTagAnalite by rizki
 
-      FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SV  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SL  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_Cascade  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SV  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_SL  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_Cascade  ,   wtPU*wtFatJet);
+      //      FillHisto("FatJet_BDTG_Baseline",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, BDTG_Baseline  ,   wtPU*wtFatJet);
 
       //added by rizki - end
 
