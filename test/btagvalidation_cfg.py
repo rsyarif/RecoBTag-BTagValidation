@@ -104,10 +104,15 @@ options.register('applyFatJetTau21', False, #added by rizki
     VarParsing.varType.bool,
     "Apply tau2/tau1 jet substructure cut for fat jets"
 )
-options.register('fatJetTau21Cut', 0.5, #added by rizki
+options.register('fatJetTau21Min', 0.0, #added by rizki
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
-    "tau2/tau1 jet substructure cut for fat jets"
+    "tau2/tau1 jet substructure min cut for fat jets"
+)
+options.register('fatJetTau21Max', 0.5, #added by rizki
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "tau2/tau1 jet substructure max cut for fat jets"
 )
 options.register('fatJetBDiscrCut', 0.244,
     VarParsing.multiplicity.singleton,
@@ -184,7 +189,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetSoftDropMassMin    = cms.double(options.fatJetSoftDropMassMin),
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
     ApplyFatJetTau21       = cms.bool(options.applyFatJetTau21), #added by rizki
-    FatJetTau21Cut         = cms.double(options.fatJetTau21Cut), #added by rizki
+    FatJetTau21Min         = cms.double(options.fatJetTau21Min), #added by rizki
+    FatJetTau21Max         = cms.double(options.fatJetTau21Max), #added by rizki
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
