@@ -206,7 +206,8 @@ class BTagValidation : public edm::EDAnalyzer {
     const double                    fatJetSoftDropMassMin_;
     const double                    fatJetSoftDropMassMax_;
     const bool 			    applyFatJetTau21_; //added by rizki
-    const double		    fatJetTau21Cut_; //added by rizki
+    const double		    fatJetTau21Min_; //added by rizki
+    const double		    fatJetTau21Max_; //added by rizki
     const double                    SFbShift_;
     const double                    SFlShift_;
     const std::vector<std::string>  triggerSelection_;
@@ -260,7 +261,8 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   fatJetSoftDropMassMin_(iConfig.getParameter<double>("FatJetSoftDropMassMin")),
   fatJetSoftDropMassMax_(iConfig.getParameter<double>("FatJetSoftDropMassMax")),
   applyFatJetTau21_(iConfig.getParameter<bool>("ApplyFatJetTau21")), //added by rizki
-  fatJetTau21Cut_(iConfig.getParameter<double>("FatJetTau21Cut")), //added by rizki
+  fatJetTau21Min_(iConfig.getParameter<double>("FatJetTau21Min")), //added by rizki
+  fatJetTau21Max_(iConfig.getParameter<double>("FatJetTau21Max")), //added by rizki
   SFbShift_(iConfig.getParameter<double>("SFbShift")),
   SFlShift_(iConfig.getParameter<double>("SFlShift")),
   triggerSelection_(iConfig.getParameter<std::vector<std::string> >("TriggerSelection")),
@@ -676,7 +678,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float tau1 = FatJetInfo.Jet_tau1[iJet];
       float tau2 = FatJetInfo.Jet_tau2[iJet];
       float tau21 = (tau1!=0 ? tau2/tau1 : -1.);
-      if ( applyFatJetTau21_ && ( tau21 > fatJetTau21Cut_ || tau21 < 0) ) continue ; ////apply jet substructure tau21 cut.
+      if ( applyFatJetTau21_ && ( tau21 > fatJetTau21Max_ || tau21 < fatJetTau21Min_) ) continue ; ////apply jet substructure tau21 cut.
       //added by rizki - end
 
       //if ((FatJetInfo.Jet_nSE[iJet]+FatJetInfo.Jet_nSM[iJet]) ==0) continue; // TEMPorary, remove spike.
