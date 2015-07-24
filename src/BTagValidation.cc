@@ -923,7 +923,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float vertexEnergyRatio  = FatJetInfo.TagVarCSV_[iJet];
       float vertexJetDeltaR  = FatJetInfo.TagVarCSV_[iJet];
       float flightDistance2dSig  = FatJetInfo.TagVarCSV_[iJet];
-      //float minSubJetCSVIV =
+      float minSubJetCSVIVF = TMath::Min(SubJets.Jet_CombIVF[iSubJet1],SubJets.Jet_CombIVF[iSubJet2]>subJetBDiscrCut_)
 
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
       float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
@@ -967,7 +967,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_vertexEnergyRatio"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexEnergyRatio ,   wtPU*wtFatJet);
       FillHisto("FatJet_vertexJetDeltaR"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexJetDeltaR ,   wtPU*wtFatJet);
       FillHisto("FatJet_flightDistance2dSig"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, flightDistance2dSig ,   wtPU*wtFatJet);
-      //FillHisto("FatJet_minSubJetCSVIVF"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, minSubJetCSVIVF,   wtPU*wtFatJet);
+      FillHisto("FatJet_minSubJetCSVIVF"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, minSubJetCSVIVF,   wtPU*wtFatJet);
 
 
       FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SV  ,   wtPU*wtFatJet);
