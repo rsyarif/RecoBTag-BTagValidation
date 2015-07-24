@@ -127,21 +127,37 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_SV_EnergyRatio_0"  ,"SV_EnergyRatio_0"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_SV_EnergyRatio_1"  ,"SV_EnergyRatio_1"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_jetNTracksEtaRel"  ,"jetNTracksEtaRel"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-
     DrawStacked(histoTag+"_PFLepton_ptrel"    ,"PF Lepton p_{T,rel}"                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_PFElectron_ptrel"  ,"PF Electron p_{T,rel}"                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_PFMuon_ptrel"      ,"PF Muon p_{T,rel}"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
-    //DrawStacked(histoTag+"_PFLepton_ratio"    ,"PF Lepton ratio"                           ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    //DrawStacked(histoTag+"_PFElectron_ratio"  ,"PF Electron ratio"                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    //DrawStacked(histoTag+"_PFMuon_ratio"      ,"PF Muon ratio"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFLepton_ratio"    ,"PF Lepton ratio"                           ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFElectron_ratio"  ,"PF Electron ratio"                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_PFMuon_ratio"      ,"PF Muon ratio"                         ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_nSL_3"             ,"nSL_3"                                     ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_nSE"               ,"nSE"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_nSM"               ,"nSM"                                       ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
-    //DrawStacked(histoTag+"_trackSip3dSig_3"  ,"trackSip3dSig_3"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_3"  ,"trackSip3dSig_3"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_2"  ,"trackSip3dSig_2"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_1"  ,"trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_0"  ,"trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_trackEtaRel_2"  ,"trackEtaRel_2"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackEtaRel_1"  ,"trackEtaRel_1"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackEtaRel_0"  ,"trackEtaRel_0"                            ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+
+    DrawStacked(histoTag+"_jetNTracksEtaRel"  ,"jetNTracksEtaRel"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_jetNTracks"  ,""                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_vertexNTracks"  ,"vertexNTracks"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_jetNSecondaryVertices"  ,"jetNSecondaryVertices"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip2dSigAboveCharm"  ,"trackSip2dSigAboveCharm"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_vertexMass"  ,"vertexMass"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_vertexEnergyRatio"  ,"vertexEnergyRatio"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_vertexJetDeltaR"  ,"vertexJetDeltaR"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_flightDistance2dSig"  ,"flightDistance2dSig"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    //DrawStacked(histoTag+"_minSubJet_csv"  ,"minSubJet_csv"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_SL"           ,"BDTG SL"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
