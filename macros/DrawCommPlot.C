@@ -28,7 +28,8 @@ using namespace std;
 
 //TString filename    ="/afs/cern.ch/user/e/eschmitz/public/ValPlotFilesBBTC2015/QCD_15to7000/25nsPU/bTagValPlots_FatJetNoOpts_alltracks.root" ;
 //TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/sandbox/bTagValPlots_QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6_mc_subjets_debugSpike_extendingRange_nSL!=0_bugFixed.root" ;
-TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/btagvalplots_TEMP_canDELETE.root";
+//TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/btagvalplots_TEMP_canDELETE.root";
+TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/btagvalplots_Testing_newBDT_july24_QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6_mc_subjets.root";
 //TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/Adding_cfromgsp_comparisonCheck/bTagValPlots_Add_cfromgsp.root";
 TString filename_ext="" ;
 //TString dir4plots   ="BoostedBTagVal_FatJetMuonTagging_04June2015_v1" ;
@@ -162,6 +163,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_SL"           ,"BDTG SL"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_BDTG_Cascade"      ,"BDTG Cascade"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_BDTG_All"      ,"BDTG All"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     //added by rizki - end
 
  }

@@ -915,19 +915,20 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float trackEtaRel_0 = FatJetInfo.Jet_trackEtaRel_0[iJet];
 
       float jetNTracksEtaRel = FatJetInfo.TagVarCSV_jetNTracksEtaRel[iJet];
-      float jetNTracks  = FatJetInfo.TagVarCSV_[iJet];
-      float vertexNTracks  = FatJetInfo.TagVarCSV_[iJet];
-      float jetNSecondaryVertices  = FatJetInfo.TagVarCSV_[iJet];
-      float trackSip2dSigAboveCharm  = FatJetInfo.TagVarCSV_[iJet];
-      float vertexMass  = FatJetInfo.TagVarCSV_[iJet];
-      float vertexEnergyRatio  = FatJetInfo.TagVarCSV_[iJet];
-      float vertexJetDeltaR  = FatJetInfo.TagVarCSV_[iJet];
-      float flightDistance2dSig  = FatJetInfo.TagVarCSV_[iJet];
-      float minSubJetCSVIVF = TMath::Min(SubJets.Jet_CombIVF[iSubJet1],SubJets.Jet_CombIVF[iSubJet2]>subJetBDiscrCut_)
+      float jetNTracks  = FatJetInfo.TagVarCSV_jetNTracks[iJet];
+      float vertexNTracks  = FatJetInfo.TagVarCSV_vertexNTracks[iJet];
+      float jetNSecondaryVertices  = FatJetInfo.TagVarCSV_jetNSecondaryVertices[iJet];
+      float trackSip2dSigAboveCharm  = FatJetInfo.TagVarCSV_trackSip2dSigAboveCharm[iJet];
+      float vertexMass  = FatJetInfo.TagVarCSV_vertexMass[iJet];
+      float vertexEnergyRatio  = FatJetInfo.TagVarCSV_vertexEnergyRatio[iJet];
+      float vertexJetDeltaR  = FatJetInfo.TagVarCSV_vertexJetDeltaR[iJet];
+      float flightDistance2dSig  = FatJetInfo.TagVarCSV_flightDistance2dSig[iJet];
+      float minSubJetCSVIVF = TMath::Min(SubJets.Jet_CombIVF[iSubJet1],SubJets.Jet_CombIVF[iSubJet2]);
 
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
       float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
       float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
+      float BDTG_All = FatJetInfo.Jet_BDTG_All[iJet];
 
       FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, z_ratio  ,   wtPU*wtFatJet);
       FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, tau_dot  ,   wtPU*wtFatJet);
@@ -958,7 +959,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       FillHisto("FatJet_jetNTracksEtaRel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, jetNTracksEtaRel  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_jetNTracks"             ,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c,  ,   wtPU*wtFatJet);
       FillHisto("FatJet_jetNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, jetNTracks ,   wtPU*wtFatJet);
       FillHisto("FatJet_vertexNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexNTracks ,   wtPU*wtFatJet);
       FillHisto("FatJet_jetNSecondaryVertices"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, jetNSecondaryVertices ,   wtPU*wtFatJet);
@@ -973,6 +973,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SV  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SL  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_Cascade  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_All",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_All  ,   wtPU*wtFatJet);
 
       //added by rizki - end
 
