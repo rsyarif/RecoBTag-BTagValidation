@@ -27,8 +27,8 @@
 using namespace std;
 
 TString filename_ext="" ; 
-TString filename    ="./test/ValPlotFiles/merged/prunedSubjets/Final_histograms_btagval.root";
-TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD-TTJets/prunedSubjets/test/log";
+TString filename  = "Final_histograms_btagval_Erich.root";
+TString dir4plots = "test";
 //TString filename    ="./test/ValPlotFiles/merged/softdropSubjets/Final_histograms_btagval.root";
 //TString dir4plots   ="BoostedBTagCommissioning2015/MergedDatasets-QCD/softdropSubjets/test/log";
 
@@ -46,10 +46,10 @@ bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets = 1;
 bool logy      = 1;
-bool dodata    = 0; 
+bool dodata    = 1; 
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
-bool inclTTbar = 1;
+bool inclTTbar = 0;
 bool inclZjj   = 0;
 bool uncBand   = 0; // used only for double-muon- and double-b-tagged fat jets with scale factors applied
 bool setSampleName = 1;
@@ -257,10 +257,10 @@ void Draw(TString name, TString histotitle, bool log) {
 
   if (name=="h1_nPV") {
     hist_mc       = (TH1D*)myFile->Get("QCD__"+name+"_mc");
-    hist_data     = (TH1D*)myFile->Get("DATA__"+name+"_data");
+    hist_data     = (TH1D*)myFile->Get("Data__"+name+"_data");
   } else {
     hist_mc       = (TH1D*)myFile->Get("QCD__"+name);
-    hist_data     = (TH1D*)myFile->Get("DATA__"+name);
+    hist_data     = (TH1D*)myFile->Get("Data__"+name);
   }
 
   float scale_f = (hist_data->Integral())/(hist_mc->Integral());
@@ -424,7 +424,7 @@ void DrawStacked(TString name,
   hist_l      = (TH1D*)myFile->Get(fdir+name+"_l");
   if (inclTTbar) hist_ttbar = (TH1D*)myFile->Get("TTJets__"+name+"_mc");
   if (inclZjj)   hist_zjj   = (TH1D*)myFile->Get("ZJetsFullyHadronic__"+name+"_mc");
-  if (doData)    hist_data  = (TH1D*)myFile->Get("DATA__"+name+"_data");
+  if (doData)    hist_data  = (TH1D*)myFile->Get("Data__"+name+"_data");
 
   std::cout << " hist_b name = " << hist_b->GetName() << endl ; 
 
@@ -475,7 +475,7 @@ void DrawStacked(TString name,
     hist_l_ext                = (TH1D*)myFile_ext->Get("QCD__"+name+"_l");
     if (inclTTbar) hist_ttbar_ext = (TH1D*)myFile_ext->Get("TTJets__"+name+"_mc");
     if (inclZjj)   hist_zjj_ext   = (TH1D*)myFile_ext->Get("ZJetsFullyHadronic__"+name+"_mc");
-    if (doData)    hist_data_ext  = (TH1D*)myFile_ext->Get("DATA__"+name+"_data");
+    if (doData)    hist_data_ext  = (TH1D*)myFile_ext->Get("Data__"+name+"_data");
 
     if (!name.Contains("sv_mass")) {
       fix(hist_b_ext);
@@ -869,7 +869,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   hist_c         = (TH1D*)myFile->Get("QCD__"+name+"_c");
   hist_gsplit    = (TH1D*)myFile->Get("QCD__"+name+"_bfromg");
   hist_l         = (TH1D*)myFile->Get("QCD__"+name+"_l");
-  if (doData) hist_data      = (TH1D*)myFile->Get("DATA__"+name+"_data");
+  if (doData) hist_data      = (TH1D*)myFile->Get("Data__"+name+"_data");
 
   TH1D* histo_tot = (TH1D*) hist_b->Clone();
   //histo_tot->Sumw2();
@@ -1080,7 +1080,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   hist_c         = (TH2D*)myFile->Get("QCD__"+name+"_c");
   hist_gsplit    = (TH2D*)myFile->Get("QCD__"+name+"_bfromg");
   hist_l         = (TH2D*)myFile->Get("QCD__"+name+"_l");
-  hist_data      = (TH2D*)myFile->Get("DATA__"+name+"_data");
+  hist_data      = (TH2D*)myFile->Get("Data__"+name+"_data");
 
   //return ;
 
