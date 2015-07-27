@@ -4,7 +4,7 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 
 options = VarParsing('python')
 
-options.register('outFilename', 'bTagValPlots.root',
+options.register('outFilename', 'bTagValPlots',
     VarParsing.multiplicity.singleton,
     VarParsing.varType.string,
     "Output file name"
@@ -104,6 +104,16 @@ options.register('fatJetSoftDropMassMax', 1.E6,
     VarParsing.varType.float,
     "Maximum fat jet softdrop mass"
 )
+options.register('fatJetTau21Min', 0.0, #added by rizki
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "tau2/tau1 jet substructure min cut for fat jets"
+)
+options.register('fatJetTau21Max', 0.5, #added by rizki
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "tau2/tau1 jet substructure max cut for fat jets"
+)
 options.register('fatJetBDiscrCut', 0.244,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
@@ -136,9 +146,11 @@ options.setDefault('maxEvents', 2000)
 options.parseArguments()
 
 if options.usePrunedSubjets and options.useSoftDropSubjets:
-  print "Warning: both pruned and soft drop subjets chosen. Only pruned subjets will be processed."
+  print "Warning: both pruned and soft drop subjets selected. Only pruned subjets will be processed."
+  print "!!!Select either pruned subjets with 'usePrunedSubjets' or soft drop subjets with 'useSoftDropSubjets'."
 elif not options.usePrunedSubjets and not options.useSoftDropSubjets:
-  print "Warning: no subjets will be processed."
+  print "!!!Warning: no subjets will be processed.!!!"
+  print "!!!Select either pruned subjets with 'usePrunedSubjets' or soft drop subjets with 'useSoftDropSubjets'."
 
 #print options
 
@@ -154,8 +166,14 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) ) # Keep 
 process.source = cms.Source("EmptySource")
 
 ## Output file
+ext=""
+if options.usePrunedSubjets: 
+  ext="_WithPrunedSubjets"
+elif options.useSoftDropSubjets: 
+  ext="_withSoftDropSubjets"
+outFilename = options.outFilename+ext+".root"
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string(options.outFilename)
+    fileName = cms.string(outFilename)
 )
 
 from inputFiles_cfi import *
@@ -166,6 +184,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     InputTTreeEvtInfo      = cms.string('btagana/ttree'),
     InputTTree             = cms.string('btaganaFatJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
+    #InputFiles             = cms.vstring(FileNames_QCD1000to1400_50ns),
+    #InputFiles             = cms.vstring(FileNames_JetHT_50ns),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
     UseRelaxedMuonID       = cms.bool(options.useRelaxedMuonID),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
@@ -184,6 +204,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetPtMax            = cms.double(options.fatJetPtMax),
     FatJetSoftDropMassMin    = cms.double(options.fatJetSoftDropMassMin),
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
+    FatJetTau21Min         = cms.double(options.fatJetTau21Min), #added by rizki
+    FatJetTau21Max         = cms.double(options.fatJetTau21Max), #added by rizki
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
