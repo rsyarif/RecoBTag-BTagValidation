@@ -8,12 +8,12 @@ DATA:
 QCD: L=1000
 # Dataset_name                                                                                       xs (in pb, for data set to -1)
 
-QCDMuEnriched_Pt170_ptmin-300_70m200_muTag_tau21-05 117989
-QCDMuEnriched_Pt300_ptmin-300_70m200_muTag_tau21-05 7820.25
-QCDMuEnriched_Pt470_ptmin-300_70m200_muTag_tau21-05 645.528
-QCDMuEnriched_Pt600_ptmin-300_70m200_muTag_tau21-05 187.109
-QCDMuEnriched_Pt800_ptmin-300_70m200_muTag_tau21-05 32.3486
-QCDMuEnriched_Pt1000_ptmin-300_70m200_muTag_tau21-05 10.4305
+QCDMuEnriched_Pt170_ptmin-300_70m200_muTag_tau21-05 8647.8183 #117989*0.07335
+QCDMuEnriched_Pt300_ptmin-300_70m200_muTag_tau21-05 797.3527 #7820.25*0.10196
+QCDMuEnriched_Pt470_ptmin-300_70m200_muTag_tau21-05 79.02554 #645.528*0.12242
+QCDMuEnriched_Pt600_ptmin-300_70m200_muTag_tau21-05 25.0951 #187.109*0.13412
+QCDMuEnriched_Pt800_ptmin-300_70m200_muTag_tau21-05 4.7074 #32.3486*0.14552
+QCDMuEnriched_Pt1000_ptmin-300_70m200_muTag_tau21-05 1.6213 #10.4305*0.15544
 
 
 #TTJets: L=19784
