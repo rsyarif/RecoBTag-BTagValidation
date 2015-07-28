@@ -214,7 +214,7 @@ class BTagValidation : public edm::EDAnalyzer {
     const bool                      useSoftDropSubjets_ ;
 
     //// Event variables
-    bool isData;
+    const bool isData_;
     int nEventsAll;
     int nEventsStored;
 };
@@ -264,10 +264,11 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   hist_PUDistData_(iConfig.getParameter<std::string>("Hist_PUDistData")),
   doPUReweighting_(iConfig.getParameter<bool>("DoPUReweighting")),
   usePrunedSubjets_(iConfig.getParameter<bool>("UsePrunedSubjets")), 
-  useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets"))
+  useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets")),
+  isData_(iConfig.getParameter<bool>("IsData"))
 {
   //now do what ever initialization is needed
-  isData = false ; 
+  //isData_ = true ; 
   nEventsAll = 0;
   nEventsStored = 0;
 
@@ -625,10 +626,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     JetTree->GetEntry(iEntry);
     if((iEntry%reportEvery_) == 0) edm::LogInfo("EventNumber") << ">>>>> Processing event " << iEntry << " of " << nEntries;
 
-    if(EvtInfo.Run < 0) isData = false;
+    //if(EvtInfo.Run < 0) isData_ = false;
 
     double wtPU = 1.;
-    if ( doPUReweighting_ && !isData )
+    if ( doPUReweighting_ && !isData_ )
       wtPU *= LumiWeights_.weight(EvtInfo.nPUtrue);
 
     h1_CutFlow->Fill(2.,wtPU); //// count all events
@@ -636,7 +637,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     //edm::LogInfo("PUWeight") << " EvtInfo.nPUtrue: " << EvtInfo.nPUtrue << " wtPU: " << wtPU ;
 
-    if( !isData ) h1_pt_hat->Fill(EvtInfo.pthat,wtPU);
+    if( !isData_ ) h1_pt_hat->Fill(EvtInfo.pthat,wtPU);
 
     if( !passTrigger() ) continue; //// apply trigger selection
 
@@ -644,7 +645,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     h1_CutFlow_unw->Fill(3.);
 
     //// pileup distributions
-    if( isData )
+    if( isData_ )
       h1_nPV_data->Fill(EvtInfo.nPV);
     else {
       h1_nPUtrue_mc    ->Fill(EvtInfo.nPUtrue,wtPU);
@@ -658,7 +659,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     int nFatJet = 0;
     int nSubJet = 0;
 
-    double fatJetCone(0.8);
+    //double fatJetCone(0.8);
 
     //---------------------------- Start fat jet loop ---------------------------------------//
     for(int iJet = 0; iJet < FatJetInfo.nJet; ++iJet) {
@@ -765,7 +766,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       //// apply b-tagging scale factors
       double wtFatJet = 1.;
-      if( applySFs_ && !isData ) {
+      if( applySFs_ && !isData_ ) {
         if( applyFatJetBTagging_ && fatJetDoubleBTagging_ ) {
           wtFatJet *= ( scaleFactor(SubJets.Jet_flavour[iSubJet1], SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
               scaleFactor(SubJets.Jet_flavour[iSubJet2], SubJets.Jet_pt[iSubJet2], SubJets.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
@@ -836,7 +837,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
           //// apply b-tagging scale factors
           double wtSubJet = 1.;
-          if( applySFs_ && !isData ) {
+          if( applySFs_ && !isData_ ) {
             if( applyFatJetBTagging_ && fatJetDoubleBTagging_ ) wtSubJet *= wtFatJet;
             else                                               wtSubJet *= scaleFactor(SubJets.Jet_flavour[iSubJet], SubJets.Jet_pt[iSubJet], SubJets.Jet_eta[iSubJet], (subJetBDiscrCut_>0.25));
           }
@@ -1336,7 +1337,7 @@ void BTagValidation::AddHisto2D(const TString& name, const TString& title, const
 // ------------------------------------------------------------------------------
 template <class Type>
 void BTagValidation::FillHisto(const TString& name, const int flavour, const bool isGSPbb , const bool isGSPcc , const Type value, const double weight) {
-  if (!isData) {
+  if (!isData_) {
     if( useFlavorCategories_ ) {
       if( isGSPbb ) HistoBtag_map[name+"_bfromg"]->Fill(double(value),weight);
       else if( isGSPcc ) HistoBtag_map[name+"_cfromg"]->Fill(double(value),weight);
@@ -1354,7 +1355,7 @@ void BTagValidation::FillHisto(const TString& name, const int flavour, const boo
 // ------------------------------------------------------------------------------
 template <class Type1, class Type2>
 void BTagValidation::FillHisto2D(const TString& name, const int flavour, const bool isGSPbb ,const bool isGSPcc , const Type1 value, const Type2 value2, const double weight) {
-  if (!isData) {
+  if (!isData_) {
     if( useFlavorCategories_ ) {
       if( isGSPbb ) HistoBtag2D_map[name+"_bfromg"]->Fill(double(value),double(value2),weight);
       else if( isGSPcc ) HistoBtag2D_map[name+"_cfromg"]->Fill(double(value),double(value2),weight);
