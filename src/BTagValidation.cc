@@ -101,6 +101,8 @@ class BTagValidation : public edm::EDAnalyzer {
     double scaleFactorC_CSVM(const double jetPt, const double jetEta);
     double scaleFactorUDSG_CSVM(const double jetPt, const double jetEta);
 
+    double GetLumiWeightsPVBased (const std::string file, const std::string hist, const int npv) ; 
+
     // ----------member data ---------------------------
     EventInfoBranches EvtInfo;
     JetInfoBranches FatJetInfo;
@@ -207,11 +209,14 @@ class BTagValidation : public edm::EDAnalyzer {
     const double                    SFlShift_;
     const std::vector<std::string>  triggerSelection_;
     const std::vector<std::string>  triggerPathNames_;
+    const std::string               file_PVWt_ ; 
     const std::string               file_PUDistMC_ ;
     const std::string               file_PUDistData_ ;
+    const std::string               hist_PVWt_ ; 
     const std::string               hist_PUDistMC_ ;
     const std::string               hist_PUDistData_ ;
-    const int                       doPUReweighting_ ;
+    const bool                      doPUReweightingOfficial_ ;
+    const bool                      doPUReweightingNPV_ ;
     const bool                      usePrunedSubjets_ ;
     const bool                      useSoftDropSubjets_ ;
 
@@ -262,11 +267,14 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   SFlShift_(iConfig.getParameter<double>("SFlShift")),
   triggerSelection_(iConfig.getParameter<std::vector<std::string> >("TriggerSelection")),
   triggerPathNames_(iConfig.getParameter<std::vector<std::string> >("TriggerPathNames")),
+  file_PVWt_(iConfig.getParameter<std::string>("File_PVWt")),
   file_PUDistMC_(iConfig.getParameter<std::string>("File_PUDistMC")),
   file_PUDistData_(iConfig.getParameter<std::string>("File_PUDistData")),
+  hist_PVWt_(iConfig.getParameter<std::string>("Hist_PVWt")),
   hist_PUDistMC_(iConfig.getParameter<std::string>("Hist_PUDistMC")),
   hist_PUDistData_(iConfig.getParameter<std::string>("Hist_PUDistData")),
-  doPUReweighting_(iConfig.getParameter<bool>("DoPUReweighting")),
+  doPUReweightingOfficial_(iConfig.getParameter<bool>("DoPUReweightingOfficial")),
+  doPUReweightingNPV_(iConfig.getParameter<bool>("DoPUReweightingNPV")),
   usePrunedSubjets_(iConfig.getParameter<bool>("UsePrunedSubjets")), 
   useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets"))
 {
@@ -275,7 +283,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   nEventsAll = 0;
   nEventsStored = 0;
 
-  if (doPUReweighting_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ;
+  if (doPUReweightingOfficial_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ;
   
 
   // Pt bins for SFb
@@ -669,8 +677,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     else if( iEntry == 0 ) edm::LogInfo("IsData") << ">>>>> Running on data\n" ; 
 
     double wtPU = 1.;
-    if ( doPUReweighting_ && !isData )
+    if ( doPUReweightingOfficial_ && !isData )
       wtPU *= LumiWeights_.weight(EvtInfo.nPUtrue);
+    else if ( doPUReweightingNPV_ && !isData ) 
+      wtPU *= GetLumiWeightsPVBased(file_PVWt_, hist_PVWt_, EvtInfo.nPV) ;  
 
     h1_CutFlow->Fill(2.,wtPU); //// count all events
     h1_CutFlow_unw->Fill(2.);
@@ -1646,6 +1656,18 @@ double BTagValidation::scaleFactorUDSG_CSVM(const double jetPt, const double jet
   }
 
   return SF;
+}
+
+// ---- Method returns MC event weight for for reweighting to the NPV distribution in the data: substitute for official PU reweighting ----
+double BTagValidation::GetLumiWeightsPVBased (const std::string file, const std::string hist, const int npv) { 
+  double wtPU(1) ;
+  TFile* f = TFile::Open(file.c_str(), "READ") ;
+  TH1D* hwt = (TH1D*)f->Get(hist.c_str()) ; 
+  wtPU = npv > 3 && npv <= 60 ? hwt->GetBinContent(npv) : 1.; 
+  f->Close() ; 
+  delete f ;
+  delete hwt ; 
+  return wtPU ;
 }
 
 //define this as a plug-in

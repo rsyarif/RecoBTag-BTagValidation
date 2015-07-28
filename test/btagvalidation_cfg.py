@@ -4,7 +4,7 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 
 options = VarParsing('python')
 
-options.register('outFilename', 'bTagValPlots',
+options.register('outFilename', 'bTagValPlots.root',
     VarParsing.multiplicity.singleton,
     VarParsing.varType.string,
     "Output file name"
@@ -134,14 +134,19 @@ options.register('SFlShift', 0.,
     VarParsing.varType.float,
     "Shift in SFl in units of sigmas"
 )
-options.register('doPUReweighting', False,
+options.register('doPUReweightingOfficial', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Do pileup reweighting"
+)
+options.register('doPUReweightingNPV', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
     "Do pileup reweighting"
 )
 
 ## 'maxEvents' is already registered by the Framework, changing default value
-options.setDefault('maxEvents', 2000)
+options.setDefault('maxEvents', 1000)
 
 options.parseArguments()
 
@@ -166,14 +171,15 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) ) # Keep 
 process.source = cms.Source("EmptySource")
 
 ## Output file
-ext=""
-if options.usePrunedSubjets: 
-  ext="_WithPrunedSubjets"
-elif options.useSoftDropSubjets: 
-  ext="_withSoftDropSubjets"
-outFilename = options.outFilename+ext+".root"
+#ext=""
+#if options.usePrunedSubjets: 
+#  ext="_WithPrunedSubjets"
+#elif options.useSoftDropSubjets: 
+#  ext="_withSoftDropSubjets"
+#outFilename = options.outFilename+ext+".root"
+
 process.TFileService = cms.Service("TFileService",
-    fileName = cms.string(outFilename)
+    fileName = cms.string(options.outFilename)
 )
 
 from inputFiles_cfi import *
@@ -183,8 +189,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     UseJetProbaTree        = cms.bool(options.useJetProbaTree),
     InputTTreeEvtInfo      = cms.string('btagana/ttree'),
     InputTTree             = cms.string('btaganaFatJets/ttree'),
-    InputFiles             = cms.vstring(FileNames),
-    #InputFiles             = cms.vstring(FileNames_QCD1000to1400_50ns),
+    #InputFiles             = cms.vstring(FileNames),
+    InputFiles             = cms.vstring(FileNames_QCD1000to1400_50ns),
     #InputFiles             = cms.vstring(FileNames_JetHT_50ns),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
     UseRelaxedMuonID       = cms.bool(options.useRelaxedMuonID),
@@ -203,17 +209,20 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetPtMin            = cms.double(options.fatJetPtMin),
     FatJetPtMax            = cms.double(options.fatJetPtMax),
     FatJetSoftDropMassMin    = cms.double(options.fatJetSoftDropMassMin),
+    File_PVWt              = cms.string('hnpv_data_Run2015B_mc_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A_wt.root'),
+    File_PUDistMC          = cms.string('PUDistMC_Summer12_PU_S10.root'),
+    File_PUDistData        = cms.string('PUDistData_Run2012ABCD.root'),
+    Hist_PVWt              = cms.string('hpvwt_data_mc'),
+    Hist_PUDistMC          = cms.string('PUWeights_Summer12_S10PUWeights_Summer12_S10'),
+    Hist_PUDistData        = cms.string('pileup'),
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
     FatJetTau21Min         = cms.double(options.fatJetTau21Min), #added by rizki
     FatJetTau21Max         = cms.double(options.fatJetTau21Max), #added by rizki
     FatJetAbsEtaMax        = cms.double(2.4),
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
-    DoPUReweighting        = cms.bool(options.doPUReweighting),
-    File_PUDistMC          = cms.string('PUDistMC_Summer12_PU_S10.root'),
-    File_PUDistData        = cms.string('PUDistData_Run2012ABCD.root'),
-    Hist_PUDistMC          = cms.string('PUWeights_Summer12_S10PUWeights_Summer12_S10'),
-    Hist_PUDistData        = cms.string('pileup'),
+    DoPUReweightingOfficial= cms.bool(options.doPUReweightingOfficial),
+    DoPUReweightingNPV     = cms.bool(options.doPUReweightingNPV),
     TriggerSelection       = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
         options.triggerSelection
     ),
