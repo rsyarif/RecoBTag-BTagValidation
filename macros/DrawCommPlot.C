@@ -68,7 +68,7 @@ TString formatc=".C";
 bool bOverflow = 1;
 bool web       = 0;
 
-bool logy      = 1;
+bool logy      = 0;
 bool dodata    = 0;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
@@ -457,7 +457,7 @@ void DrawStacked(TString name,
   TH1D* hist_b;
   TH1D* hist_c;
   TH1D* hist_gsplit;
-  TH1D* hist_gsplit_c;
+  //  TH1D* hist_gsplit_c;
   TH1D* hist_l;
   TH1D* hist_ttbar;
   TH1D* hist_zjj;
@@ -471,7 +471,7 @@ void DrawStacked(TString name,
   hist_b      = (TH1D*)myFile->Get(fdir+name+"_b");
   hist_c      = (TH1D*)myFile->Get(fdir+name+"_c");
   hist_gsplit = (TH1D*)myFile->Get(fdir+name+"_bfromg");
-  hist_gsplit_c = (TH1D*)myFile->Get(fdir+name+"_cfromg");
+  //  hist_gsplit_c = (TH1D*)myFile->Get(fdir+name+"_cfromg");
   hist_l      = (TH1D*)myFile->Get(fdir+name+"_l");
   if (inclTTbar) hist_ttbar = (TH1D*)myFile->Get("TTJets__"+name+"_mc");
   if (inclZjj)   hist_zjj   = (TH1D*)myFile->Get("ZJetsFullyHadronic__"+name+"_mc");
@@ -485,7 +485,7 @@ void DrawStacked(TString name,
     hist_b                    -> Rebin(5);
     hist_c                    -> Rebin(5);
     hist_gsplit               -> Rebin(5);
-    hist_gsplit_c               -> Rebin(5);
+    //    hist_gsplit_c               -> Rebin(5);
     hist_l                    -> Rebin(5);
     if (inclTTbar) hist_ttbar -> Rebin(5);
     if (inclZjj)   hist_zjj   -> Rebin(5);
@@ -496,7 +496,7 @@ void DrawStacked(TString name,
       hist_b     ->Rebin(nRebin);
       hist_c     ->Rebin(nRebin);
       hist_gsplit->Rebin(nRebin);
-      hist_gsplit_c->Rebin(nRebin);
+      //      hist_gsplit_c->Rebin(nRebin);
       hist_l     ->Rebin(nRebin);
       if (inclTTbar) hist_ttbar->Rebin(nRebin);
       if (inclZjj)   hist_zjj   -> Rebin(nRebin);
@@ -509,7 +509,7 @@ void DrawStacked(TString name,
     fix(hist_b);
     fix(hist_c);
     fix(hist_gsplit);
-    fix(hist_gsplit_c);
+    //    fix(hist_gsplit_c);
     fix(hist_l);
     if (inclTTbar) fix(hist_ttbar);
     if (inclZjj)   fix(hist_zjj);
@@ -517,7 +517,8 @@ void DrawStacked(TString name,
   }
   //}
 
-  TH1D *hist_b_ext, *hist_c_ext, *hist_gsplit_ext, *hist_gsplit_c_ext, *hist_l_ext, *hist_ttbar_ext, *hist_zjj_ext, *hist_data_ext;
+  //  TH1D *hist_b_ext, *hist_c_ext, *hist_gsplit_ext, *hist_gsplit_c_ext, *hist_l_ext, *hist_ttbar_ext, *hist_zjj_ext, *hist_data_ext;
+  TH1D *hist_b_ext, *hist_c_ext, *hist_gsplit_ext, *hist_l_ext, *hist_ttbar_ext, *hist_zjj_ext, *hist_data_ext;
   TFile *myFile_ext;
 
   if (fExtNorm) {
@@ -526,7 +527,7 @@ void DrawStacked(TString name,
     hist_b_ext                = (TH1D*)myFile_ext->Get("QCD__"+name+"_b");
     hist_c_ext                = (TH1D*)myFile_ext->Get("QCD__"+name+"_c");
     hist_gsplit_ext           = (TH1D*)myFile_ext->Get("QCD__"+name+"_bfromg");
-    hist_gsplit_c_ext           = (TH1D*)myFile_ext->Get("QCD__"+name+"_cfromg");
+    //    hist_gsplit_c_ext           = (TH1D*)myFile_ext->Get("QCD__"+name+"_cfromg");
     hist_l_ext                = (TH1D*)myFile_ext->Get("QCD__"+name+"_l");
     if (inclTTbar) hist_ttbar_ext = (TH1D*)myFile_ext->Get("TTJets__"+name+"_mc");
     if (inclZjj)   hist_zjj_ext   = (TH1D*)myFile_ext->Get("ZJetsFullyHadronic__"+name+"_mc");
@@ -536,7 +537,7 @@ void DrawStacked(TString name,
       fix(hist_b_ext);
       fix(hist_c_ext);
       fix(hist_gsplit_ext);
-      fix(hist_gsplit_c_ext);
+      //      fix(hist_gsplit_c_ext);
       fix(hist_l_ext);
       if (inclTTbar) fix(hist_ttbar_ext);
       if (inclZjj)   fix(hist_zjj_ext);
@@ -544,7 +545,8 @@ void DrawStacked(TString name,
     }
   }
 
-  TH1D *hist_b_uncUp, *hist_c_uncUp, *hist_gsplit_uncUp, *hist_gsplit_c_uncUp, *hist_l_uncUp, *hist_ttbar_uncUp, *hist_zjj_uncUp, *hist_b_uncDown, *hist_c_uncDown, *hist_gsplit_uncDown, *hist_gsplit_c_uncDown, *hist_l_uncDown, *hist_ttbar_uncDown, *hist_zjj_uncDown ;
+  //  TH1D *hist_b_uncUp, *hist_c_uncUp, *hist_gsplit_uncUp, *hist_gsplit_c_uncUp, *hist_l_uncUp, *hist_ttbar_uncUp, *hist_zjj_uncUp, *hist_b_uncDown, *hist_c_uncDown, *hist_gsplit_uncDown, *hist_gsplit_c_uncDown, *hist_l_uncDown, *hist_ttbar_uncDown, *hist_zjj_uncDown ;
+  TH1D *hist_b_uncUp, *hist_c_uncUp, *hist_gsplit_uncUp, *hist_l_uncUp, *hist_ttbar_uncUp, *hist_zjj_uncUp, *hist_b_uncDown, *hist_c_uncDown, *hist_gsplit_uncDown, *hist_l_uncDown, *hist_ttbar_uncDown, *hist_zjj_uncDown ;
   TFile *myFile_uncUp, *myFile_uncDown;
 
   if (uncBand) {
@@ -553,7 +555,7 @@ void DrawStacked(TString name,
     hist_b_uncUp                = (TH1D*)myFile_uncUp->Get("QCD__"+name+"_b");
     hist_c_uncUp                = (TH1D*)myFile_uncUp->Get("QCD__"+name+"_c");
     hist_gsplit_uncUp           = (TH1D*)myFile_uncUp->Get("QCD__"+name+"_bfromg");
-    hist_gsplit_c_uncUp           = (TH1D*)myFile_uncUp->Get("QCD__"+name+"_cfromg");
+    //    hist_gsplit_c_uncUp           = (TH1D*)myFile_uncUp->Get("QCD__"+name+"_cfromg");
     hist_l_uncUp                = (TH1D*)myFile_uncUp->Get("QCD__"+name+"_l");
     if (inclTTbar) hist_ttbar_uncUp = (TH1D*)myFile_uncUp->Get("TTJets__"+name+"_mc");
     if (inclZjj)   hist_zjj_uncUp   = (TH1D*)myFile_uncUp->Get("ZJetsFullyHadronic__"+name+"_mc");
@@ -562,7 +564,7 @@ void DrawStacked(TString name,
       fix(hist_b_uncUp);
       fix(hist_c_uncUp);
       fix(hist_gsplit_uncUp);
-      fix(hist_gsplit_c_uncUp);
+      //      fix(hist_gsplit_c_uncUp);
       fix(hist_l_uncUp);
       if (inclTTbar) fix(hist_ttbar_uncUp);
       if (inclZjj)   fix(hist_zjj_uncUp);
@@ -573,7 +575,7 @@ void DrawStacked(TString name,
     hist_b_uncDown                = (TH1D*)myFile_uncDown->Get("QCD__"+name+"_b");
     hist_c_uncDown                = (TH1D*)myFile_uncDown->Get("QCD__"+name+"_c");
     hist_gsplit_uncDown           = (TH1D*)myFile_uncDown->Get("QCD__"+name+"_bfromg");
-    hist_gsplit_c_uncDown           = (TH1D*)myFile_uncDown->Get("QCD__"+name+"_cfromg");
+    //    hist_gsplit_c_uncDown           = (TH1D*)myFile_uncDown->Get("QCD__"+name+"_cfromg");
     hist_l_uncDown                = (TH1D*)myFile_uncDown->Get("QCD__"+name+"_l");
     if (inclTTbar) hist_ttbar_uncDown = (TH1D*)myFile_uncDown->Get("TTJets__"+name+"_mc");
     if (inclZjj)   hist_zjj_uncDown   = (TH1D*)myFile_uncDown->Get("ZJetsFullyHadronic__"+name+"_mc");
@@ -582,7 +584,7 @@ void DrawStacked(TString name,
       fix(hist_b_uncDown);
       fix(hist_c_uncDown);
       fix(hist_gsplit_uncDown);
-      fix(hist_gsplit_c_uncDown);
+      //      fix(hist_gsplit_c_uncDown);
       fix(hist_l_uncDown);
       if (inclTTbar) fix(hist_ttbar_uncDown);
       if (inclZjj)   fix(hist_zjj_uncDown);
@@ -592,7 +594,7 @@ void DrawStacked(TString name,
       hist_b_uncUp     ->Rebin(nRebin);
       hist_c_uncUp     ->Rebin(nRebin);
       hist_gsplit_uncUp->Rebin(nRebin);
-      hist_gsplit_c_uncUp->Rebin(nRebin);
+      //      hist_gsplit_c_uncUp->Rebin(nRebin);
       hist_l_uncUp     ->Rebin(nRebin);
       if (inclTTbar) hist_ttbar_uncUp->Rebin(nRebin);
       if (inclZjj)  hist_zjj_uncUp->Rebin(nRebin);
@@ -600,7 +602,7 @@ void DrawStacked(TString name,
       hist_b_uncDown     ->Rebin(nRebin);
       hist_c_uncDown     ->Rebin(nRebin);
       hist_gsplit_uncDown->Rebin(nRebin);
-      hist_gsplit_c_uncDown->Rebin(nRebin);
+      //      hist_gsplit_c_uncDown->Rebin(nRebin);
       hist_l_uncDown     ->Rebin(nRebin);
       if (inclTTbar) hist_ttbar_uncDown->Rebin(nRebin);
       if (inclZjj)  hist_zjj_uncDown->Rebin(nRebin);
@@ -608,26 +610,28 @@ void DrawStacked(TString name,
   }
 
   if (doData) {
-    float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral() ) ;
-    if (fExtNorm) scale_f = ( hist_data_ext->Integral() - (inclTTbar ? hist_ttbar_ext->Integral() : 0) - (inclZjj ? hist_zjj_ext->Integral() : 0) )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_gsplit_c_ext->Integral() + hist_l_ext->Integral() ) ;
+    //float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral() ) ;
+    float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_l->Integral() ) ;
+    //if (fExtNorm) scale_f = ( hist_data_ext->Integral() - (inclTTbar ? hist_ttbar_ext->Integral() : 0) - (inclZjj ? hist_zjj_ext->Integral() : 0) )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_gsplit_c_ext->Integral() + hist_l_ext->Integral() ) ;
+    if (fExtNorm) scale_f = ( hist_data_ext->Integral() - (inclTTbar ? hist_ttbar_ext->Integral() : 0) - (inclZjj ? hist_zjj_ext->Integral() : 0) )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_l_ext->Integral() ) ;
     cout << "scale_f = " << scale_f << endl;
     hist_b       ->Scale(scale_f);
     hist_c       ->Scale(scale_f);
     hist_gsplit  ->Scale(scale_f);
-    hist_gsplit_c  ->Scale(scale_f);
+    //    hist_gsplit_c  ->Scale(scale_f);
     hist_l       ->Scale(scale_f);
 
     if (uncBand) {
       hist_b_uncUp       ->Scale(scale_f);
       hist_c_uncUp       ->Scale(scale_f);
       hist_gsplit_uncUp  ->Scale(scale_f);
-      hist_gsplit_c_uncUp  ->Scale(scale_f);
+      //      hist_gsplit_c_uncUp  ->Scale(scale_f);
       hist_l_uncUp       ->Scale(scale_f);
 
       hist_b_uncDown       ->Scale(scale_f);
       hist_c_uncDown       ->Scale(scale_f);
       hist_gsplit_uncDown  ->Scale(scale_f);
-      hist_gsplit_c_uncDown  ->Scale(scale_f);
+      //      hist_gsplit_c_uncDown  ->Scale(scale_f);
       hist_l_uncDown       ->Scale(scale_f);
     }
   }
@@ -635,7 +639,7 @@ void DrawStacked(TString name,
   TH1D* histo_tot = (TH1D*) hist_b->Clone();
   histo_tot ->Add(hist_c);
   histo_tot ->Add(hist_gsplit);
-  histo_tot ->Add(hist_gsplit_c);
+  //  histo_tot ->Add(hist_gsplit_c);
   histo_tot ->Add(hist_l);
   if (inclTTbar) histo_tot ->Add(hist_ttbar);
   if (inclZjj) histo_tot ->Add(hist_zjj);
@@ -645,7 +649,7 @@ void DrawStacked(TString name,
     histo_uncUp = (TH1D*) hist_b_uncUp->Clone();
     histo_uncUp ->Add(hist_c_uncUp);
     histo_uncUp ->Add(hist_gsplit_uncUp);
-    histo_uncUp ->Add(hist_gsplit_c_uncUp);
+    //    histo_uncUp ->Add(hist_gsplit_c_uncUp);
     histo_uncUp ->Add(hist_l_uncUp);
     if (inclTTbar) histo_uncUp ->Add(hist_ttbar_uncUp);
     if (inclZjj) histo_uncUp ->Add(hist_zjj_uncUp);
@@ -653,7 +657,7 @@ void DrawStacked(TString name,
     histo_uncDown = (TH1D*) hist_b_uncDown->Clone();
     histo_uncDown ->Add(hist_c_uncDown);
     histo_uncDown ->Add(hist_gsplit_uncDown);
-    histo_uncDown ->Add(hist_gsplit_c_uncDown);
+    //    histo_uncDown ->Add(hist_gsplit_c_uncDown);
     histo_uncDown ->Add(hist_l_uncDown);
     if (inclTTbar) histo_uncDown ->Add(hist_ttbar_uncDown);
     if (inclZjj) histo_uncDown ->Add(hist_zjj_uncDown);
@@ -672,7 +676,7 @@ void DrawStacked(TString name,
   beautify(hist_c     , 8     , 1001    , 1) ;
   beautify(hist_b     , 2     , 1001    , 1) ;
   beautify(hist_gsplit, 7     , 1001    , 1) ;
-  beautify(hist_gsplit_c, 5     , 1001    , 1) ;
+  //  beautify(hist_gsplit_c, 5     , 1001    , 1) ;
   beautify(hist_l     , 4     , 1001    , 1) ;
   beautify(histo_tot  , 0     , 0       , 0) ;
   if (inclTTbar) beautify(hist_ttbar , 6     , 1001    , 1) ;
@@ -687,7 +691,7 @@ void DrawStacked(TString name,
   stack->Add(hist_b);
   stack->Add(hist_gsplit);
   stack->Add(hist_c);
-  stack->Add(hist_gsplit_c);
+  //  stack->Add(hist_gsplit_c);
   stack->Add(hist_l);
   if (inclTTbar) stack->Add(hist_ttbar);
   if (inclZjj) stack->Add(hist_zjj);
@@ -815,7 +819,7 @@ void DrawStacked(TString name,
   leg->AddEntry(hist_c,        "c quark"           ,         "f");
   leg->AddEntry(hist_l,        "uds quark or gluon"     ,    "f");
   if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit,   "b from gluon splitting"     ,"f");
-  if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,   "c from gluon splitting"     ,"f");
+  //  if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,   "c from gluon splitting"     ,"f");
   if (inclTTbar) leg->AddEntry(hist_ttbar,    "t#bar{t}"               ,    "f");
   if (inclZjj) leg->AddEntry(hist_zjj,    "Z#rightarrowq#bar{q}"       ,    "f");
 
@@ -932,7 +936,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   TH1D* hist_b;
   TH1D* hist_c;
   TH1D* hist_gsplit;
-  TH1D* hist_gsplit_c;
+  //  TH1D* hist_gsplit_c;
   TH1D* hist_l;
   TH1D* hist_data;
 
@@ -942,7 +946,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   hist_b         = (TH1D*)myFile->Get("QCD__"+name+"_b");
   hist_c         = (TH1D*)myFile->Get("QCD__"+name+"_c");
   hist_gsplit    = (TH1D*)myFile->Get("QCD__"+name+"_bfromg");
-  hist_gsplit_c    = (TH1D*)myFile->Get("QCD__"+name+"_cfromg");
+  //  hist_gsplit_c    = (TH1D*)myFile->Get("QCD__"+name+"_cfromg");
   hist_l         = (TH1D*)myFile->Get("QCD__"+name+"_l");
   if (doData) hist_data      = (TH1D*)myFile->Get("DATA__"+name+"_data");
 
@@ -950,15 +954,16 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   //histo_tot->Sumw2();
   histo_tot ->Add(hist_c);
   histo_tot ->Add(hist_gsplit);
-  histo_tot ->Add(hist_gsplit_c);
+  // histo_tot ->Add(hist_gsplit_c);
   histo_tot ->Add(hist_l);
 
   if (doData) {
-    float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral());
+    //float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral());
+    float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_l->Integral());
     hist_b       ->Scale(scale_f);
     hist_c       ->Scale(scale_f);
     hist_gsplit  ->Scale(scale_f);
-    hist_gsplit_c  ->Scale(scale_f);
+    //    hist_gsplit_c  ->Scale(scale_f);
     hist_l       ->Scale(scale_f);
     histo_tot    ->Scale(scale_f);
   }
@@ -973,7 +978,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   TH1D * TagRate_MC_c    = new TH1D ("TagRate_MC_c",histotitle,nbinx,minx,maxx);
   TH1D * TagRate_MC_udsg = new TH1D ("TagRate_MC_udsg",histotitle,nbinx,minx,maxx);
   TH1D * TagRate_MC_gspl = new TH1D ("TagRate_MC_gspl",histotitle,nbinx,minx,maxx);
-  TH1D * TagRate_MC_gspl_c = new TH1D ("TagRate_MC_gspl_c",histotitle,nbinx,minx,maxx);
+  //  TH1D * TagRate_MC_gspl_c = new TH1D ("TagRate_MC_gspl_c",histotitle,nbinx,minx,maxx);
 
   int nbin_max ;
   if (doData) nbin_max = hist_data->GetNbinsX() ;
@@ -1001,7 +1006,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
     TagRate_MC_c->SetBinContent(ii+1, hist_c->Integral(ii+1,nbin_max+1) / totmc);
     TagRate_MC_udsg->SetBinContent(ii+1, hist_l->Integral(ii+1,nbin_max+1) / totmc);
     TagRate_MC_gspl->SetBinContent(ii+1, hist_gsplit->Integral(ii+1,nbin_max+1) / totmc);
-    TagRate_MC_gspl_c->SetBinContent(ii+1, hist_gsplit_c->Integral(ii+1,nbin_max+1) / totmc);
+    //    TagRate_MC_gspl_c->SetBinContent(ii+1, hist_gsplit_c->Integral(ii+1,nbin_max+1) / totmc);
 
   }
 
@@ -1043,7 +1048,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   TagRate_MC_b->SetFillColor(2);
   TagRate_MC_c->SetFillColor(8);
   TagRate_MC_gspl->SetFillColor(7);
-  TagRate_MC_gspl_c->SetFillColor(5);
+  //  TagRate_MC_gspl_c->SetFillColor(5);
   TagRate_MC_udsg->SetFillColor(4);
 
   // DO STACK
@@ -1051,7 +1056,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
 
   hs->Add(TagRate_MC_b);
   hs->Add(TagRate_MC_gspl);
-  hs->Add(TagRate_MC_gspl_c);
+  //  hs->Add(TagRate_MC_gspl_c);
   hs->Add(TagRate_MC_c);
   hs->Add(TagRate_MC_udsg);
 
@@ -1086,7 +1091,7 @@ void DrawTagRate(TString name, TString histotitle, bool log, bool doData){
   if (doData) leg->AddEntry(TagRate_Data,        datacaption                     ,"p");
   leg->AddEntry(TagRate_MC_b,        "b quark"                  ,"f");
   leg->AddEntry(TagRate_MC_gspl,     "b from gluon splitting"   ,"f");
-  leg->AddEntry(TagRate_MC_gspl_c,     "c from gluon splitting"   ,"f");
+  //  leg->AddEntry(TagRate_MC_gspl_c,     "c from gluon splitting"   ,"f");
   leg->AddEntry(TagRate_MC_c,        "c quark"                  ,"f");
   leg->AddEntry(TagRate_MC_udsg,     "uds quark or gluon"     ,"f");
 
@@ -1152,7 +1157,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   TH2D* hist_b;
   TH2D* hist_c;
   TH2D* hist_gsplit;
-  TH2D* hist_gsplit_c;
+  // TH2D* hist_gsplit_c;
   TH2D* hist_l;
   TH2D* hist_data;
 
@@ -1162,7 +1167,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   hist_b         = (TH2D*)myFile->Get("QCD__"+name+"_b");
   hist_c         = (TH2D*)myFile->Get("QCD__"+name+"_c");
   hist_gsplit    = (TH2D*)myFile->Get("QCD__"+name+"_bfromg");
-  hist_gsplit_c    = (TH2D*)myFile->Get("QCD__"+name+"_cfromg");
+  //  hist_gsplit_c    = (TH2D*)myFile->Get("QCD__"+name+"_cfromg");
   hist_l         = (TH2D*)myFile->Get("QCD__"+name+"_l");
   hist_data      = (TH2D*)myFile->Get("DATA__"+name+"_data");
 
@@ -1171,16 +1176,17 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   TH2D* histo_tot = (TH2D*) hist_b->Clone();
   histo_tot ->Add(hist_c);
   histo_tot ->Add(hist_gsplit);
-  histo_tot ->Add(hist_gsplit_c);
+  //  histo_tot ->Add(hist_gsplit_c);
   histo_tot ->Add(hist_l);
 
-  float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral());
+  //float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral());
+  float scale_f = (hist_data->Integral())/(hist_b->Integral() + hist_c ->Integral()+ hist_gsplit->Integral() + hist_l->Integral());
 
   if (doData) {
     hist_b       ->Scale(scale_f);
     hist_c       ->Scale(scale_f);
     hist_gsplit  ->Scale(scale_f);
-    hist_gsplit_c  ->Scale(scale_f);
+    //    hist_gsplit_c  ->Scale(scale_f);
     hist_l       ->Scale(scale_f);
     histo_tot    ->Scale(scale_f);
   }
@@ -1195,7 +1201,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
   TProfile* pro_mc_c    ;
   TProfile* pro_mc_udsg ;
   TProfile* pro_mc_gspl ;
-  TProfile* pro_mc_gspl_c ;
+  //  TProfile* pro_mc_gspl_c ;
   TProfile* pro_data    ;
 
   if (doProfile) {
@@ -1204,7 +1210,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     pro_mc_c    = hist_c->ProfileX();
     pro_mc_udsg = hist_l->ProfileX();
     pro_mc_gspl = hist_gsplit->ProfileX();
-    pro_mc_gspl_c = hist_gsplit_c->ProfileX();
+    //    pro_mc_gspl_c = hist_gsplit_c->ProfileX();
     pro_data    = hist_data->ProfileX();
 
     pro_mc     ->Rebin(5) ;
@@ -1212,7 +1218,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     pro_mc_c   ->Rebin(5) ;
     pro_mc_udsg->Rebin(5) ;
     pro_mc_gspl->Rebin(5) ;
-    pro_mc_gspl_c->Rebin(5) ;
+    //    pro_mc_gspl_c->Rebin(5) ;
     pro_data   ->Rebin(5) ;
 
     //beautify(pro_mc     , 0, 1, 1);
@@ -1227,7 +1233,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     pro_mc_c->SetLineColor(8);
     pro_mc_udsg->SetLineColor(4);
     pro_mc_gspl->SetLineColor(7);
-    pro_mc_gspl_c->SetLineColor(5);
+    //    pro_mc_gspl_c->SetLineColor(5);
 
     pro_data->SetMarkerStyle(20);
     pro_data->SetMarkerSize(0.75);
@@ -1235,8 +1241,8 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     pro_mc_gspl->GetXaxis()->SetTitle(titleX);
     pro_mc_gspl->GetYaxis()->SetTitle(titleY);
 
-    pro_mc_gspl_c->GetXaxis()->SetTitle(titleX);
-    pro_mc_gspl_c->GetYaxis()->SetTitle(titleY);
+    //    pro_mc_gspl_c->GetXaxis()->SetTitle(titleX);
+    //    pro_mc_gspl_c->GetYaxis()->SetTitle(titleY);
 
     Double_t titleoffsetx=0.8;
     Double_t titleoffsety=0.8;
@@ -1262,9 +1268,9 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     pro_mc_gspl->GetYaxis()->SetTitleSize(titlesizey);
     pro_mc_gspl->GetYaxis()->SetTitleOffset(titleoffsety);
 
-    pro_mc_gspl_c->GetYaxis()->SetLabelSize(labelsizey);
-    pro_mc_gspl_c->GetYaxis()->SetTitleSize(titlesizey);
-    pro_mc_gspl_c->GetYaxis()->SetTitleOffset(titleoffsety);
+    //    pro_mc_gspl_c->GetYaxis()->SetLabelSize(labelsizey);
+    //    pro_mc_gspl_c->GetYaxis()->SetTitleSize(titlesizey);
+    //    pro_mc_gspl_c->GetYaxis()->SetTitleOffset(titleoffsety);
 
     pro_mc_udsg->GetYaxis()->SetLabelSize(labelsizey);
     pro_mc_udsg->GetYaxis()->SetTitleSize(titlesizey);
@@ -1287,9 +1293,9 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     pro_mc_gspl->GetXaxis()->SetTitleSize(titlesizex);
     pro_mc_gspl->GetXaxis()->SetTitleOffset(titleoffsetx);
 
-    pro_mc_gspl_c->GetXaxis()->SetLabelSize(labelsizex);
-    pro_mc_gspl_c->GetXaxis()->SetTitleSize(titlesizex);
-    pro_mc_gspl_c->GetXaxis()->SetTitleOffset(titleoffsetx);
+    //    pro_mc_gspl_c->GetXaxis()->SetLabelSize(labelsizex);
+    //    pro_mc_gspl_c->GetXaxis()->SetTitleSize(titlesizex);
+    //    pro_mc_gspl_c->GetXaxis()->SetTitleOffset(titleoffsetx);
 
     pro_mc_udsg->GetXaxis()->SetLabelSize(labelsizex);
     pro_mc_udsg->GetXaxis()->SetTitleSize(titlesizex);
@@ -1298,7 +1304,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     float maxhist= pro_mc_gspl->GetMaximum();
     if (pro_mc_b->GetMaximum() > maxhist) maxhist = pro_mc_b->GetMaximum()*1.1;
     if (pro_mc_c->GetMaximum() > maxhist) maxhist = pro_mc_c->GetMaximum()*1.1;
-    if (pro_mc_gspl_c->GetMaximum() > maxhist) maxhist = pro_mc_gspl_c->GetMaximum()*1.1;
+    //    if (pro_mc_gspl_c->GetMaximum() > maxhist) maxhist = pro_mc_gspl_c->GetMaximum()*1.1;
     if (pro_mc_udsg->GetMaximum() > maxhist) maxhist = pro_mc_udsg->GetMaximum()*1.1;
     if (pro_mc->GetMaximum() > maxhist) maxhist = pro_mc->GetMaximum()*1.1;
     if (pro_data->GetMaximum() > maxhist) maxhist = pro_data->GetMaximum()*1.1;
@@ -1306,7 +1312,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     float minhist= pro_mc_gspl->GetMinimum();
     if (pro_mc_b->GetMinimum() < minhist) minhist = pro_mc_b->GetMinimum()*0.9;
     if (pro_mc_c->GetMinimum() < minhist) minhist = pro_mc_c->GetMinimum()*0.9;
-    if (pro_mc_gspl_c->GetMinimum() < minhist) minhist = pro_mc_gspl_c->GetMinimum()*0.9;
+    //    if (pro_mc_gspl_c->GetMinimum() < minhist) minhist = pro_mc_gspl_c->GetMinimum()*0.9;
     if (pro_mc_udsg->GetMinimum() < minhist) minhist = pro_mc_udsg->GetMinimum()*0.9;
     if (pro_mc->GetMinimum() < minhist) minhist = pro_mc->GetMinimum()*0.9;
     if (pro_data->GetMinimum() < minhist) minhist = pro_data->GetMinimum()*0.9;
@@ -1316,7 +1322,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 
     pro_mc_gspl->Draw("hist");
     pro_mc_b->Draw("hist,same");
-    pro_mc_gspl_c->Draw("hist,same");
+    //    pro_mc_gspl_c->Draw("hist,same");
     pro_mc_c->Draw("hist,same");
     pro_mc_udsg->Draw("hist,same");
     pro_mc->Draw("hist,same");
@@ -1356,7 +1362,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     leg->AddEntry(pro_mc_b,        "b quark"                ,"l") ;
     leg->AddEntry(pro_mc_gspl,     "b from gluon splitting" ,"l") ;
     leg->AddEntry(pro_mc_c,        "c quark"                ,"l") ;
-    leg->AddEntry(pro_mc_gspl_c,     "c from gluon splitting" ,"l") ;
+    //    leg->AddEntry(pro_mc_gspl_c,     "c from gluon splitting" ,"l") ;
     leg->AddEntry(pro_mc_udsg,     "uds quark or gluon"     ,"l") ;
   }
   else {
