@@ -99,6 +99,7 @@ def main():
     print group
     final_histos = {}
 
+    totalFatjets = 0
     for dataset in group_datasets[group]:
       input_root_file  = os.path.join(main_workdir,dataset.lstrip('/').replace('/','__') + '.root')
       if not os.path.isfile(input_root_file):
@@ -125,6 +126,8 @@ def main():
       else:
         print dataset + ' -- Events: %.0f (all), %.0f (stored); scale: %.8E; Fatjets: %.0f; Fatjets (after scale): %0.f'%(nEventsAll,nEventsStored,scale,nFatjet, scale*nFatjet)
 
+      totalFatjets = totalFatjets + scale*nFatjet
+
       # get the number of histograms
       nHistos = root_file.Get(options.analyzer_module).GetListOfKeys().GetEntries()
 
@@ -141,6 +144,10 @@ def main():
         else:
           final_histos[histoName].Add(htemp, scale)
 
+
+    print ''
+    print 'TOTAL Fatjets (after scale) = %.0f'%totalFatjets
+
     #output_root_file.cd()
     histos = final_histos.keys()
     histos.sort()
@@ -152,7 +159,7 @@ def main():
 
   #output_root_file.Close()
 
-  #print ''
+  print ''
   #print 'Final histograms file: ' + os.path.join(output_dir,filename)
   #print ''
 
