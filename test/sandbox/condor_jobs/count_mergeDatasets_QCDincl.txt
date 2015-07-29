@@ -1,5 +1,7 @@
 [?1034hTurning on AutoLibraryLoader 
 DATA
+
+TOTAL Fatjets (after scale) = 0
 Done
 QCD
 QCDincl_Pt170_ptmin-300_70m200_muTag_tau21-05 -- Events: 3364368 (all), 3364365 (stored); relative xs: 9.30933493E-01; scale: 3.48582557E+01; Fatjets: 7; Fatjets (after scale): 244
@@ -12,4 +14,7 @@ QCDincl_Pt1400_ptmin-300_70m200_muTag_tau21-05 -- Events: 197959 (all), 197959 (
 QCDincl_Pt1800_ptmin-300_70m200_muTag_tau21-05 -- Events: 194924 (all), 194924 (stored); relative xs: 9.12414206E-07; scale: 5.89681106E-04; Fatjets: 8; Fatjets (after scale): 0
 QCDincl_Pt2400_ptmin-300_70m200_muTag_tau21-05 -- Events: 198383 (all), 198383 (stored); relative xs: 5.42148341E-08; scale: 3.44273955E-05; Fatjets: 5; Fatjets (after scale): 0
 QCDincl_Pt3200_ptmin-300_70m200_muTag_tau21-05 -- Events: 188696 (all), 188696 (stored); relative xs: 1.31329762E-09; scale: 8.76780642E-07; Fatjets: 3; Fatjets (after scale): 0
+
+TOTAL Fatjets (after scale) = 843
 Done
+
