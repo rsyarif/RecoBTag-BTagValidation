@@ -1,0 +1,31 @@
+DATA:
+# Dataset_name                         xs (in pb, for data set to -1)
+#/Jet/Run2012A-22Jan2013-v1/AOD         -1
+#/JetHT/Run2012B-22Jan2013-v1/AOD       -1
+#/JetHT/Run2012C-22Jan2013-v1/AOD       -1
+#/JetHT/Run2012D-22Jan2013-v1/AOD       -1
+
+QCD: L=1000
+# Dataset_name                                                                                       xs (in pb, for data set to -1)
+
+QCDincl_Pt170_ptmin-300_70m200_muTag_tau21-05 117276
+QCDincl_Pt300_ptmin-300_70m200_muTag_tau21-05 7823
+QCDincl_Pt470_ptmin-300_70m200_muTag_tau21-05 648.2
+QCDincl_Pt600_ptmin-300_70m200_muTag_tau21-05 186.9
+QCDincl_Pt800_ptmin-300_70m200_muTag_tau21-05 32.293
+QCDincl_Pt1000_ptmin-300_70m200_muTag_tau21-05 9.4183
+QCDincl_Pt1400_ptmin-300_70m200_muTag_tau21-05 0.84265
+QCDincl_Pt1800_ptmin-300_70m200_muTag_tau21-05 0.114943
+QCDincl_Pt2400_ptmin-300_70m200_muTag_tau21-05 0.00682981
+QCDincl_Pt3200_ptmin-300_70m200_muTag_tau21-05 0.000165445
+
+
+
+#TTJets: L=19784
+#/TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM               112.3247008
+#/TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM            107.6721984
+#/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM            25.8031008
+
+#ZJetsFullyHadronic: L=19784
+# Dataset_name                                                                                                                  xs (in pb, for data set to -1)
+#/ZJetsFullyHadronic_PtZ-350_8TeV-madgraph/ferencek-Summer12_DR53X-PU_S10_START53_V7C-v1-c9b345a6407f828c1cc6a52f8007a229/USER   2.08784838129
