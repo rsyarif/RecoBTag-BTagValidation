@@ -911,6 +911,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           }
       }//end mu loop
 
+      //      float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet]; //for BTagAnaLite by rizki
+
       float nSE = FatJetInfo.Jet_nSE[iJet];
       float nSM = FatJetInfo.Jet_nSM[iJet];
       float nSL_3 = nSE + nSM ;
@@ -978,7 +980,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       FillHisto("FatJet_vertexJetDeltaR"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexJetDeltaR ,   wtPU*wtFatJet);
       FillHisto("FatJet_flightDistance2dSig"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, flightDistance2dSig ,   wtPU*wtFatJet);
       FillHisto("FatJet_minSubJetCSVIVF"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, minSubJetCSVIVF,   wtPU*wtFatJet);
-
 
       FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SV  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SL  ,   wtPU*wtFatJet);
