@@ -667,14 +667,21 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   //---------------------------- Start event loop ---------------------------------------//
   for(Long64_t iEntry = 0; iEntry < nEntries; ++iEntry) {
     JetTreeEvtInfo->GetEntry(iEntry);
+
     JetTree->GetEntry(iEntry);
     if((iEntry%reportEvery_) == 0) edm::LogInfo("EventNumber") << ">>>>> Processing event " << iEntry << " of " << nEntries;
 
-    if(EvtInfo.Run < 0) {
+    int run = EvtInfo.Run ; 
+    int lumi = EvtInfo.LumiBlock ; 
+
+    if(run < 0) {
       isData = false;
       if ( iEntry == 0) edm::LogInfo("IsMC") << ">>>>> Running on simulation\n" ; 
     }
     else if( iEntry == 0 ) edm::LogInfo("IsData") << ">>>>> Running on data\n" ; 
+
+    if ( run == 251721 && (lumi >= 123 && lumi <= 244) ) continue ; 
+    edm::LogInfo("RunAndLumi") << ">>>>> Runno = " << run << " lumi = " << lumi;
 
     double wtPU = 1.;
     if ( doPUReweightingOfficial_ && !isData )
@@ -723,7 +730,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if ( FatJetInfo.Jet_massSoftDrop[iJet] < fatJetSoftDropMassMin_ ||
             FatJetInfo.Jet_massSoftDrop[iJet] > fatJetSoftDropMassMax_ )  continue; //// apply softdrop jet mass cut
       }
-  
+
       //added by rizki - start
       float tau1 = FatJetInfo.Jet_tau1[iJet];
       float tau2 = FatJetInfo.Jet_tau2[iJet];
@@ -771,7 +778,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       double subjet_dy = subjet1_p4.Rapidity() - subjet2_p4.Rapidity() ;
       double subjet_dphi = subjet1_p4.DeltaPhi(subjet2_p4); ;
       double subjet_dyphi = sqrt( subjet_dy*subjet_dy + subjet_dphi*subjet_dphi ) ;
-      
+
       ////// If processing subjets, skip fat jets for which the subjets are separated by dR>0.8
       //if( (usePrunedSubjets_ || useSoftDropSubjets_)  && subjet_dR>fatJetCone ) continue; 
 
@@ -885,20 +892,20 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       //elecron loop
       for(int iSE = FatJetInfo.Jet_nFirstSE[iJet]; iSE<FatJetInfo.Jet_nLastSE[iJet]; ++iSE){
-      	if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
-      	  {
-      	    ele_ptrel = lep_ptrel;
-	    //ele_ratio = FatJetInfo.PFElectron_ratio[iSE];
-      	  }
+        if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
+        {
+          ele_ptrel = lep_ptrel;
+          //ele_ratio = FatJetInfo.PFElectron_ratio[iSE];
+        }
       }// end ele loop
 
       //muon loop
       for(int iSM = FatJetInfo.Jet_nFirstSM[iJet]; iSM<FatJetInfo.Jet_nLastSM[iJet]; ++iSM){
-      	if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
-          {
-      	    mu_ptrel = lep_ptrel;
-	    //mu_ratio = FatJetInfo.PFMuon_ratio[iSM];
-          }
+        if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
+        {
+          mu_ptrel = lep_ptrel;
+          //mu_ratio = FatJetInfo.PFMuon_ratio[iSM];
+        }
       }//end mu loop
 
       float nSE = FatJetInfo.Jet_nSE[iJet];
