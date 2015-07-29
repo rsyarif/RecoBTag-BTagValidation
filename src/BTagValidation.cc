@@ -1670,7 +1670,7 @@ double BTagValidation::GetLumiWeightsPVBased (const std::string file, const std:
   double wtPU(1) ;
   TFile* f = TFile::Open(file.c_str(), "READ") ;
   TH1D* hwt = (TH1D*)f->Get(hist.c_str()) ; 
-  wtPU = npv > 3 && npv <= 60 ? hwt->GetBinContent(npv) : 1.; 
+  wtPU = npv > 0 && npv <= 60 ? hwt->GetBinContent(npv) : 1.; 
   f->Close() ; 
   delete f ;
   delete hwt ; 
