@@ -163,7 +163,7 @@ process = cms.Process("BTagVal")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cout = cms.untracked.PSet(
-    threshold = cms.untracked.string('INFO')
+    threshold = cms.untracked.string('INFO'),
 )
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) ) # Keep as such
