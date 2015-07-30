@@ -276,7 +276,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   doPUReweightingOfficial_(iConfig.getParameter<bool>("DoPUReweightingOfficial")),
   doPUReweightingNPV_(iConfig.getParameter<bool>("DoPUReweightingNPV")),
   usePrunedSubjets_(iConfig.getParameter<bool>("UsePrunedSubjets")), 
-  useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets")),
+  useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets"))
 {
   //now do what ever initialization is needed
   isData = true; 
