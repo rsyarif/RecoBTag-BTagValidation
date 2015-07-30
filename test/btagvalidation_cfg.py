@@ -129,11 +129,6 @@ options.register('doPUReweighting', False,
     VarParsing.varType.bool,
     "Do pileup reweighting"
 )
-options.register('isData', False, 
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.bool,
-    "Run over data"
-)
 
 ## 'maxEvents' is already registered by the Framework, changing default value
 options.setDefault('maxEvents', 2000)
@@ -179,7 +174,6 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetDoubleBTagging   = cms.bool(options.fatJetDoubleBTagging),
     UsePrunedSubjets       = cms.bool(options.usePrunedSubjets),
     UseSoftDropSubjets     = cms.bool(options.useSoftDropSubjets),
-    IsData                 = cms.bool(options.isData),
     ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
     ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),
     DynamicMuonSubJetDR    = cms.bool(options.dynamicMuonSubJetDR),
