@@ -27,8 +27,8 @@
 using namespace std;
 
 TString filename_ext="" ; 
-TString filename  = "Final_histograms_btagval_Erich.root";
-TString dir4plots = "test";
+TString filename  = "./test/QCD-GoldenData/Final_histograms_btagval.root";
+TString dir4plots = "BoostedBTagCommissioning/noPUReweight/log";
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
@@ -78,8 +78,8 @@ void DrawCommPlot(bool Draw_track_plots=true,
 
   TString action = "mkdir -p " + dir4plots;
   system(action);
-
-  //Draw("h1_nPV"      ,"# of PV",0);
+  Draw("h1_pt_hat"   ,"p_{T} hat",1);
+  Draw("h1_nPV"      ,"# of PV",0);
   //Draw("h1_nFatJet"  ,"# of fat jets",0);
   //Draw("h1_nSubJet"  ,"# of subjets",0);
 
@@ -107,8 +107,8 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   DrawStacked(histoTag+"_JBP"         ,"JBP"                          ,logy ,dodata ,extNorm ,1  ,0 ,0. ,1.   );
   DrawStacked(histoTag+"_track_multi" ,"Number of tracks in the jets" ,logy ,dodata ,extNorm ,0. ,0.,0. ,0.   );
   if( histoTag=="FatJet" ) {
-    if( !prunedjets) DrawStacked(histoTag+"_softdropMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    if( prunedjets) DrawStacked(histoTag+"_prunedMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    //if( !prunedjets) DrawStacked(histoTag+"_softdropMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    //if( prunedjets) DrawStacked(histoTag+"_prunedMass" ,"Pruned mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane" ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"    ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                 ,logy ,dodata ,extNorm ,2 ,0 ,0. ,0.);
@@ -585,7 +585,6 @@ void DrawStacked(TString name,
       if (inclZjj)  hist_zjj_uncDown->Rebin(nRebin);
     }
   }
-
   if (doData) {
     float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral() ) ;
     if (fExtNorm) scale_f = ( hist_data_ext->Integral() - (inclTTbar ? hist_ttbar_ext->Integral() : 0) - (inclZjj ? hist_zjj_ext->Integral() : 0) )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_gsplit_c_ext->Integral() + hist_l_ext->Integral() ) ;
