@@ -681,7 +681,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     else if( iEntry == 0 ) edm::LogInfo("IsData") << ">>>>> Running on data\n" ; 
 
     if ( run == 251721 && (lumi >= 123 && lumi <= 244) ) continue ; 
-    edm::LogInfo("RunAndLumi") << ">>>>> Runno = " << run << " lumi = " << lumi;
 
     double wtPU = 1.;
     if ( doPUReweightingOfficial_ && !isData )
@@ -1668,8 +1667,8 @@ double BTagValidation::scaleFactorUDSG_CSVM(const double jetPt, const double jet
 // ---- Method returns MC event weight for for reweighting to the NPV distribution in the data: substitute for official PU reweighting ----
 double BTagValidation::GetLumiWeightsPVBased (const std::string file, const std::string hist, const int npv) { 
   double wtPU(1) ;
-  TFile* f = TFile::Open(file.c_str(), "READ") ;
-  TH1D* hwt = (TH1D*)f->Get(hist.c_str()) ; 
+  TFile* f = new TFile(file.c_str()) ;
+  TH1D* hwt = new TH1D( *(static_cast<TH1D*>(f->Get( hist.c_str() )->Clone() )) ); 
   wtPU = npv > 0 && npv <= 60 ? hwt->GetBinContent(npv) : 1.; 
   f->Close() ; 
   delete f ;
