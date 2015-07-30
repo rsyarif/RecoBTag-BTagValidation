@@ -72,6 +72,7 @@ eval `scram runtime -sh`
 cp -v MAIN_WORKDIR/CMSSW_cfg.py $BATCHDIR/CMSSW_cfg.py
 cp -v MAIN_WORKDIR/PUDist*.root $BATCHDIR/
 cp -v DATASET_WORKDIR/input/inputFiles_JOB_NUMBER_cfi.py $BATCHDIR/inputFiles_cfi.py
+cp -v MAIN_WORKDIR/hnpv*.root $BATCHDIR/
 
 cd $BATCHDIR
 echo "Running CMSSW job"
@@ -136,7 +137,8 @@ def main():
       continue
     if re.search("^PUDist.*\.root$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
-
+    elif re.search("^hnpv.*\.root$", filename):
+      shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
   # open and read the dataset_list file
   dataset_list_file = open(dataset_list,"r")
   dataset_list_lines = dataset_list_file.readlines()
