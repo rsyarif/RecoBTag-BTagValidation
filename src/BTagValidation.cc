@@ -633,8 +633,8 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_track_pt15_cut"    , "pT of all the tracks",            300,0.,30.);
   AddHisto(histoTag+"_track_IP2D_cut"     ,"IP2D ",                           100,-1.,1.);
 
-  AddHisto(histoTag+"_TCHE"      ,         "TCHE",                             50,0.,30. );
-  AddHisto(histoTag+"_TCHP"      ,         "TCHP",                             50,0.,30. );
+  // AddHisto(histoTag+"_TCHE"      ,         "TCHE",                             50,0.,30. ); //by rizki - not in BTagAnalyzerLite
+  // AddHisto(histoTag+"_TCHP"      ,         "TCHP",                             50,0.,30. ); //by rizki - not in BTagAnalyzerLite
   AddHisto(histoTag+"_JP"        ,         "JP",                               50,0.,2.5 );
   AddHisto(histoTag+"_JBP"       ,         "JBP",                              50,0.,8.  );
   AddHisto(histoTag+"_SSV"       ,         "SSVHE",                            70,0.,7.  );
@@ -644,10 +644,10 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   AddHisto(histoTag+"_DoubleB"   ,         "DoubleB",                         100,-1,1.  );
 
 
-  AddHisto(histoTag+"_TCHE_extended1"   ,  "TCHE_extended1",                   70, -30.,30. );
-  AddHisto(histoTag+"_TCHP_extended1"   ,  "TCHP_extended1",                   70, -30.,30. );
-  AddHisto(histoTag+"_TCHE_extended2"   ,  "TCHE_extended2",                  100,-30.,30. );
-  AddHisto(histoTag+"_TCHP_extended2"   ,  "TCHP_extended2",                  100,-30.,30. );
+  // AddHisto(histoTag+"_TCHE_extended1"   ,  "TCHE_extended1",                   70, -30.,30. ); //by rizki - not in BTagAnalyzerLite
+  // AddHisto(histoTag+"_TCHP_extended1"   ,  "TCHP_extended1",                   70, -30.,30. ); //by rizki - not in BTagAnalyzerLite
+  // AddHisto(histoTag+"_TCHE_extended2"   ,  "TCHE_extended2",                  100,-30.,30. ); //by rizki - not in BTagAnalyzerLite
+  // AddHisto(histoTag+"_TCHP_extended2"   ,  "TCHP_extended2",                  100,-30.,30. ); //by rizki - not in BTagAnalyzerLite
   AddHisto(histoTag+"_discri_ssche0",      "SSVHE Discriminator",              80, -1., 7.   );
   AddHisto(histoTag+"_discri_sschp0",      "SSVHP Discriminator",              80, -1., 7.   );
 
@@ -942,49 +942,49 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
       float BDTG_All = FatJetInfo.Jet_BDTG_All[iJet];
 
-      FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, z_ratio  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, tau_dot  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, SV_mass_0  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, SV_EnRat_0  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, SV_EnRat_1  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, z_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, tau_dot  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, SV_mass_0  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, SV_EnRat_0  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, SV_EnRat_1  ,   wtPU*wtFatJet);
 
       FillHisto("FatJet_PFLepton_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, lep_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFElectron_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, ele_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFMuon_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, mu_ptrel  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, lep_ratio  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_PFElectron_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, ele_ratio  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_PFMuon_ratio",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, mu_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, lep_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFElectron_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, ele_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFMuon_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, mu_ratio  ,   wtPU*wtFatJet);
 
       FillHisto("FatJet_nSL_3",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, nSL_3  ,   wtPU*wtFatJet);
       FillHisto("FatJet_nSE",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, nSE  ,   wtPU*wtFatJet);
       FillHisto("FatJet_nSM",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, nSM  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackSip3dSig_3  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_trackSip3dSig_2",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackSip3dSig_2  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_trackSip3dSig_1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackSip3dSig_1  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_trackSip3dSig_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackSip3dSig_0  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackSip3dSig_3  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_2",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackSip3dSig_2  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_1",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackSip3dSig_1  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_0",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackSip3dSig_0  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_trackEtaRel_2",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackEtaRel_2  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_trackEtaRel_1",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackEtaRel_1  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_trackEtaRel_0",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackEtaRel_0  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackEtaRel_2",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackEtaRel_2  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackEtaRel_1",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackEtaRel_1  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackEtaRel_0",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackEtaRel_0  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_jetNTracksEtaRel",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, jetNTracksEtaRel  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_jetNTracksEtaRel",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, jetNTracksEtaRel  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_jetNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, jetNTracks ,   wtPU*wtFatJet);
-      FillHisto("FatJet_vertexNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexNTracks ,   wtPU*wtFatJet);
-      FillHisto("FatJet_jetNSecondaryVertices"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, jetNSecondaryVertices ,   wtPU*wtFatJet);
-      FillHisto("FatJet_trackSip2dSigAboveCharm",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, trackSip2dSigAboveCharm ,   wtPU*wtFatJet);
-      FillHisto("FatJet_vertexMass"		,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexMass ,   wtPU*wtFatJet);
-      FillHisto("FatJet_vertexEnergyRatio"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexEnergyRatio ,   wtPU*wtFatJet);
-      FillHisto("FatJet_vertexJetDeltaR"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, vertexJetDeltaR ,   wtPU*wtFatJet);
-      FillHisto("FatJet_flightDistance2dSig"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, flightDistance2dSig ,   wtPU*wtFatJet);
-      FillHisto("FatJet_minSubJetCSVIVF"	,      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, minSubJetCSVIVF,   wtPU*wtFatJet);
+      FillHisto("FatJet_jetNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, jetNTracks ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, vertexNTracks ,   wtPU*wtFatJet);
+      FillHisto("FatJet_jetNSecondaryVertices"	,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, jetNSecondaryVertices ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip2dSigAboveCharm",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, trackSip2dSigAboveCharm ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexMass"		,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, vertexMass ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexEnergyRatio"	,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, vertexEnergyRatio ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexJetDeltaR"	,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, vertexJetDeltaR ,   wtPU*wtFatJet);
+      FillHisto("FatJet_flightDistance2dSig"	,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, flightDistance2dSig ,   wtPU*wtFatJet);
+      FillHisto("FatJet_minSubJetCSVIVF"	,      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, minSubJetCSVIVF,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SV  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_SL  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_Cascade  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_All",      FatJetInfo.Jet_flavour[iJet], isGluonSplit, isGluonSplit_c, BDTG_All  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, BDTG_SV  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, BDTG_SL  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, BDTG_Cascade  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_All",      FatJetInfo.Jet_flavour[iJet], isGSPcc, isGSPcc, BDTG_All  ,   wtPU*wtFatJet);
 
       //added by rizki - end
 
@@ -1330,8 +1330,8 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   // ------------------------------------------------
   // ------------- tagger information ---------------
   // ------------------------------------------------
-  float tche      = JetInfo.Jet_Ip2P[iJet];
-  float tchp      = JetInfo.Jet_Ip3P[iJet];
+  // float tche      = JetInfo.Jet_Ip2P[iJet]; //by rizki - not in BTagAnalyzerLite
+  // float tchp      = JetInfo.Jet_Ip3P[iJet]; //by rizki - not in BTagAnalyzerLite
   float jetproba  = JetInfo.Jet_Proba[iJet];
   float jetbproba = JetInfo.Jet_Bprob[iJet];
   float ssvhe     = JetInfo.Jet_Svx[iJet] ;
@@ -1341,8 +1341,8 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   float doubleb   = JetInfo.Jet_DoubleSV[iJet];
   //DM>>float mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[iJet];
 
-  FillHisto(histoTag+"_TCHE",     flav, isGSPbb, isGSPcc ,tche      ,wt);
-  FillHisto(histoTag+"_TCHP",     flav, isGSPbb, isGSPcc ,tchp      ,wt);
+  // FillHisto(histoTag+"_TCHE",     flav, isGSPbb, isGSPcc ,tche      ,wt); //by rizki - not in BTagAnalyzerLite
+  // FillHisto(histoTag+"_TCHP",     flav, isGSPbb, isGSPcc ,tchp      ,wt); //by rizki - not in BTagAnalyzerLite
   FillHisto(histoTag+"_JP",       flav, isGSPbb, isGSPcc ,jetproba  ,wt);
   FillHisto(histoTag+"_JBP",      flav, isGSPbb, isGSPcc ,jetbproba ,wt);
   FillHisto(histoTag+"_SSV",      flav, isGSPbb, isGSPcc ,ssvhe     ,wt);
@@ -1353,10 +1353,10 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   //DM>>FillHisto(histoTag+"_TagVarCSV_sv_mass", flav, isGSPbb ,isGSPcc ,mass_TagVarCSV_sv,   wt);
   //DM>>FillHisto2D(histoTag+"_TagVarCSV_sv_mass_vs_jetpt"        ,flav,isGSPbb , isGSPcc, ptjet,mass_TagVarCSV_sv,wt);
 
-  FillHisto(histoTag+"_TCHE_extended1",  flav, isGSPbb, isGSPcc ,tche  , wt);
-  FillHisto(histoTag+"_TCHP_extended1",  flav, isGSPbb, isGSPcc ,tchp  , wt);
-  FillHisto(histoTag+"_TCHE_extended2",  flav, isGSPbb, isGSPcc ,tche  , wt);
-  FillHisto(histoTag+"_TCHP_extended2",  flav, isGSPbb, isGSPcc ,tchp  , wt);
+  // FillHisto(histoTag+"_TCHE_extended1",  flav, isGSPbb, isGSPcc ,tche  , wt); //by rizki - not in BTagAnalyzerLite
+  // FillHisto(histoTag+"_TCHP_extended1",  flav, isGSPbb, isGSPcc ,tchp  , wt); //by rizki - not in BTagAnalyzerLite
+  // FillHisto(histoTag+"_TCHE_extended2",  flav, isGSPbb, isGSPcc ,tche  , wt); //by rizki - not in BTagAnalyzerLite
+  // FillHisto(histoTag+"_TCHP_extended2",  flav, isGSPbb, isGSPcc ,tchp  , wt); //by rizki - not in BTagAnalyzerLite
   FillHisto(histoTag+"_discri_ssche0",   flav, isGSPbb, isGSPcc ,ssvhe , wt);
   FillHisto(histoTag+"_discri_sschp0",   flav, isGSPbb, isGSPcc ,ssvhp , wt);
 
