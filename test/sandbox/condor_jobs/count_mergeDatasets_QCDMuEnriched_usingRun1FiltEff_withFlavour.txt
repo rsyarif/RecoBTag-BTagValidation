@@ -1,0 +1,16 @@
+[?1034hTurning on AutoLibraryLoader 
+DATA
+
+TOTAL Fatjets (after scale) = 0 (b: 0,bgsp: 0,c: 0,l: 0)
+Done
+QCD
+QCDMuEnriched_Pt170_ptmin-300_70m200_muTag_tau21-05 -- Events: 3948326 (all), 3948326 (stored); relative xs: 9.12493081E-01; scale: 2.02011090E+00; Fatjets: 230 (b: 20,bgsp: 111,c: 72,l: 27); Fatjets (after scale): 465 (b: 40,bgsp: 224,c: 145,l: 55)
+QCDMuEnriched_Pt300_ptmin-300_70m200_muTag_tau21-05 -- Events: 3927883 (all), 3927883 (stored); relative xs: 7.72993325E-02; scale: 1.72018769E-01; Fatjets: 2849 (b: 206,bgsp: 1383,c: 755,l: 505); Fatjets (after scale): 490 (b: 35,bgsp: 238,c: 130,l: 87)
+QCDMuEnriched_Pt470_ptmin-300_70m200_muTag_tau21-05 -- Events: 1990045 (all), 1990045 (stored); relative xs: 7.56234734E-03; scale: 3.32163846E-02; Fatjets: 2072 (b: 104,bgsp: 971,c: 534,l: 463); Fatjets (after scale): 69 (b: 3,bgsp: 32,c: 18,l: 15)
+QCDMuEnriched_Pt600_ptmin-300_70m200_muTag_tau21-05 -- Events: 1982667 (all), 1982667 (stored); relative xs: 2.13204514E-03; scale: 9.39951086E-03; Fatjets: 1781 (b: 118,bgsp: 700,c: 480,l: 483); Fatjets (after scale): 17 (b: 1,bgsp: 7,c: 5,l: 5)
+QCDMuEnriched_Pt800_ptmin-300_70m200_muTag_tau21-05 -- Events: 1990869 (all), 1990868 (stored); relative xs: 3.82292543E-04; scale: 1.67846302E-03; Fatjets: 1329 (b: 60,bgsp: 478,c: 341,l: 450); Fatjets (after scale): 2 (b: 0,bgsp: 1,c: 1,l: 1)
+QCDMuEnriched_Pt1000_ptmin-300_70m200_muTag_tau21-05 -- Events: 1963183 (all), 1963182 (stored); relative xs: 1.30901103E-04; scale: 5.82829008E-04; Fatjets: 927 (b: 51,bgsp: 309,c: 229,l: 338); Fatjets (after scale): 1 (b: 0,bgsp: 0,c: 0,l: 0)
+
+TOTAL Fatjets (after scale) = 1043 (b: 81,bgsp: 502,c: 298,l: 298)
+Done
+
