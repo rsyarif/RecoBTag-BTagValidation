@@ -26,7 +26,8 @@
 
 using namespace std;
 
-TString filename    ="/uscms_data/d3/rsyarif/FermilabSummer2015/HbbTagValidation/CMSSW_7_4_5/src/MyAnalysis/BTagValidation/test/btagvalplots_Testing_newBDT_july27_QCD_Pt-15TTo7000_TuneZ2star-Flat_13TeV_pythia6_mc_subjets.root";
+TString filename    ="../test/bTagValPlots_pruned.root"; 
+//TString filename    ="../test/bTagValPlots_softdrop.root"; 
 TString filename_ext="" ;
 TString dir4plots   ="HbbTagVal_btagvalplots_TEMP_canDELETE" ;
 
@@ -42,9 +43,9 @@ TString formatc=".C";
 
 bool bOverflow = 1;
 bool web       = 0;
-bool prunedjets = 1;
+bool prunedjets= 0;
 bool logy      = 1;
-bool dodata    = 1;
+bool dodata    = 0;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
 bool inclTTbar = 0;
@@ -107,12 +108,19 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   DrawStacked(histoTag+"_JBP"         ,"JBP"                          ,logy ,dodata ,extNorm ,1  ,0 ,0. ,1.   );
   DrawStacked(histoTag+"_track_multi" ,"Number of tracks in the jets" ,logy ,dodata ,extNorm ,0. ,0.,0. ,0.   );
   if( histoTag=="FatJet" ) {
-    if( !prunedjets) DrawStacked(histoTag+"_softdropMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    if( prunedjets) DrawStacked(histoTag+"_prunedMass" ,"SoftDrop mass [GeV/c^{2}]"                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_subjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane" ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_subjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"    ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    if( prunedjets) {
+      DrawStacked(histoTag+"_prunedMass"          ,"M_{pruned}[GeV/c^{2}]"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+      DrawStacked(histoTag+"_prunedsubjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane" ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+      DrawStacked(histoTag+"_prunedsubjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"    ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+      DrawStacked(histoTag+"_massDrop_pruned"    ,"Mass drop (pruned AK8 jets) [GeV]"                 ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    }
+    else {
+      DrawStacked(histoTag+"_softdropMass"         ,"M_{softdrop}[GeV/c^{2}]"                           ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+      DrawStacked(histoTag+"_softdropsubjet_dR"    ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane" ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+      DrawStacked(histoTag+"_softdropsubjet_dyphi" ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"    ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+      DrawStacked(histoTag+"_massDrop_softdrop"    ,"Mass drop (soft drop AK8 jets) [GeV]"              ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    }
     DrawStacked(histoTag+"_nsubjettiness","#tau_{2}/#tau_{1}"                                 ,logy ,dodata ,extNorm ,2 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_massDrop"     ,"Mass drop"                                         ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_DoubleB"      ,"DoubleB"                                           ,logy ,dodata ,extNorm ,1 ,0 ,-1 ,1.);
 
     //added by rizki - start
@@ -161,7 +169,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_BDTG_All"      ,"BDTG All"                              ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     //added by rizki - end
 
- }
+  }
 
   if (Draw_track_plots) {
     DrawStacked(histoTag+"_trk_multi_sel"      ,"Number of selected tracks in the jets" ,logy ,dodata ,extNorm ,1. ,0.);
@@ -743,8 +751,8 @@ void DrawStacked(TString name,
   pad0->SetLogy(log);
 
   if (!log) {
-   if ( name.Contains("_sv_mass")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*2.1 : histo_tot->GetMaximum()*2.1) ;
-   else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*3.0 : histo_tot->GetMaximum()*3.0) ;
+    if ( name.Contains("_sv_mass")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*2.1 : histo_tot->GetMaximum()*2.1) ;
+    else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*3.0 : histo_tot->GetMaximum()*3.0) ;
   }
   else {
     if (name.Contains("track_nHit") || name.Contains("track_HPix")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*5000000 : histo_tot->GetMaximum()*5000000) ;

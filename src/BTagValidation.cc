@@ -404,7 +404,7 @@ void BTagValidation::beginJob() {
 
   FatJetInfo.ReadTree(JetTree,"FatJetInfo");
   FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
-  //DM>>FatJetInfo.ReadCSVTagVarTree(JetTree, "FatJetInfo");
+  FatJetInfo.ReadCSVTagVarTree(JetTree, "FatJetInfo");
   if (useJetProbaTree_) {
     EvtInfo.ReadJetTrackTree(JetTreeEvtInfo);
     FatJetInfo.ReadJetTrackTree(JetTree,"FatJetInfo");
@@ -414,7 +414,7 @@ void BTagValidation::beginJob() {
     SubJetInfo.ReadTree(JetTree,"FatJetInfo","Pruned");
     SubJets.ReadTree(JetTree,"PrunedSubJetInfo") ;
     SubJets.ReadSubJetSpecificTree(JetTree,"PrunedSubJetInfo") ;
-    //DM>>SubJets.ReadCSVTagVarTree(JetTree, "PrunedSubJetInfo");
+    SubJets.ReadCSVTagVarTree(JetTree, "PrunedSubJetInfo");
 
     if (useJetProbaTree_) {
       SubJetInfo.ReadTree(JetTree,"FatJetInfo","Pruned");
@@ -473,25 +473,21 @@ void BTagValidation::beginJob() {
   if (usePrunedSubjets_) {
     AddHisto("FatJet_prunedsubjet_dR"           ,";#DeltaR_{#eta-#phi}(pruned subjets);;",100,0,1);
     AddHisto("FatJet_prunedsubjet_dyphi"        ,";#DeltaR_{y-#phi}(pruned subjets);;",100,0,1);
+    AddHisto("FatJet_massDrop_pruned"           ,";Mass drop (pruned AK8 jets) [GeV];;",100,0,1);
   }
   else if (useSoftDropSubjets_) {
     AddHisto("FatJet_softdropsubjet_dR"           ,";#DeltaR_{#eta-#phi}(soft drop subjets);;",100,0,1);
     AddHisto("FatJet_softdropsubjet_dyphi"        ,";#DeltaR_{y-#phi}(soft drop subjets);;",100,0,1);
-    AddHisto("FatJet_massDrop_softdrop"           ,";Mass drop (AK8 jets) [GeV];;",100,0,1);
+    AddHisto("FatJet_massDrop_softdrop"           ,";Mass drop (soft drop AK8 jets) [GeV];;",100,0,1);
   }
   AddHisto("FatJet_Mass"                        ,";M (AK8 jets) [GeV];;",200,0,400);
-  AddHisto("FatJet_prunedMass"                  ,";M_{pruned} (AK8 jets) [GeV];;",200,0,400);
-  AddHisto2D("FatJet_prunedMass_nsubjettiness"  ,";M_{pruned} (AK8 jets) [GeV];#tau_{2}/#tau_{1};" ,200 ,0 ,400 ,50 ,0 ,1);
-  AddHisto2D("FatJet_pt_prunedMass"             ,";M_{pruned} (AK8 jets) [GeV];p_{T} (AK8 jets) [GeV]",PtMax/10,0,PtMax,200,0,400);
-  AddHisto("FatJet_softdropMass"                ,";M_{soft drop} (AK8 jets) [GeV];;",200,0,400);
-  AddHisto2D("FatJet_softdropMass_nsubjettiness",";M_{soft drop} (AK8 jets) [GeV];#tau_{2}/#tau_{1};",200,0,400,50,0,1);
-  AddHisto2D("FatJet_pt_softdropMass"           ,";M_{soft drop} (AK8 jets) [GeV];p_{T} (AK8 jets) [GeV]",PtMax/10,0,PtMax,200,0,400);
   AddHisto("FatJet_nsubjettiness"               ,";#tau_{2}/#tau_{1};;",50,0,1);
-
+  AddHisto("FatJet_prunedMass"                  ,";M_{pruned} (AK8 jets) [GeV];;",200,0,400);
+  AddHisto("FatJet_softdropMass"                ,";M_{soft drop} (AK8 jets) [GeV];;",200,0,400);
+  AddHisto2D("FatJet_prunedMass_nsubjettiness"  ,";M_{pruned} (AK8 jets) [GeV];#tau_{2}/#tau_{1};" ,200 ,0 ,400 ,50 ,0 ,1);
+  AddHisto2D("FatJet_pt_prunedMass"             ,";p_{T} (AK8 jets) [GeV];M_{pruned} (AK8 jets) [GeV];",PtMax/10,0,PtMax,200,0,400);
   AddHisto2D("FatJet_softdropMass_nsubjettiness",";M_{soft drop} (AK8 jets) [GeV];#tau_{2}/#tau_{1};",200,0,400,50,0,1);
   AddHisto2D("FatJet_pt_softdropMass"           ,";p_{T} (AK8 jets) [GeV];M_{soft drop} (AK8 jets) [GeV];",PtMax/10,0,PtMax,200,0,400);
-  AddHisto2D("FatJet_prunedMass_nsubjettiness"  ,";M_{pruned} (AK8 jets) [GeV];#tau_{2}/#tau_{1};",200,0,400,50,0,1);
-  AddHisto2D("FatJet_pt_prunedMass"             ,";p_{T} (AK8 jets) [GeV];M_{pruned} (AK8 jets) [GeV];",PtMax/10,0,PtMax,200,0,400);
 
   // Hbb tag vars - added by rizki - start
 
@@ -523,7 +519,6 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_trackEtaRel_1",";trackEtaRel_1;;",400,-20,20);
   AddHisto("FatJet_trackEtaRel_0",";trackEtaRel_0;;",400,-20,20);
 
-  AddHisto("FatJet_jetNTracksEtaRel"       ,";jetNTracksEtaRel;;",35,0.,35);
   AddHisto("FatJet_jetNTracks"     	       ,";jetNTracks;;",40,0,40);
   AddHisto("FatJet_vertexNTracks"          ,";vertexNTracks;;",30,0.,30);
   AddHisto("FatJet_jetNSecondaryVertices"  ,";jetNSecondaryVertices;;",10,0,10);
