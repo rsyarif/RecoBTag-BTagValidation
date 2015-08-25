@@ -405,6 +405,7 @@ void BTagValidation::beginJob() {
   FatJetInfo.ReadTree(JetTree,"FatJetInfo");
   FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
   FatJetInfo.ReadCSVTagVarTree(JetTree, "FatJetInfo");
+  FatJetInfo.ReadJetSVTree(JetTree, "FatJetInfo"); 
   if (useJetProbaTree_) {
     EvtInfo.ReadJetTrackTree(JetTreeEvtInfo);
     FatJetInfo.ReadJetTrackTree(JetTree,"FatJetInfo");
@@ -415,6 +416,7 @@ void BTagValidation::beginJob() {
     SubJets.ReadTree(JetTree,"PrunedSubJetInfo") ;
     SubJets.ReadSubJetSpecificTree(JetTree,"PrunedSubJetInfo") ;
     SubJets.ReadCSVTagVarTree(JetTree, "PrunedSubJetInfo");
+    SubJets.ReadJetSVTree(JetTree, "PrunedSubJetInfo"); 
 
     if (useJetProbaTree_) {
       SubJetInfo.ReadTree(JetTree,"FatJetInfo","Pruned");
@@ -425,7 +427,8 @@ void BTagValidation::beginJob() {
     SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
     SubJets.ReadTree(JetTree,"SoftDropSubJetInfo") ;
     SubJets.ReadSubJetSpecificTree(JetTree,"SoftDropSubJetInfo") ;
-    //DM>>SubJets.ReadCSVTagVarTree(JetTree, "SoftDropSubJetInfo");
+    SubJets.ReadCSVTagVarTree(JetTree, "SoftDropSubJetInfo");
+    SubJets.ReadJetSVTree(JetTree, "SoftDropSubJetInfo"); 
 
     if (useJetProbaTree_) {
       SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
@@ -1355,7 +1358,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   float csv       = JetInfo.Jet_CombSvx[iJet];
   float csvivfv2  = JetInfo.Jet_CombIVF[iJet];
   float doubleb   = JetInfo.Jet_DoubleSV[iJet];
-  //DM>>float mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[iJet];
+  float mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[iJet];
 
   FillHisto(histoTag+"_TCHE",     flav, isGSPbb, isGSPcc ,tche      ,wt);
   FillHisto(histoTag+"_TCHP",     flav, isGSPbb, isGSPcc ,tchp      ,wt);
@@ -1366,8 +1369,8 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   FillHisto(histoTag+"_CSV",      flav, isGSPbb, isGSPcc ,csv       ,wt);
   FillHisto(histoTag+"_CSVIVFv2", flav, isGSPbb, isGSPcc ,csvivfv2  ,wt);
   FillHisto(histoTag+"_DoubleB",  flav, isGSPbb, isGSPcc ,doubleb   ,wt);
-  //DM>>FillHisto(histoTag+"_TagVarCSV_sv_mass", flav, isGSPbb ,isGSPcc ,mass_TagVarCSV_sv,   wt);
-  //DM>>FillHisto2D(histoTag+"_TagVarCSV_sv_mass_vs_jetpt"        ,flav,isGSPbb , isGSPcc, ptjet,mass_TagVarCSV_sv,wt);
+  FillHisto(histoTag+"_TagVarCSV_sv_mass", flav, isGSPbb ,isGSPcc ,mass_TagVarCSV_sv,   wt);
+  FillHisto2D(histoTag+"_TagVarCSV_sv_mass_vs_jetpt"        ,flav,isGSPbb , isGSPcc, ptjet,mass_TagVarCSV_sv,wt);
 
   FillHisto(histoTag+"_TCHE_extended1",  flav, isGSPbb, isGSPcc ,tche  , wt);
   FillHisto(histoTag+"_TCHP_extended1",  flav, isGSPbb, isGSPcc ,tchp  , wt);
