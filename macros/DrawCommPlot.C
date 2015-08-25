@@ -897,7 +897,7 @@ void DrawStacked(TString name,
     if (histotitle=="P") histotitle = "JP" ; 
     if (histotitle=="SVIVFv2") histotitle = "CSVIVFv2" ; 
     if (histotitle=="nr. of SV") histotitle = "N(SV)" ; 
-    if (histotitle=="decay length") histotitle = "track decay length" ; 
+    if (histotitle=="decay length") histotitle = "track decay length [cm]" ; 
     histo_ratio->GetYaxis()->SetTitle("Data/MC");
     histo_ratio->SetTitleOffset(0.9,"X");
     histo_ratio->SetTitleOffset(0.31,"Y");
