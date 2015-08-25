@@ -27,7 +27,7 @@
 
 using namespace std;
 
-TString filename    ="../test/Jobs25Aug2015/Final_histograms_btagval_InclusiveJets.root" ;
+TString filename    ="../test/Jobs25Aug2015_1/Final_histograms_btagval_InclusiveJets.root" ;
 //TString filename    ="../test/bTagValPlots_softdrop.root"; 
 TString filename_ext="" ;
 TString dir4plots   ="btagvalplots_25Aug2015" ;
@@ -64,7 +64,7 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
 
 //--------------------------
 void DrawCommPlot(bool Draw_track_plots=true,
-    bool Draw_Nminus1_plots=false,
+    bool Draw_Nminus1_plots=true,
     bool Draw_sv_plots=true,
     bool Draw_muons_plots=true,
     bool Draw_discriminator_plots=false,
@@ -173,7 +173,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   }
 
   if (Draw_track_plots) {
-    DrawStacked(histoTag+"_trk_multi_sel"      ,"Number of selected tracks in the jets" ,logy ,dodata ,extNorm ,1. ,0.);
+    DrawStacked(histoTag+"_trk_multi_sel"      ,"Number of selected tracks in the jets" ,logy ,dodata ,extNorm ,1. ,1., 0., 40.);
     DrawStacked(histoTag+"_track_nHit"         ,"Number of hits"                        ,logy ,dodata ,extNorm ,1. ,0.);
     DrawStacked(histoTag+"_track_HPix"         ,"Number of hits in the Pixel"           ,logy ,dodata ,extNorm ,1. ,0.);
     DrawStacked(histoTag+"_track_len"          ,"Track decay length [cm]"               ,logy ,dodata ,extNorm ,2. ,0.);
@@ -210,9 +210,9 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
   if (Draw_sv_plots){
     DrawStacked(histoTag+"_sv_multi_0"           ,"Nb. of secondary vertices"                         ,logy ,dodata ,extNorm ,1. ,0.);
     DrawStacked(histoTag+"_pt_sv"                ,"p_{T} of jets containing a SV [GeV/c]"             ,logy ,dodata ,extNorm ,4. ,0.);
-    DrawStacked(histoTag+"_sv_mass"              ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
-    DrawStacked(histoTag+"_sv_mass"              ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
-    DrawStacked(histoTag+"_TagVarCSV_sv_mass"              ,"TagVarCSV(SV mass) [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 2)  ,1, 0., 4.);
+    DrawStacked(histoTag+"_sv_mass"              ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 5)  ,1, 0., 4.);
+    DrawStacked(histoTag+"_sv_mass"              ,"SV mass [GeV/c^{2}]"                               ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 5)  ,1, 0., 4.);
+    DrawStacked(histoTag+"_TagVarCSV_sv_mass"    ,"TagVarCSV(SV mass) [GeV/c^{2}]"                    ,logy ,dodata ,extNorm ,(filename.Contains("DoubleMuon") ? 5 : 5)  ,1, 0., 4.);
     DrawStacked(histoTag+"_sv_deltaR_jet"        ,"#DeltaR between the jet and the SV direction"      ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_sv_en_ratio"          ,"SV energy ratio"                                   ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_sv_pt"                ,"SV p_{T} [GeV/c]"                                  ,logy ,dodata ,extNorm ,5. ,0.);
@@ -844,12 +844,13 @@ void DrawStacked(TString name,
 
   if (setSampleName) {
     TString sample = "";
-    if (filename.Contains("InclusiveJets")) sample += "Multijet sample (AK8 jets)" ;
+    if (filename.Contains("InclusiveJets")) sample += "Multijet sample" ;
     else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged AK8 jets)}" ;
     else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 jets)}" ;
     else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 subjets)}" ;
     else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged AK8 jets)}}" ;
     else std::cout << " >>>> Error:Check sample name\n" ;
+
     TLatex *tex1 = new TLatex(0.20,0.74,sample);
     tex1->SetNDC();
     tex1->SetTextAlign(13);
@@ -857,6 +858,20 @@ void DrawStacked(TString name,
     tex1->SetTextSize(0.055);
     tex1->SetLineWidth(2);
     tex1->Draw();
+
+    TString jettype="" ; 
+    if ( name.Contains("FatJet")) jettype+="AK8 jets" ; 
+    else if  ( name.Contains("SoftDropSubJet")) jettype+="Soft drop subjets of AK8 jets" ;
+    else if  ( name.Contains("PrunedSubJet")) jettype+="Pruned subjets of AK8 jets" ;
+
+    TLatex *tex2 = new TLatex(0.20,0.68,jettype);
+    tex2->SetNDC();
+    tex2->SetTextAlign(13);
+    tex2->SetTextFont(42);
+    tex2->SetTextSize(0.055);
+    tex2->SetLineWidth(2);
+    tex2->Draw();
+
   }
 
   pad0->Modified();
@@ -878,6 +893,11 @@ void DrawStacked(TString name,
     histo_ratio->SetMarkerSize(0.75);
     histo_ratio->SetLineWidth(2);
 
+    histotitle = hist_data->GetXaxis()->GetTitle() ; 
+    if (histotitle=="P") histotitle = "JP" ; 
+    if (histotitle=="SVIVFv2") histotitle = "CSVIVFv2" ; 
+    if (histotitle=="nr. of SV") histotitle = "N(SV)" ; 
+    if (histotitle=="decay length") histotitle = "track decay length" ; 
     histo_ratio->GetYaxis()->SetTitle("Data/MC");
     histo_ratio->SetTitleOffset(0.9,"X");
     histo_ratio->SetTitleOffset(0.31,"Y");
