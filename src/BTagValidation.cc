@@ -203,8 +203,8 @@ class BTagValidation : public edm::EDAnalyzer {
     const double                    fatJetAbsEtaMax_;
     const double                    fatJetSoftDropMassMin_;
     const double                    fatJetSoftDropMassMax_;
-    const double		                fatJetTau21Min_; 
-    const double		                fatJetTau21Max_; 
+    const double		                fatJetTau21Min_;
+    const double		                fatJetTau21Max_;
     const double                    SFbShift_;
     const double                    SFlShift_;
     const std::vector<std::string>  triggerSelection_;
@@ -261,8 +261,8 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   fatJetAbsEtaMax_(iConfig.getParameter<double>("FatJetAbsEtaMax")),
   fatJetSoftDropMassMin_(iConfig.getParameter<double>("FatJetSoftDropMassMin")),
   fatJetSoftDropMassMax_(iConfig.getParameter<double>("FatJetSoftDropMassMax")),
-  fatJetTau21Min_(iConfig.getParameter<double>("FatJetTau21Min")), 
-  fatJetTau21Max_(iConfig.getParameter<double>("FatJetTau21Max")), 
+  fatJetTau21Min_(iConfig.getParameter<double>("FatJetTau21Min")),
+  fatJetTau21Max_(iConfig.getParameter<double>("FatJetTau21Max")),
   SFbShift_(iConfig.getParameter<double>("SFbShift")),
   SFlShift_(iConfig.getParameter<double>("SFlShift")),
   triggerSelection_(iConfig.getParameter<std::vector<std::string> >("TriggerSelection")),
@@ -275,16 +275,16 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   hist_PUDistData_(iConfig.getParameter<std::string>("Hist_PUDistData")),
   doPUReweightingOfficial_(iConfig.getParameter<bool>("DoPUReweightingOfficial")),
   doPUReweightingNPV_(iConfig.getParameter<bool>("DoPUReweightingNPV")),
-  usePrunedSubjets_(iConfig.getParameter<bool>("UsePrunedSubjets")), 
+  usePrunedSubjets_(iConfig.getParameter<bool>("UsePrunedSubjets")),
   useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets"))
 {
   //now do what ever initialization is needed
-  isData = true; 
+  isData = true;
   nEventsAll = 0;
   nEventsStored = 0;
 
   if (doPUReweightingOfficial_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ;
-  
+
 
   // Pt bins for SFb
   double PtBins[] = {20, 30, 40, 50, 60, 70, 80, 100, 120, 160, 210, 260, 320, 400, 500, 600, 800};
@@ -404,7 +404,8 @@ void BTagValidation::beginJob() {
 
   FatJetInfo.ReadTree(JetTree,"FatJetInfo");
   FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
-  //DM>>FatJetInfo.ReadCSVTagVarTree(JetTree, "FatJetInfo"); 
+  FatJetInfo.ReadCSVTagVarTree(JetTree, "FatJetInfo");
+  FatJetInfo.ReadJetSVTree(JetTree, "FatJetInfo"); 
   if (useJetProbaTree_) {
     EvtInfo.ReadJetTrackTree(JetTreeEvtInfo);
     FatJetInfo.ReadJetTrackTree(JetTree,"FatJetInfo");
@@ -412,9 +413,10 @@ void BTagValidation::beginJob() {
 
   if (usePrunedSubjets_) {
     SubJetInfo.ReadTree(JetTree,"FatJetInfo","Pruned");
-    SubJets.ReadTree(JetTree,"PrunedSubJetInfo") ; 
-    SubJets.ReadSubJetSpecificTree(JetTree,"PrunedSubJetInfo") ; 
-    //DM>>SubJets.ReadCSVTagVarTree(JetTree, "PrunedSubJetInfo"); 
+    SubJets.ReadTree(JetTree,"PrunedSubJetInfo") ;
+    SubJets.ReadSubJetSpecificTree(JetTree,"PrunedSubJetInfo") ;
+    SubJets.ReadCSVTagVarTree(JetTree, "PrunedSubJetInfo");
+    SubJets.ReadJetSVTree(JetTree, "PrunedSubJetInfo"); 
 
     if (useJetProbaTree_) {
       SubJetInfo.ReadTree(JetTree,"FatJetInfo","Pruned");
@@ -423,97 +425,117 @@ void BTagValidation::beginJob() {
   }
   else if (useSoftDropSubjets_) {
     SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
-    SubJets.ReadTree(JetTree,"SoftDropSubJetInfo") ; 
-    SubJets.ReadSubJetSpecificTree(JetTree,"SoftDropSubJetInfo") ; 
-    //DM>>SubJets.ReadCSVTagVarTree(JetTree, "SoftDropSubJetInfo"); 
+    SubJets.ReadTree(JetTree,"SoftDropSubJetInfo") ;
+    SubJets.ReadSubJetSpecificTree(JetTree,"SoftDropSubJetInfo") ;
+    SubJets.ReadCSVTagVarTree(JetTree, "SoftDropSubJetInfo");
+    SubJets.ReadJetSVTree(JetTree, "SoftDropSubJetInfo"); 
 
     if (useJetProbaTree_) {
       SubJetInfo.ReadTree(JetTree,"FatJetInfo","SoftDrop");
       SubJets.ReadJetTrackTree(JetTree,"SoftDropSubJetInfo");
     }
   }
-  else edm::LogInfo("Error") << ">>>> No subjet type specified\n" ; 
+  else edm::LogInfo("Error") << ">>>> No subjet type specified\n" ;
 
-  double PtMax = 3000.;
+  double PtMax = 5000.;
 
-  h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",     4, -0.5, 3.5);
+  h1_CutFlow        = fs->make<TH1D>("h1_CutFlow",       "h1_CutFlow",        4,-0.5,3.5);
   h1_CutFlow->Sumw2();
-  h1_CutFlow->SetDefaultSumw2(kTRUE); // enables automatic calling of TH1::Sumw2 for all subsequent histograms
-  h1_CutFlow_unw    = fs->make<TH1D>("h1_CutFlow_unw",   "h1_CutFlow_unw", 4, -0.5, 3.5);
-  h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    "h1_nPUtrue_mc",  60,0.,60.);
-  h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw","h1_nPUtrue_mc",  60,0.,60.);
-  h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      "h1_nPV_data",    60,0.,60.);
-  h1_nPV_mc         = fs->make<TH1D>("h1_nPV_mc",        "h1_nPV_mc",      60,0.,60.);
-  h1_nPV_mc_unw     = fs->make<TH1D>("h1_nPV_mc_unw",    "h1_nPV_mc_unw",  60,0.,60.);
-  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        "h1_pt_hat",      600,0,3000);
+  h1_CutFlow->SetDefaultSumw2(kTRUE); //// enables automatic calling of TH1::Sumw2 for all subsequent histograms
+  h1_CutFlow_unw    = fs->make<TH1D>("h1_CutFlow_unw",   "h1_CutFlow_unw",    4,-0.5,3.5);
+  h1_nPUtrue_mc     = fs->make<TH1D>("h1_nPUtrue_mc",    ";N(true PU in MC);;",     60,0.,60.);
+  h1_nPUtrue_mc_unw = fs->make<TH1D>("h1_nPUtrue_mc_unw",";N(true PU in MC, unweighted);;", 60,0.,60.);
+  h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      ";N(PV in data);;",       60,0.,60.);
+  h1_nPV_mc         = fs->make<TH1D>("h1_nPV_mc",        ";N(PV in MC);;",         60,0.,60.);
+  h1_nPV_mc_unw     = fs->make<TH1D>("h1_nPV_mc_unw",    ";N(PV in MC, unweighted)",     60,0.,60.);
+  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        ";#hat{p}_{T};;",         1400,0,7000);
 
-  h1_nFatJet        = fs->make<TH1D>("h1_nFatJet",       "h1_nFatJet",     100,0,100);
-  h1_fatjet_pt      = fs->make<TH1D>("h1_fatjet_pt",     "h1_fatjet_pt",   PtMax/10,0,PtMax);
+  h1_nFatJet        = fs->make<TH1D>("h1_nFatJet",       ";N(AK8 jets);;",     100,0,100);
+  h1_fatjet_pt      = fs->make<TH1D>("h1_fatjet_pt",     ";p_{T} (AK8 jets) [GeV];;",   PtMax/10,0,PtMax);
 
   if( usePrunedSubjets_ ) {
-    h1_nSubJet        = fs->make<TH1D>("h1_nPrunedSubJet",       "h1_nPrunedSubJet",     100,0,100);
-    h1_subjet_pt      = fs->make<TH1D>("h1_PrunedSubjet_pt",     "h1_PrunedSubjet_pt",   PtMax/10,0,PtMax);
-    p1_SubJetPt_TotalTracks = fs->make<TProfile>("p1_PrunedSubJetPt_TotalTracks",";p_{T} [GeV];",20,0,1000);
-    p1_SubJetPt_SharedTracks = fs->make<TProfile>("p1_PrunedSubJetPt_SharedTracks",";p_{T} [GeV];",20,0,1000);
-    p1_SubJetPt_SharedTracksRatio = fs->make<TProfile>("p1_PrunedSubJetPt_SharedTracksRatio",";p_{T} [GeV];",20,0,1000);
+    h1_nSubJet        = fs->make<TH1D>("h1_nPrunedSubJet",       ";N(pruned subjets);;",     100,0,100);
+    h1_subjet_pt      = fs->make<TH1D>("h1_PrunedSubjet_pt",     ";p_{T} (pruned subjets) [GeV]",   PtMax/10,0,PtMax);
+    p1_SubJetPt_TotalTracks = fs->make<TProfile>("p1_PrunedSubJetPt_TotalTracks",";p_{T} (pruned subjets) [GeV];N(total tracks);",20,0,1000);
+    p1_SubJetPt_SharedTracks = fs->make<TProfile>("p1_PrunedSubJetPt_SharedTracks",";p_{T} (pruned subjets) [GeV];N(shared tracks);",20,0,1000);
+    p1_SubJetPt_SharedTracksRatio = fs->make<TProfile>("p1_PrunedSubJetPt_SharedTracksRatio",";p_{T} (pruned subjets) [GeV];N(shared track ratio);",20,0,1000);
   }
   else if( useSoftDropSubjets_ ) {
-    h1_nSubJet        = fs->make<TH1D>("h1_nSoftDropSubJet",       "h1_nSoftDropSubJet",     100,0,100);
-    h1_subjet_pt      = fs->make<TH1D>("h1_SoftDropSubjet_pt",     "h1_SoftDropSubjet_pt",   PtMax/10,0,PtMax);
-    p1_SubJetPt_TotalTracks = fs->make<TProfile>("p1_SoftDropSubJetPt_TotalTracks",";p_{T} [GeV];",20,0,1000);
-    p1_SubJetPt_SharedTracks = fs->make<TProfile>("p1_SoftDropSubJetPt_SharedTracks",";p_{T} [GeV];",20,0,1000);
-    p1_SubJetPt_SharedTracksRatio = fs->make<TProfile>("p1_SoftDropSubJetPt_SharedTracksRatio",";p_{T} [GeV];",20,0,1000);
+    h1_nSubJet        = fs->make<TH1D>("h1_nSoftDropSubJet",       ";N(soft drop subjets);;",     100,0,100);
+    h1_subjet_pt      = fs->make<TH1D>("h1_SoftDropSubjet_pt",     "p_{T} (soft drop subjets) [GeV]",   PtMax/10,0,PtMax);
+    p1_SubJetPt_TotalTracks = fs->make<TProfile>("p1_SoftDropSubJetPt_TotalTracks",";p_{T} (soft drop subjets) [GeV];N(total tracks);",20,0,1000);
+    p1_SubJetPt_SharedTracks = fs->make<TProfile>("p1_SoftDropSubJetPt_SharedTracks",";p_{T} (soft drop subjets) [GeV];N(shared tracks);",20,0,1000);
+    p1_SubJetPt_SharedTracksRatio = fs->make<TProfile>("p1_SoftDropSubJetPt_SharedTracksRatio",";p_{T} (soft drop subjets) [GeV];N(shared track ratio);",20,0,1000);
   }
 
-
-  p1_FatJetPt_TotalTracks = fs->make<TProfile>("p1_FatJetPt_TotalTracks",";p_{T} [GeV];",20,0,1000);
-  p1_FatJetPt_SharedTracks = fs->make<TProfile>("p1_FatJetPt_SharedTracks",";p_{T} [GeV];",20,0,1000);
-  p1_FatJetPt_SharedTracksRatio = fs->make<TProfile>("p1_FatJetPt_SharedTracksRatio",";p_{T} [GeV];",20,0,1000);
+  p1_FatJetPt_TotalTracks = fs->make<TProfile>("p1_FatJetPt_TotalTracks",";p_{T} (AK8 jets) [GeV];N(total tracks);",20,0,1000);
+  p1_FatJetPt_SharedTracks = fs->make<TProfile>("p1_FatJetPt_SharedTracks",";p_{T} (AK8 jets) [GeV];N(shared tracks);",20,0,1000);
+  p1_FatJetPt_SharedTracksRatio = fs->make<TProfile>("p1_FatJetPt_SharedTracksRatio",";p_{T} (AK8 jets) [GeV];N(shared track ratio);",20,0,1000);
 
   //// Create jet histograms
   if (usePrunedSubjets_) {
-    AddHisto("FatJet_prunedMass"       ,"pruned mass of all fat jets"                          ,200       ,0      ,400);
-    AddHisto2D("FatJet_prunedMass_nsubjettiness", "Nsubjettiness vs. pruned mass"              ,200       ,0      ,400      ,50        ,0      ,1);
-    AddHisto2D("FatJet_pt_prunedMass",  "pruned mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
+    AddHisto("FatJet_prunedsubjet_dR"           ,";#DeltaR_{#eta-#phi}(pruned subjets);;",100,0,1);
+    AddHisto("FatJet_prunedsubjet_dyphi"        ,";#DeltaR_{y-#phi}(pruned subjets);;",100,0,1);
+    AddHisto("FatJet_massDrop_pruned"           ,";Mass drop (pruned AK8 jets) [GeV];;",100,0,1);
   }
   else if (useSoftDropSubjets_) {
-    AddHisto("FatJet_softdropMass"       ,"softdrop mass of all fat jets"                          ,200       ,0      ,400);
-    AddHisto2D("FatJet_softdropMass_nsubjettiness", "Nsubjettiness vs. softdrop mass"              ,200       ,0      ,400      ,50        ,0      ,1);
-    AddHisto2D("FatJet_pt_softdropMass",  "softdrop mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
+    AddHisto("FatJet_softdropsubjet_dR"           ,";#DeltaR_{#eta-#phi}(soft drop subjets);;",100,0,1);
+    AddHisto("FatJet_softdropsubjet_dyphi"        ,";#DeltaR_{y-#phi}(soft drop subjets);;",100,0,1);
+    AddHisto("FatJet_massDrop_softdrop"           ,";Mass drop (soft drop AK8 jets) [GeV];;",100,0,1);
   }
-  AddHisto("FatJet_massDrop"         ,"mass drop"                                            ,100       ,0      ,1);
-  AddHisto("FatJet_subjet_dR"        ,"#DeltaR(subjet_{1},subjet_{2}) in #eta-#phi plane"    ,100       ,0      ,1);
-  AddHisto("FatJet_subjet_dyphi"     ,"#DeltaR(subjet_{1},subjet_{2}) in y-#phi plane"       ,100       ,0      ,1);
-  AddHisto("FatJet_nsubjettiness"    ,"#tau_{2}/#tau_{1}"                                    ,50        ,0      ,1);
-  AddHisto2D("FatJet_softdropMass_nsubjettiness", "Nsubjettiness vs. softdrop mass"              ,200       ,0      ,400      ,50        ,0      ,1);
-  AddHisto2D("FatJet_pt_softdropMass",  "softdrop mass vs. p_{T}"                                ,PtMax/10  ,0      ,PtMax    ,200       ,0      ,400);
+  AddHisto("FatJet_Mass"                        ,";M (AK8 jets) [GeV];;",200,0,400);
+  AddHisto("FatJet_nsubjettiness"               ,";#tau_{2}/#tau_{1};;",50,0,1);
+  AddHisto("FatJet_prunedMass"                  ,";M_{pruned} (AK8 jets) [GeV];;",200,0,400);
+  AddHisto("FatJet_softdropMass"                ,";M_{soft drop} (AK8 jets) [GeV];;",200,0,400);
+  AddHisto2D("FatJet_prunedMass_nsubjettiness"  ,";M_{pruned} (AK8 jets) [GeV];#tau_{2}/#tau_{1};" ,200 ,0 ,400 ,50 ,0 ,1);
+  AddHisto2D("FatJet_pt_prunedMass"             ,";p_{T} (AK8 jets) [GeV];M_{pruned} (AK8 jets) [GeV];",PtMax/10,0,PtMax,200,0,400);
+  AddHisto2D("FatJet_softdropMass_nsubjettiness",";M_{soft drop} (AK8 jets) [GeV];#tau_{2}/#tau_{1};",200,0,400,50,0,1);
+  AddHisto2D("FatJet_pt_softdropMass"           ,";p_{T} (AK8 jets) [GeV];M_{soft drop} (AK8 jets) [GeV];",PtMax/10,0,PtMax,200,0,400);
 
   // Hbb tag vars - added by rizki - start
 
-  AddHisto("FatJet_z_ratio"   	       ,         "z ratio" 	      ,                         100, 0., 60.  );
-  AddHisto("FatJet_tau_dot"  	       ,         "#tau #cdot SV_{0}"  ,                         100, -1., 1.  );
-  AddHisto("FatJet_SV_mass_0"          ,         "SV_{0} mass"	      ,                         100, -1. ,10.  );
-  AddHisto("FatJet_SV_EnergyRatio_0"   ,         "SV_EnergyRatio_0"   ,                         100, -1. ,10.  );
-  AddHisto("FatJet_SV_EnergyRatio_1"   ,         "SV_EnergyRatio_1"   ,                         100, -1. ,10.  );
-  AddHisto("FatJet_jetNTracksEtaRel"   ,         "jetNTracksEtaRel"   ,                        35, 0. , 35.  );
+  AddHisto("FatJet_z_ratio"   	     ,";z ratio;;",100,0.,60.);
+  AddHisto("FatJet_tau_dot"  	       ,";#tau#cdot SV_{0};;",100,-1.,1.);
+  AddHisto("FatJet_SV_mass_0"        ,";M(SV_{0}) [GeV];;",100,-1.,10.);
+  AddHisto("FatJet_SV_EnergyRatio_0" ,";Energy ratio (SV(0));;",100,-1.,10.);
+  AddHisto("FatJet_SV_EnergyRatio_1" ,";Energy ratio (SV(1));;",100,-1.,10.);
+  AddHisto("FatJet_jetNTracksEtaRel" ,";jetNTracksEtaRel;;",35,0.,35.);
 
-  AddHisto("FatJet_PFLepton_ptrel"     ,         "PF Lepton p_{T,rel}"   ,                         220, -5, 50.  );
-  AddHisto("FatJet_PFElectron_ptrel"   ,         "PF Electron p_{T,rel}" ,                         100, 0., 50.  );
-  AddHisto("FatJet_PFMuon_ptrel"       ,         "PF Muon p_{T,rel}" 	 ,                         100, 0, 50.  );
+  AddHisto("FatJet_PFLepton_ptrel"   ,";p_{T,rel} (PF lepton) [GeV];",220,-5,50.);
+  AddHisto("FatJet_PFElectron_ptrel" ,";p_{T,rel} (PF electron) [GeV];;",100,0.,50.);
+  AddHisto("FatJet_PFMuon_ptrel"     ,";p_{T,rel} (PF muon) [GeV];",100,0,50.);
 
-  //AddHisto("FatJet_PFLepton_ratio"     ,         "PF Lepton ratio"     ,                         120, -5., 1.  );
-  //AddHisto("FatJet_PFElectron_ratio"   ,         "PF Electron ratio"   ,                         120, -5., 1.  );
-  //AddHisto("FatJet_PFMuon_ratio"       ,         "PF Muon ratio"       ,                         120, -5., 1.  );
+  AddHisto("FatJet_PFLepton_ratio"  ,";PF Lepton ratio;;" ,120,-5.,1.);
+  AddHisto("FatJet_PFElectron_ratio",";PF Electron ratio;;",120,-5.,1.);
+  AddHisto("FatJet_PFMuon_ratio"    ,";PF Muon ratio;;",120,-5.,1.);
 
-  AddHisto("FatJet_nSL_3"              ,         "nSL_3"              ,                         8, -0.5, 7.5  );
-  AddHisto("FatJet_nSE"                ,         "nSE"                ,                         13, -0.5, 12.5  );
-  AddHisto("FatJet_nSM"                ,         "nSM"                ,                         13, -0.5, 12.5  );
+  AddHisto("FatJet_nSL_3",";N(soft lepton_3);;",8,-0.5,7.5);
+  AddHisto("FatJet_nSE"  ,";N(dot electron);;",13,-0.5,12.5);
+  AddHisto("FatJet_nSM"  ,";N(soft muon);;",13,-0.5,12.5);
 
-  //AddHisto("FatJet_trackSip3dSig_3"    ,         "trackSip3dSig_3"    ,                         100, -20, 20  );
+  AddHisto("FatJet_trackSip3dSig_3",";trackSip3dSig_3;;",100,-20,20);
+  AddHisto("FatJet_trackSip3dSig_2",";trackSip3dSig_2;;",100,-20,20);
+  AddHisto("FatJet_trackSip3dSig_1",";trackSip3dSig_1;;",100,-20,20);
+  AddHisto("FatJet_trackSip3dSig_0",";trackSip3dSig_0;;",100,-20,20);
 
-  AddHisto("FatJet_BDTG_SV"   	       ,         "BDTG SV"	      ,                         100, -1., 1.  );
-  AddHisto("FatJet_BDTG_SL"   	       ,         "BDTG SL"	      ,                         100, -1., 1.  );
-  AddHisto("FatJet_BDTG_Cascade"       ,         "BDTG Cascade"	      ,                         100, -1., 1.  );
+  AddHisto("FatJet_trackEtaRel_2",";trackEtaRel_2;;",400,-20,20);
+  AddHisto("FatJet_trackEtaRel_1",";trackEtaRel_1;;",400,-20,20);
+  AddHisto("FatJet_trackEtaRel_0",";trackEtaRel_0;;",400,-20,20);
+
+  AddHisto("FatJet_jetNTracks"     	       ,";jetNTracks;;",40,0,40);
+  AddHisto("FatJet_vertexNTracks"          ,";vertexNTracks;;",30,0.,30);
+  AddHisto("FatJet_jetNSecondaryVertices"  ,";jetNSecondaryVertices;;",10,0,10);
+  AddHisto("FatJet_trackSip2dSigAboveCharm",";trackSip2dSigAboveCharm;;",100,-20,20);
+  AddHisto("FatJet_vertexMass"    	       ,";vertexMass;;",500,0.,500);
+  AddHisto("FatJet_vertexEnergyRatio"      ,";vertexEnergyRatio;;",100,-1,4);
+  AddHisto("FatJet_vertexJetDeltaR"    	   ,";vertexJetDelta;;",100,-1,1);
+  AddHisto("FatJet_flightDistance2dSig"    ,";flightDistance2dSig;;",100,-20,20);
+  AddHisto("FatJet_minSubJetCSVIVF"    	   ,";minSubJetCSVIVF;;",100,-1,1);
+
+  AddHisto("FatJet_BDTG_SV"   	,";BDTG SV;;",100,-1.,1.);
+  AddHisto("FatJet_BDTG_SL"   	,";BDTG SL;;",100,-1.,1.);
+  AddHisto("FatJet_BDTG_Cascade",";BDTG Cascade;;",100,-1.,1.);
+  AddHisto("FatJet_BDTG_All"    ,";BDTG All;;",100,-1.,1.);
 
   // added by rizki - end
 
@@ -526,132 +548,131 @@ void BTagValidation::beginJob() {
 
 void BTagValidation::createJetHistos(const TString& histoTag) {
 
-  double PtMax = 3000.;
+  double PtMax = 5000.;
   double pi=TMath::Pi();
 
-  AddHisto(histoTag+"_pt_all"           ,"p_{T} of all jets"             ,PtMax/10  ,0      ,PtMax );
-  AddHisto(histoTag+"_pt_sv"            ,"p_{T} of jets containing a SV" ,PtMax/10  ,0      ,PtMax);
-  AddHisto(histoTag+"_eta"              ,"#eta of all jets"              ,50        ,-2.5   ,2.5);
-  AddHisto(histoTag+"_phi"              ,"#phi of all jets"              ,40        ,-1.*pi ,pi);
-  AddHisto(histoTag+"_mass"             ,"mass of all jets"              ,200       ,0      ,400);
+  AddHisto(histoTag+"_pt_all"           ,";p_{T}(all jets) [GeV];;"             ,PtMax/10  ,0      ,PtMax );
+  AddHisto(histoTag+"_eta"              ,";#eta(all jets);;"              ,50        ,-2.5   ,2.5);
+  AddHisto(histoTag+"_phi"              ,";#phi(all jets);;"              ,40        ,-1.*pi ,pi);
+  AddHisto(histoTag+"_mass"             ,";M(all jets) [GeV];;"              ,200       ,0      ,400);
+  AddHisto(histoTag+"_pt_sv"            ,";p_{T}(jets containing a SV) [GeV];;" ,PtMax/10  ,0      ,PtMax);
 
-  AddHisto(histoTag+"_muon_multi",      "number of muons",           7, -0.5,6.5  );
-  AddHisto(histoTag+"_muon_multi_sel",  "number of selected muons",  7, -0.5,6.5  );
-  AddHisto(histoTag+"_mu_ptrel",        "p_{T,rel} of the muon",    50,  0,5      );
-  AddHisto(histoTag+"_mu_chi2",         "norm. chi2 of the muon",   50,  0,10     );
-  AddHisto(histoTag+"_muon_Pt",         "Muon p_{T}",               250, 0, 500   );
-  AddHisto(histoTag+"_muon_eta",        "Muon #eta",                50, -2.5, 2.5 );
-  AddHisto(histoTag+"_muon_phi",        "Muon #phi",                40, -1.*pi,pi );
-  AddHisto(histoTag+"_muon_Ip3d",       "Muon 3D IP",              500, -1.0, 1.0 );
-  AddHisto(histoTag+"_muon_Ip2d",       "Muon 2D IP",              500, -1.0, 1.0 );
-  AddHisto(histoTag+"_muon_Sip3d",      "Muon 3D IP significance", 100, -50, 50   );
-  AddHisto(histoTag+"_muon_Sip2d",      "Muon 2D IP significance", 100, -50, 50   );
-  AddHisto(histoTag+"_muon_DeltaR",     "Muon1 #DeltaR",            50, 0,   0.5  ); //90
+  AddHisto(histoTag+"_muon_multi",      ";N(#mu);;",7,-0.5,6.5);
+  AddHisto(histoTag+"_muon_multi_sel",  ";N(selected #mu);;",7,-0.5,6.5);
+  AddHisto(histoTag+"_mu_ptrel",        ";p_{T,rel}(#mu) [GeV];;",50,0,5);
+  AddHisto(histoTag+"_mu_chi2",         ";#chi^{2}/NDF(#mu);;",50,0,10);
+  AddHisto(histoTag+"_muon_Pt",         ";p_{T} (#mu) [GeV];;",250,0,500);
+  AddHisto(histoTag+"_muon_eta",        ";#eta(#mu);;",50,-2.5, 2.5);
+  AddHisto(histoTag+"_muon_phi",        ";#phi(#mu);;",40,-1.*pi,pi);
+  AddHisto(histoTag+"_muon_Ip3d",       ";Muon 3D IP;;",500,-1.0,1.0);
+  AddHisto(histoTag+"_muon_Ip2d",       ";Muon 2D IP;;",500,-1.0,1.0);
+  AddHisto(histoTag+"_muon_Sip3d",      ";Muon 3D IP significance;;",100,-50,50);
+  AddHisto(histoTag+"_muon_Sip2d",      ";Muon 2D IP significance;;",100,-50,50);
+  AddHisto(histoTag+"_muon_DeltaR",     ";Muon1 #DeltaR;;",50,0,0.5); 
 
-  AddHisto(histoTag+"_sv_deltaR_jet",      "sv_deltaR_jet",                                       50,0.,0.5    );
-  AddHisto(histoTag+"_sv_deltaR_sumJet",   "SVvtxSumJetDeltaR",                                   50,0.,0.5    );
-  AddHisto(histoTag+"_sv_deltaR_sumDir",   "SVvtxSumVtxDirDeltaR",                                50,0.,0.5    );
-  AddHisto(histoTag+"_sv_en_ratio",        "Fractional energy",                                   60,0.,1.2    );
-  //DMAddHisto(histoTag+"_sv_aboveC",          "IP significance 2D charm",                           100,-50.,50.  );
-  AddHisto(histoTag+"_sv_pt",              "Vtx p_{T}",                                          250,0.,500.   );
-  AddHisto(histoTag+"_sv_eta",             "Vtx #eta",                                            50, -2.5, 2.5);
-  AddHisto(histoTag+"_sv_phi",             "Vtx #phi",                                            40, -1.*pi,pi);
-  AddHisto(histoTag+"_sv_flightSig2D",     "Flight distance significance 2D",                    150,0.,150.   );
-  AddHisto(histoTag+"_sv_flight2D",        "Flight distance 2D",                                 100,0.,5.     );
-  AddHisto(histoTag+"_sv_flightSig2D_3trk","Flight distance 2D with #geq3 tracks",               100,0.,5.     );
-  AddHisto(histoTag+"_sv_flight3D",        "Flight distance 3D",                                  50,0.,15.    );
-  AddHisto(histoTag+"_sv_flight3DSig",     "flight distance significance 3D",                    150,0.,150.   );
-  AddHisto(histoTag+"_sv_multi_0",         "number of secondary vertex",                          6,-0.5,5.5   );
-  AddHisto(histoTag+"_sv_multi",           "number of secondary vertex",                          6,-0.5,5.5   );
-  AddHisto(histoTag+"_TagVarCSV_sv_mass",  ";M(sv from TagVarCSV);;",                           750,0.,15.    );
-  AddHisto(histoTag+"_sv_mass",            "invariant mass of the secondary vertex",             750,0.,15.    );
-  AddHisto(histoTag+"_sv_chi2norm",        "normalized chi2 of the secondary vertex",            100,0.,20.    );
-  AddHisto(histoTag+"_sv_tot_charge",      "Total charge",                                        21,-10.5,10.5);
-  AddHisto(histoTag+"_svnTrk",             "Track multiplicity : SVnVertexTracks (centered)",     15,-0.5,14.5 );
-  AddHisto(histoTag+"_svnTrk_firstVxt",    "Track multiplicity : SVnFirstVertexTracks (centered)",15,-0.5,14.5 );
-  AddHisto(histoTag+"_sv_flight3Derr",     "Flight distance error 3D",                           100,0.,1.0);
-  AddHisto(histoTag+"_sv_flight2Derr",     "Flight distance error 2D",                           100,0.,1.0);
-  AddHisto(histoTag+"_sv_mass_3trk",       "invariant mass of the secondary vertex with at least 3 SV tracks", 750,0.,15.);
+  AddHisto(histoTag+"_sv_deltaR_jet",      ";#DeltaR(SV, jet);;",50,0.,0.5);
+  AddHisto(histoTag+"_sv_deltaR_sumJet",   ";#DeltaR(SV,sumJet);;",50,0.,0.5);
+  AddHisto(histoTag+"_sv_deltaR_sumDir",   ";#DeltaR(SV,sumDir);;",50,0.,0.5);
+  AddHisto(histoTag+"_sv_en_ratio",        ";SV energy ratio;;",60,0.,1.2);
+  AddHisto(histoTag+"_sv_pt",              ";p_{T}(SV) [GeV];;",250,0.,500.);
+  AddHisto(histoTag+"_sv_eta",             ";#eta(SV);;",50,-2.5,2.5);
+  AddHisto(histoTag+"_sv_phi",             ";#phi(SV);;",40,-1.*pi,pi);
+  AddHisto(histoTag+"_sv_flightSig2D",     ";Flight distance significance 2D;;",150,0.,150.);
+  AddHisto(histoTag+"_sv_flight2D",        ";Flight distance 2D (cm);;",100,0.,5.);
+  AddHisto(histoTag+"_sv_flightSig2D_3trk",";Flight distance 2D with #geq3 tracks (cm);;",100,0.,5.);
+  AddHisto(histoTag+"_sv_flight3D",        ";Flight distance 3D (cm);;",50,0.,15.);
+  AddHisto(histoTag+"_sv_flight3DSig",     ";Flight distance significance 3D;;",150,0.,150.);
+  AddHisto(histoTag+"_sv_multi_0",         ";N(SV);;",6,-0.5,5.5);
+  AddHisto(histoTag+"_sv_multi",           ";N(SV);;",6,-0.5,5.5);
+  AddHisto(histoTag+"_TagVarCSV_sv_mass",  ";M(SV from TagVarCSV) [GeV];;",750,0.,15.);
+  AddHisto(histoTag+"_sv_mass",            ";M(SV) [GeV];;",750,0.,15.);
+  AddHisto(histoTag+"_sv_chi2norm",        ";#chi^{2}/NDF(SV);;",100,0.,20.);
+  AddHisto(histoTag+"_sv_tot_charge",      ";Total charge (SV);;",21,-10.5,10.5);
+  AddHisto(histoTag+"_svnTrk",             ";N(tracks) : SVnVertexTracks (centered);;",   15,-0.5,14.5 );
+  AddHisto(histoTag+"_svnTrk_firstVxt",    ";N(tracks): SVnFirstVertexTracks (centered);;",15,-0.5,14.5 );
+  AddHisto(histoTag+"_sv_flight3Derr",     ";Flight distance error 3D;;",100,0.,1.0);
+  AddHisto(histoTag+"_sv_flight2Derr",     ";Flight distance error 2D;;",100,0.,1.0);
+  AddHisto(histoTag+"_sv_mass_3trk",       ";M(SV, at least 3 tracks) [GeV];;",750,0.,15.);
+  //DMAddHisto(histoTag+"_sv_aboveC",        ";IP significance 2D charm",                           100,-50.,50.  );
 
-  AddHisto(histoTag+"_track_multi"  ,      "number of tracks in the jets",                80,-0.5,79.5  );
-  AddHisto(histoTag+"_trk_multi_sel"  ,    "number of selected tracks in the jets",       80,-0.5,79.5  );
-  AddHisto(histoTag+"_track_chi2"   ,      "normalized chi2 of the tracks",               200,0.,10.   );
-  AddHisto(histoTag+"_track_nHit" ,        "number of hits ",                             35,-0.5, 34.5 );
-  AddHisto(histoTag+"_track_HPix"   ,      "number of hits in the Pixel",                 10,-0.5, 9.5  );
+  AddHisto(histoTag+"_track_multi"  ,";number of tracks in the jets;;",         80,-0.5,79.5);
+  AddHisto(histoTag+"_trk_multi_sel",";number of selected tracks in the jets;;",80,-0.5,79.5);
+  AddHisto(histoTag+"_track_chi2"   ,";normalized chi2 of the tracks;;",        200,0.,10.);
+  AddHisto(histoTag+"_track_nHit"   ,";number of hits ;;",                      35,-0.5,34.5);
+  AddHisto(histoTag+"_track_HPix"   ,";number of hits in the Pixel;;",          10,-0.5,9.5);
 
-  AddHisto(histoTag+"_track_IPs"    ,      "3D IP significance of all tracks",            200,-50.,50.  );
-  AddHisto(histoTag+"_track_IPs1tr" ,      "3D IP significance of the first track",       200,-50.,50.  );
-  AddHisto(histoTag+"_track_IPs2tr" ,      "3D IP significance of the second track",      200,-50.,50.  );
-  AddHisto(histoTag+"_track_IP"     ,      "3D IP of all tracks",                         200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IP1tr"  ,      "3D IP of the first track",                    200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IP2tr"  ,      "3D IP of the second track",                   200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IP2Ds"    ,    "2D IP significance of all tracks",            200,-50.,50.  );
-  AddHisto(histoTag+"_track_IP2Ds1tr" ,    "2D IP significance of the first track",       200,-50.,50.  );
-  AddHisto(histoTag+"_track_IP2Ds2tr" ,    "2D IP significance of the second track",      200,-50.,50.  );
-  AddHisto(histoTag+"_track_IP2D"    ,     "2D IP of all tracks",                         200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IP2D1tr" ,     "2D IP of the first track",                    200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IP2D2tr" ,     "2D IP of the second track",                   200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IP2Derr1tr" ,  "2D IP error of the first track",              100,0,0.1);
-  AddHisto(histoTag+"_track_IPerr1tr"   ,  "3D IP error of the first track",              100,0,0.1);
-  AddHisto(histoTag+"_track_IP2Derr2tr" ,  "2D IP error of the second track",             100,0,0.1);
-  AddHisto(histoTag+"_track_IPerr2tr"   ,  "3D IP error of the second track",             100,0,0.1);
-  AddHisto(histoTag+"_track_IP2Derr" ,     "2D IP error",                                 100,0,0.1);
-  AddHisto(histoTag+"_track_IPerr"   ,     "3D IP error",                                 100,0,0.1);
-  AddHisto(histoTag+"_track_IPs3tr" ,      "3D IP significance of the third track",       200,-50.,50.  );
-  AddHisto(histoTag+"_track_IP3tr"  ,      "3D IP of the third track",                    200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IPerr3tr"   ,  "3D IP error of the third track",              100,0,0.1);
-  AddHisto(histoTag+"_track_IP2Ds3tr" ,    "2D IP significance of the second track",      100,-35.,35.  );
-  AddHisto(histoTag+"_track_IP2D3tr" ,     "2D IP of the third track",                    200,-0.2,0.2);
-  AddHisto(histoTag+"_track_IP2Derr3tr" ,  "2D IP error of the third track",              100,0,0.1);
+  AddHisto(histoTag+"_track_IPs"        ,";3D IP significance of all tracks;;",      200,-50.,50.);
+  AddHisto(histoTag+"_track_IPs1tr"     ,";3D IP significance of the first track;;", 200,-50.,50.);
+  AddHisto(histoTag+"_track_IPs2tr"     ,";3D IP significance of the second track;;",200,-50.,50.);
+  AddHisto(histoTag+"_track_IP"         ,";3D IP of all tracks;;",                   200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IP1tr"      ,";3D IP of the first track;;",              200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IP2tr"      ,";3D IP of the second track;;",             200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IP2Ds"      ,";2D IP significance of all tracks;;",      200,-50.,50.);
+  AddHisto(histoTag+"_track_IP2Ds1tr"   ,";2D IP significance of the first track;;", 200,-50.,50.);
+  AddHisto(histoTag+"_track_IP2Ds2tr"   ,";2D IP significance of the second track;;",200,-50.,50.);
+  AddHisto(histoTag+"_track_IP2D"       ,";2D IP of all tracks;;",                   200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IP2D1tr"    ,";2D IP of the first track;;",              200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IP2D2tr"    ,";2D IP of the second track;;",             200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IP2Derr1tr" ,";2D IP error of the first track;;",        100,0,0.1);
+  AddHisto(histoTag+"_track_IPerr1tr"   ,";3D IP error of the first track;;",        100,0,0.1);
+  AddHisto(histoTag+"_track_IP2Derr2tr" ,";2D IP error of the second track;;",       100,0,0.1);
+  AddHisto(histoTag+"_track_IPerr2tr"   ,";3D IP error of the second track;;",       100,0,0.1);
+  AddHisto(histoTag+"_track_IP2Derr"    ,";2D IP error;;",                           100,0,0.1);
+  AddHisto(histoTag+"_track_IPerr"      ,";3D IP error;;",                           100,0,0.1);
+  AddHisto(histoTag+"_track_IPs3tr"     ,";3D IP significance of the third track;;", 200,-50.,50.);
+  AddHisto(histoTag+"_track_IP3tr"      ,";3D IP of the third track;;",              200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IPerr3tr"   ,";3D IP error of the third track;;",        100,0,0.1);
+  AddHisto(histoTag+"_track_IP2Ds3tr"   ,";2D IP significance of the second track;;",100,-35.,35.);
+  AddHisto(histoTag+"_track_IP2D3tr"    ,";2D IP of the third track;;",              200,-0.2,0.2);
+  AddHisto(histoTag+"_track_IP2Derr3tr" ,";2D IP error of the third track;;",        100,0,0.1);
 
-  AddHisto(histoTag+"_track_len"     ,     "decay length",                    100,0,5.     );
-  AddHisto(histoTag+"_track_dist"    ,     "distance to the jet axis",        100,0.,0.08    );
-  AddHisto(histoTag+"_track_dz"     ,      "transverse IP",                   100,-3,3  );
-  AddHisto(histoTag+"_track_isfromSV",     "Track is from SV",                  2,-0.5, 1.5   );
-  AddHisto(histoTag+"_track_pt"         ,  "pT of all the tracks",            200,0.,1000.   );
-  AddHisto(histoTag+"_track_pt15"   ,      "pT of all the tracks",            500,0.,50.    );
-  AddHisto(histoTag+"_track_chi2_cut"     ,"normalized chi2 ",                100,0.,30.    );
-  AddHisto(histoTag+"_track_nHit_cut"   ,  "number of hits  ",                 35,-0.5, 34.5 );
-  AddHisto(histoTag+"_track_HPix_cut"     ,"number of hits in the Pixel ",     10,-0.5, 9.5  );
-  AddHisto(histoTag+"_track_len_cut"      ,"decay length ",                   100,0,25.     );
-  AddHisto(histoTag+"_track_dist_cut"     ,"distance to the jet axis ",       100,0.,0.3    );
-  AddHisto(histoTag+"_track_dz_cut"       ,"transverse IP ",                  100,-20., 20.  );
-  AddHisto(histoTag+"_track_pt_cut"       ,"pT ",                             200,0.,1000.);
-  AddHisto(histoTag+"_track_pt15_cut"    , "pT of all the tracks",            300,0.,30.);
-  AddHisto(histoTag+"_track_IP2D_cut"     ,"IP2D ",                           100,-1.,1.);
+  AddHisto(histoTag+"_track_len"     ,";decay length;;",                100,0,5.     );
+  AddHisto(histoTag+"_track_dist"    ,";distance to the jet axis;;",    100,0.,0.08  );
+  AddHisto(histoTag+"_track_dz"      ,";transverse IP;;",               100,-3,3     );
+  AddHisto(histoTag+"_track_isfromSV",";Track is from SV;;",            2,-0.5, 1.5  );
+  AddHisto(histoTag+"_track_pt"      ,";pT of all the tracks;;",        200,0.,1000. );
+  AddHisto(histoTag+"_track_pt15"    ,";pT of all the tracks;;",        500,0.,50.   );
+  AddHisto(histoTag+"_track_chi2_cut",";normalized chi2 ;;",            100,0.,30.   );
+  AddHisto(histoTag+"_track_nHit_cut",";number of hits  ;;",            35,-0.5, 34.5);
+  AddHisto(histoTag+"_track_HPix_cut",";number of hits in the Pixel ;;",10,-0.5, 9.5 );
+  AddHisto(histoTag+"_track_len_cut" ,";decay length ;;",               100,0,25.    );
+  AddHisto(histoTag+"_track_dist_cut",";distance to the jet axis ;;",   100,0.,0.3   );
+  AddHisto(histoTag+"_track_dz_cut"  ,";transverse IP ;;",              100,-20., 20.);
+  AddHisto(histoTag+"_track_pt_cut"  ,";pT ;;",                         200,0.,1000. );
+  AddHisto(histoTag+"_track_pt15_cut",";pT of all the tracks;;",        300,0.,30.   );
+  AddHisto(histoTag+"_track_IP2D_cut",";IP2D ;;",                       100,-1.,1.   );
 
-  AddHisto(histoTag+"_TCHE"      ,         "TCHE",                             50,0.,30. ); 
-  AddHisto(histoTag+"_TCHP"      ,         "TCHP",                             50,0.,30. ); 
-  AddHisto(histoTag+"_JP"        ,         "JP",                               50,0.,2.5 );
-  AddHisto(histoTag+"_JBP"       ,         "JBP",                              50,0.,8.  );
-  AddHisto(histoTag+"_SSV"       ,         "SSVHE",                            70,0.,7.  );
-  AddHisto(histoTag+"_SSVHP"     ,         "SSVHP",                            70,0.,7.  );
-  AddHisto(histoTag+"_CSV"       ,         "CSV",                              50,0.,1.  );
-  AddHisto(histoTag+"_CSVIVFv2"  ,         "CSVIVFv2",                         50,0.,1.  );
-  AddHisto(histoTag+"_DoubleB"   ,         "DoubleB",                         100,-1,1.  );
+  AddHisto(histoTag+"_TCHE"    ,";CHE;;",50,0.,30.); 
+  AddHisto(histoTag+"_TCHP"    ,";CHP;;",50,0.,30.); 
+  AddHisto(histoTag+"_JP"      ,";P;;",50,0.,2.5);
+  AddHisto(histoTag+"_JBP"     ,";BP;;",50,0.,8.);
+  AddHisto(histoTag+"_SSV"     ,";SVHE;;",70,0.,7.);
+  AddHisto(histoTag+"_SSVHP"   ,";SVHP;;",70,0.,7.);
+  AddHisto(histoTag+"_CSV"     ,";SV;;",50,0.,1.);
+  AddHisto(histoTag+"_CSVIVFv2",";SVIVFv2;;",50,0.,1.);
+  AddHisto(histoTag+"_DoubleB" ,";oubleB;;",100,-1,1.);
 
+  AddHisto(histoTag+"_TCHE_extended1",";TCHE_extended1;;",70,-30.,30.); 
+  AddHisto(histoTag+"_TCHP_extended1",";TCHP_extended1;;",70,-30.,30.); 
+  AddHisto(histoTag+"_TCHE_extended2",";TCHE_extended2;;",100,-30.,30.); 
+  AddHisto(histoTag+"_TCHP_extended2",";TCHP_extended2;;",100,-30.,30.); 
+  AddHisto(histoTag+"_discri_ssche0" ,";SSVHE Discriminator;;",80,-1.,7.);
+  AddHisto(histoTag+"_discri_sschp0" ,";SSVHP Discriminator;;",80,-1.,7.);
 
-  AddHisto(histoTag+"_TCHE_extended1"   ,  "TCHE_extended1",                   70, -30.,30. ); 
-  AddHisto(histoTag+"_TCHP_extended1"   ,  "TCHP_extended1",                   70, -30.,30. ); 
-  AddHisto(histoTag+"_TCHE_extended2"   ,  "TCHE_extended2",                  100,-30.,30. ); 
-  AddHisto(histoTag+"_TCHP_extended2"   ,  "TCHP_extended2",                  100,-30.,30. ); 
-  AddHisto(histoTag+"_discri_ssche0",      "SSVHE Discriminator",              80, -1., 7.   );
-  AddHisto(histoTag+"_discri_sschp0",      "SSVHP Discriminator",              80, -1., 7.   );
+  AddHisto(histoTag+"_SoftMu"    ,";SoftMu;;",50,0.,1.);
+  AddHisto(histoTag+"_SoftEl"    ,";SoftEl;;",50,0.,1.);
+  AddHisto(histoTag+"_CombCSVSL" ,";CombCSVSL;;",50,0.,1.);
+  AddHisto(histoTag+"_RetCombSvx",";RetCombSvx;;",50,0.,1.);
 
-  AddHisto(histoTag+"_SoftMu"    ,         "SoftMu",                           50,0.,1.  );
-  AddHisto(histoTag+"_SoftEl"    ,         "SoftEl",                           50,0.,1.  );
-  AddHisto(histoTag+"_CombCSVSL"        ,  "CombCSVSL",                        50,0.,1.  );
-  AddHisto(histoTag+"_RetCombSvx"   ,      "RetCombSvx",                       50,0.,1.  );
-
-  AddHisto2D(histoTag+"_seltrack_vs_jetpt", "sel track multiplicity vs jet pt",         PtMax/20,0,PtMax, 100,-0.5,99.5);
-  AddHisto2D(histoTag+"_sv_mass_vs_flightDist3D", " SVMass vs SV 3D flight distance ",  50,0, 10,60,0,6);
-  AddHisto2D(histoTag+"_TagVarCSV_sv_mass_vs_jetpt",";p_{T}(jet) [GeV];M(sv from TagVarCSV);", PtMax/20,0,PtMax, 100,0,6);
-  AddHisto2D(histoTag+"_avg_sv_mass_vs_jetpt","Avg SVMass vs jet pt",                   PtMax/20,0,PtMax, 100,0,6);
-  AddHisto2D(histoTag+"_sv_deltar_jet_vs_jetpt","SVJetDeltaR vs jet pt",                PtMax/20,0,PtMax, 50,0.,0.5);
-  AddHisto2D(histoTag+"_sv_deltar_sum_jet_vs_jetpt","SVvtxSumJetDeltaR vs jet pt",      PtMax/20,0,PtMax, 50,0.,0.5);
-  AddHisto2D(histoTag+"_sv_deltar_sum_dir_vs_jetpt","SVvtxSumVtxDirDeltaR vs jet pt",   PtMax/20,0,PtMax, 50,0.,0.5);
-  AddHisto2D(histoTag+"_muon_ptrel_vs_jetpt","PFMuon_p{T}^{rel} vs jet pt",               PtMax/20,0,PtMax,50,0,5);
-  AddHisto2D(histoTag+"_muon_DeltaR_vs_jetpt","Muon1 DeltaR vs jet pt",                 PtMax/20,0,PtMax,50,0,0.5);
+  AddHisto2D(histoTag+"_seltrack_vs_jetpt"         ,";sel track multiplicity vs jet pt;;",PtMax/20,0,PtMax,100,-0.5,99.5);
+  AddHisto2D(histoTag+"_sv_mass_vs_flightDist3D"   ,";SVMass vs SV 3D flight distance;;",50,0, 10,60,0,6);
+  AddHisto2D(histoTag+"_TagVarCSV_sv_mass_vs_jetpt",";p_{T}(jet) [GeV];M(sv from TagVarCSV);;",PtMax/20,0,PtMax,100,0,6);
+  AddHisto2D(histoTag+"_avg_sv_mass_vs_jetpt"      ,";Avg SVMass vs jet pt;;",PtMax/20,0,PtMax,100,0,6);
+  AddHisto2D(histoTag+"_sv_deltar_jet_vs_jetpt"    ,";SVJetDeltaR vs jet pt;;",PtMax/20,0,PtMax,50,0.,0.5);
+  AddHisto2D(histoTag+"_sv_deltar_sum_jet_vs_jetpt",";SVvtxSumJetDeltaR vs jet pt;;",PtMax/20,0,PtMax,50,0.,0.5);
+  AddHisto2D(histoTag+"_sv_deltar_sum_dir_vs_jetpt",";SVvtxSumVtxDirDeltaR vs jet pt;;",PtMax/20,0,PtMax,50,0.,0.5);
+  AddHisto2D(histoTag+"_muon_ptrel_vs_jetpt"       ,";PFMuon_p{T}^{rel} vs jet pt;;",PtMax/20,0,PtMax,50,0,5);
+  AddHisto2D(histoTag+"_muon_DeltaR_vs_jetpt"      ,";Muon1 DeltaR vs jet pt;;",PtMax/20,0,PtMax,50,0,0.5);
 }
 
 // ------------ method called for each event  ------------
@@ -676,9 +697,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
     if(run < 0) {
       isData = false;
-      if ( iEntry == 0) edm::LogInfo("IsMC") << ">>>>> Running on simulation\n" ; 
+      if ( iEntry == 0) edm::LogInfo("IsMC") << ">>>>> Running on simulation\n" ;
     }
-    else if( iEntry == 0 ) edm::LogInfo("IsData") << ">>>>> Running on data\n" ; 
+    else if( iEntry == 0 ) edm::LogInfo("IsData") << ">>>>> Running on data\n" ;
 
     if ( run == 251721 && (lumi >= 123 && lumi <= 244) ) continue ; 
 
@@ -762,9 +783,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       int iSubJet1 = SubJetInfo.SubJetIdx[0] ;
       int iSubJet2 = SubJetInfo.SubJetIdx[1] ;
 
-      //// If  processing subjets, discard fat jet with any one subjet having pt = 0 
-      if( (usePrunedSubjets_ || useSoftDropSubjets_) 
-          && (SubJets.Jet_pt[iSubJet1]==0. || SubJets.Jet_pt[iSubJet2]==0.) ) continue; 
+      //// If  processing subjets, discard fat jet with any one subjet having pt = 0
+      if( (usePrunedSubjets_ || useSoftDropSubjets_)
+          && (SubJets.Jet_pt[iSubJet1]==0. || SubJets.Jet_pt[iSubJet2]==0.) ) continue;
 
       TLorentzVector subjet1_p4, subjet2_p4;
       subjet1_p4.SetPtEtaPhiM(SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], SubJets.Jet_phi[iSubJet1], SubJets.Jet_mass[iSubJet1]);
@@ -779,11 +800,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       double subjet_dyphi = sqrt( subjet_dy*subjet_dy + subjet_dphi*subjet_dphi ) ;
 
       ////// If processing subjets, skip fat jets for which the subjets are separated by dR>0.8
-      //if( (usePrunedSubjets_ || useSoftDropSubjets_)  && subjet_dR>fatJetCone ) continue; 
+      //if( (usePrunedSubjets_ || useSoftDropSubjets_)  && subjet_dR>fatJetCone ) continue;
 
       //// If processing subjets, skip infrared unsafe configurations
-      if( (usePrunedSubjets_ || useSoftDropSubjets_)  
-          && subjet_dR < (FatJetInfo.Jet_mass[iJet]/FatJetInfo.Jet_pt[iJet]) ) continue; 
+      if( (usePrunedSubjets_ || useSoftDropSubjets_)
+          && subjet_dR < (FatJetInfo.Jet_mass[iJet]/FatJetInfo.Jet_pt[iJet]) ) continue;
 
       bool isDoubleMuonTagged = false;
 
@@ -850,25 +871,29 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       bool isGSPcc(false);
       if ( FatJetInfo.Jet_ncHadrons[iJet] > 1 ) isGSPcc = true ;
 
-      //// fill fat jet histograms
+      FillHisto2D("FatJet_pt_softdropMass" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_massSoftDrop[iJet] ,wtPU*wtFatJet);
+      //// Fill fat jet histograms
+
+      FillHisto("FatJet_Mass" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_mass[iJet] ,wtPU*wtFatJet);
+      FillHisto("FatJet_prunedMass" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massPruned[iJet] ,wtPU*wtFatJet);
+      FillHisto2D("FatJet_prunedMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massPruned[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
+      FillHisto2D("FatJet_pt_prunedMass" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_massPruned[iJet] ,wtPU*wtFatJet);
+      FillHisto("FatJet_softdropMass" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massSoftDrop[iJet] ,wtPU*wtFatJet);
+      FillHisto2D("FatJet_softdropMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massSoftDrop[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
+
       if (usePrunedSubjets_) {
-        FillHisto("FatJet_prunedMass"                 ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massPruned[iJet]                     ,wtPU*wtFatJet);
-        FillHisto("FatJet_massDrop"                   ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,std::max( SubJets.Jet_mass[iSubJet1]/SubJets.Jet_jes[iSubJet1], SubJets.Jet_mass[iSubJet2]/SubJets.Jet_jes[iSubJet2] )/(FatJetInfo.Jet_massPruned[iJet]/FatJetInfo.Jet_jes[iJet]) ,wtPU*wtFatJet);
-        FillHisto2D("FatJet_prunedMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massPruned[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
-        FillHisto2D("FatJet_pt_prunedMass" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_massPruned[iJet] ,wtPU*wtFatJet);
+        FillHisto("FatJet_massDrop_pruned" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,std::max( SubJets.Jet_mass[iSubJet1]/SubJets.Jet_jes[iSubJet1], SubJets.Jet_mass[iSubJet2]/SubJets.Jet_jes[iSubJet2] )/(FatJetInfo.Jet_massPruned[iJet]/FatJetInfo.Jet_jes[iJet]) ,wtPU*wtFatJet);
+        FillHisto("FatJet_prunedsubjet_dR" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,subjet_dR ,wtPU*wtFatJet);
+        FillHisto("FatJet_prunedsubjet_dyphi" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,subjet_dyphi ,wtPU*wtFatJet);
       }
       else if (useSoftDropSubjets_) {
-        FillHisto("FatJet_softdropMass"                 ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massSoftDrop[iJet]                     ,wtPU*wtFatJet);
-        FillHisto("FatJet_massDrop"                   ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,std::max( SubJets.Jet_mass[iSubJet1]/SubJets.Jet_jes[iSubJet1], SubJets.Jet_mass[iSubJet2]/SubJets.Jet_jes[iSubJet2] )/(FatJetInfo.Jet_massSoftDrop[iJet]/FatJetInfo.Jet_jes[iJet]) ,wtPU*wtFatJet);
-        FillHisto2D("FatJet_softdropMass_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_massSoftDrop[iJet] ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
-        FillHisto2D("FatJet_pt_softdropMass" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_massSoftDrop[iJet] ,wtPU*wtFatJet);
+        FillHisto("FatJet_massDrop_softdrop" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,std::max( SubJets.Jet_mass[iSubJet1]/SubJets.Jet_jes[iSubJet1], SubJets.Jet_mass[iSubJet2]/SubJets.Jet_jes[iSubJet2] )/(FatJetInfo.Jet_massSoftDrop[iJet]/FatJetInfo.Jet_jes[iJet]) ,wtPU*wtFatJet);
+        FillHisto("FatJet_softdropsubjet_dR" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,subjet_dR ,wtPU*wtFatJet);
+        FillHisto("FatJet_softdropsubjet_dyphi" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,subjet_dyphi ,wtPU*wtFatJet);
       }
 
       h1_fatjet_pt->Fill(FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
-      FillHisto("FatJet_subjet_dR"                  ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,subjet_dR                                           ,wtPU*wtFatJet);
-      FillHisto("FatJet_subjet_dyphi"               ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,subjet_dyphi                                        ,wtPU*wtFatJet);
-      FillHisto("FatJet_nsubjettiness"              ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
-
+      FillHisto("FatJet_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
       fillJetHistos(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", nmu, nselmuon, idxFirstMuon, wtPU*wtFatJet);
 
       // ------------------------------------------------
@@ -880,67 +905,105 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float SV_mass_0 = FatJetInfo.Jet_SV_mass_0[iJet];
       float SV_EnRat_0 = FatJetInfo.Jet_SV_EnergyRatio_0[iJet];
       float SV_EnRat_1 = FatJetInfo.Jet_SV_EnergyRatio_1[iJet];
-      float jetNTracksEtaRel = FatJetInfo.TagVarCSV_jetNTracksEtaRel[iJet];
 
       float lep_ptrel = FatJetInfo.Jet_PFLepton_ptrel[iJet];
       float ele_ptrel = -3;
       float mu_ptrel = -3;
-      //float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet];
-      //float ele_ratio = -3;
-      //float mu_ratio = -3;
+      float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet];
+      float ele_ratio = -3;
+      float mu_ratio = -3;
 
       //elecron loop
       for(int iSE = FatJetInfo.Jet_nFirstSE[iJet]; iSE<FatJetInfo.Jet_nLastSE[iJet]; ++iSE){
-        if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
-        {
-          ele_ptrel = lep_ptrel;
-          //ele_ratio = FatJetInfo.PFElectron_ratio[iSE];
-        }
+          if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
+          {
+            ele_ptrel = lep_ptrel;
+            ele_ratio = FatJetInfo.PFElectron_ratio[iSE];
+          }
       }// end ele loop
 
       //muon loop
       for(int iSM = FatJetInfo.Jet_nFirstSM[iJet]; iSM<FatJetInfo.Jet_nLastSM[iJet]; ++iSM){
-        if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
-        {
-          mu_ptrel = lep_ptrel;
-          //mu_ratio = FatJetInfo.PFMuon_ratio[iSM];
-        }
+          if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
+          {
+            mu_ptrel = lep_ptrel;
+            mu_ratio = FatJetInfo.PFMuon_ratio[iSM];
+          }
       }//end mu loop
 
       float nSE = FatJetInfo.Jet_nSE[iJet];
       float nSM = FatJetInfo.Jet_nSM[iJet];
       float nSL_3 = nSE + nSM ;
 
-      //float trackSip3dSig_3 = FatJetInfo.Jet_trackSip3dSig_3[iJet];
+      float trackSip3dSig_3 = FatJetInfo.Jet_trackSip3dSig_3[iJet];
+      float trackSip3dSig_2 = FatJetInfo.Jet_trackSip3dSig_2[iJet];
+      float trackSip3dSig_1 = FatJetInfo.Jet_trackSip3dSig_1[iJet];
+      float trackSip3dSig_0 = FatJetInfo.Jet_trackSip3dSig_0[iJet];
+
+      float trackEtaRel_2 = FatJetInfo.Jet_trackEtaRel_2[iJet];
+      float trackEtaRel_1 = FatJetInfo.Jet_trackEtaRel_1[iJet];
+      float trackEtaRel_0 = FatJetInfo.Jet_trackEtaRel_0[iJet];
+
+      float jetNTracksEtaRel = FatJetInfo.TagVarCSV_jetNTracksEtaRel[iJet];
+      float jetNTracks  = FatJetInfo.TagVarCSV_jetNTracks[iJet];
+      float vertexNTracks  = FatJetInfo.TagVarCSV_vertexNTracks[iJet];
+      float jetNSecondaryVertices  = FatJetInfo.TagVarCSV_jetNSecondaryVertices[iJet];
+      float trackSip2dSigAboveCharm  = FatJetInfo.TagVarCSV_trackSip2dSigAboveCharm[iJet];
+      float vertexMass  = FatJetInfo.TagVarCSV_vertexMass[iJet];
+      float vertexEnergyRatio  = FatJetInfo.TagVarCSV_vertexEnergyRatio[iJet];
+      float vertexJetDeltaR  = FatJetInfo.TagVarCSV_vertexJetDeltaR[iJet];
+      float flightDistance2dSig  = FatJetInfo.TagVarCSV_flightDistance2dSig[iJet];
+      float minSubJetCSVIVF = TMath::Min(SubJets.Jet_CombIVF[iSubJet1],SubJets.Jet_CombIVF[iSubJet2]);
 
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
       float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
       float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
+      float BDTG_All = FatJetInfo.Jet_BDTG_All[iJet];
 
       FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, z_ratio  ,   wtPU*wtFatJet);
       FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, tau_dot  ,   wtPU*wtFatJet);
       FillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_mass_0  ,   wtPU*wtFatJet);
       FillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_EnRat_0  ,   wtPU*wtFatJet);
       FillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_EnRat_1  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_jetNTracksEtaRel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, jetNTracksEtaRel  ,   wtPU*wtFatJet);
 
       FillHisto("FatJet_PFLepton_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, lep_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFElectron_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, ele_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFMuon_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, mu_ptrel  ,   wtPU*wtFatJet);
 
-      //FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, lep_ratio  ,   wtPU*wtFatJet);
-      //FillHisto("FatJet_PFElectron_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, ele_ratio  ,   wtPU*wtFatJet);
-      //FillHisto("FatJet_PFMuon_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, mu_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, lep_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFElectron_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, ele_ratio  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_PFMuon_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, mu_ratio  ,   wtPU*wtFatJet);
 
       FillHisto("FatJet_nSL_3",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, nSL_3  ,   wtPU*wtFatJet);
       FillHisto("FatJet_nSE",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, nSE  ,   wtPU*wtFatJet);
       FillHisto("FatJet_nSM",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, nSM  ,   wtPU*wtFatJet);
 
-      //FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGSPbb, trackSip3dSig_3  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackSip3dSig_3  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_2",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackSip3dSig_2  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_1",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackSip3dSig_1  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip3dSig_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackSip3dSig_0  ,   wtPU*wtFatJet);
+
+      FillHisto("FatJet_trackEtaRel_2",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackEtaRel_2  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackEtaRel_1",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackEtaRel_1  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackEtaRel_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackEtaRel_0  ,   wtPU*wtFatJet);
+
+      FillHisto("FatJet_jetNTracksEtaRel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, jetNTracksEtaRel  ,   wtPU*wtFatJet);
+
+      FillHisto("FatJet_jetNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, jetNTracks ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexNTracks"		,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, vertexNTracks ,   wtPU*wtFatJet);
+      FillHisto("FatJet_jetNSecondaryVertices"	,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, jetNSecondaryVertices ,   wtPU*wtFatJet);
+      FillHisto("FatJet_trackSip2dSigAboveCharm",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackSip2dSigAboveCharm ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexMass"		,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, vertexMass ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexEnergyRatio"	,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, vertexEnergyRatio ,   wtPU*wtFatJet);
+      FillHisto("FatJet_vertexJetDeltaR"	,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, vertexJetDeltaR ,   wtPU*wtFatJet);
+      FillHisto("FatJet_flightDistance2dSig"	,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, flightDistance2dSig ,   wtPU*wtFatJet);
+      FillHisto("FatJet_minSubJetCSVIVF"	,      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, minSubJetCSVIVF,   wtPU*wtFatJet);
+
 
       FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_SV  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_SL  ,   wtPU*wtFatJet);
       FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_Cascade  ,   wtPU*wtFatJet);
+      FillHisto("FatJet_BDTG_All",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_All  ,   wtPU*wtFatJet);
 
       //added by rizki - end
 
@@ -956,11 +1019,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           int nselmuonSubJet = 0;
           int nmuSubJet = 0;
 
-          if (SubJets.nPFMuon>0) { 
-            for (int iMu=0; iMu<SubJets.nPFMuon; ++iMu) { 
-              if (SubJets.PFMuon_IdxJet[iMu]==iSubJet ) { 
+          if (SubJets.nPFMuon>0) {
+            for (int iMu=0; iMu<SubJets.nPFMuon; ++iMu) {
+              if (SubJets.PFMuon_IdxJet[iMu]==iSubJet ) {
                 ++nmuSubJet;
-                if (passMuonSelection(iMu, SubJets, iSubJet, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 ))) { 
+                if (passMuonSelection(iMu, SubJets, iSubJet, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 ))) {
                   if(nselmuonSubJet == 0) idxFirstMuonSubJet = iMu;
                   ++nselmuonSubJet;
                 }
@@ -985,8 +1048,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           h1_subjet_pt->Fill(SubJets.Jet_pt[iSubJet],wtPU*wtSubJet);
 
           std::string sjlabel ;
-          if (usePrunedSubjets_) sjlabel = "PrunedSubJet" ; 
-          else if (useSoftDropSubjets_) sjlabel = "SoftDropSubJet" ; 
+          if (usePrunedSubjets_) sjlabel = "PrunedSubJet" ;
+          else if (useSoftDropSubjets_) sjlabel = "SoftDropSubJet" ;
           fillJetHistos(SubJets, iSubJet, false, false ,sjlabel, nmuSubJet, nselmuonSubJet, idxFirstMuonSubJet, wtPU*wtSubJet);
 
           //// track sharing
@@ -1077,7 +1140,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
 
   if ( useJetProbaTree_ ) {
     //---------------------------- Start tracks loop ---------------------------------------//
-    for (int iTrk=JetInfo.Jet_nFirstTrack[iJet]; iTrk<JetInfo.Jet_nLastTrack[iJet] ; ++iTrk) { 
+    for (int iTrk=JetInfo.Jet_nFirstTrack[iJet]; iTrk<JetInfo.Jet_nLastTrack[iJet] ; ++iTrk) {
       // -----------------------------------------
       // -------- track information --------------
       // -----------------------------------------
@@ -1108,7 +1171,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
       if (passNhit && passPix && passIPz && passPt && passtrkdist && passtrklen && passTrackIP2D)
         FillHisto(histoTag+"_track_chi2_cut",         flav, isGSPbb ,isGSPcc ,JetInfo.Track_chi2[iTrk]         , wt);
 
-      if (passNhit && passPix && passIPz && passnormchi2 && passtrkdist && passtrklen && passTrackIP2D) 
+      if (passNhit && passPix && passIPz && passnormchi2 && passtrkdist && passtrklen && passTrackIP2D)
       {
         FillHisto(histoTag+"_track_pt_cut",           flav, isGSPbb ,isGSPcc ,JetInfo.Track_pt[iTrk]     , wt);
         FillHisto(histoTag+"_track_pt15_cut",         flav, isGSPbb ,isGSPcc ,JetInfo.Track_pt[iTrk]     , wt);
@@ -1286,8 +1349,8 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   // ------------------------------------------------
   // ------------- tagger information ---------------
   // ------------------------------------------------
-  float tche      = JetInfo.Jet_Ip2P[iJet]; 
-  float tchp      = JetInfo.Jet_Ip3P[iJet]; 
+  float tche      = JetInfo.Jet_Ip2P[iJet];
+  float tchp      = JetInfo.Jet_Ip3P[iJet];
   float jetproba  = JetInfo.Jet_Proba[iJet];
   float jetbproba = JetInfo.Jet_Bprob[iJet];
   float ssvhe     = JetInfo.Jet_Svx[iJet] ;
@@ -1295,7 +1358,7 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   float csv       = JetInfo.Jet_CombSvx[iJet];
   float csvivfv2  = JetInfo.Jet_CombIVF[iJet];
   float doubleb   = JetInfo.Jet_DoubleSV[iJet];
-  //DM>>float mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[iJet]; 
+  float mass_TagVarCSV_sv = JetInfo.TagVarCSV_vertexMass[iJet];
 
   FillHisto(histoTag+"_TCHE",     flav, isGSPbb, isGSPcc ,tche      ,wt);
   FillHisto(histoTag+"_TCHP",     flav, isGSPbb, isGSPcc ,tchp      ,wt);
@@ -1306,8 +1369,8 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
   FillHisto(histoTag+"_CSV",      flav, isGSPbb, isGSPcc ,csv       ,wt);
   FillHisto(histoTag+"_CSVIVFv2", flav, isGSPbb, isGSPcc ,csvivfv2  ,wt);
   FillHisto(histoTag+"_DoubleB",  flav, isGSPbb, isGSPcc ,doubleb   ,wt);
-  //DM>>FillHisto(histoTag+"_TagVarCSV_sv_mass", flav, isGSPbb ,isGSPcc ,mass_TagVarCSV_sv,   wt);
-  //DM>>FillHisto2D(histoTag+"_TagVarCSV_sv_mass_vs_jetpt"        ,flav,isGSPbb , isGSPcc, ptjet,mass_TagVarCSV_sv,wt);
+  FillHisto(histoTag+"_TagVarCSV_sv_mass", flav, isGSPbb ,isGSPcc ,mass_TagVarCSV_sv,   wt);
+  FillHisto2D(histoTag+"_TagVarCSV_sv_mass_vs_jetpt"        ,flav,isGSPbb , isGSPcc, ptjet,mass_TagVarCSV_sv,wt);
 
   FillHisto(histoTag+"_TCHE_extended1",  flav, isGSPbb, isGSPcc ,tche  , wt);
   FillHisto(histoTag+"_TCHP_extended1",  flav, isGSPbb, isGSPcc ,tchp  , wt);
