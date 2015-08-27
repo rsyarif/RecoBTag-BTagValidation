@@ -1,4 +1,6 @@
-#include "CMSstyle.C"
+#include "tdrstyle.C"
+#include "CMS_lumi.C"
+#include "help.C"
 #include "help.C"
 #include <TH2.h>
 #include <TStyle.h>
@@ -6,7 +8,6 @@
 #include "TH1D.h"
 #include "TMultiGraph.h"
 #include "TGraph.h"
-#include "TCanvas.h"
 #include "THStack.h"
 #include "TFile.h"
 #include "TROOT.h"
@@ -26,15 +27,14 @@
 
 using namespace std;
 
-TString filename    ="../test/bTagValPlots_pruned.root"; 
-//TString filename    ="../test/bTagValPlots_softdrop.root"; 
-TString filename_ext="" ;
-TString dir4plots   ="HbbTagVal_btagvalplots_TEMP_canDELETE" ;
+TString filename_ext="" ; 
+TString filename  = "./test/QCD-GoldenData/Final_histograms_btagval.root";
+TString dir4plots = "BoostedBTagCommissioning/noPUReweight/log";
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
 
-TString title1 = "CMS Simulation, #sqrt{s} = 13 TeV";
+TString title1 = "40/pb at 13 TeV";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
 
 TString formata=".pdf";
@@ -45,7 +45,7 @@ bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets= 0;
 bool logy      = 1;
-bool dodata    = 0;
+bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
 bool inclTTbar = 0;
@@ -79,8 +79,8 @@ void DrawCommPlot(bool Draw_track_plots=true,
 
   TString action = "mkdir -p " + dir4plots;
   system(action);
-
-  //Draw("h1_nPV"      ,"# of PV",0);
+  Draw("h1_pt_hat"   ,"p_{T} hat",1);
+  Draw("h1_nPV"      ,"# of PV",0);
   //Draw("h1_nFatJet"  ,"# of fat jets",0);
   //Draw("h1_nSubJet"  ,"# of subjets",0);
 
@@ -310,10 +310,10 @@ void Draw(TString name, TString histotitle, bool log) {
 
   if (name=="h1_nPV") {
     hist_mc       = (TH1D*)myFile->Get("QCD__"+name+"_mc");
-    hist_data     = (TH1D*)myFile->Get("Data__"+name+"_data");
+    hist_data     = (TH1D*)myFile->Get("DATA__"+name+"_data");
   } else {
     hist_mc       = (TH1D*)myFile->Get("QCD__"+name);
-    hist_data     = (TH1D*)myFile->Get("Data__"+name);
+    hist_data     = (TH1D*)myFile->Get("DATA__"+name);
   }
 
   float scale_f = (hist_data->Integral())/(hist_mc->Integral());
@@ -479,7 +479,7 @@ void DrawStacked(TString name,
   hist_l      = (TH1D*)myFile->Get(fdir+name+"_l");
   if (inclTTbar) hist_ttbar = (TH1D*)myFile->Get("TTJets__"+name+"_mc");
   if (inclZjj)   hist_zjj   = (TH1D*)myFile->Get("ZJetsFullyHadronic__"+name+"_mc");
-  if (doData)    hist_data  = (TH1D*)myFile->Get("Data__"+name+"_data");
+  if (doData)    hist_data  = (TH1D*)myFile->Get("DATA__"+name+"_data");
 
   std::cout << " hist_b name = " << hist_b->GetName() << endl ;
 
@@ -610,7 +610,6 @@ void DrawStacked(TString name,
       if (inclZjj)  hist_zjj_uncDown->Rebin(nRebin);
     }
   }
-
   if (doData) {
     float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral() ) ;
     if (fExtNorm) scale_f = ( hist_data_ext->Integral() - (inclTTbar ? hist_ttbar_ext->Integral() : 0) - (inclZjj ? hist_zjj_ext->Integral() : 0) )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_gsplit_c_ext->Integral() + hist_l_ext->Integral() ) ;
@@ -728,6 +727,20 @@ void DrawStacked(TString name,
     cout << "Data/MC ratio:       " << histo_ratio->GetBinContent(1) << endl
       << "Data/MC ratio error: " << histo_ratio->GetBinError(1) << endl;
 
+  setTDRStyle();
+  gStyle->SetErrorX(0.);
+
+  int iPeriod = 4;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV 
+  int iPos = 11 ;
+  int W = 800;
+  int H = 600;
+  int H_ref = 600;
+  int W_ref = 800;
+  float T = 0.08*H_ref;
+  float B = 0.12*H_ref;
+  float L = 0.12*W_ref;
+  float R = 0.04*W_ref;
+
   //TCanvas *c1 = new TCanvas("c1", "c1",432,69,782,552);
   TCanvas *c1 = new TCanvas("c1", "c1",441,159,782,552);
   c1->Range(0,0,1,1);
@@ -825,28 +838,20 @@ void DrawStacked(TString name,
 
   leg->Draw();
 
-  TLatex *   tex0 = new TLatex(0.42,0.99,"CMS Simulation, #sqrt{s} = 13 TeV");
-  tex0->SetNDC();
-  tex0->SetTextAlign(13);
-  tex0->SetTextFont(42);
-  tex0->SetTextFont(62);
-  tex0->SetTextSize( (dodata? 0.55 : 0.050) ); //added by rizki
-  tex0->SetLineWidth(2);
-  tex0->Draw();
+  CMS_lumi( pad0, iPeriod, iPos );
 
   if (setSampleName) {
     TString sample = "";
-    if (filename.Contains("InclusiveJets")) sample += "Multijet sample (CA8 jets)" ;
-    else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged CA8 jets)}" ;
-    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged CA8 jets)}" ;
-    else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged CA8 subjets)}" ;
-    else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged CA8 jets)}}" ;
+    if (filename.Contains("InclusiveJets")) sample += "Multijet sample (AK8 jets)" ;
+    else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged AK8 jets)}" ;
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 jets)}" ;
+    else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 subjets)}" ;
+    else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged AK8 jets)}}" ;
     else std::cout << " >>>> Error:Check sample name\n" ;
-    TLatex *tex1 = new TLatex(0.14,0.88,sample);
+    TLatex *tex1 = new TLatex(0.20,0.74,sample);
     tex1->SetNDC();
     tex1->SetTextAlign(13);
     tex1->SetTextFont(42);
-    tex1->SetTextFont(62);
     tex1->SetTextSize(0.055);
     tex1->SetLineWidth(2);
     tex1->Draw();

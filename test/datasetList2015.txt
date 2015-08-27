@@ -1,23 +1,24 @@
 # Dataset_name  Number_of_jobs  EOS_location  PyCfg_parameters (optional)
 
-# DATA
-/JetHT/Run2015B-PromptReco-v1/AOD 29 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/Data/JetHT/Golden_246908_251883 doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root 
+### DATA
+/JetHT/Run2015B-PromptReco-v1/AOD 29 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/JetHT/Run2015B-PromptReco-v1/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root 
 
-# MC
-/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 72  /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-300to470 doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+### MC
 
-/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 50 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-470to600/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 72  /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
 
-/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 50 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-600to800 doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 50 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
 
-/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 49 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-800to1000/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 50 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
 
-/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 39 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-1000to1400/    doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 49 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
 
-/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 8 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-1400to1800 doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM 39 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
 
-/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 7 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-1800to2400 doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 8 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
 
-/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 9 /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-2400to3200 doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 7 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
 
-/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 7  /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-3200toInf/   doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 9 /eos/cms/store/group/phys_btag/BoostedBTag/7_4_X_Boosted_v1.01/QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/ doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
+
+#/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM 7  /eos/cms/store/group/phys_btag/performance/CMSSW_7_4_7/MC/QCD_TuneCUETP8M1_13TeV_pythia8_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A/Pt-3200toInf/ / doPUReweightingNPV=True useSoftDropSubjets=True outFilename=bTagValPlots.root
