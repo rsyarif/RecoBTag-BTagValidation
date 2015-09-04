@@ -27,20 +27,22 @@
 
 using namespace std;
 
-TString filename    ="../test/Jobs25Aug2015_1/Final_histograms_btagval_InclusiveJets.root" ;
+TString filename    ="../test/Jobs03Sept2015/Final_histograms_btagval_InclusiveJets.root" ;
+//TString filename    ="/afs/cern.ch/user/e/eschmitz/public/BTV/Final_histograms_InclusiveJets_btagval.root" ; 
 //TString filename    ="../test/bTagValPlots_softdrop.root"; 
 TString filename_ext="" ;
-TString dir4plots   ="btagvalplots_25Aug2015" ;
+TString dir4plots   ="btagvalplots_03Sept2015" ;
+//TString dir4plots   ="btagvalplots_Erich_03Sept2015" ;
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
 
-TString title1 = "40/pb at 13 TeV";
+TString title1 = "2015, 13 TeV";
 TString datacaption = "Data";//"HLT_PFJet320, jet p_{T}>400 GeV";
 
 TString formata=".pdf";
 TString formatb=".png";
-TString formatc=".C";
+TString formatc=".root";
 
 bool bOverflow = 1;
 bool web       = 0;
@@ -473,11 +475,11 @@ void DrawStacked(TString name,
   myFile->cd();
   TString fdir = "QCD__" ;
 
-  hist_b      = (TH1D*)myFile->Get(fdir+name+"_b");
-  hist_c      = (TH1D*)myFile->Get(fdir+name+"_c");
-  hist_gsplit = (TH1D*)myFile->Get(fdir+name+"_bfromg");
+  hist_b        = (TH1D*)myFile->Get(fdir+name+"_b");
+  hist_c        = (TH1D*)myFile->Get(fdir+name+"_c");
+  hist_gsplit   = (TH1D*)myFile->Get(fdir+name+"_bfromg");
   hist_gsplit_c = (TH1D*)myFile->Get(fdir+name+"_cfromg");
-  hist_l      = (TH1D*)myFile->Get(fdir+name+"_l");
+  hist_l        = (TH1D*)myFile->Get(fdir+name+"_l");
   if (inclTTbar) hist_ttbar = (TH1D*)myFile->Get("TTJets__"+name+"_mc");
   if (inclZjj)   hist_zjj   = (TH1D*)myFile->Get("ZJetsFullyHadronic__"+name+"_mc");
   if (doData)    hist_data  = (TH1D*)myFile->Get("DATA__"+name+"_data");
@@ -490,7 +492,7 @@ void DrawStacked(TString name,
     hist_b                    -> Rebin(5);
     hist_c                    -> Rebin(5);
     hist_gsplit               -> Rebin(5);
-    hist_gsplit_c               -> Rebin(5);
+    hist_gsplit_c             -> Rebin(5);
     hist_l                    -> Rebin(5);
     if (inclTTbar) hist_ttbar -> Rebin(5);
     if (inclZjj)   hist_zjj   -> Rebin(5);
@@ -674,12 +676,12 @@ void DrawStacked(TString name,
     }
   }
 
-  beautify(hist_c     , 8     , 1001    , 1) ;
-  beautify(hist_b     , 2     , 1001    , 1) ;
-  beautify(hist_gsplit, 7     , 1001    , 1) ;
-  beautify(hist_gsplit_c, 5     , 1001    , 1) ;
-  beautify(hist_l     , 4     , 1001    , 1) ;
-  beautify(histo_tot  , 0     , 0       , 0) ;
+  beautify(hist_c        , 8   , 1001    , 1) ;
+  beautify(hist_gsplit_c , 8   , 1001    , 1) ;
+  beautify(hist_b        , 2   , 1001    , 1) ;
+  beautify(hist_gsplit   , 7   , 1001    , 1) ;
+  beautify(hist_l        , 4   , 1001    , 1) ;
+  beautify(histo_tot     , 0   , 0       , 0) ;
   if (inclTTbar) beautify(hist_ttbar , 6     , 1001    , 1) ;
   if (inclZjj)   beautify(hist_zjj   , 40    , 1001    , 1) ;
   if (doData)    beautify(hist_data  , 1     , 0, 1) ;
@@ -771,8 +773,9 @@ void DrawStacked(TString name,
   }
   else {
     if (name.Contains("track_nHit") || name.Contains("track_HPix")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*5000000 : histo_tot->GetMaximum()*5000000) ;
-    else if (name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") || name.Contains("_sv_multi_0")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*3000 : histo_tot->GetMaximum()*3000) ;
-    else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*100000 : histo_tot->GetMaximum()*100000) ;
+    else if ( name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") || name.Contains("_sv_multi_0")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*30000 : histo_tot->GetMaximum()*30000) ;
+    else if ( name.Contains("_sv_multi") ) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*10000000 : histo_tot->GetMaximum()*10000000) ; 
+    else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1000000 : histo_tot->GetMaximum()*1000000) ;
   }
   if (doData) {
     hist_data->SetMarkerStyle(20);
@@ -785,7 +788,9 @@ void DrawStacked(TString name,
   else     histo_tot->SetMinimum(0.);
   //}
 
-  histo_tot->GetXaxis()->SetTitle(name);
+  histo_tot->GetXaxis()->SetTitle("");
+  histo_tot->GetXaxis()->SetTitleSize(0);
+  histo_tot->GetXaxis()->SetLabelSize(0);
   histo_tot->GetYaxis()->SetTitle("Entries");
   histo_tot->SetTitleOffset(0.81,"Y");
   histo_tot->GetYaxis()->SetLabelSize( (dodata? 0.05 : 0.035) ); //added by rizki
@@ -817,7 +822,7 @@ void DrawStacked(TString name,
     leg =  new TLegend(0.1,0.55,0.40,.90,NULL,"brNDC");
   }
   else {
-    leg = new TLegend(0.555,0.55,0.855,0.90,NULL,"brNDC");
+    leg = new TLegend(0.65,0.55,0.90,0.90,NULL,"brNDC");
   }
   leg->SetBorderSize(1);
   leg->SetTextFont(62);
@@ -834,7 +839,7 @@ void DrawStacked(TString name,
   leg->AddEntry(hist_c,        "c quark"           ,         "f");
   leg->AddEntry(hist_l,        "uds quark or gluon"     ,    "f");
   if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit,   "b from gluon splitting"     ,"f");
-  if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,   "c from gluon splitting"     ,"f");
+  //if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,  "c from gluon splitting"     ,"f");
   if (inclTTbar) leg->AddEntry(hist_ttbar,    "t#bar{t}"               ,    "f");
   if (inclZjj) leg->AddEntry(hist_zjj,    "Z#rightarrowq#bar{q}"       ,    "f");
 
@@ -872,6 +877,16 @@ void DrawStacked(TString name,
     tex2->SetLineWidth(2);
     tex2->Draw();
 
+    TString jetpt="p_{T} (AK8 jets) > 300 GeV" ; 
+
+    TLatex *tex3 = new TLatex(0.20,0.62,jetpt);
+    tex3->SetNDC();
+    tex3->SetTextAlign(13);
+    tex3->SetTextFont(42);
+    tex3->SetTextSize(0.055);
+    tex3->SetLineWidth(2);
+    tex3->Draw();
+
   }
 
   pad0->Modified();
@@ -895,8 +910,13 @@ void DrawStacked(TString name,
 
     histotitle = hist_data->GetXaxis()->GetTitle() ; 
     if (histotitle=="P") histotitle = "JP" ; 
-    if (histotitle=="SVIVFv2") histotitle = "CSVIVFv2" ; 
-    if (histotitle=="nr. of SV") histotitle = "N(SV)" ; 
+    if (histotitle=="BP") histotitle = "JBP" ; 
+    if (histotitle=="number of hits in the Pixel") histotitle = "Number of pixel hits" ; 
+    if (histotitle=="number of selected tracks in the jets") histotitle = "Number of selected tracks in the jets" ; 
+    if (histotitle=="SVIVFv2") histotitle = "CSVv2" ; 
+    if (histotitle=="N(SV)") histotitle = "Number of SV" ; 
+    if (histotitle=="3D IP significance of all tracks") histotitle = "3D IP significance of tracks" ; 
+    if (histotitle=="Flight distance significance 3D") histotitle = "SV 3D flight distance significance" ; 
     if (histotitle=="decay length") histotitle = "track decay length [cm]" ; 
     histo_ratio->GetYaxis()->SetTitle("Data/MC");
     histo_ratio->SetTitleOffset(0.9,"X");
@@ -946,7 +966,7 @@ void DrawStacked(TString name,
   c1->SaveAs(dir4plots+"/"+name_plot);
   name_plot=name+"_Linear"+formatc;
   if(log) name_plot=name+"_Log"+formatc;
-  //c1->SaveAs(dir4plots+"/"+name_plot);
+  c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
     pad0 ->cd();
