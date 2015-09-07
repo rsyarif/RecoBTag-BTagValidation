@@ -702,7 +702,7 @@ void DrawStacked(TString name,
     yaxistitle="Jets" ; 
   }
   if (histotitle=="N(SV)") { 
-    histotitle = "Number of SV" ; 
+    histotitle = "Number of SVs" ; 
     yaxistitle="Jets" ; 
   }
   if (histotitle=="number of hits in the Pixel") {
@@ -715,7 +715,7 @@ void DrawStacked(TString name,
   }
   if (histotitle=="Flight distance significance 3D") {
     histotitle = "SV 3D flight distance significance" ; 
-    yaxistitle="SV / 5" ; 
+    yaxistitle="SVs / 5" ; 
   }
   if (histotitle=="SVIVFv2") {
     histotitle = "CSVv2 discriminator" ; 
