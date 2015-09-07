@@ -79,6 +79,7 @@ void DrawCommPlot(bool Draw_track_plots=true,
   gStyle->SetOptStat(0);
   gStyle->SetPadTickX(1);
   gStyle->SetPadTickY(1);
+  gStyle->SetErrorX(0);
 
   TString action = "mkdir -p " + dir4plots;
   system(action);
@@ -322,7 +323,7 @@ void Draw(TString name, TString histotitle, bool log) {
   float scale_f = (hist_data->Integral())/(hist_mc->Integral());
   hist_mc->Scale(scale_f);
 
-  beautify(hist_data  , 1     , 0, 1) ;
+  beautify(hist_data  , 1 , 1 ,0, 1) ;
 
   TH1D* histo_ratio;
   histo_ratio = (TH1D*) hist_data->Clone();
@@ -370,7 +371,7 @@ void Draw(TString name, TString histotitle, bool log) {
 
   hist_mc->Draw("hist");
 
-  hist_data->Draw("SAMEE");
+  hist_data->Draw("SAMEE1");
 
   TLegend* leg = new TLegend(0.56,0.60,0.86,0.85,NULL,"brNDC");
   leg->SetBorderSize(1);
@@ -383,7 +384,7 @@ void Draw(TString name, TString histotitle, bool log) {
   leg->SetBorderSize(0);
   leg->SetTextSize(0.07);
 
-  leg->AddEntry(hist_data,     datacaption,   "pl");
+  leg->AddEntry(hist_data,     datacaption,   "ep");
   leg->AddEntry(hist_mc,        "MC "  ,      "f");
 
   leg->SetFillColor(0);
@@ -676,19 +677,50 @@ void DrawStacked(TString name,
     }
   }
 
-  beautify(hist_c        , 8   , 1001    , 1) ;
-  beautify(hist_gsplit_c , 8   , 1001    , 1) ;
-  beautify(hist_b        , 2   , 1001    , 1) ;
-  beautify(hist_gsplit   , 7   , 1001    , 1) ;
-  beautify(hist_l        , 4   , 1001    , 1) ;
-  beautify(histo_tot     , 0   , 0       , 0) ;
-  if (inclTTbar) beautify(hist_ttbar , 6     , 1001    , 1) ;
-  if (inclZjj)   beautify(hist_zjj   , 40    , 1001    , 1) ;
-  if (doData)    beautify(hist_data  , 1     , 0, 1) ;
+  beautify(hist_c        , 8   ,1 , 1001    , 1) ;
+  beautify(hist_gsplit_c , 8   ,1 , 1001    , 1) ;
+  beautify(hist_b        , 2   ,1 , 1001    , 1) ;
+  beautify(hist_gsplit   , 7   ,1 , 1001    , 1) ;
+  beautify(hist_l        , 4   ,1 , 1001    , 1) ;
+  beautify(histo_tot     , 0   ,1 , 0       , 0) ;
+  if (inclTTbar) beautify(hist_ttbar , 6    , 1 , 1001    , 1) ;
+  if (inclZjj)   beautify(hist_zjj   , 40   , 1 , 1001    , 1) ;
+  if (doData)    beautify(hist_data  , 1    , 1 , 0       , 1) ;
 
   if (uncBand) {
-    beautify(histo_unc    , 12     , 3244    , 0) ;
+    beautify(histo_unc    , 12     , 3244   ,3244 , 0) ;
   }
+
+  TString yaxistitle="" ; 
+  histotitle = hist_data->GetXaxis()->GetTitle() ; 
+  if (histotitle=="BP") histotitle = "JBP discriminator" ; 
+  if (histotitle=="P") histotitle = "JP discriminator" ; 
+  if (histotitle=="decay length") histotitle = "track decay length [cm]" ; 
+
+  if (histotitle=="number of selected tracks in the jets") {
+    histotitle = "Number of selected tracks in the jets" ; 
+    yaxistitle="Jets" ; 
+  }
+  if (histotitle=="N(SV)") { 
+    histotitle = "Number of SV" ; 
+    yaxistitle="Jets" ; 
+  }
+  if (histotitle=="number of hits in the Pixel") {
+    histotitle = "Number of pixel hits" ; 
+    yaxistitle="Tracks" ; 
+  }
+  if (histotitle=="3D IP significance of all tracks") {
+    histotitle = "3D IP significance of tracks" ; 
+    yaxistitle="Tracks / 1" ; 
+  }
+  if (histotitle=="Flight distance significance 3D") {
+    histotitle = "SV 3D flight distance significance" ; 
+    yaxistitle="SV / 5" ; 
+  }
+  if (histotitle=="SVIVFv2") {
+    histotitle = "CSVv2 discriminator" ; 
+    yaxistitle="Jets / 0.02" ; 
+  } 
 
   THStack *stack = new THStack("stack","");
   if (inclTTbar) stack->Add(hist_ttbar);
@@ -723,7 +755,7 @@ void DrawStacked(TString name,
         histo_ratio_unc->SetBinContent(i,(ratio_uncUp+ratio_uncDown)/2);
         histo_ratio_unc->SetBinError(i,fabs(ratio_uncUp-ratio_uncDown)/2);
       }
-      beautify(histo_ratio_unc    , 12     , 3244    , 0) ;
+      beautify(histo_ratio_unc    , 12     , 3244,    3244    , 0) ;
     }
   }
 
@@ -773,14 +805,15 @@ void DrawStacked(TString name,
   }
   else {
     if (name.Contains("track_nHit") || name.Contains("track_HPix")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*5000000 : histo_tot->GetMaximum()*5000000) ;
-    else if ( name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") || name.Contains("_sv_multi_0")) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*30000 : histo_tot->GetMaximum()*30000) ;
-    else if ( name.Contains("_sv_multi") ) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*10000000 : histo_tot->GetMaximum()*10000000) ; 
+    else if ( name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") ) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*30000 : histo_tot->GetMaximum()*30000) ;
+    else if ( name.Contains("sv_multi_0") ) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1000000 : histo_tot->GetMaximum()*1000000) ; 
     else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1000000 : histo_tot->GetMaximum()*1000000) ;
   }
   if (doData) {
     hist_data->SetMarkerStyle(20);
     hist_data->SetMarkerSize(0.75);
     hist_data->SetLineWidth(2);
+    hist_data->SetLineColor(1);
   }
 
   //if (name=="jet_phi" || name=="sv_phi" || name=="muon_phi") {
@@ -793,6 +826,7 @@ void DrawStacked(TString name,
   histo_tot->GetXaxis()->SetLabelSize(0);
   histo_tot->GetYaxis()->SetTitle("Entries");
   histo_tot->SetTitleOffset(0.81,"Y");
+  histo_tot->GetYaxis()->SetTitle(yaxistitle);
   histo_tot->GetYaxis()->SetLabelSize( (dodata? 0.05 : 0.035) ); //added by rizki
   histo_tot->GetYaxis()->SetTitleSize( 0.06 );
   //if ( log == false) histo_tot->GetYaxis()->SetNoExponent(kTRUE) ;
@@ -810,7 +844,7 @@ void DrawStacked(TString name,
 
   if (uncBand) histo_unc->Draw("SAMEE2");
 
-  if (doData) hist_data->Draw("SAMEE");
+  if (doData) hist_data->Draw("SAMEE1X0");
 
   pad0->RedrawAxis();
 
@@ -834,7 +868,7 @@ void DrawStacked(TString name,
   leg->SetBorderSize(0);
   leg->SetTextSize( (dodata? 0.05:0.035) ); //added by rizki
 
-  if (doData) leg->AddEntry(hist_data,     datacaption,     "pl");
+  if (doData) leg->AddEntry(hist_data,     datacaption,     "e1p");
   leg->AddEntry(hist_b,        "b quark"           ,         "f");
   leg->AddEntry(hist_c,        "c quark"           ,         "f");
   leg->AddEntry(hist_l,        "uds quark or gluon"     ,    "f");
@@ -908,16 +942,6 @@ void DrawStacked(TString name,
     histo_ratio->SetMarkerSize(0.75);
     histo_ratio->SetLineWidth(2);
 
-    histotitle = hist_data->GetXaxis()->GetTitle() ; 
-    if (histotitle=="P") histotitle = "JP" ; 
-    if (histotitle=="BP") histotitle = "JBP" ; 
-    if (histotitle=="number of hits in the Pixel") histotitle = "Number of pixel hits" ; 
-    if (histotitle=="number of selected tracks in the jets") histotitle = "Number of selected tracks in the jets" ; 
-    if (histotitle=="SVIVFv2") histotitle = "CSVv2" ; 
-    if (histotitle=="N(SV)") histotitle = "Number of SV" ; 
-    if (histotitle=="3D IP significance of all tracks") histotitle = "3D IP significance of tracks" ; 
-    if (histotitle=="Flight distance significance 3D") histotitle = "SV 3D flight distance significance" ; 
-    if (histotitle=="decay length") histotitle = "track decay length [cm]" ; 
     histo_ratio->GetYaxis()->SetTitle("Data/MC");
     histo_ratio->SetTitleOffset(0.9,"X");
     histo_ratio->SetTitleOffset(0.31,"Y");
@@ -1266,12 +1290,12 @@ void Draw2DPlot(TString name, TString histotitle, TString titleX, TString titleY
     pro_mc_gspl_c->Rebin(5) ;
     pro_data   ->Rebin(5) ;
 
-    //beautify(pro_mc     , 0, 1, 1);
-    //beautify(pro_mc_b   , 0, 1, 1);
-    //beautify(pro_mc_c   , 0, 1, 1);
-    //beautify(pro_mc_udsg, 0, 1, 1);
-    //beautify(pro_mc_gspl, 0, 1, 1);
-    //beautify(pro_mc_gspl_c, 0, 1, 1);
+    //beautify(pro_mc       , 0, 0 ,1, 1);
+    //beautify(pro_mc_b     , 0, 0 ,1, 1);
+    //beautify(pro_mc_c     , 0, 0 ,1, 1);
+    //beautify(pro_mc_udsg  , 0, 0 ,1, 1);
+    //beautify(pro_mc_gspl  , 0, 0 ,1, 1);
+    //beautify(pro_mc_gspl_c, 0, 0 ,1, 1);
 
     pro_mc->SetLineColor(1);
     pro_mc_b->SetLineColor(2);
