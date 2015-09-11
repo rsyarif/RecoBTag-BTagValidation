@@ -47,7 +47,7 @@ TString formatc=".root";
 bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets= 0;
-bool logy      = 1;
+bool logy      = 0;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
@@ -808,6 +808,7 @@ void DrawStacked(TString name,
     else if ( name.Contains("_sv_flight3DSig") || name.Contains("_sv_mass") || name.Contains("_track_IP") ) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*30000 : histo_tot->GetMaximum()*30000) ;
     else if ( name.Contains("sv_multi_0") ) histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1000000 : histo_tot->GetMaximum()*1000000) ; 
     else histo_tot->SetMaximum( doData ? hist_data->GetMaximum()*1000000 : histo_tot->GetMaximum()*1000000) ;
+
   }
   if (doData) {
     hist_data->SetMarkerStyle(20);
@@ -836,6 +837,10 @@ void DrawStacked(TString name,
     else {
       histo_tot->GetXaxis()->SetRangeUser(rangeXLow, rangeXHigh) ;
     }
+  }
+
+  if ( name.Contains("_trk_multi_sel") ) {
+    histo_tot->GetXaxis()->SetRangeUser(0,25) ; 
   }
 
   histo_tot->Draw("hist");
@@ -963,6 +968,9 @@ void DrawStacked(TString name,
       else {
         histo_ratio->GetXaxis()->SetRangeUser(rangeXLow, rangeXHigh) ;
       }
+    }
+    if ( name.Contains("_trk_multi_sel") ) {
+      histo_ratio->GetXaxis()->SetRangeUser(0, 25) ;
     }
 
     histo_ratio->SetMinimum(0.4);
