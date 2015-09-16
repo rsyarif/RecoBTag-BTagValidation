@@ -100,6 +100,10 @@ def main():
     final_histos = {}
 
     totalFatjets = 0
+    totalFatjets_b = 0
+    totalFatjets_bfromg = 0
+    totalFatjets_c = 0
+    totalFatjets_l = 0
     for dataset in group_datasets[group]:
       input_root_file  = os.path.join(main_workdir,dataset.lstrip('/').replace('/','__') + '.root')
       if not os.path.isfile(input_root_file):
@@ -115,18 +119,30 @@ def main():
       scale = 1.
 
       htemp2 = root_file.Get(os.path.join(options.analyzer_module,'h1_fatjet_pt'))
+      htemp2_b = root_file.Get(os.path.join(options.analyzer_module,'FatJet_pt_all_b'))
+      htemp2_bfromg = root_file.Get(os.path.join(options.analyzer_module,'FatJet_pt_all_bfromg'))
+      htemp2_c = root_file.Get(os.path.join(options.analyzer_module,'FatJet_pt_all_c'))
+      htemp2_l = root_file.Get(os.path.join(options.analyzer_module,'FatJet_pt_all_l'))
       nFatjet = htemp2.GetEntries()
+      nFatjet_b = htemp2_b.GetEntries()
+      nFatjet_bfromg = htemp2_bfromg.GetEntries()
+      nFatjet_c = htemp2_c.GetEntries()
+      nFatjet_l = htemp2_l.GetEntries()
 
       if group_xs[group] > 0.:
         if group_L[group] > 0.:
           scale = (dataset_xs[dataset]*group_L[group])/nEventsAll
         else:
           scale = dataset_xs[dataset]/(group_xs[group]*nEventsAll)
-        print dataset + ' -- Events: %.0f (all), %.0f (stored); relative xs: %.8E; scale: %.8E; Fatjets: %.0f; Fatjets (after scale): %0.f'%(nEventsAll,nEventsStored,(dataset_xs[dataset]/group_xs[group]),scale,nFatjet,scale*nFatjet)
+        print dataset + ' -- Events: %.0f (all), %.0f (stored); relative xs: %.8E; scale: %.8E; Fatjets: %.0f (b: %.0f,bgsp: %.0f,c: %.0f,l: %.0f); Fatjets (after scale): %0.f (b: %.0f,bgsp: %.0f,c: %.0f,l: %.0f)'%(nEventsAll,nEventsStored,(dataset_xs[dataset]/group_xs[group]),scale,nFatjet,nFatjet_b,nFatjet_bfromg,nFatjet_c,nFatjet_l,scale*nFatjet,scale*nFatjet_b,scale*nFatjet_bfromg,scale*nFatjet_c,scale*nFatjet_l)
       else:
         print dataset + ' -- Events: %.0f (all), %.0f (stored); scale: %.8E; Fatjets: %.0f; Fatjets (after scale): %0.f'%(nEventsAll,nEventsStored,scale,nFatjet, scale*nFatjet)
 
       totalFatjets = totalFatjets + scale*nFatjet
+      totalFatjets_b = totalFatjets_b + scale*nFatjet_b
+      totalFatjets_bfromg = totalFatjets_bfromg + scale*nFatjet_bfromg
+      totalFatjets_c = totalFatjets_c + scale*nFatjet_c
+      totalFatjets_l = totalFatjets_l + scale*nFatjet_l
 
       # get the number of histograms
       nHistos = root_file.Get(options.analyzer_module).GetListOfKeys().GetEntries()
@@ -146,7 +162,7 @@ def main():
 
 
     print ''
-    print 'TOTAL Fatjets (after scale) = %.0f'%totalFatjets
+    print 'TOTAL Fatjets (after scale) = %.0f (b: %.0f,bgsp: %.0f,c: %.0f,l: %.0f)'%(totalFatjets,totalFatjets_b,totalFatjets_bfromg,totalFatjets_c,totalFatjets_l)
 
     #output_root_file.cd()
     histos = final_histos.keys()
