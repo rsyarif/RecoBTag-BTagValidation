@@ -99,6 +99,14 @@ def main():
     print group
     final_histos = {}
 
+    #before scaling
+    _totalFatjets = 0
+    _totalFatjets_b = 0
+    _totalFatjets_bfromg = 0
+    _totalFatjets_c = 0
+    _totalFatjets_l = 0
+
+    #after scaling
     totalFatjets = 0
     totalFatjets_b = 0
     totalFatjets_bfromg = 0
@@ -138,6 +146,12 @@ def main():
       else:
         print dataset + ' -- Events: %.0f (all), %.0f (stored); scale: %.8E; Fatjets: %.0f; Fatjets (after scale): %0.f'%(nEventsAll,nEventsStored,scale,nFatjet, scale*nFatjet)
 
+      _totalFatjets = _totalFatjets + nFatjet
+      _totalFatjets_b = _totalFatjets_b + nFatjet_b
+      _totalFatjets_bfromg = _totalFatjets_bfromg + nFatjet_bfromg
+      _totalFatjets_c = _totalFatjets_c + nFatjet_c
+      _totalFatjets_l = _totalFatjets_l + nFatjet_l
+
       totalFatjets = totalFatjets + scale*nFatjet
       totalFatjets_b = totalFatjets_b + scale*nFatjet_b
       totalFatjets_bfromg = totalFatjets_bfromg + scale*nFatjet_bfromg
@@ -162,6 +176,7 @@ def main():
 
 
     print ''
+    print 'TOTAL Fatjets (before scale) = %.0f (b: %.0f,bgsp: %.0f,c: %.0f,l: %.0f)'%(_totalFatjets,_totalFatjets_b,_totalFatjets_bfromg,_totalFatjets_c,_totalFatjets_l)
     print 'TOTAL Fatjets (after scale) = %.0f (b: %.0f,bgsp: %.0f,c: %.0f,l: %.0f)'%(totalFatjets,totalFatjets_b,totalFatjets_bfromg,totalFatjets_c,totalFatjets_l)
 
     #output_root_file.cd()
