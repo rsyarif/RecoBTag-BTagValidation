@@ -4,13 +4,13 @@ DATA
 TOTAL Fatjets (after scale) = 0 (b: 0,bgsp: 0,c: 0,l: 0)
 Done
 QCD
-QCDMuEnriched_Pt170_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 3948326 (all), 3948326 (stored); relative xs: 9.04998105E-01; scale: 2.19024931E+00; Fatjets: 8412 (b: 539,bgsp: 2082,c: 604,l: 2530); Fatjets (after scale): 18424 (b: 1181,bgsp: 4560,c: 1323,l: 5541)
-QCDMuEnriched_Pt300_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 3927883 (all), 3927883 (stored); relative xs: 8.34433215E-02; scale: 2.02998078E-01; Fatjets: 103862 (b: 6367,bgsp: 28547,c: 7512,l: 28790); Fatjets (after scale): 21084 (b: 1292,bgsp: 5795,c: 1525,l: 5844)
-QCDMuEnriched_Pt470_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1990045 (all), 1990045 (stored); relative xs: 8.27005858E-03; scale: 3.97104287E-02; Fatjets: 76862 (b: 4476,bgsp: 22766,c: 5058,l: 20304); Fatjets (after scale): 3052 (b: 178,bgsp: 904,c: 201,l: 806)
-QCDMuEnriched_Pt600_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1982667 (all), 1982667 (stored); relative xs: 2.62621359E-03; scale: 1.26572440E-02; Fatjets: 71242 (b: 3765,bgsp: 21112,c: 4297,l: 18975); Fatjets (after scale): 902 (b: 48,bgsp: 267,c: 54,l: 240)
-QCDMuEnriched_Pt800_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1990869 (all), 1990868 (stored); relative xs: 4.92631544E-04; scale: 2.36449510E-03; Fatjets: 60626 (b: 3022,bgsp: 17846,c: 3321,l: 16700); Fatjets (after scale): 143 (b: 7,bgsp: 42,c: 8,l: 39)
-QCDMuEnriched_Pt1000_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1963183 (all), 1963182 (stored); relative xs: 1.69669780E-04; scale: 8.25852710E-04; Fatjets: 48385 (b: 2068,bgsp: 13884,c: 2542,l: 13954); Fatjets (after scale): 40 (b: 2,bgsp: 11,c: 2,l: 12)
+QCDMuEnriched_Pt170_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 3948326 (all), 3948326 (stored); relative xs: 9.04998105E-01; scale: 2.19024931E+00; Fatjets: 8412 (b: 539,bgsp: 2082,c: 3261,l: 2530); Fatjets (after scale): 18424 (b: 1181,bgsp: 4560,c: 7142,l: 5541)
+QCDMuEnriched_Pt300_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 3927883 (all), 3927883 (stored); relative xs: 8.34433215E-02; scale: 2.02998078E-01; Fatjets: 103862 (b: 6367,bgsp: 28547,c: 40158,l: 28790); Fatjets (after scale): 21084 (b: 1292,bgsp: 5795,c: 8152,l: 5844)
+QCDMuEnriched_Pt470_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1990045 (all), 1990045 (stored); relative xs: 8.27005858E-03; scale: 3.97104287E-02; Fatjets: 76862 (b: 4476,bgsp: 22766,c: 29316,l: 20304); Fatjets (after scale): 3052 (b: 178,bgsp: 904,c: 1164,l: 806)
+QCDMuEnriched_Pt600_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1982667 (all), 1982667 (stored); relative xs: 2.62621359E-03; scale: 1.26572440E-02; Fatjets: 71242 (b: 3765,bgsp: 21112,c: 27390,l: 18975); Fatjets (after scale): 902 (b: 48,bgsp: 267,c: 347,l: 240)
+QCDMuEnriched_Pt800_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1990869 (all), 1990868 (stored); relative xs: 4.92631544E-04; scale: 2.36449510E-03; Fatjets: 60626 (b: 3022,bgsp: 17846,c: 23058,l: 16700); Fatjets (after scale): 143 (b: 7,bgsp: 42,c: 55,l: 39)
+QCDMuEnriched_Pt1000_ptmin-300_70m200_singleMuTag_tau21-05 -- Events: 1963183 (all), 1963182 (stored); relative xs: 1.69669780E-04; scale: 8.25852710E-04; Fatjets: 48385 (b: 2068,bgsp: 13884,c: 18479,l: 13954); Fatjets (after scale): 40 (b: 2,bgsp: 11,c: 15,l: 12)
 
-TOTAL Fatjets (after scale) = 43645 (b: 2707,bgsp: 11580,c: 3113,l: 12483)
+TOTAL Fatjets (after scale) = 43645 (b: 2707,bgsp: 11580,c: 16875,l: 12483)
 Done
 
