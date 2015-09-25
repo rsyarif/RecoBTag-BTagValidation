@@ -186,9 +186,9 @@ process.source = cms.Source("EmptySource")
 
 ## Output file
 ext=""
-if options.usePrunedSubjets: 
+if options.usePrunedSubjets:
   ext="_WithPrunedSubjets"
-elif options.useSoftDropSubjets: 
+elif options.useSoftDropSubjets:
   ext="_withSoftDropSubjets"
 outFilename = options.outFilename+ext+".root"
 process.TFileService = cms.Service("TFileService",
