@@ -69,6 +69,11 @@ options.register('dynamicMuonSubJetDR', False,
     VarParsing.varType.bool,
     "Use dynamic muon-subjet dR requirement"
 )
+options.register('maxMuonSubJetDR', 0.4,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Maximum muon-subjet dR requirement"
+)
 options.register('applySFs', False,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
@@ -222,6 +227,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
     ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),
     DynamicMuonSubJetDR    = cms.bool(options.dynamicMuonSubJetDR),
+    MaxMuonSubJetDR    	   = cms.double(options.maxMuonSubJetDR),
     ApplySFs               = cms.bool(options.applySFs),
     FatJetBDiscrCut        = cms.double(options.fatJetBDiscrCut),
     SubJetBDiscrCut        = cms.double(options.subJetBDiscrCut),

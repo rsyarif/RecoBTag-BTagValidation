@@ -77,7 +77,7 @@ class BTagValidation : public edm::EDAnalyzer {
     virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
     bool passTrigger() ;
-    bool passMuonSelection(const int muIdx, const JetInfoBranches& JetInfo, const int iJet, const double deltaR=0.4);
+    bool passMuonSelection(const int muIdx, const JetInfoBranches& JetInfo, const int iJet, const double deltaR);
 
     //// Manage histograms
     void createJetHistos(const TString& histoTag);
@@ -197,6 +197,7 @@ class BTagValidation : public edm::EDAnalyzer {
     const bool                      applySubJetBTagging_;
     const bool                      dynamicMuonSubJetDR_;
     const bool                      applySFs_;
+    const double                    maxMuonSubJetDR_;
     const double                    fatJetBDiscrCut_;
     const double                    subJetBDiscrCut_;
     const double                    fatJetPtMin_;
@@ -252,6 +253,7 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   applySubJetBTagging_(iConfig.getParameter<bool>("ApplySubJetBTagging")),
   dynamicMuonSubJetDR_(iConfig.getParameter<bool>("DynamicMuonSubJetDR")),
   applySFs_(iConfig.getParameter<bool>("ApplySFs")),
+  maxMuonSubJetDR_(iConfig.getParameter<double>("MaxMuonSubJetDR")),
   fatJetBDiscrCut_(iConfig.getParameter<double>("FatJetBDiscrCut")),
   subJetBDiscrCut_(iConfig.getParameter<double>("SubJetBDiscrCut")),
   fatJetPtMin_(iConfig.getParameter<double>("FatJetPtMin")),
@@ -532,12 +534,25 @@ void BTagValidation::beginJob() {
 
 
  // added by rizki - start - QCD incl_vsMuEnriched issue
-  AddHisto("FatJet_selMuon_genMuon_dR",     "selMuon-genMuon #DeltaR",            50, 0,   0.5  );
+  AddHisto("FatJet_selMuon_genMuon_dR",     "selMuon-genMuon #DeltaR",            500, 0,   0.5  );
+  AddHisto("FatJet_singleMatchedMu_selMuon_genMuon_mother",     "selMuon-genMuon mother",            700, -350,   350  );
+  AddHisto("FatJet_doubleMatchedMu_selMuon1_genMuon_mother",     "1st selMuon-genMuon mother",            700, -350,   350  );
+  AddHisto("FatJet_doubleMatchedMu_selMuon2_genMuon_mother",     "2nd selMuon-genMuon mother",            700, -350,   350  );
+  AddHisto2D("FatJet_selMuon1_selMuon2_genMuon_mother", "selMuon1-selMuon2-genMuon mother", 700, -350,   350 , 700, -350,   350 );
+  AddHisto("FatJet_selMuon1_pt",     "1st selMuon pt",            300, 0,   300  );
+  AddHisto("FatJet_selMuon2_pt",     "2nd selMuon pt",            300, 0,   300  );
+  AddHisto("FatJet_selMuon1_eta",     "1st selMuon eta",            120, -3.,   3.  );
+  AddHisto("FatJet_selMuon2_eta",     "2nd selMuon eta",            120, -3.,   3.  );
 
-  AddHisto("FatJet_pt_matchedMu"           ,"p_{T} of jets with genMu"             ,200  ,0      ,1000 );
-  AddHisto("FatJet_eta_matchedMu"              ,"#eta of jets with genMu"              ,50        ,-2.5   ,2.5);
-  AddHisto("FatJet_phi_matchedMu"              ,"#phi of jets with genMu"              ,40        ,-3.15 ,3.15);
-  AddHisto("FatJet_mass_matchedMu"             ,"mass of jets with genMu"              ,200       ,0      ,400);
+  AddHisto("FatJet_pt_matchedMu"           ,"p_{T} of jets with matchedMu"             ,200  ,0      ,1000 );
+  AddHisto("FatJet_eta_matchedMu"              ,"#eta of jets with matchedMu"              ,50        ,-2.5   ,2.5);
+  AddHisto("FatJet_phi_matchedMu"              ,"#phi of jets with matchedMu"              ,40        ,-3.15 ,3.15);
+  AddHisto("FatJet_mass_matchedMu"             ,"mass of jets with matchedMu"              ,200       ,0      ,400);
+
+  AddHisto("FatJet_pt_singleMatchedMu"           ,"p_{T} of jets with one matchedMu"             ,200  ,0      ,1000 );
+  AddHisto("FatJet_eta_singleMatchedMu"              ,"#eta of jets with one matchedMu"              ,50        ,-2.5   ,2.5);
+  AddHisto("FatJet_phi_singleMatchedMu"              ,"#phi of jets with one matchedMu"              ,40        ,-3.15 ,3.15);
+  AddHisto("FatJet_mass_singleMatchedMu"             ,"mass of jets with one matchedMu"              ,200       ,0      ,400);
 
   AddHisto("FatJet_pt_unmatchedMu"           ,"p_{T} of jets with unmatchedMu"             ,200  ,0      ,1000 );
   AddHisto("FatJet_eta_unmatchedMu"              ,"#eta of jets with unmatchedMu"              ,50        ,-2.5   ,2.5);
@@ -766,7 +781,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         for (int iMu=0; iMu<FatJetInfo.nPFMuon; ++iMu) {
           if (FatJetInfo.PFMuon_IdxJet[iMu]==iJet ) {
             ++nmu;
-            if (passMuonSelection(iMu, FatJetInfo, iJet)) {
+            if (passMuonSelection(iMu, FatJetInfo, iJet, maxMuonSubJetDR_)) {
               if(nselmuon == 0) idxFirstMuon = iMu;
               ++nselmuon;
             }
@@ -818,18 +833,18 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         for (int iMu=0; iMu<SubJets.nPFMuon; ++iMu) {
           if ( SubJets.PFMuon_IdxJet[iMu]==iSubJet1 ) {
-            if (passMuonSelection(iMu, SubJets, iSubJet1, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 )))
+            if (passMuonSelection(iMu, SubJets, iSubJet1, (dynamicMuonSubJetDR_ ? subjet_dR/2 : maxMuonSubJetDR_ )))
               selectedMuonIdx1.push_back(iMu);
           }
           if ( SubJets.PFMuon_IdxJet[iMu]==iSubJet2 ) {
-            if (passMuonSelection(iMu, SubJets, iSubJet2, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 )))
+            if (passMuonSelection(iMu, SubJets, iSubJet2, (dynamicMuonSubJetDR_ ? subjet_dR/2 : maxMuonSubJetDR_ )))
               selectedMuonIdx2.push_back(iMu);
           }
         }
 
 	// added by rizki - start - QCD incl_vsMuEnriched issue
-	selectedMuonIdx1_ = selectedMuonIdx1;
-	selectedMuonIdx2_ = selectedMuonIdx1;
+	if(selectedMuonIdx1.size()!=0&&selectedMuonIdx2.size()!=0){selectedMuonIdx1_ = selectedMuonIdx1; std::cout<< "muidx1 size = " << selectedMuonIdx1_.size() << ", muidx1 = " << selectedMuonIdx1_.at(0) << std::endl;}
+	if(selectedMuonIdx1.size()!=0&&selectedMuonIdx2.size()!=0){selectedMuonIdx2_ = selectedMuonIdx2; std::cout<< "muidx2 size = " << selectedMuonIdx2_.size() << ", muidx2 = " << selectedMuonIdx2_.at(0) << std::endl;}
 	// added by rizki - end - QCD incl_vsMuEnriched issue
 
         //// Check that there are at least two distinct muons matched to the two subjets
@@ -838,7 +853,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             if( fabs( SubJets.PFMuon_eta[selectedMuonIdx1.at(iMu1)] - SubJets.PFMuon_eta[selectedMuonIdx2.at(iMu2)] ) > 1.E-03 &&
                 fabs( SubJets.PFMuon_phi[selectedMuonIdx1.at(iMu1)] - SubJets.PFMuon_phi[selectedMuonIdx2.at(iMu2)] ) > 1.E-03 &&
                 fabs( SubJets.PFMuon_pt[selectedMuonIdx1.at(iMu1)] - SubJets.PFMuon_pt[selectedMuonIdx2.at(iMu2)] ) > 1.E-03 ) {
-              isDoubleMuonTagged = true;
+              isDoubleMuonTagged = true; std::cout<< "!!!!!!!!!!!!DoubleMuonTagged!!!! = "<< std::endl;
               break;
             }
           }
@@ -903,6 +918,97 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
 
       // added by rizki - start - QCD incl_vsMuEnriched issue
+
+		//for single mu tag
+      if(applyFatJetMuonTagging_ && !fatJetDoubleTagging_){
+		//int idxFirstMuon_ = -1;
+      	int nselmuon_ = 0;
+      	int nmu_ = 0;
+
+      	bool fj_mu_match = false;
+		double deltaR = 0.;
+      	double mu_eta, mu_phi, min_dR;
+		double dR_cut = 0.01 ;
+
+      	if (FatJetInfo.nPFMuon>0) {
+	  for (int iMu=0; iMu<FatJetInfo.nPFMuon; ++iMu) {
+	    if (FatJetInfo.PFMuon_IdxJet[iMu]==iJet ) {
+	      ++nmu_;
+
+	      if (passMuonSelection(iMu, FatJetInfo, iJet, maxMuonSubJetDR_)) {
+	      
+	      	//if(nselmuon == 0) idxFirstMuon_ = iMu;
+			++nselmuon_;
+
+			mu_eta = FatJetInfo.PFMuon_eta[iMu];
+			mu_phi = FatJetInfo.PFMuon_phi[iMu];
+
+			//if(iJet<10) std::cout<< "iMu = " << iMu<< std::endl;
+			//if(iJet<10) std::cout<< "	mu_eta = " << mu_eta << std::endl ;
+			//if(iJet<10) std::cout<< "	mu_phi = " << mu_phi << std::endl ;
+
+			min_dR = 9999.;
+			int Genlep_idx = 9999;
+
+			//if(iJet<10) std::cout<< "nGenlep = "<< EvtInfo.nGenlep << std::endl;
+			//if(iJet<10) std::cout<< "in nGenlep loop"<< std::endl;
+	
+			for (int j = 0 ; j < EvtInfo.nGenlep ; j++ ){
+
+				//if(iJet<10) std::cout<< "j = " << j<< std::endl;
+		  		//if(iJet<10) std::cout<< "	gen_eta = " << EvtInfo.Genlep_eta[j] << std::endl ;
+		  		//if(iJet<10) std::cout<< "	gen_phi = " << EvtInfo.Genlep_phi[j] << std::endl ;
+		  		//if(iJet<10) std::cout<< "	gen_pdgID = " << EvtInfo.Genlep_pdgID[j] << std::endl ;
+		  		//if(iJet<10) std::cout<< "	gen_status = " << EvtInfo.Genlep_status[j] << std::endl ;
+		  		//if(iJet<10) std::cout<< "	gen_mother = " << EvtInfo.Genlep_mother[j] << std::endl ;
+
+
+		  		if ( abs(EvtInfo.Genlep_pdgID[j])!=13 || EvtInfo.Genlep_status[j] != 1 ) continue;
+		  		deltaR = reco::deltaR(mu_eta, mu_phi, EvtInfo.Genlep_eta[j], EvtInfo.Genlep_phi[j]);
+
+		  		//if(iJet<10) std::cout<<"		dR =" << deltaR << std::endl;
+
+		  		if (min_dR < deltaR) continue;
+		  		min_dR = deltaR ;
+		  		Genlep_idx = j;
+
+			}
+
+			FillHisto("FatJet_selMuon_genMuon_dR",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,min_dR ,wtPU*wtFatJet);
+
+			//if(iJet<10) std::cout<<"min_dR = " << min_dR << std::endl;
+
+			if (min_dR < dR_cut){
+		  		fj_mu_match =  true;
+
+	    		//if(iJet<10) std::cout<<"Genlep_idx = "<< Genlep_idx<< std::endl;
+		  		FillHisto("FatJet_singleMatchedMu_selMuon_genMuon_mother",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc , EvtInfo.Genlep_mother[Genlep_idx],wtPU*wtFatJet);
+
+		  		//if(iJet<10) std::cout<<"fj_mu_match!"<< std::endl;
+		  		//break
+			}
+
+	      }
+	    }
+	  }
+
+	  if (fj_mu_match){
+	    FillHisto("FatJet_pt_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
+	    FillHisto("FatJet_eta_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_eta[iJet],wtPU*wtFatJet);
+	    FillHisto("FatJet_phi_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_phi[iJet],wtPU*wtFatJet);
+	    FillHisto("FatJet_mass_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_mass[iJet],wtPU*wtFatJet);
+	  }
+	  else{
+	    FillHisto("FatJet_pt_unmatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
+	    FillHisto("FatJet_eta_unmatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_eta[iJet],wtPU*wtFatJet);
+	    FillHisto("FatJet_phi_unmatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_phi[iJet],wtPU*wtFatJet);
+	    FillHisto("FatJet_mass_unmatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_mass[iJet],wtPU*wtFatJet);
+	  }
+      	}
+
+      }
+
+      //for double mu tag
       if (applyFatJetMuonTagging_ && fatJetDoubleTagging_ && isDoubleMuonTagged ){
 
 	int sj1_nselmu = selectedMuonIdx1_.size();
@@ -911,45 +1017,59 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	bool sj2_mu_match = false;
 	double deltaR = 0.;
 	double mu_eta, mu_phi, min_dR;
-	double dR_cut = 0.15 ;
+	double dR_cut = 0.01 ;
+	int Genlep_idx1, Genlep_idx2;
 
 	//if(iJet<10) std::cout<< "sj1_nselmu = " << sj1_nselmu << std::endl;
 
 	//if(iJet<10) std::cout<< "in sj1 loop"<< std::endl;
-	for( int i ; i < sj1_nselmu ; i++){
+	for( int i = 0; i < sj1_nselmu ; i++){
+	
 	  mu_eta = SubJets.PFMuon_eta[selectedMuonIdx1_.at(i)];
 	  mu_phi = SubJets.PFMuon_phi[selectedMuonIdx1_.at(i)];
 
+	  if(i==0)FillHisto("FatJet_selMuon1_pt",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,SubJets.PFMuon_pt[selectedMuonIdx1_.at(i)] ,wtPU*wtFatJet);
+	  if(i==0)FillHisto("FatJet_selMuon1_eta",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,SubJets.PFMuon_eta[selectedMuonIdx1_.at(i)] ,wtPU*wtFatJet);
+
+
 	  //if(iJet<10) std::cout<< "i = " << i<< std::endl;
 	  //if(iJet<10) std::cout<< "mu_eta = " << mu_eta << std::endl ;
-	  //if(iJet<10) std::cout<< "mu_phi =" << mu_phi << std::endl ;
+	  //if(iJet<10) std::cout<< "mu_phi = " << mu_phi << std::endl ;
 
 	  min_dR = 9999.;
+	  Genlep_idx1 = 9999;
 
+	  //if(iJet<10) std::cout<< "nGenlep = "<< EvtInfo.nGenlep << std::endl;
 	  //if(iJet<10) std::cout<< "in nGenlep loop"<< std::endl;
-	  for (int j ; j < EvtInfo.nGenlep ; j++ ){
+	  for (int j = 0 ; j < EvtInfo.nGenlep ; j++ ){
 
-	    //if(iJet<10) std::cout<< "j = " << i<< std::endl;
-	    //if(iJet<10) std::cout<< "gen_eta = " << mu_eta << std::endl ;
-	    //if(iJet<10) std::cout<< "gen_phi =" << mu_phi << std::endl ;
+	    //if(iJet<10) std::cout<< "j = " << j<< std::endl;
+	    //if(iJet<10) std::cout<< "gen_eta = " << EvtInfo.Genlep_eta[j] << std::endl ;
+	    //if(iJet<10) std::cout<< "gen_phi = " << EvtInfo.Genlep_phi[j] << std::endl ;
+	    //if(iJet<10) std::cout<< "gen_pdgID = " << EvtInfo.Genlep_pdgID[j] << std::endl ;
+	    //if(iJet<10) std::cout<< "gen_status = " << EvtInfo.Genlep_status[j] << std::endl ;
+	    //if(iJet<10) std::cout<< "gen_mother = " << EvtInfo.Genlep_mother[j] << std::endl ;
 
-	    if ( abs(EvtInfo.Genlep_pdgID[j])!=13 || EvtInfo.Genlep_pdgID[j] != 1 ) continue;
-	    if (min_dR < deltaR) continue;
+
+	    if ( abs(EvtInfo.Genlep_pdgID[j])!=13 || EvtInfo.Genlep_status[j] != 1 ) continue;
 	    deltaR = reco::deltaR(mu_eta, mu_phi, EvtInfo.Genlep_eta[j], EvtInfo.Genlep_phi[j]);
 
 	    //if(iJet<10) std::cout<<"dR =" << deltaR << std::endl;
 
+	    if (min_dR < deltaR) continue;
 	    min_dR = deltaR ;
-
-	    //if(iJet<10) std::cout<<"min_dR = " << min_dR << std::endl;
+	    Genlep_idx1 = j;
 
 	  }
 
 	  FillHisto("FatJet_selMuon_genMuon_dR",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,min_dR ,wtPU*wtFatJet);
 
+
+	  //if(iJet<10) std::cout<<"min_dR = " << min_dR << std::endl;
+
 	  if (min_dR < dR_cut){
 	    sj1_mu_match =  true;
-	    //if(iJet<10) std::cout<<"sj1_mu_match!"<< std::endl;
+	    //if(iJet<10) std::cout<<"	sj1_mu_match!"<< std::endl;
 	    //break
 	  }
 
@@ -957,40 +1077,51 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
 	//if(iJet<10) std::cout<< "sj2_nselmu = " << sj2_nselmu << std::endl;
 	//if(iJet<10) std::cout<< "in sj2 loop"<< std::endl;
-	for( int i ; i < sj2_nselmu ; i++){
+	for( int i = 0 ; i < sj2_nselmu ; i++){
+
+	  if(i==0)FillHisto("FatJet_selMuon2_pt",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,SubJets.PFMuon_pt[selectedMuonIdx2_.at(i)] ,wtPU*wtFatJet);
+	  if(i==0)FillHisto("FatJet_selMuon2_eta",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,SubJets.PFMuon_eta[selectedMuonIdx2_.at(i)] ,wtPU*wtFatJet);
+
 	  mu_eta = SubJets.PFMuon_eta[selectedMuonIdx2_.at(i)];
 	  mu_phi = SubJets.PFMuon_phi[selectedMuonIdx2_.at(i)];
 
 	  //if(iJet<10) std::cout<< "i = " << i<< std::endl;
 	  //if(iJet<10) std::cout<< "mu_eta = " << mu_eta << std::endl ;
-	  //if(iJet<10) std::cout<< "mu_phi =" << mu_phi << std::endl ;
+	  //if(iJet<10) std::cout<< "mu_phi = " << mu_phi << std::endl ;
 
 	  min_dR = 9999.;
+	  Genlep_idx2 = 9999;
 
 	  //if(iJet<10) std::cout<< "in nGenlep loop"<< std::endl;
-	  for (int j ; j < EvtInfo.nGenlep ; j++ ){
+	  for (int j = 0 ; j < EvtInfo.nGenlep ; j++ ){
 
-	    //if(iJet<10) std::cout<< "j = " << i<< std::endl;
-	    //if(iJet<10) std::cout<< "gen_eta = " << mu_eta << std::endl ;
-	    //if(iJet<10) std::cout<< "gen_phi =" << mu_phi << std::endl ;
+	    //if(iJet<10) std::cout<< "j = " << j<< std::endl;
+	    //if(iJet<10) std::cout<< "gen_eta = " << EvtInfo.Genlep_eta[j]<< std::endl ;
+	    //if(iJet<10) std::cout<< "gen_phi = " << EvtInfo.Genlep_phi[j] << std::endl ;
+	    //if(iJet<10) std::cout<< "gen_pdgID = " << EvtInfo.Genlep_pdgID[j] << std::endl ;
+	    //if(iJet<10) std::cout<< "gen_status = " << EvtInfo.Genlep_status[j] << std::endl ;
+	    //if(iJet<10) std::cout<< "gen_mother = " << EvtInfo.Genlep_mother[j] << std::endl ;
 
-	    if ( abs(EvtInfo.Genlep_pdgID[j])!=13 || EvtInfo.Genlep_pdgID[j] != 1 ) continue;
-	    if (min_dR < deltaR) continue;
+
+	    if ( abs(EvtInfo.Genlep_pdgID[j])!=13 || EvtInfo.Genlep_status[j] != 1 ) continue;
 	    deltaR = reco::deltaR(mu_eta, mu_phi, EvtInfo.Genlep_eta[j], EvtInfo.Genlep_phi[j]);
 
 	    //if(iJet<10) std::cout<<"dR =" << deltaR << std::endl;
 
+	    if (min_dR < deltaR) continue;
+
 	    min_dR = deltaR ;
-	    //if(iJet<10) std::cout<<"min_dR = " << min_dR << std::endl;
-
-
+	    Genlep_idx2 = j;
+	    
 	  }
 
 	  FillHisto("FatJet_selMuon_genMuon_dR",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,min_dR ,wtPU*wtFatJet);
 
+	  //if(iJet<10) std::cout<<"min_dR = " << min_dR << std::endl;
+
 	  if (min_dR < dR_cut){
 	    sj2_mu_match =  true;
-	    //if(iJet<10) std::cout<<"sj1_mu_match!"<< std::endl;
+	    //if(iJet<10) std::cout<<"	sj2_mu_match!"<< std::endl;
 	    //break
 	  }
 
@@ -1001,9 +1132,27 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 	  FillHisto("FatJet_eta_matchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_eta[iJet],wtPU*wtFatJet);
 	  FillHisto("FatJet_phi_matchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_phi[iJet],wtPU*wtFatJet);
 	  FillHisto("FatJet_mass_matchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_mass[iJet],wtPU*wtFatJet);
+	  
+	  FillHisto("FatJet_doubleMatchedMu_selMuon1_genMuon_mother",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc , EvtInfo.Genlep_mother[Genlep_idx1],wtPU*wtFatJet);
+	  FillHisto("FatJet_doubleMatchedMu_selMuon2_genMuon_mother",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc , EvtInfo.Genlep_mother[Genlep_idx2],wtPU*wtFatJet);
+	  
+	  FillHisto2D("FatJet_selMuon1_selMuon2_genMuon_mother" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,EvtInfo.Genlep_mother[Genlep_idx1], EvtInfo.Genlep_mother[Genlep_idx2],wtPU*wtFatJet);
+	  
+	  //if(iJet<10) std::cout<<"			muPair_mother = ("<< EvtInfo.Genlep_mother[Genlep_idx1]<<" , "<< EvtInfo.Genlep_mother[Genlep_idx2]<<")" <<std::endl;
 	}
 
-	if (sj1_mu_match == false || sj2_mu_match == false){
+	if ( ( sj1_mu_match == true && sj2_mu_match == false ) || ( sj1_mu_match == false && sj2_mu_match == true ) ){
+	  FillHisto("FatJet_pt_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
+	  FillHisto("FatJet_eta_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_eta[iJet],wtPU*wtFatJet);
+	  FillHisto("FatJet_phi_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_phi[iJet],wtPU*wtFatJet);
+	  FillHisto("FatJet_mass_singleMatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_mass[iJet],wtPU*wtFatJet);
+	  
+	  if(sj1_mu_match) FillHisto("FatJet_singleMatchedMu_selMuon_genMuon_mother",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc , EvtInfo.Genlep_mother[Genlep_idx1],wtPU*wtFatJet);
+	  if(sj2_mu_match) FillHisto("FatJet_singleMatchedMu_selMuon_genMuon_mother",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc , EvtInfo.Genlep_mother[Genlep_idx2],wtPU*wtFatJet);
+
+	}
+
+	if (sj1_mu_match == false && sj2_mu_match == false){
 	  FillHisto("FatJet_pt_unmatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
 	  FillHisto("FatJet_eta_unmatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_eta[iJet],wtPU*wtFatJet);
 	  FillHisto("FatJet_phi_unmatchedMu",FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_phi[iJet],wtPU*wtFatJet);
@@ -1142,7 +1291,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
             for (int iMu=0; iMu<SubJets.nPFMuon; ++iMu) {
               if (SubJets.PFMuon_IdxJet[iMu]==iSubJet ) {
                 ++nmuSubJet;
-                if (passMuonSelection(iMu, SubJets, iSubJet, (dynamicMuonSubJetDR_ ? subjet_dR/2 : 0.4 ))) {
+                if (passMuonSelection(iMu, SubJets, iSubJet, (dynamicMuonSubJetDR_ ? subjet_dR/2 : maxMuonSubJetDR_ ))) {
                   if(nselmuonSubJet == 0) idxFirstMuonSubJet = iMu;
                   ++nselmuonSubJet;
                 }
