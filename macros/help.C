@@ -69,10 +69,10 @@ void beautifyFillStyle(TH1* in, int color=kBlack, int style=0) {
   in->SetFillColor(color);
 }
 
-void beautify(TH1* in, int color=kBlack, int fillstyle=0, int linestyle=1) {
+void beautify(TH1* in, int fillcolor=0, int linecolor=1, int fillstyle=0, int linestyle=1) {
   in->SetFillStyle(fillstyle);
-  in->SetFillColor(color);
-  in->SetLineColor(color);
+  in->SetFillColor(fillcolor);
+  in->SetLineColor(linecolor);
   in->SetLineStyle(linestyle);
 }
 
