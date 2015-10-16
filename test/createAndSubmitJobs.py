@@ -71,7 +71,7 @@ eval `scram runtime -sh`
 
 cp -v MAIN_WORKDIR/CMSSW_cfg.py $BATCHDIR/CMSSW_cfg.py
 cp -v MAIN_WORKDIR/PUDist*.root $BATCHDIR/
-cp -v MAIN_WORKDIR/hnpv_data_Run2015B_mc_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A_wt.root $BATCHDIR/
+cp -v MAIN_WORKDIR/hnpv_data_Run2015D_mc_RunIISpring15DR74-Asympt25ns_pvwt.root $BATCHDIR/
 cp -v DATASET_WORKDIR/input/inputFiles_JOB_NUMBER_cfi.py $BATCHDIR/inputFiles_cfi.py
 cp -v MAIN_WORKDIR/hnpv*.root $BATCHDIR/
 
@@ -136,7 +136,7 @@ def main():
   for filename in os.listdir(cfg_dirname):
     if not os.path.isfile(os.path.join(cfg_dirname,filename)):
       continue
-    if re.search("^hnpv_data_Run2015B_mc_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A_wt.root$", filename):
+    if re.search("^hnpv_data_Run2015D_mc_RunIISpring15DR74-Asympt25ns_pvwt.root$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
     if re.search("^PUDist.*\.root$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
