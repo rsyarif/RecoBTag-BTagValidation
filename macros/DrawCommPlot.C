@@ -1,7 +1,6 @@
 #include "tdrstyle.C"
 #include "CMS_lumi.C"
 #include "help.C"
-#include "help.C"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -27,11 +26,12 @@
 
 using namespace std;
 
-TString filename    ="../test/Jobs03Sept2015/Final_histograms_btagval_InclusiveJets.root" ;
-//TString filename    ="/afs/cern.ch/user/e/eschmitz/public/BTV/Final_histograms_InclusiveJets_btagval.root" ; 
+//TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_InclusiveJets_btagval.root" ;
+TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_MuonEnrichedJets_btagval.root" ; 
 //TString filename    ="../test/bTagValPlots_softdrop.root"; 
 TString filename_ext="" ;
-TString dir4plots   ="btagvalplots_03Sept2015" ;
+//TString dir4plots   ="btagvalplots_10Oct2015/Inclusive/linear" ;
+TString dir4plots   ="btagvalplots_10Oct2015/MuEnriched/log" ;
 //TString dir4plots   ="btagvalplots_Erich_03Sept2015" ;
 
 TString filename_uncUp  ="" ;
@@ -47,7 +47,7 @@ TString formatc=".root";
 bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets= 0;
-bool logy      = 0;
+bool logy      = 1;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
@@ -888,6 +888,7 @@ void DrawStacked(TString name,
   if (setSampleName) {
     TString sample = "";
     if (filename.Contains("InclusiveJets")) sample += "Multijet sample" ;
+    else if (filename.Contains("MuonEnrichedJets")) sample += "Muon Enriched Multijet sample" ;
     else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged AK8 jets)}" ;
     else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 jets)}" ;
     else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 subjets)}" ;
