@@ -26,12 +26,12 @@
 
 using namespace std;
 
-//TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_InclusiveJets_btagval.root" ;
-TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_MuonEnrichedJets_btagval.root" ; 
+TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_InclusiveJets_btagval.root" ;
+//TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_MuonEnrichedJets_btagval.root" ; 
 //TString filename    ="../test/bTagValPlots_softdrop.root"; 
 TString filename_ext="" ;
-//TString dir4plots   ="btagvalplots_10Oct2015/Inclusive/linear" ;
-TString dir4plots   ="btagvalplots_10Oct2015/MuEnriched/log" ;
+TString dir4plots   ="btagvalplots_19Oct2015/Inclusive/linear" ;
+//TString dir4plots   ="btagvalplots_19Oct2015/MuEnriched/linear" ;
 //TString dir4plots   ="btagvalplots_Erich_03Sept2015" ;
 
 TString filename_uncUp  ="" ;
@@ -47,7 +47,7 @@ TString formatc=".root";
 bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets= 0;
-bool logy      = 1;
+bool logy      = 0;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 
@@ -164,7 +164,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_vertexMass"  ,"vertexMass"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_vertexEnergyRatio"  ,"vertexEnergyRatio"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_vertexJetDeltaR"  ,"vertexJetDeltaR"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_flightDistance2dSig"  ,"flightDistance2dSig"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_flightDistance2dSig"  ,"flightDistance2dSig"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,20.);
     DrawStacked(histoTag+"_minSubJetCSVIVF"  ,"minSubJetCSVIVF"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
@@ -241,11 +241,11 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_muon_multi_sel", "Number of selected muons"       ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_mu_ptrel",       "p_{T} rel. of the muon [GeV/c]" ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_mu_chi2",        "Norm. #chi^{2} of the muon"     ,logy ,dodata ,extNorm ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T} [GeV/c]"             ,logy ,dodata ,extNorm ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T} [GeV/c]"             ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_muon_eta",       "Muon #eta"                      ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_muon_phi",       "Muon #phi"                      ,logy ,dodata ,extNorm ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip3d",      "Muon 3D IP [cm]"                ,logy ,dodata ,extNorm ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip2d",      "Muon 2D IP [cm]"                ,logy ,dodata ,extNorm ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip3d",      "Muon 3D IP [cm]"                ,logy ,dodata ,extNorm ,6. ,0.);
+    DrawStacked(histoTag+"_muon_Ip2d",      "Muon 2D IP [cm]"                ,logy ,dodata ,extNorm ,6. ,0.);
     DrawStacked(histoTag+"_muon_Sip3d",     "Muon 3D IP significance"        ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_muon_Sip2d",     "Muon 2D IP significance"        ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_muon_DeltaR",    "Muon1 #Delta R"                 ,logy ,dodata ,extNorm ,0. ,0.);
@@ -677,7 +677,7 @@ void DrawStacked(TString name,
   }
 
   beautify(hist_c        , 8   ,1 , 1001    , 1) ;
-  beautify(hist_gsplit_c , 8   ,1 , 1001    , 1) ;
+  beautify(hist_gsplit_c , 5   ,1 , 1001    , 1) ;
   beautify(hist_b        , 2   ,1 , 1001    , 1) ;
   beautify(hist_gsplit   , 7   ,1 , 1001    , 1) ;
   beautify(hist_l        , 4   ,1 , 1001    , 1) ;
@@ -853,7 +853,7 @@ void DrawStacked(TString name,
   pad0->RedrawAxis();
 
   int move_legend=0;
-  if ( name.Contains("jet_phi") || name.Contains("sv_phi") || name.Contains("muon_phi") ) move_legend=1;
+//  if ( name.Contains("jet_phi") || name.Contains("sv_phi") || name.Contains("muon_phi") ) move_legend=1;
   if (log && name.Contains("sv_en_ratio") ) move_legend=1;
   TLegend *leg ;
   if (move_legend==1) {
@@ -877,7 +877,7 @@ void DrawStacked(TString name,
   leg->AddEntry(hist_c,        "c quark"           ,         "f");
   leg->AddEntry(hist_l,        "uds quark or gluon"     ,    "f");
   if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit,   "b from gluon splitting"     ,"f");
-  //if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,  "c from gluon splitting"     ,"f");
+  if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,  "c from gluon splitting"     ,"f");
   if (inclTTbar) leg->AddEntry(hist_ttbar,    "t#bar{t}"               ,    "f");
   if (inclZjj) leg->AddEntry(hist_zjj,    "Z#rightarrowq#bar{q}"       ,    "f");
 
