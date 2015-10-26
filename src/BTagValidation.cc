@@ -495,10 +495,10 @@ void BTagValidation::beginJob() {
   // Hbb tag vars - added by rizki - start
 
   AddHisto("FatJet_z_ratio"   	     ,";z ratio;;",100,0.,60.);
-  AddHisto("FatJet_tau_dot"  	       ,";#tau#cdot SV_{0};;",100,-1.,1.);
-  AddHisto("FatJet_SV_mass_0"        ,";M(SV_{0}) [GeV];;",100,-1.,10.);
-  AddHisto("FatJet_SV_EnergyRatio_0" ,";Energy ratio (SV(0));;",100,-1.,10.);
-  AddHisto("FatJet_SV_EnergyRatio_1" ,";Energy ratio (SV(1));;",100,-1.,10.);
+  //DMAddHisto("FatJet_tau_dot"  	       ,";#tau#cdot SV_{0};;",100,-1.,1.);
+  //DMAddHisto("FatJet_SV_mass_0"        ,";M(SV_{0}) [GeV];;",100,-1.,10.);
+  //DMAddHisto("FatJet_SV_EnergyRatio_0" ,";Energy ratio (SV(0));;",100,-1.,10.);
+  //DMAddHisto("FatJet_SV_EnergyRatio_1" ,";Energy ratio (SV(1));;",100,-1.,10.);
   AddHisto("FatJet_jetNTracksEtaRel" ,";jetNTracksEtaRel;;",35,0.,35.);
 
   AddHisto("FatJet_PFLepton_ptrel"   ,";p_{T,rel} (PF lepton) [GeV];",220,-5,50.);
@@ -533,9 +533,9 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_minSubJetCSVIVF"    	   ,";minSubJetCSVIVF;;",100,-1,1);
 
   AddHisto("FatJet_BDTG_SV"   	,";BDTG SV;;",100,-1.,1.);
-  AddHisto("FatJet_BDTG_SL"   	,";BDTG SL;;",100,-1.,1.);
-  AddHisto("FatJet_BDTG_Cascade",";BDTG Cascade;;",100,-1.,1.);
-  AddHisto("FatJet_BDTG_All"    ,";BDTG All;;",100,-1.,1.);
+  //DMAddHisto("FatJet_BDTG_SL"   	,";BDTG SL;;",100,-1.,1.);
+  //DMAddHisto("FatJet_BDTG_Cascade",";BDTG Cascade;;",100,-1.,1.);
+  //DMAddHisto("FatJet_BDTG_All"    ,";BDTG All;;",100,-1.,1.);
 
   // added by rizki - end
 
@@ -901,34 +901,38 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       // ------------------------------------------------
 
       float z_ratio = FatJetInfo.Jet_z_ratio[iJet];
-      float tau_dot = FatJetInfo.Jet_tau_dot[iJet];
-      float SV_mass_0 = FatJetInfo.Jet_SV_mass_0[iJet];
-      float SV_EnRat_0 = FatJetInfo.Jet_SV_EnergyRatio_0[iJet];
-      float SV_EnRat_1 = FatJetInfo.Jet_SV_EnergyRatio_1[iJet];
+      //float tau_dot = FatJetInfo.Jet_tau_dot[iJet];
+      //float SV_mass_0 = FatJetInfo.Jet_SV_mass_0[iJet];
+      //DMfloat SV_EnRat_0 = FatJetInfo.Jet_SV_EnergyRatio_0[iJet];
+      //DMfloat SV_EnRat_1 = FatJetInfo.Jet_SV_EnergyRatio_1[iJet];
 
-      float lep_ptrel = FatJetInfo.Jet_PFLepton_ptrel[iJet];
+      //DMfloat lep_ptrel = FatJetInfo.Jet_PFLepton_ptrel[iJet];
       float ele_ptrel = -3;
       float mu_ptrel = -3;
-      float lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet];
+      //DMfloat lep_ratio = FatJetInfo.Jet_PFLepton_ratio[iJet];
       float ele_ratio = -3;
       float mu_ratio = -3;
 
       //elecron loop
       for(int iSE = FatJetInfo.Jet_nFirstSE[iJet]; iSE<FatJetInfo.Jet_nLastSE[iJet]; ++iSE){
-          if ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
-          {
-            ele_ptrel = lep_ptrel;
-            ele_ratio = FatJetInfo.PFElectron_ratio[iSE];
-          }
+          ele_ptrel = FatJetInfo.PFElectron_ptrel[iSE] ;
+          ele_ratio = FatJetInfo.PFElectron_ratio[iSE];
+          //DMif ( FatJetInfo.PFElectron_ptrel[iSE] == lep_ptrel )
+          //DM{
+          //DM  ele_ptrel = lep_ptrel;
+          //DM  ele_ratio = FatJetInfo.PFElectron_ratio[iSE];
+          //DM}
       }// end ele loop
 
       //muon loop
       for(int iSM = FatJetInfo.Jet_nFirstSM[iJet]; iSM<FatJetInfo.Jet_nLastSM[iJet]; ++iSM){
-          if ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
-          {
-            mu_ptrel = lep_ptrel;
-            mu_ratio = FatJetInfo.PFMuon_ratio[iSM];
-          }
+          mu_ptrel = FatJetInfo.Jet_nFirstSM[iJet]; 
+          mu_ratio = FatJetInfo.PFMuon_ratio[iSM]; 
+          //DMif ( FatJetInfo.PFMuon_ptrel[iSM] == lep_ptrel )
+          //DM{
+          //DM  mu_ptrel = lep_ptrel;
+          //DM  mu_ratio = FatJetInfo.PFMuon_ratio[iSM];
+          //DM}
       }//end mu loop
 
       float nSE = FatJetInfo.Jet_nSE[iJet];
@@ -956,21 +960,21 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float minSubJetCSVIVF = TMath::Min(SubJets.Jet_CombIVF[iSubJet1],SubJets.Jet_CombIVF[iSubJet2]);
 
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
-      float BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
-      float BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
-      float BDTG_All = FatJetInfo.Jet_BDTG_All[iJet];
+      //DMfloat BDTG_SL = FatJetInfo.Jet_BDTG_SL[iJet];
+      //DMfloat BDTG_Cascade = FatJetInfo.Jet_BDTG_Cascade[iJet];
+      //DMfloat BDTG_All = FatJetInfo.Jet_BDTG_All[iJet];
 
       FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, z_ratio  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, tau_dot  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_mass_0  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_EnRat_0  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_EnRat_1  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_tau_dot",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, tau_dot  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_SV_mass_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_mass_0  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_SV_EnergyRatio_0",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_EnRat_0  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_SV_EnergyRatio_1",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, SV_EnRat_1  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_PFLepton_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, lep_ptrel  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_PFLepton_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, lep_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFElectron_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, ele_ptrel  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFMuon_ptrel",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, mu_ptrel  ,   wtPU*wtFatJet);
 
-      FillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, lep_ratio  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_PFLepton_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, lep_ratio  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFElectron_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, ele_ratio  ,   wtPU*wtFatJet);
       FillHisto("FatJet_PFMuon_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, mu_ratio  ,   wtPU*wtFatJet);
 
@@ -1001,9 +1005,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
 
       FillHisto("FatJet_BDTG_SV",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_SV  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_SL  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_Cascade  ,   wtPU*wtFatJet);
-      FillHisto("FatJet_BDTG_All",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_All  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_BDTG_SL",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_SL  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_BDTG_Cascade",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_Cascade  ,   wtPU*wtFatJet);
+      //DMFillHisto("FatJet_BDTG_All",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, BDTG_All  ,   wtPU*wtFatJet);
 
       //added by rizki - end
 
