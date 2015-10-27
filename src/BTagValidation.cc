@@ -19,6 +19,7 @@ Implementation:
 
 
 // system include files
+#include <iostream>
 #include <memory>
 
 // user include files
@@ -126,6 +127,7 @@ class BTagValidation : public edm::EDAnalyzer {
     TH1D *h1_nPV_mc;
     TH1D *h1_nPV_mc_unw;
     TH1D *h1_pt_hat;
+    TH1D *h1_pt_hat_sel;
 
     TH1D *h1_nFatJet;
     TH1D *h1_fatjet_pt;
@@ -448,7 +450,8 @@ void BTagValidation::beginJob() {
   h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      ";N(PV in data);;",       60,0.,60.);
   h1_nPV_mc         = fs->make<TH1D>("h1_nPV_mc",        ";N(PV in MC);;",         60,0.,60.);
   h1_nPV_mc_unw     = fs->make<TH1D>("h1_nPV_mc_unw",    ";N(PV in MC, unweighted)",     60,0.,60.);
-  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        ";#hat{p}_{T};;",         1400,0,7000);
+  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        ";#hat{p}_{T} before selection;;",         1400,0,7000);
+  h1_pt_hat_sel     = fs->make<TH1D>("h1_pt_hat_sel",    ";#hat{p}_{T} after selection;;",         1400,0,7000);
 
   h1_nFatJet        = fs->make<TH1D>("h1_nFatJet",       ";N(AK8 jets);;",     100,0,100);
   h1_fatjet_pt      = fs->make<TH1D>("h1_fatjet_pt",     ";p_{T} (AK8 jets) [GeV];;",   PtMax/10,0,PtMax);
@@ -700,8 +703,6 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( iEntry == 0) edm::LogInfo("IsMC") << ">>>>> Running on simulation\n" ;
     }
     else if( iEntry == 0 ) edm::LogInfo("IsData") << ">>>>> Running on data\n" ;
-
-    if ( run == 251721 && (lumi >= 123 && lumi <= 244) ) continue ; 
 
     double wtPU = 1.;
     if ( doPUReweightingOfficial_ && !isData )
@@ -1083,6 +1084,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // fill jet multiplicity
     h1_nFatJet->Fill(nFatJet, wtPU);
     if( usePrunedSubjets_ || useSoftDropSubjets_ ) h1_nSubJet->Fill(nSubJet, wtPU);
+
+    if( !isData && nFatJet>0 ) h1_pt_hat_sel->Fill(EvtInfo.pthat,wtPU);
+
   }
   //----------------------------- End event loop ----------------------------------------//
 }
@@ -1284,10 +1288,6 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
 
   if (n_sv>0)
   {
-
-    //std::cout << " Jet 1st sv = " << JetInfo.Jet_nFirstSV[iJet]
-    //  << " 1st pt = " << JetInfo.SV_vtx_pt[JetInfo.Jet_nFirstSV[iJet]]
-    //  << std::endl ;
 
     chi2norm_sv    = JetInfo.SV_chi2[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_ndf[JetInfo.Jet_nFirstSV[iJet]];
     flightSig_sv   = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
