@@ -123,7 +123,8 @@ def main():
     main_workdir = os.path.join(os.getcwd(),main_workdir)
 
   # create the main working directory
-  os.mkdir(main_workdir)
+  if not os.path.exists(main_workdir):
+    os.mkdir(main_workdir)
 
   # copy the dataset list file to the main_workdir
   shutil.copyfile(dataset_list,os.path.join(main_workdir,'datasetList.txt'))
