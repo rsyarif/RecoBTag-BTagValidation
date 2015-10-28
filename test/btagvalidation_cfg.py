@@ -190,7 +190,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     InputTTreeEvtInfo      = cms.string('btaganaFatJets/ttree'),
     InputTTree             = cms.string('btaganaFatJets/ttree'),
     InputFiles             = cms.vstring(FileNames),
-    #InputFiles             = cms.vstring(FileNames_QCD_Pt_470to600_25ns),
+    #InputFiles             = cms.vstring(FileNames_QCD_Pt_800to1000),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
     UseRelaxedMuonID       = cms.bool(options.useRelaxedMuonID),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
@@ -226,12 +226,12 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
         options.triggerSelection
     ),
     TriggerPathNames       = cms.vstring(
-        "HLT_PFJet200_v*",
-        "HLT_PFJet260_v*",
-        "HLT_PFJet320_v*",
-        "HLT_PFJet400_v*",
-        "HLT_PFJet450_v*",
-        "HLT_PFJet500_v*",
+        "HLT_PFJet200_v",
+        "HLT_PFJet260_v",
+        "HLT_PFJet320_v",
+        "HLT_PFJet400_v",
+        "HLT_PFJet450_v",
+        "HLT_PFJet500_v",
     )
 )
 
