@@ -50,6 +50,7 @@ bool prunedjets= 0;
 bool logy      = 0;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
+double norm_lightjets = 1.27 ; 
 
 bool inclTTbar = 0;
 bool inclZjj   = 0;

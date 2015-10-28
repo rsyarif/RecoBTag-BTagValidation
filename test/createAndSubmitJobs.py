@@ -72,6 +72,8 @@ eval `scram runtime -sh`
 cp -v MAIN_WORKDIR/CMSSW_cfg.py $BATCHDIR/CMSSW_cfg.py
 cp -v MAIN_WORKDIR/PUDist*.root $BATCHDIR/
 cp -v MAIN_WORKDIR/hnpv_data_Run2015D_mc_RunIISpring15DR74-Asympt25ns_pvwt.root $BATCHDIR/
+cp -v MAIN_WORKDIR/PUDistData_Run2015ABCD.root $BATCHDIR/
+cp -v MAIN_WORKDIR/PUDistMC_2015_25ns_Startup_PoissonOOTPU.root $BATCHDIR/
 cp -v DATASET_WORKDIR/input/inputFiles_JOB_NUMBER_cfi.py $BATCHDIR/inputFiles_cfi.py
 cp -v MAIN_WORKDIR/hnpv*.root $BATCHDIR/
 
