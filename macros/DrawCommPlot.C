@@ -27,26 +27,17 @@
 using namespace std;
 
 //TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_allCombined_btagval.root" ;
-//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin300_btagval.root" ;
-//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin360_btagval.root" ;
-//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin425_btagval.root" ;
-//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin300_btagval.root" ;
-//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin360_btagval.root" ;
-//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin425_btagval.root" ;
-TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_MuonTagged_btagval.root" ;
-//TString filename    ="./test/Run2015D-25ns/Final_histograms_MuonEnrichedJets_btagval.root" ; 
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_MuonTagged_btagval.root" ;
 //TString filename    ="../test/bTagValPlots_softdrop.root"; 
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal/log" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged/log" ;
+//TString dir4plots   ="btagvalplots_Erich_03Sept2015" ;
+TString filename    =
+"/afs/cern.ch/user/d/devdatta/afswork/CMSREL/BTagging/CMSSW_7_4_12_patch4/src/RecoBTag/BTagValidation/test/BTagVal28Oct2015_MuonTaggedFatJets/Final_histograms_btagval_fatJetPtMin_360.root" ; 
+
 TString filename_ext="" ;
 
-//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal/log" ;
-TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged/log" ;
-//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal_300/linear" ;
-//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal_360/linear" ;
-//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal_425/linear" ;
-//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged_300/linear" ;
-//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged_360/linear" ;
-//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged_425/linear" ;
-//TString dir4plots   ="btagvalplots_Erich_03Sept2015" ;
+TString dir4plots   ="btagvalplots_28Oct2015_MuonTaggedFatJets_fatJetPtMin_360" ; 
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
@@ -64,7 +55,7 @@ bool prunedjets= 0;
 bool logy      = 1;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
-double norm_lightjets = 1.27 ; 
+double norm_lightjets = 1.00 ; // 1.27 ; 
 
 bool inclTTbar = 0;
 bool inclZjj   = 0;
@@ -629,32 +620,39 @@ void DrawStacked(TString name,
       if (inclZjj)  hist_zjj_uncDown->Rebin(nRebin);
     }
   }
+
+  if (filename.Contains("MuonTagged") ) norm_lightjets = 1.27 ;
+
+  int xlow = hist_data->GetXaxis()->FindBin(rangeXLow);
+  int xhigh = hist_data->GetXaxis()->FindBin(rangeXHigh);
+
   if (doData) {
     float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral() ) ;
     if (fExtNorm) scale_f = ( hist_data_ext->Integral() - (inclTTbar ? hist_ttbar_ext->Integral() : 0) - (inclZjj ? hist_zjj_ext->Integral() : 0) )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_gsplit_c_ext->Integral() + hist_l_ext->Integral() ) ;
+    //float scale_f = ( hist_data->Integral(xlow,xhigh) - (inclTTbar ? hist_ttbar->Integral(xlow,xhigh) : 0) - (inclZjj ? hist_zjj->Integral(xlow,xhigh) : 0) )/( hist_b->Integral(xlow,xhigh) + hist_c->Integral(xlow,xhigh) + hist_gsplit->Integral(xlow,xhigh) + hist_gsplit_c->Integral(xlow,xhigh) + hist_l->Integral(xlow,xhigh) ) ;
+    //if (fExtNorm) scale_f = ( hist_data_ext->Integral(xlow,xhigh) - (inclTTbar ? hist_ttbar_ext->Integral(xlow,xhigh) : 0) - (inclZjj ? hist_zjj_ext->Integral(xlow,xhigh) : 0) )/( hist_b_ext->Integral(xlow,xhigh) + hist_c_ext->Integral(xlow,xhigh) + hist_gsplit_ext->Integral(xlow,xhigh) + hist_gsplit_c_ext->Integral(xlow,xhigh) + hist_l_ext->Integral(xlow,xhigh) ) ;
     cout << "scale_f = " << scale_f << endl;
-    hist_b       ->Scale(scale_f);
-    hist_c       ->Scale(scale_f);
-    hist_gsplit  ->Scale(scale_f);
-    hist_gsplit_c  ->Scale(scale_f);
-    hist_l       ->Scale(scale_f);
+    hist_b        -> Scale(scale_f);
+    hist_c        -> Scale(scale_f);
+    hist_gsplit   -> Scale(scale_f);
+    hist_gsplit_c -> Scale(scale_f);
+    hist_l        -> Scale(scale_f*norm_lightjets);
 
     if (uncBand) {
-      hist_b_uncUp       ->Scale(scale_f);
-      hist_c_uncUp       ->Scale(scale_f);
-      hist_gsplit_uncUp  ->Scale(scale_f);
-      hist_gsplit_c_uncUp  ->Scale(scale_f);
-      hist_l_uncUp       ->Scale(scale_f);
+      hist_b_uncUp        -> Scale(scale_f);
+      hist_c_uncUp        -> Scale(scale_f);
+      hist_gsplit_uncUp   -> Scale(scale_f);
+      hist_gsplit_c_uncUp -> Scale(scale_f);
+      hist_l_uncUp        -> Scale(scale_f*norm_lightjets);
 
-      hist_b_uncDown       ->Scale(scale_f);
-      hist_c_uncDown       ->Scale(scale_f);
-      hist_gsplit_uncDown  ->Scale(scale_f);
-      hist_gsplit_c_uncDown  ->Scale(scale_f);
-      hist_l_uncDown       ->Scale(scale_f);
+      hist_b_uncDown        -> Scale(scale_f);
+      hist_c_uncDown        -> Scale(scale_f);
+      hist_gsplit_uncDown   -> Scale(scale_f);
+      hist_gsplit_c_uncDown -> Scale(scale_f);
+      hist_l_uncDown        -> Scale(scale_f*norm_lightjets);
     }
   }
   
-  if (strstr(filename, "MuonTagged")) hist_l->Scale(norm_lightjets);
 
   TH1D* histo_tot = (TH1D*) hist_b->Clone();
   histo_tot ->Add(hist_c);
@@ -904,13 +902,26 @@ void DrawStacked(TString name,
 
   if (setSampleName) {
     TString sample = "";
-    if (filename.Contains("InclusiveJets")) sample += "Multijet sample" ;
+    if (filename.Contains("InclusiveJets") && name.Contains("FatJet") ) sample += "#splitline{Multijet sample}{AK8 jets}" ;  
+    else if (filename.Contains("InclusiveJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Multijet sample}{Soft drop subjets of AK8 jets}" ;
+    else if (filename.Contains("InclusiveJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Multijet sample}{Pruned subjets of AK8 jets}" ;
     else if (filename.Contains("MuonEnrichedJets")) sample += "Muon Enriched Multijet sample" ;
-    else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged AK8 jets)}" ;
-    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 jets)}" ;
-    else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 subjets)}" ;
-    else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged AK8 jets)}}" ;
-    else std::cout << " >>>> Error:Check sample name\n" ;
+    else if (filename.Contains("MuonEnrichedJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Muon Enriched Multijet sample}{Soft drop subjets of AK8 jets}" ;
+    else if (filename.Contains("MuonEnrichedJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Muon Enriched Multijet sample}{Pruned subjets of AK8 jets}" ;
+    else if (filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("FatJet") ) sample += "#splitline{Multijet sample}{Double-muon-tagged AK8 jets}" ;  
+    else if (filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Multijet sample}{Soft drop subjets of Double-muon-tagged AK8 jetsAK8 jets}" ;
+    else if (filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Multijet sample}{Pruned subjets of Double-muon-tagged AK8 jets AK8 jets}" ;
+
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("FatJet") ) sample += "#splitline{Multijet sample}{Muon-tagged AK8 jets}" ;  
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Multijet sample}{Soft drop subjets of Muon-tagged AK8 jetsAK8 jets}" ;
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Multijet sample}{Pruned subjets of Muon-tagged AK8 jets AK8 jets}" ;
+
+    //if (filename.Contains("InclusiveJets")) sample += "#splitline{Multijet sample}{AK8 jets}" ;
+    //else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged AK8 jets)}" ;
+    //else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 jets)}" ;
+    //else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 subjets)}" ;
+    //else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged AK8 jets)}}" ;
+    //else std::cout << " >>>> Error:Check sample name\n" ;
 
     TLatex *tex1 = new TLatex(0.20,0.74,sample);
     tex1->SetNDC();
@@ -920,20 +931,20 @@ void DrawStacked(TString name,
     tex1->SetLineWidth(2);
     tex1->Draw();
 
-    TString jettype="" ; 
-    if ( name.Contains("FatJet")) jettype+="AK8 jets" ; 
-    else if  ( name.Contains("SoftDropSubJet")) jettype+="Soft drop subjets of AK8 jets" ;
-    else if  ( name.Contains("PrunedSubJet")) jettype+="Pruned subjets of AK8 jets" ;
+    //TString jettype="" ; 
+    //if ( name.Contains("FatJet")) jettype+="AK8 jets" ; 
+    //else if  ( name.Contains("SoftDropSubJet")) jettype+="Soft drop subjets of AK8 jets" ;
+    //else if  ( name.Contains("PrunedSubJet")) jettype+="Pruned subjets of AK8 jets" ;
 
-    TLatex *tex2 = new TLatex(0.20,0.68,jettype);
-    tex2->SetNDC();
-    tex2->SetTextAlign(13);
-    tex2->SetTextFont(42);
-    tex2->SetTextSize(0.055);
-    tex2->SetLineWidth(2);
-    tex2->Draw();
+    //TLatex *tex2 = new TLatex(0.20,0.68,jettype);
+    //tex2->SetNDC();
+    //tex2->SetTextAlign(13);
+    //tex2->SetTextFont(42);
+    //tex2->SetTextSize(0.055);
+    //tex2->SetLineWidth(2);
+    //tex2->Draw();
 
-    TString jetpt="p_{T} (AK8 jets) > 300 GeV" ; 
+    TString jetpt="p_{T} (AK8 jets) > 360 GeV" ; 
 
     TLatex *tex3 = new TLatex(0.20,0.62,jetpt);
     tex3->SetNDC();
@@ -1010,12 +1021,12 @@ void DrawStacked(TString name,
   TString name_plot=name+"_Linear"+formata;
   if(log) name_plot=name+"_Log"+formata;
   c1->SaveAs(dir4plots+"/"+name_plot);
-  name_plot=name+"_Linear"+formatb;
-  if(log) name_plot=name+"_Log"+formatb;
-  c1->SaveAs(dir4plots+"/"+name_plot);
-  name_plot=name+"_Linear"+formatc;
-  if(log) name_plot=name+"_Log"+formatc;
-  c1->SaveAs(dir4plots+"/"+name_plot);
+  //name_plot=name+"_Linear"+formatb;
+  //if(log) name_plot=name+"_Log"+formatb;
+  //c1->SaveAs(dir4plots+"/"+name_plot);
+  //name_plot=name+"_Linear"+formatc;
+  //if(log) name_plot=name+"_Log"+formatc;
+  //c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
     pad0 ->cd();
