@@ -32,6 +32,10 @@ def main():
                     help="Name of the analyzer module (This parameter is optional and is set to 'btagval' by default)",
                     default='btagval',
                     metavar="ANALYZER_MODULE")
+  parser.add_option("-n", "--filename", dest="filename",
+                    help="Name of the output file",
+                    default='Final_histograms',
+                    metavar="FILENAME")
 
   (options, args) = parser.parse_args()
 
@@ -85,7 +89,7 @@ def main():
       dataset_xs[dataset] = xs
 
   # final output file
-  filename='Final_histograms'
+  filename=options.filename
   if (len(options.analyzer_module)>0):
     filename+=str('_'+options.analyzer_module)
   filename+=str('.root')
