@@ -49,13 +49,13 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
   else if ( iPeriod==4 )
     {
       lumiText += lumi_13TeV;
-      lumiText += "#sqrt{s} = 13 TeV, 50 ns";
+      lumiText += "#sqrt{s} = 13 TeV, 25 ns";
     }
   else if ( iPeriod==7 )
     { 
       if( outOfFrame ) lumiText += "#scale[0.85]{";
       lumiText += lumi_13TeV; 
-      lumiText += "#sqrt{s} = 13 TeV, 50 ns";
+      lumiText += "#sqrt{s} = 13 TeV, 25 ns";
       lumiText += " + ";
       lumiText += lumi_8TeV; 
       lumiText += " (8 TeV)";
