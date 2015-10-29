@@ -26,12 +26,26 @@
 
 using namespace std;
 
-TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_InclusiveJets_btagval.root" ;
-//TString filename    ="./test/QCD-Run2015D-25ns/Final_histograms_MuonEnrichedJets_btagval.root" ; 
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_allCombined_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin300_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin360_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin425_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin300_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin360_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_fatJetPtMin425_btagval.root" ;
+TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_MuonTagged_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns/Final_histograms_MuonEnrichedJets_btagval.root" ; 
 //TString filename    ="../test/bTagValPlots_softdrop.root"; 
 TString filename_ext="" ;
-TString dir4plots   ="btagvalplots_19Oct2015/Inclusive/linear" ;
-//TString dir4plots   ="btagvalplots_19Oct2015/MuEnriched/linear" ;
+
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal/log" ;
+TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged/log" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal_300/linear" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal_360/linear" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal_425/linear" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged_300/linear" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged_360/linear" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged_425/linear" ;
 //TString dir4plots   ="btagvalplots_Erich_03Sept2015" ;
 
 TString filename_uncUp  ="" ;
@@ -47,7 +61,7 @@ TString formatc=".root";
 bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets= 0;
-bool logy      = 0;
+bool logy      = 1;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
 double norm_lightjets = 1.27 ; 
@@ -85,7 +99,8 @@ void DrawCommPlot(bool Draw_track_plots=true,
   TString action = "mkdir -p " + dir4plots;
   system(action);
   Draw("h1_pt_hat"   ,"p_{T} hat",1);
-  Draw("h1_nPV"      ,"# of PV",0);
+  Draw("h1_pt_hat_sel" ,"p_{T} hat after selection",1); 
+  //Draw("h1_nPV"      ,"# of PV",0);
   //Draw("h1_nFatJet"  ,"# of fat jets",0);
   //Draw("h1_nSubJet"  ,"# of subjets",0);
 
@@ -322,8 +337,8 @@ void Draw(TString name, TString histotitle, bool log) {
   }
 
   float scale_f = (hist_data->Integral())/(hist_mc->Integral());
-  hist_mc->Scale(scale_f);
-
+  if (name=="h1_pt_hat" || "h1_pt_hat_sel") ;
+  else hist_mc->Scale(scale_f);
   beautify(hist_data  , 1 , 1 ,0, 1) ;
 
   TH1D* histo_ratio;
@@ -371,7 +386,6 @@ void Draw(TString name, TString histotitle, bool log) {
   hist_mc->GetYaxis()->SetTitleSize( 0.06 );
 
   hist_mc->Draw("hist");
-
   hist_data->Draw("SAMEE1");
 
   TLegend* leg = new TLegend(0.56,0.60,0.86,0.85,NULL,"brNDC");
@@ -639,6 +653,8 @@ void DrawStacked(TString name,
       hist_l_uncDown       ->Scale(scale_f);
     }
   }
+  
+  if (strstr(filename, "MuonTagged")) hist_l->Scale(norm_lightjets);
 
   TH1D* histo_tot = (TH1D*) hist_b->Clone();
   histo_tot ->Add(hist_c);
