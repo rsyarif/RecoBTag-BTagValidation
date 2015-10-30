@@ -411,7 +411,7 @@ void BTagValidation::beginJob() {
   //EvtInfo.ReadPatMuonTree(JetTree); //commented by rizki
 
   FatJetInfo.ReadTree(JetTree,"FatJetInfo");
-  FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo");
+  FatJetInfo.ReadFatJetSpecificTree(JetTree,"FatJetInfo",true);
   FatJetInfo.ReadCSVTagVarTree(JetTree, "FatJetInfo");
   FatJetInfo.ReadJetSVTree(JetTree, "FatJetInfo"); 
   if (useJetProbaTree_) {
