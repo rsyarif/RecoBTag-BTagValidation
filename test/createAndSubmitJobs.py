@@ -75,8 +75,7 @@ cp -v MAIN_WORKDIR/hnpv_data_Run2015D_mc_RunIISpring15DR74-Asympt25ns_pvwt.root 
 cp -v MAIN_WORKDIR/PUDistData_Run2015ABCD.root $BATCHDIR/
 cp -v MAIN_WORKDIR/PUDistMC_2015_25ns_Startup_PoissonOOTPU.root $BATCHDIR/
 cp -v DATASET_WORKDIR/input/inputFiles_JOB_NUMBER_cfi.py $BATCHDIR/inputFiles_cfi.py
-cp -v MAIN_WORKDIR/hnpv*.root $BATCHDIR/
-
+cp -v MAIN_WORKDIR/jetpt_data_mc_RunIISpring15_25ns_MINIAOD.root $BATCHDIR/
 cd $BATCHDIR
 echo "Running CMSSW job"
 cmsRun CMSSW_cfg.py CFG_PARAMETERS
@@ -143,7 +142,7 @@ def main():
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
     if re.search("^PUDist.*\.root$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
-    elif re.search("^hnpv.*\.root$", filename):
+    if re.search("^jetpt_data_mc_RunIISpring15_25ns_MINIAOD.root$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
   # open and read the dataset_list file
   dataset_list_file = open(dataset_list,"r")
