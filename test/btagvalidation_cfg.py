@@ -144,7 +144,11 @@ options.register('doPUReweightingNPV', False,
     VarParsing.varType.bool,
     "Do pileup reweighting"
 )
-
+options.register('doJetPtReweighting', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    'Do jet pt reweighting'
+)
 ## 'maxEvents' is already registered by the Framework, changing default value
 options.setDefault('maxEvents', -1)
 
@@ -211,7 +215,9 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     File_PVWt              = cms.string('hnpv_data_Run2015D_mc_RunIISpring15DR74-Asympt25ns_pvwt.root'),
     File_PUDistMC          = cms.string('PUDistMC_2015_25ns_Startup_PoissonOOTPU.root'),
     File_PUDistData        = cms.string('PUDistData_Run2015ABCD.root'),
+    File_JetPtWt           = cms.string('jetpt_data_mc_RunIISpring15_25ns_MINIAOD.root'),
     Hist_PVWt              = cms.string('hpvwt_data_mc'),
+    Hist_JetPtWt           = cms.string('jetptweight_mc_data'),
     Hist_PUDistMC          = cms.string('pileup'),
     Hist_PUDistData        = cms.string('pileup'),
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
@@ -222,6 +228,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     SFlShift               = cms.double(options.SFlShift),
     DoPUReweightingOfficial= cms.bool(options.doPUReweightingOfficial),
     DoPUReweightingNPV     = cms.bool(options.doPUReweightingNPV),
+    DoJetPtReweighting     = cms.bool(options.doJetPtReweighting),
     TriggerSelection       = cms.vstring( # OR of all listed triggers applied, empty list --> no trigger selection applied
         options.triggerSelection
     ),
