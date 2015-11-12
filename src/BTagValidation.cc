@@ -510,10 +510,10 @@ void BTagValidation::beginJob() {
   AddHisto("FatJet_trackSip3dSig_1",";trackSip3dSig_1;;",100,-20,20);
   AddHisto("FatJet_trackSip3dSig_0",";trackSip3dSig_0;;",100,-20,20);
   
-  AddHisto("FatJet_tau1_trackSip3dSig_1",";trackSip3dSig_1;;",100,-20,20);
-  AddHisto("FatJet_tau1_trackSip3dSig_0",";trackSip3dSig_0;;",100,-20,20);
-  AddHisto("FatJet_tau2_trackSip3dSig_1",";trackSip3dSig_1;;",100,-20,20);
-  AddHisto("FatJet_tau2_trackSip3dSig_0",";trackSip3dSig_0;;",100,-20,20);
+  AddHisto("FatJet_tau1_trackSip3dSig_1",";tau1_trackSip3dSig_1;;",100,-20,20);
+  AddHisto("FatJet_tau1_trackSip3dSig_0",";tau1_trackSip3dSig_0;;",100,-20,20);
+  AddHisto("FatJet_tau2_trackSip3dSig_1",";tau2_trackSip3dSig_1;;",100,-20,20);
+  AddHisto("FatJet_tau2_trackSip3dSig_0",";tau2_trackSip3dSig_0;;",100,-20,20);
 
   AddHisto("FatJet_trackSip2dSigAboveCharm_0",";trackSip2dSigAboveCharm_0;;",100,-20,20);
   AddHisto("FatJet_trackSip2dSigAboveBottom_0",";trackSip2dSigAboveBottom_0;;",100,-20,20);
@@ -529,12 +529,12 @@ void BTagValidation::beginJob() {
 
   AddHisto("FatJet_tau1_vertexMass"    	       ,";tau1_vertexMass;;",500,0.,500);
   AddHisto("FatJet_tau1_vertexEnergyRatio"      ,";tau1_vertexEnergyRatio;;",100,-1,4);
-  AddHisto("FatJet_tau1_vertexDeltaR"    	   ,";tau1_vertexDelta;;",100,-1,1);
+  AddHisto("FatJet_tau1_vertexDeltaR"    	   ,";tau1_vertexDeltaR;;",100,-1,1);
   AddHisto("FatJet_tau1_flightDistance2dSig"    ,";tau1_flightDistance2dSig;;",100,-20,20);
 
-  AddHisto("FatJet_tau2_vertexMass"    	       ,";tau_vertexMass;;",500,0.,500);
-  AddHisto("FatJet_tau2_vertexEnergyRatio"      ,";tau_vertexEnergyRatio;;",100,-1,4);
-  AddHisto("FatJet_tau2_flightDistance2dSig"    ,";tau_flightDistance2dSig;;",100,-20,20);
+  AddHisto("FatJet_tau2_vertexMass"    	       ,";tau2_vertexMass;;",500,0.,500);
+  AddHisto("FatJet_tau2_vertexEnergyRatio"      ,";tau2_vertexEnergyRatio;;",100,-1,4);
+  AddHisto("FatJet_tau2_flightDistance2dSig"    ,";tau2_flightDistance2dSig;;",100,-20,20);
   
   AddHisto("FatJet_jetNTracks"     	       ,";jetNTracks;;",40,0,40);
   AddHisto("FatJet_nSV"  ,";nSV;;",10,0,10);
@@ -939,7 +939,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       float nSV = FatJetInfo.Jet_nSV_fat[iJet];
 
       float BDTG_SV = FatJetInfo.Jet_BDTG_SV[iJet];
-
+      
       FillHisto("FatJet_z_ratio",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, z_ratio  ,   wtPU*wtFatJet);
 
       FillHisto("FatJet_trackSip3dSig_3",      FatJetInfo.Jet_flavour[iJet], isGSPbb, isGSPcc, trackSip3dSig_3  ,   wtPU*wtFatJet);
