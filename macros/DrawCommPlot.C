@@ -1,7 +1,6 @@
 #include "tdrstyle.C"
 #include "CMS_lumi.C"
 #include "help.C"
-#include "help.C"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -27,12 +26,18 @@
 
 using namespace std;
 
-TString filename    ="../test/Jobs03Sept2015/Final_histograms_btagval_InclusiveJets.root" ;
-//TString filename    ="/afs/cern.ch/user/e/eschmitz/public/BTV/Final_histograms_InclusiveJets_btagval.root" ; 
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-HLTFix/Final_histograms_MuonEnrichedJets_allCombined_btagval.root" ;
+//TString filename    ="./test/Run2015D-25ns-MuEnriched-MuonTagged-HLTFix/Final_histograms_MuonEnrichedJets_MuonTagged_btagval.root" ;
 //TString filename    ="../test/bTagValPlots_softdrop.root"; 
-TString filename_ext="" ;
-TString dir4plots   ="btagvalplots_03Sept2015" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_Nominal/log" ;
+//TString dir4plots   ="btagvalplots_28Oct2015/MuEnriched_MuonTagged/log" ;
 //TString dir4plots   ="btagvalplots_Erich_03Sept2015" ;
+TString filename    =
+"/afs/cern.ch/user/d/devdatta/afswork/CMSREL/BTagging/CMSSW_7_4_12_patch4/src/RecoBTag/BTagValidation/test/BTagVal28Oct2015_MuonTaggedFatJets/Final_histograms_btagval_fatJetPtMin_360.root" ; 
+
+TString filename_ext="" ;
+
+TString dir4plots   ="btagvalplots_28Oct2015_MuonTaggedFatJets_fatJetPtMin_360" ; 
 
 TString filename_uncUp  ="" ;
 TString filename_uncDown="" ;
@@ -47,9 +52,10 @@ TString formatc=".root";
 bool bOverflow = 1;
 bool web       = 0;
 bool prunedjets= 0;
-bool logy      = 0;
+bool logy      = 1;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
+double norm_lightjets = 1.00 ; // 1.27 ; 
 
 bool inclTTbar = 0;
 bool inclZjj   = 0;
@@ -83,7 +89,8 @@ void DrawCommPlot(bool Draw_track_plots=true,
 
   TString action = "mkdir -p " + dir4plots;
   system(action);
-
+  Draw("h1_pt_hat"   ,"p_{T} hat",1);
+  Draw("h1_pt_hat_sel" ,"p_{T} hat after selection",1); 
   //Draw("h1_nPV"      ,"# of PV",0);
   //Draw("h1_nFatJet"  ,"# of fat jets",0);
   //Draw("h1_nSubJet"  ,"# of subjets",0);
@@ -164,7 +171,7 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_vertexMass"  ,"vertexMass"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_vertexEnergyRatio"  ,"vertexEnergyRatio"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_vertexJetDeltaR"  ,"vertexJetDeltaR"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_flightDistance2dSig"  ,"flightDistance2dSig"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_flightDistance2dSig"  ,"flightDistance2dSig"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,20.);
     DrawStacked(histoTag+"_minSubJetCSVIVF"  ,"minSubJetCSVIVF"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
@@ -241,11 +248,11 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
     DrawStacked(histoTag+"_muon_multi_sel", "Number of selected muons"       ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_mu_ptrel",       "p_{T} rel. of the muon [GeV/c]" ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_mu_chi2",        "Norm. #chi^{2} of the muon"     ,logy ,dodata ,extNorm ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T} [GeV/c]"             ,logy ,dodata ,extNorm ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Pt",        "Muon p_{T} [GeV/c]"             ,logy ,dodata ,extNorm ,2. ,0.);
     DrawStacked(histoTag+"_muon_eta",       "Muon #eta"                      ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_muon_phi",       "Muon #phi"                      ,logy ,dodata ,extNorm ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip3d",      "Muon 3D IP [cm]"                ,logy ,dodata ,extNorm ,0. ,0.);
-    DrawStacked(histoTag+"_muon_Ip2d",      "Muon 2D IP [cm]"                ,logy ,dodata ,extNorm ,0. ,0.);
+    DrawStacked(histoTag+"_muon_Ip3d",      "Muon 3D IP [cm]"                ,logy ,dodata ,extNorm ,6. ,0.);
+    DrawStacked(histoTag+"_muon_Ip2d",      "Muon 2D IP [cm]"                ,logy ,dodata ,extNorm ,6. ,0.);
     DrawStacked(histoTag+"_muon_Sip3d",     "Muon 3D IP significance"        ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_muon_Sip2d",     "Muon 2D IP significance"        ,logy ,dodata ,extNorm ,0. ,0.);
     DrawStacked(histoTag+"_muon_DeltaR",    "Muon1 #Delta R"                 ,logy ,dodata ,extNorm ,0. ,0.);
@@ -321,8 +328,8 @@ void Draw(TString name, TString histotitle, bool log) {
   }
 
   float scale_f = (hist_data->Integral())/(hist_mc->Integral());
-  hist_mc->Scale(scale_f);
-
+  if (name=="h1_pt_hat" || "h1_pt_hat_sel") ;
+  else hist_mc->Scale(scale_f);
   beautify(hist_data  , 1 , 1 ,0, 1) ;
 
   TH1D* histo_ratio;
@@ -370,7 +377,6 @@ void Draw(TString name, TString histotitle, bool log) {
   hist_mc->GetYaxis()->SetTitleSize( 0.06 );
 
   hist_mc->Draw("hist");
-
   hist_data->Draw("SAMEE1");
 
   TLegend* leg = new TLegend(0.56,0.60,0.86,0.85,NULL,"brNDC");
@@ -615,30 +621,38 @@ void DrawStacked(TString name,
     }
   }
 
+  if (filename.Contains("MuonTagged") ) norm_lightjets = 1.27 ;
+
+  int xlow = hist_data->GetXaxis()->FindBin(rangeXLow);
+  int xhigh = hist_data->GetXaxis()->FindBin(rangeXHigh);
+
   if (doData) {
     float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral() ) ;
     if (fExtNorm) scale_f = ( hist_data_ext->Integral() - (inclTTbar ? hist_ttbar_ext->Integral() : 0) - (inclZjj ? hist_zjj_ext->Integral() : 0) )/( hist_b_ext->Integral() + hist_c_ext->Integral() + hist_gsplit_ext->Integral() + hist_gsplit_c_ext->Integral() + hist_l_ext->Integral() ) ;
+    //float scale_f = ( hist_data->Integral(xlow,xhigh) - (inclTTbar ? hist_ttbar->Integral(xlow,xhigh) : 0) - (inclZjj ? hist_zjj->Integral(xlow,xhigh) : 0) )/( hist_b->Integral(xlow,xhigh) + hist_c->Integral(xlow,xhigh) + hist_gsplit->Integral(xlow,xhigh) + hist_gsplit_c->Integral(xlow,xhigh) + hist_l->Integral(xlow,xhigh) ) ;
+    //if (fExtNorm) scale_f = ( hist_data_ext->Integral(xlow,xhigh) - (inclTTbar ? hist_ttbar_ext->Integral(xlow,xhigh) : 0) - (inclZjj ? hist_zjj_ext->Integral(xlow,xhigh) : 0) )/( hist_b_ext->Integral(xlow,xhigh) + hist_c_ext->Integral(xlow,xhigh) + hist_gsplit_ext->Integral(xlow,xhigh) + hist_gsplit_c_ext->Integral(xlow,xhigh) + hist_l_ext->Integral(xlow,xhigh) ) ;
     cout << "scale_f = " << scale_f << endl;
-    hist_b       ->Scale(scale_f);
-    hist_c       ->Scale(scale_f);
-    hist_gsplit  ->Scale(scale_f);
-    hist_gsplit_c  ->Scale(scale_f);
-    hist_l       ->Scale(scale_f);
+    hist_b        -> Scale(scale_f);
+    hist_c        -> Scale(scale_f);
+    hist_gsplit   -> Scale(scale_f);
+    hist_gsplit_c -> Scale(scale_f);
+    hist_l        -> Scale(scale_f*norm_lightjets);
 
     if (uncBand) {
-      hist_b_uncUp       ->Scale(scale_f);
-      hist_c_uncUp       ->Scale(scale_f);
-      hist_gsplit_uncUp  ->Scale(scale_f);
-      hist_gsplit_c_uncUp  ->Scale(scale_f);
-      hist_l_uncUp       ->Scale(scale_f);
+      hist_b_uncUp        -> Scale(scale_f);
+      hist_c_uncUp        -> Scale(scale_f);
+      hist_gsplit_uncUp   -> Scale(scale_f);
+      hist_gsplit_c_uncUp -> Scale(scale_f);
+      hist_l_uncUp        -> Scale(scale_f*norm_lightjets);
 
-      hist_b_uncDown       ->Scale(scale_f);
-      hist_c_uncDown       ->Scale(scale_f);
-      hist_gsplit_uncDown  ->Scale(scale_f);
-      hist_gsplit_c_uncDown  ->Scale(scale_f);
-      hist_l_uncDown       ->Scale(scale_f);
+      hist_b_uncDown        -> Scale(scale_f);
+      hist_c_uncDown        -> Scale(scale_f);
+      hist_gsplit_uncDown   -> Scale(scale_f);
+      hist_gsplit_c_uncDown -> Scale(scale_f);
+      hist_l_uncDown        -> Scale(scale_f*norm_lightjets);
     }
   }
+  
 
   TH1D* histo_tot = (TH1D*) hist_b->Clone();
   histo_tot ->Add(hist_c);
@@ -678,7 +692,7 @@ void DrawStacked(TString name,
   }
 
   beautify(hist_c        , 8   ,1 , 1001    , 1) ;
-  beautify(hist_gsplit_c , 8   ,1 , 1001    , 1) ;
+  beautify(hist_gsplit_c , 5   ,1 , 1001    , 1) ;
   beautify(hist_b        , 2   ,1 , 1001    , 1) ;
   beautify(hist_gsplit   , 7   ,1 , 1001    , 1) ;
   beautify(hist_l        , 4   ,1 , 1001    , 1) ;
@@ -854,7 +868,7 @@ void DrawStacked(TString name,
   pad0->RedrawAxis();
 
   int move_legend=0;
-  if ( name.Contains("jet_phi") || name.Contains("sv_phi") || name.Contains("muon_phi") ) move_legend=1;
+//  if ( name.Contains("jet_phi") || name.Contains("sv_phi") || name.Contains("muon_phi") ) move_legend=1;
   if (log && name.Contains("sv_en_ratio") ) move_legend=1;
   TLegend *leg ;
   if (move_legend==1) {
@@ -878,7 +892,7 @@ void DrawStacked(TString name,
   leg->AddEntry(hist_c,        "c quark"           ,         "f");
   leg->AddEntry(hist_l,        "uds quark or gluon"     ,    "f");
   if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit,   "b from gluon splitting"     ,"f");
-  //if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,  "c from gluon splitting"     ,"f");
+  if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,  "c from gluon splitting"     ,"f");
   if (inclTTbar) leg->AddEntry(hist_ttbar,    "t#bar{t}"               ,    "f");
   if (inclZjj) leg->AddEntry(hist_zjj,    "Z#rightarrowq#bar{q}"       ,    "f");
 
@@ -888,12 +902,26 @@ void DrawStacked(TString name,
 
   if (setSampleName) {
     TString sample = "";
-    if (filename.Contains("InclusiveJets")) sample += "Multijet sample" ;
-    else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged AK8 jets)}" ;
-    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 jets)}" ;
-    else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 subjets)}" ;
-    else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged AK8 jets)}}" ;
-    else std::cout << " >>>> Error:Check sample name\n" ;
+    if (filename.Contains("InclusiveJets") && name.Contains("FatJet") ) sample += "#splitline{Multijet sample}{AK8 jets}" ;  
+    else if (filename.Contains("InclusiveJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Multijet sample}{Soft drop subjets of AK8 jets}" ;
+    else if (filename.Contains("InclusiveJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Multijet sample}{Pruned subjets of AK8 jets}" ;
+    else if (filename.Contains("MuonEnrichedJets")) sample += "Muon Enriched Multijet sample" ;
+    else if (filename.Contains("MuonEnrichedJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Muon Enriched Multijet sample}{Soft drop subjets of AK8 jets}" ;
+    else if (filename.Contains("MuonEnrichedJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Muon Enriched Multijet sample}{Pruned subjets of AK8 jets}" ;
+    else if (filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("FatJet") ) sample += "#splitline{Multijet sample}{Double-muon-tagged AK8 jets}" ;  
+    else if (filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Multijet sample}{Soft drop subjets of Double-muon-tagged AK8 jetsAK8 jets}" ;
+    else if (filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Multijet sample}{Pruned subjets of Double-muon-tagged AK8 jets AK8 jets}" ;
+
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("FatJet") ) sample += "#splitline{Multijet sample}{Muon-tagged AK8 jets}" ;  
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("SoftDropSubJet") ) sample += "#splitline{Multijet sample}{Soft drop subjets of Muon-tagged AK8 jetsAK8 jets}" ;
+    else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets") && name.Contains("PrunedSubJet") ) sample += "#splitline{Multijet sample}{Pruned subjets of Muon-tagged AK8 jets AK8 jets}" ;
+
+    //if (filename.Contains("InclusiveJets")) sample += "#splitline{Multijet sample}{AK8 jets}" ;
+    //else if (filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Double-muon-tagged AK8 jets)}" ;
+    //else if (filename.Contains("MuonTaggedFatJets") && !filename.Contains("DoubleMuonTaggedFatJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 jets)}" ;
+    //else if (filename.Contains("MuonTaggedSubJets")) sample += "#splitline{Multijet sample}{(Muon-tagged AK8 subjets)}" ;
+    //else if (filename.Contains("DoubleMuonAndBTaggedFatJets")) sample += "#splitline{Multijet sample}{#splitline{(Double-muon- and}{double-b-tagged AK8 jets)}}" ;
+    //else std::cout << " >>>> Error:Check sample name\n" ;
 
     TLatex *tex1 = new TLatex(0.20,0.74,sample);
     tex1->SetNDC();
@@ -903,20 +931,20 @@ void DrawStacked(TString name,
     tex1->SetLineWidth(2);
     tex1->Draw();
 
-    TString jettype="" ; 
-    if ( name.Contains("FatJet")) jettype+="AK8 jets" ; 
-    else if  ( name.Contains("SoftDropSubJet")) jettype+="Soft drop subjets of AK8 jets" ;
-    else if  ( name.Contains("PrunedSubJet")) jettype+="Pruned subjets of AK8 jets" ;
+    //TString jettype="" ; 
+    //if ( name.Contains("FatJet")) jettype+="AK8 jets" ; 
+    //else if  ( name.Contains("SoftDropSubJet")) jettype+="Soft drop subjets of AK8 jets" ;
+    //else if  ( name.Contains("PrunedSubJet")) jettype+="Pruned subjets of AK8 jets" ;
 
-    TLatex *tex2 = new TLatex(0.20,0.68,jettype);
-    tex2->SetNDC();
-    tex2->SetTextAlign(13);
-    tex2->SetTextFont(42);
-    tex2->SetTextSize(0.055);
-    tex2->SetLineWidth(2);
-    tex2->Draw();
+    //TLatex *tex2 = new TLatex(0.20,0.68,jettype);
+    //tex2->SetNDC();
+    //tex2->SetTextAlign(13);
+    //tex2->SetTextFont(42);
+    //tex2->SetTextSize(0.055);
+    //tex2->SetLineWidth(2);
+    //tex2->Draw();
 
-    TString jetpt="p_{T} (AK8 jets) > 300 GeV" ; 
+    TString jetpt="p_{T} (AK8 jets) > 360 GeV" ; 
 
     TLatex *tex3 = new TLatex(0.20,0.62,jetpt);
     tex3->SetNDC();
@@ -993,12 +1021,12 @@ void DrawStacked(TString name,
   TString name_plot=name+"_Linear"+formata;
   if(log) name_plot=name+"_Log"+formata;
   c1->SaveAs(dir4plots+"/"+name_plot);
-  name_plot=name+"_Linear"+formatb;
-  if(log) name_plot=name+"_Log"+formatb;
-  c1->SaveAs(dir4plots+"/"+name_plot);
-  name_plot=name+"_Linear"+formatc;
-  if(log) name_plot=name+"_Log"+formatc;
-  c1->SaveAs(dir4plots+"/"+name_plot);
+  //name_plot=name+"_Linear"+formatb;
+  //if(log) name_plot=name+"_Log"+formatb;
+  //c1->SaveAs(dir4plots+"/"+name_plot);
+  //name_plot=name+"_Linear"+formatc;
+  //if(log) name_plot=name+"_Log"+formatc;
+  //c1->SaveAs(dir4plots+"/"+name_plot);
 
   if (log && web) {  // save also _Linear for web
     pad0 ->cd();

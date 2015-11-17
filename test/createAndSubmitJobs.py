@@ -72,8 +72,10 @@ eval `scram runtime -sh`
 cp -v MAIN_WORKDIR/CMSSW_cfg.py $BATCHDIR/CMSSW_cfg.py
 cp -v MAIN_WORKDIR/PUDist*.root $BATCHDIR/
 cp -v MAIN_WORKDIR/hnpv_data_Run2015D_mc_RunIISpring15DR74-Asympt25ns_pvwt.root $BATCHDIR/
+cp -v MAIN_WORKDIR/PUDistData_Run2015ABCD.root $BATCHDIR/
+cp -v MAIN_WORKDIR/PUDistMC_2015_25ns_Startup_PoissonOOTPU.root $BATCHDIR/
 cp -v DATASET_WORKDIR/input/inputFiles_JOB_NUMBER_cfi.py $BATCHDIR/inputFiles_cfi.py
-
+cp -v MAIN_WORKDIR/jetpt_data_mc_RunIISpring15_25ns_MINIAOD.root $BATCHDIR/
 cd $BATCHDIR
 echo "Running CMSSW job"
 cmsRun CMSSW_cfg.py CFG_PARAMETERS
@@ -120,7 +122,8 @@ def main():
     main_workdir = os.path.join(os.getcwd(),main_workdir)
 
   # create the main working directory
-  os.mkdir(main_workdir)
+  if not os.path.exists(main_workdir):
+    os.mkdir(main_workdir)
 
   # copy the dataset list file to the main_workdir
   shutil.copyfile(dataset_list,os.path.join(main_workdir,'datasetList.txt'))
@@ -139,7 +142,8 @@ def main():
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
     if re.search("^PUDist.*\.root$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
-
+    if re.search("^jetpt_data_mc_RunIISpring15_25ns_MINIAOD.root$", filename):
+      shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
   # open and read the dataset_list file
   dataset_list_file = open(dataset_list,"r")
   dataset_list_lines = dataset_list_file.readlines()

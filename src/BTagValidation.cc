@@ -19,6 +19,7 @@ Implementation:
 
 
 // system include files
+#include <iostream>
 #include <memory>
 
 // user include files
@@ -102,7 +103,7 @@ class BTagValidation : public edm::EDAnalyzer {
     double scaleFactorUDSG_CSVM(const double jetPt, const double jetEta);
 
     double GetLumiWeightsPVBased (const std::string file, const std::string hist, const int npv) ; 
-
+    double GetLumiWeightsJetPtBased (const std::string file, const std::string hist, const double jetpt) ;
     // ----------member data ---------------------------
     EventInfoBranches EvtInfo;
     JetInfoBranches FatJetInfo;
@@ -126,6 +127,7 @@ class BTagValidation : public edm::EDAnalyzer {
     TH1D *h1_nPV_mc;
     TH1D *h1_nPV_mc_unw;
     TH1D *h1_pt_hat;
+    TH1D *h1_pt_hat_sel;
 
     TH1D *h1_nFatJet;
     TH1D *h1_fatjet_pt;
@@ -212,11 +214,14 @@ class BTagValidation : public edm::EDAnalyzer {
     const std::string               file_PVWt_ ; 
     const std::string               file_PUDistMC_ ;
     const std::string               file_PUDistData_ ;
+    const std::string               file_JetPtWt_ ;
     const std::string               hist_PVWt_ ; 
     const std::string               hist_PUDistMC_ ;
     const std::string               hist_PUDistData_ ;
+    const std::string               hist_JetPtWt_ ;
     const bool                      doPUReweightingOfficial_ ;
     const bool                      doPUReweightingNPV_ ;
+    const bool                      doJetPtReweighting_ ;
     const bool                      usePrunedSubjets_ ;
     const bool                      useSoftDropSubjets_ ;
 
@@ -270,11 +275,14 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   file_PVWt_(iConfig.getParameter<std::string>("File_PVWt")),
   file_PUDistMC_(iConfig.getParameter<std::string>("File_PUDistMC")),
   file_PUDistData_(iConfig.getParameter<std::string>("File_PUDistData")),
+  file_JetPtWt_(iConfig.getParameter<std::string>("File_JetPtWt")),
   hist_PVWt_(iConfig.getParameter<std::string>("Hist_PVWt")),
   hist_PUDistMC_(iConfig.getParameter<std::string>("Hist_PUDistMC")),
   hist_PUDistData_(iConfig.getParameter<std::string>("Hist_PUDistData")),
+  hist_JetPtWt_(iConfig.getParameter<std::string>("Hist_JetPtWt")),
   doPUReweightingOfficial_(iConfig.getParameter<bool>("DoPUReweightingOfficial")),
   doPUReweightingNPV_(iConfig.getParameter<bool>("DoPUReweightingNPV")),
+  doJetPtReweighting_(iConfig.getParameter<bool>("DoJetPtReweighting")),
   usePrunedSubjets_(iConfig.getParameter<bool>("UsePrunedSubjets")),
   useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets"))
 {
@@ -448,7 +456,8 @@ void BTagValidation::beginJob() {
   h1_nPV_data       = fs->make<TH1D>("h1_nPV_data",      ";N(PV in data);;",       60,0.,60.);
   h1_nPV_mc         = fs->make<TH1D>("h1_nPV_mc",        ";N(PV in MC);;",         60,0.,60.);
   h1_nPV_mc_unw     = fs->make<TH1D>("h1_nPV_mc_unw",    ";N(PV in MC, unweighted)",     60,0.,60.);
-  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        ";#hat{p}_{T};;",         1400,0,7000);
+  h1_pt_hat         = fs->make<TH1D>("h1_pt_hat",        ";#hat{p}_{T} before selection;;",         1400,0,7000);
+  h1_pt_hat_sel     = fs->make<TH1D>("h1_pt_hat_sel",    ";#hat{p}_{T} after selection;;",         1400,0,7000);
 
   h1_nFatJet        = fs->make<TH1D>("h1_nFatJet",       ";N(AK8 jets);;",     100,0,100);
   h1_fatjet_pt      = fs->make<TH1D>("h1_fatjet_pt",     ";p_{T} (AK8 jets) [GeV];;",   PtMax/10,0,PtMax);
@@ -700,15 +709,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       if ( iEntry == 0) edm::LogInfo("IsMC") << ">>>>> Running on simulation\n" ;
     }
     else if( iEntry == 0 ) edm::LogInfo("IsData") << ">>>>> Running on data\n" ;
-
-    if ( run == 251721 && (lumi >= 123 && lumi <= 244) ) continue ; 
-
     double wtPU = 1.;
     if ( doPUReweightingOfficial_ && !isData )
       wtPU *= LumiWeights_.weight(EvtInfo.nPUtrue);
     else if ( doPUReweightingNPV_ && !isData ) 
       wtPU *= GetLumiWeightsPVBased(file_PVWt_, hist_PVWt_, EvtInfo.nPV) ;  
-
     h1_CutFlow->Fill(2.,wtPU); //// count all events
     h1_CutFlow_unw->Fill(2.);
 
@@ -732,7 +737,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     }
 
     if(FatJetInfo.nJet <= 0) continue; //// require at least 1 fat jet in the event
-
+     
     int nFatJet = 0;
     int nSubJet = 0;
 
@@ -774,6 +779,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
           }
         }
       }
+
 
       TLorentzVector jet_p4;
       jet_p4.SetPtEtaPhiM(FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_phi[iJet], FatJetInfo.Jet_mass[iJet]);
@@ -858,7 +864,12 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         else if( applyFatJetBTagging_ && !fatJetDoubleBTagging_ )
           wtFatJet *= scaleFactor(FatJetInfo.Jet_flavour[iJet], FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], (fatJetBDiscrCut_>0.25));
       }
-
+//added by Erich - jetPt reweighting factor
+      double wtJetPt = 1.;
+      if (doJetPtReweighting_ && !isData) {
+        wtJetPt *= GetLumiWeightsJetPtBased(file_JetPtWt_, hist_JetPtWt_, FatJetInfo.Jet_pt[iJet]) ;
+        wtFatJet *= wtJetPt ;
+      }
 
       //// fat jet multiplicity
       ++nFatJet;
@@ -1087,6 +1098,9 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     // fill jet multiplicity
     h1_nFatJet->Fill(nFatJet, wtPU);
     if( usePrunedSubjets_ || useSoftDropSubjets_ ) h1_nSubJet->Fill(nSubJet, wtPU);
+
+    if( !isData && nFatJet>0 ) h1_pt_hat_sel->Fill(EvtInfo.pthat,wtPU);
+
   }
   //----------------------------- End event loop ----------------------------------------//
 }
@@ -1288,10 +1302,6 @@ void BTagValidation::fillJetHistos(const JetInfoBranches& JetInfo, const int iJe
 
   if (n_sv>0)
   {
-
-    //std::cout << " Jet 1st sv = " << JetInfo.Jet_nFirstSV[iJet]
-    //  << " 1st pt = " << JetInfo.SV_vtx_pt[JetInfo.Jet_nFirstSV[iJet]]
-    //  << std::endl ;
 
     chi2norm_sv    = JetInfo.SV_chi2[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_ndf[JetInfo.Jet_nFirstSV[iJet]];
     flightSig_sv   = JetInfo.SV_flight[JetInfo.Jet_nFirstSV[iJet]]/JetInfo.SV_flightErr[JetInfo.Jet_nFirstSV[iJet]];
@@ -1583,11 +1593,12 @@ bool BTagValidation::passTrigger() {
   if(triggerSelection_.size()==0) ret = true;
   else {
     for(unsigned i=0; i<triggerSelection_.size(); ++i) {
-      std::vector<std::string>::const_iterator it = std::find(triggerPathNames_.begin(), triggerPathNames_.end(), triggerSelection_.at(i));
-      if( it != triggerPathNames_.end() ) {
-        int triggerIdx = ( it - triggerPathNames_.begin() );
-        int bitIdx = int(triggerIdx/32);
-        if ( EvtInfo.BitTrigger[bitIdx] & ( 1 << (triggerIdx - bitIdx*32) ) ) {
+      std::string trigpath = triggerSelection_.at(i) ; 
+      std::vector<std::string>::const_iterator it ;
+      for ( it = triggerPathNames_.begin(); it != triggerPathNames_.end(); ++it) {
+        if ( it->find(trigpath) < std::string::npos ) {
+          int triggerIdx = ( it - triggerPathNames_.begin() );
+          int bitIdx = int(triggerIdx/32);
           ret = true;
           break;
         }
@@ -1741,6 +1752,18 @@ double BTagValidation::GetLumiWeightsPVBased (const std::string file, const std:
   delete f ;
   delete hwt ; 
   return wtPU ;
+}
+
+// ----For calculating MC event weight for reweighting to the jetPt distribution in the data
+double BTagValidation::GetLumiWeightsJetPtBased (const std::string file, const std::string hist, const double jetpt) {
+  double wtPt(1) ;
+  TFile* f = new TFile(file.c_str()) ;
+  TH1D* hwt = new TH1D( *(static_cast<TH1D*>(f->Get( hist.c_str() )->Clone() )) );
+  wtPt = jetpt > 0 && jetpt <= 5000 ? hwt->GetBinContent(hwt->GetXaxis()->FindBin(jetpt)) : 1.;
+  f->Close() ;
+  delete f ;
+  delete hwt ;
+  return wtPt ;
 }
 
 //define this as a plug-in
