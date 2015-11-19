@@ -1,6 +1,10 @@
 DATA:
 /JetHT/Run2015D-PromptReco-v4/MINIAOD_fatJetPtMin_425 -1 -1
 /JetHT/Run2015D-05Oct2015-v1/MINIAOD_fatJetPtMin_425 -1 -1
+/JetHT/Run2015D-PromptReco-v4/MINIAOD_fatJetPtMin_425_topUp -1 -1 
+/JetHT/Run2015D-05Oct2015-v1/MINIAOD_fatJetPtMin_425_topUp -1 -1
+/JetHT/Run2015D-PromptReco-v4/MINIAOD_fatJetPtMin_425_topUp_v2_13Nov -1 -1
+
 
 QCD: L=1000
 /QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM_fatJetPtMin_425 471100 
