@@ -27,19 +27,31 @@
 using namespace std;
 
 // TString ptcut = "300";
+// TString ptcut = "330";
 // TString ptcut = "360";
 TString ptcut = "425";
 
-TString filename    ="../test/rizki_LXBatch_BoostedTaggerValidation_DoubleMuonTagged_50m200_tau21-1p0_fj425_merged/Final_histograms_btagval_DoubleMuonTaggedFatJets.root" ;
-// TString filename    ="../test/rizki_LXBatch_Jobs_fatJetPtMin_"+ptcut+"_tau-0p5_2ndTime_withJetPtWeight_merged/Final_histograms_btagval_InclusiveJets.root" ;
+
+// TString filename    ="../test/rizki_LXBatch_BoostedTaggerValidation_DoubleMuonTagged_50m200_tau21-1p0_fj330_newTriggerPath_merged/Final_histograms_btagval_DoubleMuonTaggedFatJets.root" ;
+// TString filename    ="../test/rizki_LXBatch_BoostedTaggerValidation_DoubleMuonTagged_50m200_tau21-1p0_fj330_newTriggerPath_merged_MuEnriched/Final_histograms_btagval_MuEnriched_DoubleMuonTaggedFatJets.root" ;
+// TString filename    ="../test/rizki_LXBatch_BoostedTaggerValidation_DoubleMuonTagged_50m200_tau21-1p0_fj425_merged/Final_histograms_btagval_DoubleMuonTaggedFatJets.root" ;
+TString filename    ="../test/rizki_LXBatch_BoostedTaggerValidation_DoubleMuonTagged_50m200_tau21-1p0_fj425_merged/Final_histograms_btagval_DoubleMuonTaggedFatJets_MuEnriched.root" ;
+
+// TString filename    ="../test/rizki_LXBatch_Jobs_fatJetPtMin_"+ptcut+"_tau-0p5_merged_2ndTime_fjPtReweighted/Final_histograms_btagval_InclusiveJets_ptReweighted.root" ;
 // TString filename    ="../test/rizki_LXBatch_Jobs_SingleMuonTagged_tau21-0p5_merged/Final_histograms_btagval_MuonTaggedFatJets.root" ;
+// TString filename    ="../test/rizki_LXBatch_Jobs_SingleMuonTagged_tau21-0p5_merged_MuEnriched/Final_histograms_btagval_MuEnriched_MuonTaggedFatJets.root" ;
 
 
 TString filename_ext="" ;
 
-TString dir4plots   ="btagvalplots_BoostedBB_DoubleMuonTagged_50m200_tau21-1p0_fj425_log" ;
+// TString dir4plots   ="btagvalplots_BoostedBB_DoubleMuonTagged_50m200_tau21-1p0_fj330_log" ;
+// TString dir4plots   ="btagvalplots_BoostedBB_DoubleMuonTagged_50m200_tau21-1p0_fj330_MuEnriched_log" ;
+// TString dir4plots   ="btagvalplots_BoostedBB_DoubleMuonTagged_50m200_tau21-1p0_fj425_log" ;
+TString dir4plots   ="btagvalplots_BoostedBB_DoubleMuonTagged_50m200_tau21-1p0_fj425_MuEnriched_log" ;
+
 // TString dir4plots   ="btagvalplots_fatJetPtMin_"+ptcut+"_tau-0p5_2ndTime_withJetPtWeight_log" ;
 // TString dir4plots   ="btagvalplots_fatJetPtMin_"+ptcut+"_SingleMuonTagged_tau21-0p5_log" ;
+// TString dir4plots   ="btagvalplots_fatJetPtMin_"+ptcut+"_SingleMuonTagged_tau21-0p5_MuEnriched_log" ;
 
 
 // TString dir4plots   ="btagvalplots_fatJetPtMin_"+ptcut+"_linear" ;
@@ -60,7 +72,9 @@ bool prunedjets= 0;
 bool logy      = 1;
 bool dodata    = 1;
 bool extNorm   = 0; // used only for double-muon- and double-b-tagged fat jets
-double norm_lightjets = 1.00 ; // 1.27 ; 
+// double norm_lightjets = 1.00 ; // 1.27 ; 
+double norm_lightjets = 1.27 ; // used only for QCD MuEnriched.
+
 
 bool inclTTbar = 0;
 bool inclZjj   = 0;
@@ -143,39 +157,39 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 
     DrawStacked(histoTag+"_z_ratio"           ,"z ratio"                                   ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_trackSip3dSig_3"  ,"trackSip3dSig_3"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip3dSig_2"  ,"trackSip3dSig_2"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip3dSig_1"  ,"trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip3dSig_0"  ,"trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_0"  ,"IP Sig 1st track"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_1"  ,"IP Sig 2nd track"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_2"  ,"IP Sig 3rd track"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_3"  ,"IP Sig 4th track"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_tau1_trackSip3dSig_1"  ,"tau1_trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_tau1_trackSip3dSig_0"  ,"tau1_trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_tau2_trackSip3dSig_1"  ,"tau2_trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_tau2_trackSip3dSig_0"  ,"tau2_trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_trackSip2dSigAboveCharm_0"  ,"trackSip2dSigAboveCharm_0"                          ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_0"  ,"trackSip2dSigAboveBottom_0"                          ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_1"  ,"trackSip2dSigAboveBottom_1"                          ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip2dSigAboveCharm_0"  ,"IP Sig 1st Track Above Charm"                          ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_0"  ,"IP Sig 1st Track Above Bottom"                          ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_1"  ,"IP Sig 2nd Track Above Bottom"                          ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_tau2_trackEtaRel_2"  ,"tau2_trackEtaRel_2"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
-    DrawStacked(histoTag+"_tau2_trackEtaRel_1"  ,"tau2_trackEtaRel_1"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
-    DrawStacked(histoTag+"_tau2_trackEtaRel_0"  ,"tau2_trackEtaRel_0"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
+	DrawStacked(histoTag+"_tau1_trackEtaRel_0"  ,"EtaRel 1st track for SV_{0}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
+    DrawStacked(histoTag+"_tau1_trackEtaRel_1"  ,"EtaRel 2nd track for SV_{0}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
+    DrawStacked(histoTag+"_tau1_trackEtaRel_2"  ,"EtaRel 3rd track for SV_{0}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
+    
+    DrawStacked(histoTag+"_tau2_trackEtaRel_0"  ,"EtaRel 1st track for SV_{1}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);  
+    DrawStacked(histoTag+"_tau2_trackEtaRel_1"  ,"EtaRel 2nd track for SV_{1}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
+    DrawStacked(histoTag+"_tau2_trackEtaRel_2"  ,"EtaRel 3rd track for SV_{1}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
 
-    DrawStacked(histoTag+"_tau1_trackEtaRel_2"  ,"tau1_trackEtaRel_2"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
-    DrawStacked(histoTag+"_tau1_trackEtaRel_1"  ,"tau1_trackEtaRel_1"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
-    DrawStacked(histoTag+"_tau1_trackEtaRel_0"  ,"tau1_trackEtaRel_0"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
-
-    DrawStacked(histoTag+"_tau1_vertexMass"  ,"tau1_vertexMass"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,50.);
-    DrawStacked(histoTag+"_tau1_vertexEnergyRatio"  ,"tau1_vertexEnergyRatio"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau1_vertexMass"  ,"SV_{0} Mass"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,50.);
+    DrawStacked(histoTag+"_tau1_vertexEnergyRatio"  ,"SV_{0} Energy ratio"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
     DrawStacked(histoTag+"_tau1_vertexDeltaR"  ,"tau1_vertexDeltaR"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_tau1_flightDistance2dSig"  ,"tau1_lightDistance2dSig"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,20.);
+    DrawStacked(histoTag+"_tau1_flightDistance2dSig"  ,"SV_{0} flight distance Sig"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,20.);
 
-    DrawStacked(histoTag+"_tau2_vertexMass"  ,"tau2_vertexMass"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,50.);
-    DrawStacked(histoTag+"_tau2_vertexEnergyRatio"  ,"tau2_vertexEnergyRatio"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_tau2_flightDistance2dSig"  ,"tau2_flightDistance2dSig"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,20.);
+    DrawStacked(histoTag+"_tau2_vertexMass"  ,"SV_{1} Mass"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,50.);
+    DrawStacked(histoTag+"_tau2_vertexEnergyRatio"  ,"SV_{1} Energy ratio"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau2_flightDistance2dSig"  ,"SV_{1} flight distance Sig"                          ,logy ,dodata ,extNorm ,1 ,1 ,0. ,20.);
 
-    DrawStacked(histoTag+"_jetNTracks"  ,"jetNTracks"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
-    DrawStacked(histoTag+"_nSV"  ,"nSV"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_jetNTracks"  ,"Number of tracks"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_nSV"  ,"Number of SV"                          ,logy ,dodata ,extNorm ,1 ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_BDTG_SV"           ,"BDTG SV"                                   ,logy ,dodata ,extNorm ,4 ,0 ,0. ,0.);
 
@@ -705,7 +719,7 @@ void DrawStacked(TString name,
   if (uncBand) {
     beautify(histo_unc    , 12     , 3244   ,3244 , 0) ;
   }
-
+  TString histotitle_ = histotitle;
   TString yaxistitle="" ; 
   histotitle = hist_data->GetXaxis()->GetTitle() ; 
   if (histotitle=="BP") histotitle = "JBP discriminator" ; 
@@ -979,7 +993,7 @@ void DrawStacked(TString name,
     histo_ratio->GetYaxis()->SetTitle("Data/MC");
     histo_ratio->SetTitleOffset(0.9,"X");
     histo_ratio->SetTitleOffset(0.31,"Y");
-    histo_ratio->GetXaxis()->SetTitle(histotitle);
+    histo_ratio->GetXaxis()->SetTitle(histotitle_);
     histo_ratio->GetYaxis()->SetNdivisions( 505 );
 
     double labelsizex=0.12;
