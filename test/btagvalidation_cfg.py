@@ -79,7 +79,7 @@ options.register('useRelaxedMuonID', True,
     VarParsing.varType.bool,
     "Use relaxed muon ID"
 )
-options.register('fatJetPtMin', 300.,
+options.register('fatJetPtMin', 450.,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
     "Minimum fat jet Pt"
