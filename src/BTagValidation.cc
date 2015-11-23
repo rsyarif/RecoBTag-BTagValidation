@@ -34,6 +34,9 @@ Implementation:
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
+#include "CondFormats/BTauObjects/interface/BTagCalibration.h"
+#include "CondFormats/BTauObjects/interface/BTagCalibrationReader.h"
+
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -197,7 +200,6 @@ class BTagValidation : public edm::EDAnalyzer {
     const bool                      applySubJetMuonTagging_;
     const bool                      applySubJetBTagging_;
     const bool                      dynamicMuonSubJetDR_;
-    const bool                      applySFs_;
     const double                    fatJetBDiscrCut_;
     const double                    subJetBDiscrCut_;
     const double                    fatJetPtMin_;
@@ -225,6 +227,15 @@ class BTagValidation : public edm::EDAnalyzer {
     const bool                      usePrunedSubjets_ ;
     const bool                      useSoftDropSubjets_ ;
 
+    const bool                      applySFs_;
+    const std::string               btagCSVFile_ ; 
+    const int                       btagOperatingPoint_ ; 
+    const std::string               btagMeasurementType_ ; 
+    const std::string               btagSFType_  ; 
+
+    const BTagCalibration calib; 
+    const BTagCalibrationReader reader; 
+    
     //// Event variables
     bool isData;
     int nEventsAll;
@@ -258,7 +269,6 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   applySubJetMuonTagging_(iConfig.getParameter<bool>("ApplySubJetMuonTagging")),
   applySubJetBTagging_(iConfig.getParameter<bool>("ApplySubJetBTagging")),
   dynamicMuonSubJetDR_(iConfig.getParameter<bool>("DynamicMuonSubJetDR")),
-  applySFs_(iConfig.getParameter<bool>("ApplySFs")),
   fatJetBDiscrCut_(iConfig.getParameter<double>("FatJetBDiscrCut")),
   subJetBDiscrCut_(iConfig.getParameter<double>("SubJetBDiscrCut")),
   fatJetPtMin_(iConfig.getParameter<double>("FatJetPtMin")),
@@ -284,7 +294,16 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   doPUReweightingNPV_(iConfig.getParameter<bool>("DoPUReweightingNPV")),
   doJetPtReweighting_(iConfig.getParameter<bool>("DoJetPtReweighting")),
   usePrunedSubjets_(iConfig.getParameter<bool>("UsePrunedSubjets")),
-  useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets"))
+  useSoftDropSubjets_(iConfig.getParameter<bool>("UseSoftDropSubjets")), 
+  applySFs_(iConfig.getParameter<bool>("ApplySFs")),
+  btagCSVFile_(iConfig.getParameter<std::string>("btagCSVFile")), 
+  btagOperatingPoint_(iConfig.getParameter<int>("btagOperatingPoint")), 
+  btagMeasurementType_(iConfig.getParameter<std::string>("btagMeasurementType")), 
+  btagSFType_(iConfig.getParameter<std::string>("btagSFType")),
+  calib("csvv2", btagCSVFile_),  
+  //reader()
+  reader(&calib, BTagEntry::OperatingPoint(btagOperatingPoint_), btagMeasurementType_, btagSFType_)
+  //reader(&calib,static_cast<BTagEntry::OperatingPoint>btagOperatingPoint_,btagMeasurementType_,btagSFType_)
 {
   //now do what ever initialization is needed
   isData = true;
@@ -292,7 +311,6 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   nEventsStored = 0;
 
   if (doPUReweightingOfficial_) LumiWeights_ = edm::LumiReWeighting(file_PUDistMC_, file_PUDistData_, hist_PUDistMC_, hist_PUDistData_) ;
-
 
   // Pt bins for SFb
   double PtBins[] = {20, 30, 40, 50, 60, 70, 80, 100, 120, 160, 210, 260, 320, 400, 500, 600, 800};
@@ -852,11 +870,14 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       double wtFatJet = 1.;
       if( applySFs_ && !isData ) {
         if( applyFatJetBTagging_ && fatJetDoubleBTagging_ ) {
-          wtFatJet *= ( scaleFactor(SubJets.Jet_flavour[iSubJet1], SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
-              scaleFactor(SubJets.Jet_flavour[iSubJet2], SubJets.Jet_pt[iSubJet2], SubJets.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
+          //wtFatJet *= ( scaleFactor(SubJets.Jet_flavour[iSubJet1], SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
+          //    scaleFactor(SubJets.Jet_flavour[iSubJet2], SubJets.Jet_pt[iSubJet2], SubJets.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
+          wtFatJet *= reader.eval(BTagEntry::FLAV_B, SubJets.Jet_eta[iSubJet1], SubJets.Jet_pt[iSubJet1]); 
+          wtFatJet *= reader.eval(BTagEntry::FLAV_B, SubJets.Jet_eta[iSubJet2], SubJets.Jet_pt[iSubJet2]); 
         }
         else if( applyFatJetBTagging_ && !fatJetDoubleBTagging_ )
-          wtFatJet *= scaleFactor(FatJetInfo.Jet_flavour[iJet], FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], (fatJetBDiscrCut_>0.25));
+          //wtFatJet *= scaleFactor(FatJetInfo.Jet_flavour[iJet], FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], (fatJetBDiscrCut_>0.25));
+          wtFatJet *= reader.eval(BTagEntry::FLAV_B, FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_pt[iJet]); 
       }
 //added by Erich - jetPt reweighting factor
       double wtJetPt = 1.;

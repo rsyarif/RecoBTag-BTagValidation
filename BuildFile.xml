@@ -3,7 +3,8 @@
 <use name="FWCore/PluginManager"/>
 <use name="FWCore/ParameterSet"/>
 <use name="FWCore/ServiceRegistry"/>
+<use name="CondFormats/BTauObjects"/>
 <use name="PhysicsTools/UtilAlgos"/>
 <use name="PhysicsTools/Utilities"/>
-#<flags CXXFLAGS="-O0 -g -fno-inline"/>
+<flags CXXFLAGS="-Wno-delete-non-virtual-dtor -Wno-error=unused-but-set-variable -Wno-error=unused-variable -O0 -g -fno-inline"/>
 <flags EDM_PLUGIN="1"/>

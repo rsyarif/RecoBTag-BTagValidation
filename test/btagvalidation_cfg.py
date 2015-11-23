@@ -69,11 +69,6 @@ options.register('dynamicMuonSubJetDR', False,
     VarParsing.varType.bool,
     "Use dynamic muon-subjet dR requirement"
 )
-options.register('applySFs', False,
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.bool,
-    "Apply b-tagging SFs"
-)
 options.register('useFlavorCategories', True,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.bool,
@@ -149,7 +144,32 @@ options.register('doJetPtReweighting', False,
     VarParsing.varType.bool,
     'Do jet pt reweighting'
 )
-## 'maxEvents' is already registered by the Framework, changing default value
+options.register('applySFs', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Apply b-tagging SFs"
+)
+options.register('btagCSVFile', 'CSVv2.csv',
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.string,
+    "CSV file containing b-tagging SFs"
+)
+options.register('btagOperatingPoint', 1,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.int,
+    "B-tagging opertaint point for CSVv2. Set to 'medium'"
+)
+options.register('btagMeasurementType', "comb",
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.string,
+    "Measurement type: combined or ttbar"
+)
+options.register('btagSFType', "central",
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Apply b-tagging SFs"
+)
+
 options.setDefault('maxEvents', -1)
 
 options.parseArguments()
@@ -193,8 +213,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     UseJetProbaTree        = cms.bool(options.useJetProbaTree),
     InputTTreeEvtInfo      = cms.string('btaganaFatJets/ttree'),
     InputTTree             = cms.string('btaganaFatJets/ttree'),
-    InputFiles             = cms.vstring(FileNames),
-    #InputFiles             = cms.vstring(FileNames_QCD_Pt_800to1000),
+    #InputFiles             = cms.vstring(FileNames),
+    InputFiles             = cms.vstring(FileNames_QCD_Pt_800to1000),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
     UseRelaxedMuonID       = cms.bool(options.useRelaxedMuonID),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
@@ -206,7 +226,6 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     ApplySubJetMuonTagging = cms.bool(options.applySubJetMuonTagging),
     ApplySubJetBTagging    = cms.bool(options.applySubJetBTagging),
     DynamicMuonSubJetDR    = cms.bool(options.dynamicMuonSubJetDR),
-    ApplySFs               = cms.bool(options.applySFs),
     FatJetBDiscrCut        = cms.double(options.fatJetBDiscrCut),
     SubJetBDiscrCut        = cms.double(options.subJetBDiscrCut),
     FatJetPtMin            = cms.double(options.fatJetPtMin),
@@ -239,7 +258,12 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
         "HLT_PFJet400_v",
         "HLT_PFJet450_v",
         "HLT_PFJet500_v",
-    )
+    ),
+    ApplySFs               = cms.bool(options.applySFs),
+    btagCSVFile            = cms.string(options.btagCSVFile),
+    btagOperatingPoint     = cms.int32(options.btagOperatingPoint),
+    btagMeasurementType    = cms.string(options.btagMeasurementType),
+    btagSFType             = cms.string(options.btagSFType), 
 )
 
 #process.btagvalsubjetmu = process.btagval.clone(
