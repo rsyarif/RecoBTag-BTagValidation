@@ -693,8 +693,7 @@ void DrawStacked(TString name,
   }
 
   beautify(hist_c        , 8   ,1 , 1001    , 1) ;
-  beautify(hist_gsplit_c , 8   ,1 , 1001    , 1) ;
-//   beautify(hist_gsplit_c , 5   ,1 , 1001    , 1) ;
+  beautify(hist_gsplit_c , 8   ,8 , 1001    , 1) ;
   beautify(hist_b        , 2   ,1 , 1001    , 1) ;
   beautify(hist_gsplit   , 7   ,1 , 1001    , 1) ;
   beautify(hist_l        , 4   ,1 , 1001    , 1) ;
@@ -742,8 +741,8 @@ void DrawStacked(TString name,
   if (inclTTbar) stack->Add(hist_ttbar);
   stack->Add(hist_b);
   stack->Add(hist_gsplit);
-  stack->Add(hist_c);
   stack->Add(hist_gsplit_c);
+  stack->Add(hist_c);
   stack->Add(hist_l);
   if (inclZjj) stack->Add(hist_zjj);
 
