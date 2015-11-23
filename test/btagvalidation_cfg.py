@@ -157,7 +157,7 @@ options.register('btagCSVFile', 'CSVv2.csv',
 options.register('btagOperatingPoint', 0,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
-    "B-tagging opertaint point for CSVv2. Set to 'loose'"
+    "B-tagging opertaint point for CSVv2. Set to 'loose' by default"
 )
 options.register('btagMeasurementType', "comb",
     VarParsing.multiplicity.singleton,
