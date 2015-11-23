@@ -301,7 +301,6 @@ BTagValidation::BTagValidation(const edm::ParameterSet& iConfig) :
   btagMeasurementType_(iConfig.getParameter<std::string>("btagMeasurementType")), 
   btagSFType_(iConfig.getParameter<std::string>("btagSFType")),
   calib("csvv2", btagCSVFile_),  
-  //reader()
   reader(&calib, BTagEntry::OperatingPoint(btagOperatingPoint_), btagMeasurementType_, btagSFType_)
   //reader(&calib,static_cast<BTagEntry::OperatingPoint>btagOperatingPoint_,btagMeasurementType_,btagSFType_)
 {
@@ -872,12 +871,12 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
         if( applyFatJetBTagging_ && fatJetDoubleBTagging_ ) {
           //wtFatJet *= ( scaleFactor(SubJets.Jet_flavour[iSubJet1], SubJets.Jet_pt[iSubJet1], SubJets.Jet_eta[iSubJet1], (subJetBDiscrCut_>0.25)) *
           //    scaleFactor(SubJets.Jet_flavour[iSubJet2], SubJets.Jet_pt[iSubJet2], SubJets.Jet_eta[iSubJet2], (subJetBDiscrCut_>0.25)) );
-          wtFatJet *= reader.eval(BTagEntry::FLAV_B, SubJets.Jet_eta[iSubJet1], SubJets.Jet_pt[iSubJet1]); 
-          wtFatJet *= reader.eval(BTagEntry::FLAV_B, SubJets.Jet_eta[iSubJet2], SubJets.Jet_pt[iSubJet2]); 
+          wtFatJet *= reader.eval(BTagEntry::JetFlavor(SubJets.Jet_flavour[iSubJet1]), SubJets.Jet_eta[iSubJet1], SubJets.Jet_pt[iSubJet1]); 
+          wtFatJet *= reader.eval(BTagEntry::JetFlavor(SubJets.Jet_flavour[iSubJet2]), SubJets.Jet_eta[iSubJet2], SubJets.Jet_pt[iSubJet2]); 
         }
         else if( applyFatJetBTagging_ && !fatJetDoubleBTagging_ )
           //wtFatJet *= scaleFactor(FatJetInfo.Jet_flavour[iJet], FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], (fatJetBDiscrCut_>0.25));
-          wtFatJet *= reader.eval(BTagEntry::FLAV_B, FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_pt[iJet]); 
+          wtFatJet *= reader.eval(BTagEntry::JetFlavor(FatJetInfo.Jet_flavour[iJet]), FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_pt[iJet]); 
       }
 //added by Erich - jetPt reweighting factor
       double wtJetPt = 1.;
