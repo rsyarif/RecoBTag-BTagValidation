@@ -154,10 +154,10 @@ options.register('btagCSVFile', 'CSVv2.csv',
     VarParsing.varType.string,
     "CSV file containing b-tagging SFs"
 )
-options.register('btagOperatingPoint', 1,
+options.register('btagOperatingPoint', 0,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
-    "B-tagging opertaint point for CSVv2. Set to 'medium'"
+    "B-tagging opertaint point for CSVv2. Set to 'loose'"
 )
 options.register('btagMeasurementType', "comb",
     VarParsing.multiplicity.singleton,
