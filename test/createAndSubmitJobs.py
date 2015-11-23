@@ -76,6 +76,7 @@ cp -v MAIN_WORKDIR/PUDistData_Run2015ABCD.root $BATCHDIR/
 cp -v MAIN_WORKDIR/PUDistMC_2015_25ns_Startup_PoissonOOTPU.root $BATCHDIR/
 cp -v DATASET_WORKDIR/input/inputFiles_JOB_NUMBER_cfi.py $BATCHDIR/inputFiles_cfi.py
 cp -v MAIN_WORKDIR/jetpt_data_mc_RunIISpring15_25ns_MINIAOD.root $BATCHDIR/
+cp -v MAIN_WORKDIR/CSVv2.csv $BATCHDIR/
 cd $BATCHDIR
 echo "Running CMSSW job"
 cmsRun CMSSW_cfg.py CFG_PARAMETERS
@@ -131,7 +132,7 @@ def main():
   # copy the CMSSW cfg file to the cfg_files_dir
   shutil.copyfile(cmssw_cfg,os.path.join(main_workdir,'CMSSW_cfg.py'))
 
-  # look for pileup distribution files and copy them into main_workdir
+  # look for pileup distribution and CSV SF files and copy them into main_workdir
   cfg_dirname = os.path.dirname(cmssw_cfg)
   if cfg_dirname=='':
     cfg_dirname = os.getcwd()
@@ -143,6 +144,8 @@ def main():
     if re.search("^PUDist.*\.root$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
     if re.search("^jetpt_data_mc_RunIISpring15_25ns_MINIAOD.root$", filename):
+      shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
+    if re.search("^CSVv2.csv$", filename):
       shutil.copy(os.path.join(cfg_dirname,filename),main_workdir)
   # open and read the dataset_list file
   dataset_list_file = open(dataset_list,"r")
