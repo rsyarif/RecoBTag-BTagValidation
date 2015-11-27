@@ -641,11 +641,7 @@ void DrawStacked(TString name,
   int xlow = hist_data->GetXaxis()->FindBin(rangeXLow);
   int xhigh = hist_data->GetXaxis()->FindBin(rangeXHigh);
 
-    hist_b        -> Scale(scale_f);
-    hist_c        -> Scale(scale_f);
-    hist_gsplit   -> Scale(scale_f);
-    hist_gsplit_c -> Scale(scale_f);
-    hist_l        -> Scale(scale_f*norm_lightjets);
+  hist_l        -> Scale(norm_lightjets);
 
   if (doData) {
     float scale_f = ( hist_data->Integral() - (inclTTbar ? hist_ttbar->Integral() : 0) - (inclZjj ? hist_zjj->Integral() : 0) )/( hist_b->Integral() + hist_c->Integral() + hist_gsplit->Integral() + hist_gsplit_c->Integral() + hist_l->Integral() ) ;
@@ -653,6 +649,13 @@ void DrawStacked(TString name,
     //float scale_f = ( hist_data->Integral(xlow,xhigh) - (inclTTbar ? hist_ttbar->Integral(xlow,xhigh) : 0) - (inclZjj ? hist_zjj->Integral(xlow,xhigh) : 0) )/( hist_b->Integral(xlow,xhigh) + hist_c->Integral(xlow,xhigh) + hist_gsplit->Integral(xlow,xhigh) + hist_gsplit_c->Integral(xlow,xhigh) + hist_l->Integral(xlow,xhigh) ) ;
     //if (fExtNorm) scale_f = ( hist_data_ext->Integral(xlow,xhigh) - (inclTTbar ? hist_ttbar_ext->Integral(xlow,xhigh) : 0) - (inclZjj ? hist_zjj_ext->Integral(xlow,xhigh) : 0) )/( hist_b_ext->Integral(xlow,xhigh) + hist_c_ext->Integral(xlow,xhigh) + hist_gsplit_ext->Integral(xlow,xhigh) + hist_gsplit_c_ext->Integral(xlow,xhigh) + hist_l_ext->Integral(xlow,xhigh) ) ;
     cout << "scale_f = " << scale_f << endl;
+
+    hist_b        -> Scale(scale_f);
+    hist_c        -> Scale(scale_f);
+    hist_gsplit   -> Scale(scale_f);
+    hist_gsplit_c -> Scale(scale_f);
+    hist_l        -> Scale(scale_f*norm_lightjets);
+
     if (uncBand) {
       hist_b_uncUp        -> Scale(scale_f);
       hist_c_uncUp        -> Scale(scale_f);
@@ -667,7 +670,7 @@ void DrawStacked(TString name,
       hist_l_uncDown        -> Scale(scale_f*norm_lightjets);
     }
   }
-  
+
 
   TH1D* histo_tot = (TH1D*) hist_b->Clone();
   histo_tot ->Add(hist_c);
@@ -883,7 +886,7 @@ void DrawStacked(TString name,
   pad0->RedrawAxis();
 
   int move_legend=0;
-//  if ( name.Contains("jet_phi") || name.Contains("sv_phi") || name.Contains("muon_phi") ) move_legend=1;
+  //  if ( name.Contains("jet_phi") || name.Contains("sv_phi") || name.Contains("muon_phi") ) move_legend=1;
   if (log && name.Contains("sv_en_ratio") ) move_legend=1;
   TLegend *leg ;
   if (move_legend==1) {
@@ -907,7 +910,7 @@ void DrawStacked(TString name,
   leg->AddEntry(hist_c,        "c quark"           ,         "f");
   leg->AddEntry(hist_l,        "uds quark or gluon"     ,    "f");
   if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit,   "b from gluon splitting"     ,"f");
-//   if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,  "c from gluon splitting"     ,"f");
+  //   if(name.Contains("FatJet"))  leg->AddEntry(hist_gsplit_c,  "c from gluon splitting"     ,"f");
   if (inclTTbar) leg->AddEntry(hist_ttbar,    "t#bar{t}"               ,    "f");
   if (inclZjj) leg->AddEntry(hist_zjj,    "Z#rightarrowq#bar{q}"       ,    "f");
 
@@ -946,18 +949,18 @@ void DrawStacked(TString name,
     tex1->SetLineWidth(2);
     tex1->Draw();
 
-//     TString jettype="" ; 
-//     if ( name.Contains("FatJet")) jettype+="AK8 jets" ; 
-//     else if  ( name.Contains("SoftDropSubJet")) jettype+="Soft drop subjets of AK8 jets" ;
-//     else if  ( name.Contains("PrunedSubJet")) jettype+="Pruned subjets of AK8 jets" ;
+    //     TString jettype="" ; 
+    //     if ( name.Contains("FatJet")) jettype+="AK8 jets" ; 
+    //     else if  ( name.Contains("SoftDropSubJet")) jettype+="Soft drop subjets of AK8 jets" ;
+    //     else if  ( name.Contains("PrunedSubJet")) jettype+="Pruned subjets of AK8 jets" ;
 
-//     TLatex *tex2 = new TLatex(0.20,0.68,jettype);
-//     tex2->SetNDC();
-//     tex2->SetTextAlign(13);
-//     tex2->SetTextFont(42);
-//     tex2->SetTextSize(0.055);
-//     tex2->SetLineWidth(2);
-//     tex2->Draw();
+    //     TLatex *tex2 = new TLatex(0.20,0.68,jettype);
+    //     tex2->SetNDC();
+    //     tex2->SetTextAlign(13);
+    //     tex2->SetTextFont(42);
+    //     tex2->SetTextSize(0.055);
+    //     tex2->SetLineWidth(2);
+    //     tex2->Draw();
 
     TString jetpt="p_{T} (AK8 jets) > "+ptcut+" GeV" ; 
 
