@@ -172,21 +172,22 @@ void DrawAll(bool Draw_track_plots, bool Draw_Nminus1_plots, bool Draw_sv_plots,
 
     //added by rizki - start
 
-    DrawStacked(histoTag+"_z_ratio"           ,"z ratio"                                   ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
+    DrawStacked(histoTag+"_z_ratio"           ,"z ratio"                                   ,logy ,dodata ,extNorm ,2 ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_trackSip3dSig_0"  ,"IP Sig 1st track"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip3dSig_1"  ,"IP Sig 2nd track"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip3dSig_2"  ,"IP Sig 3rd track"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip3dSig_3"  ,"IP Sig 4th track"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
+	int trackSip_rebin = 2;
+    DrawStacked(histoTag+"_trackSip3dSig_0"  ,"IP Sig 1st track"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_1"  ,"IP Sig 2nd track"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_2"  ,"IP Sig 3rd track"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip3dSig_3"  ,"IP Sig 4th track"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_tau1_trackSip3dSig_1"  ,"tau1_trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_tau1_trackSip3dSig_0"  ,"tau1_trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_tau2_trackSip3dSig_1"  ,"tau2_trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_tau2_trackSip3dSig_0"  ,"tau2_trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau1_trackSip3dSig_1"  ,"tau1_trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau1_trackSip3dSig_0"  ,"tau1_trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau2_trackSip3dSig_1"  ,"tau2_trackSip3dSig_1"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_tau2_trackSip3dSig_0"  ,"tau2_trackSip3dSig_0"                            ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
 
-    DrawStacked(histoTag+"_trackSip2dSigAboveCharm_0"  ,"IP Sig 1st Track Above Charm"                          ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_0"  ,"IP Sig 1st Track Above Bottom"                          ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
-    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_1"  ,"IP Sig 2nd Track Above Bottom"                          ,logy ,dodata ,extNorm ,2,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip2dSigAboveCharm_0"  ,"IP Sig 1st Track Above Charm"                          ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_0"  ,"IP Sig 1st Track Above Bottom"                          ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
+    DrawStacked(histoTag+"_trackSip2dSigAboveBottom_1"  ,"IP Sig 2nd Track Above Bottom"                          ,logy ,dodata ,extNorm ,trackSip_rebin ,0 ,0. ,0.);
 
     DrawStacked(histoTag+"_tau1_trackEtaRel_0"  ,"EtaRel 1st track for SV_{0}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
     DrawStacked(histoTag+"_tau1_trackEtaRel_1"  ,"EtaRel 2nd track for SV_{0}"                            ,logy ,dodata ,extNorm ,1 ,1 ,0. ,10.);
@@ -789,7 +790,7 @@ void DrawStacked(TString name,
     yaxistitle="Jets / 0.02" ; 
   }
   if (name.Contains("z_ratio") ){
-  	yaxistitle="Jets / 0.6";
+  	yaxistitle="Jets / 1.2";
   }
   if (name.Contains("trackSip") && !name.Contains("BDTG")){
   	yaxistitle="Tracks / 8";
@@ -814,6 +815,9 @@ void DrawStacked(TString name,
   }
   if (name.Contains("vertexDeltaR")){
   	yaxistitle="Jets / 0.02";
+  }
+  if (name.Contains("BDTG_SV")){
+  	yaxistitle="Jets / 0.04";
   }
 
    
