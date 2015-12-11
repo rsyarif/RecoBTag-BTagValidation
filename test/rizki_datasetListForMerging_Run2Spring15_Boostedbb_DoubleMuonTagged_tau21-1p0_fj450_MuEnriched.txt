@@ -5,7 +5,8 @@ DATA:
 /JetHT/Run2015D-05Oct2015-v1/MINIAOD_fatJetPtMin_450_50m200_tau21-1p0_DoubleMuonTag_topUp -1 -1  
 /JetHT/Run2015D-PromptReco-v4/MINIAOD_fatJetPtMin_450_50m200_tau21-1p0_DoubleMuonTag_topUp_v2_13Nov -1 -1 
 
-QCD: L=1000
+#QCD: L=1000
+QCD:
 /QCD_Pt-120to170_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM_fatJetPtMin_450_50m200_tau21-1p0_DoubleMuonTag 25190.51514
 /QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM_fatJetPtMin_450_50m200_tau21-1p0_DoubleMuonTag 8654.49315 
 /QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM_fatJetPtMin_450_50m200_tau21-1p0_DoubleMuonTag 797.3526900  
