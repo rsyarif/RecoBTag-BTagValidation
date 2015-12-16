@@ -79,6 +79,11 @@ options.register('useRelaxedMuonID', True,
     VarParsing.varType.bool,
     "Use relaxed muon ID"
 )
+options.register('fatJetAbsEtaMax', 2.4,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Maximum abs(eta)"
+)
 options.register('fatJetPtMin', 450.,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.float,
@@ -213,8 +218,8 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     UseJetProbaTree        = cms.bool(options.useJetProbaTree),
     InputTTreeEvtInfo      = cms.string('btaganaFatJets/ttree'),
     InputTTree             = cms.string('btaganaFatJets/ttree'),
-    #InputFiles             = cms.vstring(FileNames),
-    InputFiles             = cms.vstring(FileNames_QCD_Pt_800to1000),
+    InputFiles             = cms.vstring(FileNames),
+    #InputFiles             = cms.vstring(FileNames_QCD_Pt_800to1000),
     UseFlavorCategories    = cms.bool(options.useFlavorCategories),
     UseRelaxedMuonID       = cms.bool(options.useRelaxedMuonID),
     ApplyFatJetMuonTagging = cms.bool(options.applyFatJetMuonTagging),
@@ -242,7 +247,7 @@ process.btagval = cms.EDAnalyzer('BTagValidation',
     FatJetSoftDropMassMax    = cms.double(options.fatJetSoftDropMassMax),
     FatJetTau21Min         = cms.double(options.fatJetTau21Min), #added by rizki
     FatJetTau21Max         = cms.double(options.fatJetTau21Max), #added by rizki
-    FatJetAbsEtaMax        = cms.double(2.4),
+    FatJetAbsEtaMax        = cms.double(options.fatJetAbsEtaMax), #added by rizki
     SFbShift               = cms.double(options.SFbShift),
     SFlShift               = cms.double(options.SFlShift),
     DoPUReweightingOfficial= cms.bool(options.doPUReweightingOfficial),
