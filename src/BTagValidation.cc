@@ -1114,8 +1114,7 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 //       std::cout << "mu12 dR =" << muonCombined_dR << std::endl;
                   
       //BUMP Region
-      if(muonCombined_ptRatio > 0.6 && muon1_v.DeltaR(jet_v) < 0.8 && muon2_v.DeltaR(jet_v) < 0.8){
-//       if(muonCombined_ptRatio > 0.6){
+      if(muonCombined_ptRatio > 0.6){
 //       if(BDTG_SV > -0.02 && BDTG_SV <0.12 && trackSip3dSig_0 < 3 && jetNTracks< 9 ){
 
       	TString hTag = "FatJet_selectedRegion";
