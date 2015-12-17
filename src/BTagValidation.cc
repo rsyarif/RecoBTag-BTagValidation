@@ -588,7 +588,8 @@ void BTagValidation::beginJob() {
   AddHisto(Tag+"_muon1_Pt",         ";p_{T} (#mu) [GeV] (#mu_{0});;",250,0,500);
   AddHisto(Tag+"_muon1_eta",        ";#eta(#mu) (#mu_{0});;",50,-2.5, 2.5);
   AddHisto(Tag+"_muon1_phi",        ";#phi(#mu)(#mu_{0}) ;;",40,-1.*pi,pi);
-  AddHisto(Tag+"_muon1_dR",        ";#Delta R(#mu,jet) (#mu_{0};;",250,0,5);
+  AddHisto(Tag+"_muon1_dR",        ";#Delta R(#mu,jet) (#mu_{0});;",250,0,5);
+  AddHisto(Tag+"_muon1_sj1_dR",        ";#Delta R(#mu,sj1) (#mu_{0});;",250,0,5);
 
   AddHisto(Tag+"_mu2_ptRatio",        "p_{T}(#mu) / p_{T}(AK8 jet) (#mu_{1}) ;;",50,0,1);  
   AddHisto(Tag+"_mu2_ptrel",        ";p_{T,rel}(#mu) [GeV] (#mu_{1});;",50,0,5);
@@ -596,13 +597,14 @@ void BTagValidation::beginJob() {
   AddHisto(Tag+"_muon2_Pt",         ";p_{T} (#mu) [GeV] (#mu_{1}) ;;",250,0,500);
   AddHisto(Tag+"_muon2_eta",        ";#eta(#mu)(#mu_{1}) ;;",50,-2.5, 2.5);
   AddHisto(Tag+"_muon2_phi",        ";#phi(#mu)(#mu_{1});;",40,-1.*pi,pi);
-  AddHisto(Tag+"_muon2_dR",        ";#Delta R(#mu,jet) (#mu_{1};;",250,0,5);
+  AddHisto(Tag+"_muon2_dR",        ";#Delta R(#mu,jet) (#mu_{1});;",250,0,5);
+  AddHisto(Tag+"_muon2_sj2_dR",        ";#Delta R(#mu,sj2) (#mu_{1});;",250,0,5);
 
   AddHisto(Tag+"_muComb_ptRatio",        "p_{T}(#mu) / p_{T}(AK8 jet) (#mu_{0,1}) ;;",50,0,1);  
   AddHisto(Tag+"_muonComb_Pt",         ";p_{T} (#mu) [GeV] (#mu_{0,1};;",250,0,500);
   AddHisto(Tag+"_muonComb_eta",        ";#eta(#mu) (#mu_{0,1};;",50,-2.5, 2.5);
   AddHisto(Tag+"_muonComb_phi",        ";#phi(#mu) (#mu_{0,1};;",40,-1.*pi,pi);
-  AddHisto(Tag+"_muonComb_dR",        ";#Delta R(#mu,jet) (#mu_{0,1};;",250,0,5);
+  AddHisto(Tag+"_muonComb_dR",        ";#Delta R(#mu,jet) (#mu_{0,1});;",250,0,5);
 
   //other selected region
 
@@ -623,7 +625,8 @@ void BTagValidation::beginJob() {
   AddHisto(Tag_+"_muon1_Pt",         ";p_{T} (#mu) [GeV] (#mu_{0});;",250,0,500);
   AddHisto(Tag_+"_muon1_eta",        ";#eta(#mu) (#mu_{0});;",50,-2.5, 2.5);
   AddHisto(Tag_+"_muon1_phi",        ";#phi(#mu)(#mu_{0}) ;;",40,-1.*pi,pi);
-  AddHisto(Tag_+"_muon1_dR",        ";#Delta R(#mu,jet) (#mu_{0};;",250,0,5);
+  AddHisto(Tag_+"_muon1_dR",        ";#Delta R(#mu,jet) (#mu_{0});;",250,0,5);
+  AddHisto(Tag_+"_muon1_sj1_dR",        ";#Delta R(#mu,sj1) (#mu_{0});;",250,0,5);
 
   AddHisto(Tag_+"_mu2_ptRatio",        "p_{T}(#mu) / p_{T}(AK8 jet) (#mu_{1}) ;;",50,0,1);  
   AddHisto(Tag_+"_mu2_ptrel",        ";p_{T,rel}(#mu) [GeV] (#mu_{1});;",50,0,5);
@@ -631,13 +634,14 @@ void BTagValidation::beginJob() {
   AddHisto(Tag_+"_muon2_Pt",         ";p_{T} (#mu) [GeV] (#mu_{1}) ;;",250,0,500);
   AddHisto(Tag_+"_muon2_eta",        ";#eta(#mu)(#mu_{1}) ;;",50,-2.5, 2.5);
   AddHisto(Tag_+"_muon2_phi",        ";#phi(#mu)(#mu_{1});;",40,-1.*pi,pi);
-  AddHisto(Tag_+"_muon2_dR",        ";#Delta R(#mu,jet) (#mu_{1};;",250,0,5);
+  AddHisto(Tag_+"_muon2_dR",        ";#Delta R(#mu,jet) (#mu_{1});;",250,0,5);
+  AddHisto(Tag_+"_muon2_sj2_dR",        ";#Delta R(#mu,sj2) (#mu_{1});;",250,0,5);
 
   AddHisto(Tag_+"_muComb_ptRatio",        "p_{T}(#mu) / p_{T}(AK8 jet) (#mu_{0,1}) ;;",50,0,1);  
   AddHisto(Tag_+"_muonComb_Pt",         ";p_{T} (#mu) [GeV] (#mu_{0,1};;",250,0,500);
   AddHisto(Tag_+"_muonComb_eta",        ";#eta(#mu) (#mu_{0,1};;",50,-2.5, 2.5);
   AddHisto(Tag_+"_muonComb_phi",        ";#phi(#mu) (#mu_{0,1};;",40,-1.*pi,pi);
-  AddHisto(Tag_+"_muonComb_dR",        ";#Delta R(#mu,jet) (#mu_{0,1};;",250,0,5);
+  AddHisto(Tag_+"_muonComb_dR",        ";#Delta R(#mu,jet) (#mu_{0,1});;",250,0,5);
 
   //All region
   
@@ -649,7 +653,8 @@ void BTagValidation::beginJob() {
   AddHisto(Tag_+"_muon1_Pt",         ";p_{T} (#mu) [GeV] (#mu_{0});;",250,0,500);
   AddHisto(Tag_+"_muon1_eta",        ";#eta(#mu) (#mu_{0});;",50,-2.5, 2.5);
   AddHisto(Tag_+"_muon1_phi",        ";#phi(#mu)(#mu_{0}) ;;",40,-1.*pi,pi);
-  AddHisto(Tag_+"_muon1_dR",        ";#Delta R(#mu,jet) (#mu_{0};;",250,0,5);
+  AddHisto(Tag_+"_muon1_dR",        ";#Delta R(#mu,jet) (#mu_{0});;",250,0,5);
+  AddHisto(Tag_+"_muon1_sj1_dR",        ";#Delta R(#mu,sj1) (#mu_{0});;",250,0,5);
 
   AddHisto(Tag_+"_mu2_ptRatio",        "p_{T}(#mu) / p_{T}(AK8 jet) (#mu_{1}) ;;",50,0,1);  
   AddHisto(Tag_+"_mu2_ptrel",        ";p_{T,rel}(#mu) [GeV] (#mu_{1});;",50,0,5);
@@ -657,14 +662,17 @@ void BTagValidation::beginJob() {
   AddHisto(Tag_+"_muon2_Pt",         ";p_{T} (#mu) [GeV] (#mu_{1}) ;;",250,0,500);
   AddHisto(Tag_+"_muon2_eta",        ";#eta(#mu)(#mu_{1}) ;;",50,-2.5, 2.5);
   AddHisto(Tag_+"_muon2_phi",        ";#phi(#mu)(#mu_{1});;",40,-1.*pi,pi);
-  AddHisto(Tag_+"_muon2_dR",        ";#Delta R(#mu,jet) (#mu_{1};;",250,0,5);
+  AddHisto(Tag_+"_muon2_dR",        ";#Delta R(#mu,jet) (#mu_{1});;",250,0,5);
+  AddHisto(Tag_+"_muon2_sj2_dR",        ";#Delta R(#mu,sj2) (#mu_{0});;",250,0,5);
 
   AddHisto(Tag_+"_muComb_ptRatio",        "p_{T}(#mu) / p_{T}(AK8 jet) (#mu_{0,1}) ;;",50,0,1);  
   AddHisto(Tag_+"_muonComb_Pt",         ";p_{T} (#mu) [GeV] (#mu_{0,1};;",250,0,500);
   AddHisto(Tag_+"_muonComb_eta",        ";#eta(#mu) (#mu_{0,1};;",50,-2.5, 2.5);
   AddHisto(Tag_+"_muonComb_phi",        ";#phi(#mu) (#mu_{0,1};;",40,-1.*pi,pi);
-  AddHisto(Tag_+"_muonComb_dR",        ";#Delta R(#mu,jet) (#mu_{0,1};;",250,0,5);
+  AddHisto(Tag_+"_muonComb_dR",        ";#Delta R(#mu,jet) (#mu_{0,1});;",250,0,5);
 
+  AddHisto("Subjet1_dR",        ";#Delta R(Subjet1,AK8jet) ;;",250,0,5);
+  AddHisto("Subjet2_dR",        ";#Delta R(Subjet2,AK8jet) ;;",250,0,5);
 
   //debug - end -rizki
 
@@ -907,8 +915,11 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
       if ( SubJetInfo.Jet_nSubJets[iJet] != 2 ) continue ;
 
-      int iSubJet1 = SubJetInfo.SubJetIdx[0] ;
-      int iSubJet2 = SubJetInfo.SubJetIdx[1] ;
+//       int iSubJet1 = SubJetInfo.SubJetIdx[0] ;
+//       int iSubJet2 = SubJetInfo.SubJetIdx[1] ;
+      int iSubJet1 = SubJetInfo.SubJetIdx[SubJetInfo.Jet_nFirstSJ[iJet]] ; //added by rizki
+      int iSubJet2 = SubJetInfo.SubJetIdx[SubJetInfo.Jet_nFirstSJ[iJet]+1] ; //added by rizki
+
 
       //// If  processing subjets, discard fat jet with any one subjet having pt = 0
       if( (usePrunedSubjets_ || useSoftDropSubjets_)
@@ -972,10 +983,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
         //degug - start - rizki
         if(isDoubleMuonTagged){
-        std::cout << " idxMuon_inFirstSubjet = " << idxMuon_inFirstSubjet << std::endl;
-        std::cout << " idxMuon_inSecondSubjet = " << idxMuon_inSecondSubjet << std::endl;
-        std::cout << " selectedMuonIdx1.size() = " << selectedMuonIdx1.size() << std::endl;
-        std::cout << " selectedMuonIdx2.size() = " << selectedMuonIdx2.size() << std::endl;
+//         std::cout << " idxMuon_inFirstSubjet = " << idxMuon_inFirstSubjet << std::endl;
+//         std::cout << " idxMuon_inSecondSubjet = " << idxMuon_inSecondSubjet << std::endl;
+//         std::cout << " selectedMuonIdx1.size() = " << selectedMuonIdx1.size() << std::endl;
+//         std::cout << " selectedMuonIdx2.size() = " << selectedMuonIdx2.size() << std::endl;
         }
         //debug - end - rizki
         
@@ -1084,13 +1095,13 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       TLorentzVector muonCombined_v;
 
       for (int iMu=0; iMu<SubJets.nPFMuon; ++iMu) {
-      	if ( SubJets.PFMuon_IdxJet[iMu]==SubJetInfo.SubJetIdx[0] ) {
+      	if ( SubJets.PFMuon_IdxJet[iMu]==iSubJet1 ) {
       		muon1_eta = SubJets.PFMuon_eta[idxMuon_inFirstSubjet]; 
       		muon1_phi = SubJets.PFMuon_phi[idxMuon_inFirstSubjet]; 
       		muon1_pt = SubJets.PFMuon_pt[idxMuon_inFirstSubjet]; 
       		muon1_v.SetPtEtaPhiM(muon1_pt,muon1_eta,muon1_phi,0);
         }
-        if ( SubJets.PFMuon_IdxJet[iMu]==SubJetInfo.SubJetIdx[1] ) {
+        if ( SubJets.PFMuon_IdxJet[iMu]==iSubJet2 ) {
             muon2_eta = SubJets.PFMuon_eta[idxMuon_inSecondSubjet]; 
             muon2_phi = SubJets.PFMuon_phi[idxMuon_inSecondSubjet]; 
             muon2_pt = SubJets.PFMuon_pt[idxMuon_inSecondSubjet]; 
@@ -1104,13 +1115,15 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       
       muonCombined_ptRatio = muonCombined_pt / FatJetInfo.Jet_pt[iJet];
       
-      TLorentzVector jet_v;
-      jet_v.SetPtEtaPhiM(FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_phi[iJet], FatJetInfo.Jet_mass[iJet]);
+//       TLorentzVector jet_v,sj1_v,sj2_v;
+//       jet_v.SetPtEtaPhiM(FatJetInfo.Jet_pt[iJet], FatJetInfo.Jet_eta[iJet], FatJetInfo.Jet_phi[iJet], FatJetInfo.Jet_mass[iJet]);      
+//       sj1_v.SetPtEtaPhiM(SubJetInfo.Jet_pt[SubJetInfo.Jet_nFirstSJ[iJet]], SubJetInfo.Jet_eta[SubJetInfo.Jet_nFirstSJ[iJet]], SubJetInfo.Jet_phi[SubJetInfo.Jet_nFirstSJ[iJet]], SubJetInfo.Jet_mass[SubJetInfo.Jet_nFirstSJ[iJet]]);
+//       sj2_v.SetPtEtaPhiM(SubJetInfo.Jet_pt[SubJetInfo.Jet_nFirstSJ[iJet]+1], SubJetInfo.Jet_eta[SubJetInfo.Jet_nFirstSJ[iJet]+1], SubJetInfo.Jet_phi[SubJetInfo.Jet_nFirstSJ[iJet]+1], SubJetInfo.Jet_mass[SubJetInfo.Jet_nFirstSJ[iJet]+1]);
+      
+      muonCombined_dR = muonCombined_v.DeltaR(jet_p4);
 
-      muonCombined_dR = muonCombined_v.DeltaR(jet_v);
-
-//       std::cout << "muon1 dR =" << muon1_v.DeltaR(jet_v) << std::endl;
-//       std::cout << "muon2 dR =" << muon2_v.DeltaR(jet_v) << std::endl;
+//       std::cout << "muon1 dR =" << muon1_v.DeltaR(jet_p4) << std::endl;
+//       std::cout << "muon2 dR =" << muon2_v.DeltaR(jet_p4) << std::endl;
 //       std::cout << "mu12 dR =" << muonCombined_dR << std::endl;
                   
       //BUMP Region
@@ -1134,7 +1147,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 			FillHisto(hTag+"_muon1_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_pt[idxMuon_inFirstSubjet] ,     wtPU*wtFatJet);
 			FillHisto(hTag+"_muon1_eta",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_eta[idxMuon_inFirstSubjet] ,    wtPU*wtFatJet);
 			FillHisto(hTag+"_muon1_phi",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_phi[idxMuon_inFirstSubjet] ,    wtPU*wtFatJet);		
-			FillHisto(hTag+"_muon1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(jet_v) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon1_sj1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(subjet1_p4) ,    wtPU*wtFatJet);		
 		}
       	if(idxMuon_inSecondSubjet > -1){
 			FillHisto(hTag+"_mu2_ptrel",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_ptrel[idxMuon_inSecondSubjet] ,wtPU*wtFatJet);
@@ -1142,7 +1156,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 			FillHisto(hTag+"_muon2_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_pt[idxMuon_inSecondSubjet] ,     wtPU*wtFatJet);
 			FillHisto(hTag+"_muon2_eta",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_eta[idxMuon_inSecondSubjet] ,    wtPU*wtFatJet);
 			FillHisto(hTag+"_muon2_phi",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_phi[idxMuon_inSecondSubjet] ,    wtPU*wtFatJet);		
-			FillHisto(hTag+"_muon2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(jet_v) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon2_sj2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(subjet2_p4) ,    wtPU*wtFatJet);		
 		}
 		if(idxMuon_inFirstSubjet > -1 && idxMuon_inSecondSubjet > -1){
 			FillHisto(hTag+"_muonComb_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muonCombined_pt ,     wtPU*wtFatJet);
@@ -1170,7 +1185,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 			FillHisto(hTag+"_muon1_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_pt[idxMuon_inFirstSubjet] ,     wtPU*wtFatJet);
 			FillHisto(hTag+"_muon1_eta",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_eta[idxMuon_inFirstSubjet] ,    wtPU*wtFatJet);
 			FillHisto(hTag+"_muon1_phi",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_phi[idxMuon_inFirstSubjet] ,    wtPU*wtFatJet);		
-			FillHisto(hTag+"_muon1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(jet_v) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon1_sj1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(subjet1_p4) ,    wtPU*wtFatJet);		
 		}
       	if(idxMuon_inSecondSubjet > -1){
 			FillHisto(hTag+"_mu2_ptrel",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_ptrel[idxMuon_inSecondSubjet] ,wtPU*wtFatJet);
@@ -1178,7 +1194,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 			FillHisto(hTag+"_muon2_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_pt[idxMuon_inSecondSubjet] ,     wtPU*wtFatJet);
 			FillHisto(hTag+"_muon2_eta",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_eta[idxMuon_inSecondSubjet] ,    wtPU*wtFatJet);
 			FillHisto(hTag+"_muon2_phi",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_phi[idxMuon_inSecondSubjet] ,    wtPU*wtFatJet);		
-			FillHisto(hTag+"_muon2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(jet_v) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
+			FillHisto(hTag+"_muon2_sj2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(subjet2_p4) ,    wtPU*wtFatJet);		
 		}
 		if(idxMuon_inFirstSubjet > -1 && idxMuon_inSecondSubjet > -1){
 			FillHisto(hTag+"_muonComb_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muonCombined_pt ,     wtPU*wtFatJet);
@@ -1198,7 +1215,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       	FillHisto(hTag+"_muon1_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_pt[idxMuon_inFirstSubjet] ,     wtPU*wtFatJet);
       	FillHisto(hTag+"_muon1_eta",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_eta[idxMuon_inFirstSubjet] ,    wtPU*wtFatJet);
       	FillHisto(hTag+"_muon1_phi",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_phi[idxMuon_inFirstSubjet] ,    wtPU*wtFatJet);      
-		FillHisto(hTag+"_muon1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(jet_v) ,    wtPU*wtFatJet);		
+		FillHisto(hTag+"_muon1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
+		FillHisto(hTag+"_muon1_sj1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon1_v.DeltaR(subjet1_p4) ,    wtPU*wtFatJet);		
       }
       if(idxMuon_inSecondSubjet > -1){
       	FillHisto(hTag+"_mu2_ptrel",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_ptrel[idxMuon_inSecondSubjet] ,wtPU*wtFatJet);
@@ -1206,7 +1224,8 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       	FillHisto(hTag+"_muon2_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_pt[idxMuon_inSecondSubjet] ,     wtPU*wtFatJet);
       	FillHisto(hTag+"_muon2_eta",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_eta[idxMuon_inSecondSubjet] ,    wtPU*wtFatJet);
       	FillHisto(hTag+"_muon2_phi",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,FatJetInfo.PFMuon_phi[idxMuon_inSecondSubjet] ,    wtPU*wtFatJet);      
-		FillHisto(hTag+"_muon2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(jet_v) ,    wtPU*wtFatJet);		
+		FillHisto(hTag+"_muon2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
+		FillHisto(hTag+"_muon2_sj2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muon2_v.DeltaR(subjet2_p4) ,    wtPU*wtFatJet);		
       }
       if(idxMuon_inFirstSubjet > -1 && idxMuon_inSecondSubjet > -1){
       	FillHisto(hTag+"_muonComb_Pt",     FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muonCombined_pt ,     wtPU*wtFatJet);
@@ -1214,10 +1233,15 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       	FillHisto(hTag+"_muonComb_phi",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muonCombined_phi ,    wtPU*wtFatJet);      
       	FillHisto(hTag+"_muComb_ptRatio",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muonCombined_ptRatio ,wtPU*wtFatJet);
       	FillHisto(hTag+"_muonComb_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,muonCombined_dR ,wtPU*wtFatJet);
+
+		FillHisto("Subjet1_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,subjet1_p4.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
+		FillHisto("Subjet2_dR",    FatJetInfo.Jet_flavour[iJet], isGSPbb ,isGSPcc ,subjet2_p4.DeltaR(jet_p4) ,    wtPU*wtFatJet);		
       }
       
-//       if (muonCombined_ptRatio >0.6) continue; //remove spike in final bb discriminator
-      if (muonCombined_ptRatio >0.6 || muon1_v.DeltaR(jet_v) > 0.8 || muon2_v.DeltaR(jet_v) > 0.8) continue; //remove spike in final bb discriminator
+      if(isDoubleMuonTagged==true){
+      	if (muonCombined_ptRatio >0.6) continue; //remove spike in final bb discriminator
+      	}
+
       // debug - end - rizki
 
       
