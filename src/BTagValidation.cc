@@ -1018,10 +1018,13 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       }
 //added by Erich - jetPt reweighting factor
       double wtJetPt = 1.;
-      if (doJetPtReweighting_ && !isData) {
+      if (doJetPtReweighting_ && !isData && FatJetInfo.Jet_nbHadrons[iJet] > 1 ) { //added by rizki only temporarily for Hbb tagger signal vs proxy studies. Want to only reweight jets of bgromgsp flavour.
+//       if (doJetPtReweighting_ && !isData) { //original UNCOMMENT!
         wtJetPt *= GetLumiWeightsJetPtBased(file_JetPtWt_, hist_JetPtWt_, FatJetInfo.Jet_pt[iJet]) ;
         wtFatJet *= wtJetPt ;
       }
+      
+
 
       //// fat jet multiplicity
       ++nFatJet;
