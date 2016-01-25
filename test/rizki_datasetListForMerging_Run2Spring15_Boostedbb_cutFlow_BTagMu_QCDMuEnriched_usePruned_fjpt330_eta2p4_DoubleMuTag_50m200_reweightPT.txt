@@ -2,7 +2,7 @@ DATA:
 #/BTagMu/Run2015D-PromptReco-v4/MINIAOD_fatJetPtMin_330_eta2p4_DoubleMuTag_50m200_tau1p0 -1 -1 
 #/BTagMu/Run2015D-05Oct2015-v1/MINIAOD_fatJetPtMin_330_eta2p4_DoubleMuTag_50m200_tau1p0 -1 -1 
 
-QCD: L=2200
+QCD: L=1000
 /QCD_Pt-120to170_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM_fatJetPtMin_330_eta2p4_DoubleMuTag_50m200_tau1p0 25190.51514
 /QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM_fatJetPtMin_330_eta2p4_DoubleMuTag_50m200_tau1p0 8654.49315
 /QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM_fatJetPtMin_330_eta2p4_DoubleMuTag_50m200_tau1p0 797.3526900
