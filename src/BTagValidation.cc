@@ -690,6 +690,8 @@ void BTagValidation::createJetHistos(const TString& histoTag) {
   double PtMax = 5000.;
   double pi=TMath::Pi();
 
+  AddHisto(histoTag+"_pt_all_unw"           ,";p_{T}(all jets) unweighted [GeV];;"             ,PtMax/10  ,0      ,PtMax ); //debug for signal vs proxy reweighting - rizki
+
   AddHisto(histoTag+"_pt_all"           ,";p_{T}(all jets) [GeV];;"             ,PtMax/10  ,0      ,PtMax );
   AddHisto(histoTag+"_eta"              ,";#eta(all jets);;"              ,50        ,-2.5   ,2.5);
   AddHisto(histoTag+"_phi"              ,";#phi(all jets);;"              ,40        ,-1.*pi ,pi);
@@ -1320,7 +1322,10 @@ void BTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
       h1_fatjet_pt->Fill(FatJetInfo.Jet_pt[iJet],wtPU*wtFatJet);
       FillHisto("FatJet_nsubjettiness" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_tau2[iJet]/FatJetInfo.Jet_tau1[iJet] ,wtPU*wtFatJet);
       fillJetHistos(FatJetInfo, iJet, isGSPbb, isGSPcc ,"FatJet", nmu, nselmuon, idxFirstMuon, wtPU*wtFatJet);
+      
+      FillHisto("FatJet_pt_all_unw" ,FatJetInfo.Jet_flavour[iJet] ,isGSPbb ,isGSPcc ,FatJetInfo.Jet_pt[iJet] ,wtPU); //debug for signal vs proxy reweighting - rizki
 
+	
 
       //// ------- start process subjets --------------
       if( usePrunedSubjets_ || useSoftDropSubjets_ ) {
